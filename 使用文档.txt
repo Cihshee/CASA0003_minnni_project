@@ -1,0 +1,7 @@
+【此为Web前端构建工具 viteJS 生成的 Vanilla 框架】
+
+运行方法：
+1. 打开 VScode，顶部新建 New Terminal
+2. 确保当前路径是所在文件夹的路径
+3. 打开界面：npm run dev
+4. 终止界面：ctr+c

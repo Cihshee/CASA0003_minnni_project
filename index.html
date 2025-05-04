@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brexit Commodity Import and Export Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="src/components/Background/BrexitBackground.css">
+    <link rel="stylesheet" href="src/components/Transport/Transport.css">
+  </head>
+  <body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="#section1" class="nav-link">Homepage</a></li>
+        <li><a href="#section2" class="nav-link">Brexit Background</a></li>
+        <li><a href="#section3" class="nav-link">Policy</a></li>
+        <li><a href="#section4" class="nav-link">Country Scale</a></li>
+        <li><a href="#section5" class="nav-link">Region Scale</a></li>
+        <li><a href="#section6" class="nav-link">Goods Types</a></li>
+        <li><a href="#section7" class="nav-link">Transportation</a></li>
+        <li><a href="#section8" class="nav-link">Conclusion</a></li>
+        <li><a href="#section9" class="nav-link">Group Introduction</a></li>
+      </ul>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main>
+      <section id="section1" class="full-page">
+        <div class="content">
+          <h1>Brexit Commodity Import and Export Network</h1>
+          <p>Explore the impact of Brexit on the commodity import and export trade network...</p>
+        </div>
+      </section>
+
+      <section id="section2" class="full-page">
+        <div class="content">
+          <!-- 使用 Brexit Background 组件 -->
+          <div id="brexit-background-container"></div>
+        </div>
+      </section>
+
+      <section id="section3" class="full-page">
+        <div class="content">
+          <!-- 使用 Policy 组件 -->
+          <!-- <div id="policy-container"></div> -->
+        </div>
+      </section>
+
+      <section id="section4" class="full-page">
+        <div class="content">
+          <!-- 使用 Country Scale 组件 -->
+          <!-- <div id="country-scale-container"></div> -->
+        </div>
+      </section>
+
+      <section id="section5" class="full-page"> 
+        <div class="content">
+          <!-- 使用 Region Scale 组件 -->
+          <!-- <div id="region-scale-container"></div> -->
+        </div>
+      </section>
+
+      <section id="section6" class="full-page">
+        <div class="content">
+          <!-- 使用 Goods Types 组件 -->
+          <!-- <div id="goods-types-container"></div> -->
+        </div>
+      </section>
+
+      <section id="section7" class="full-page">
+        <div class="content">
+          <!-- 使用 Transportation 组件 -->
+          <div id="transport-container"></div>
+        </div>
+      </section>
+
+      <section id="section8" class="full-page">
+        <div class="content">
+          
+        </div>
+      </section>
+
+      <section id="section9" class="full-page">
+        <div class="content">
+          
+        </div>
+      </section>
+
+    <script>
+      // 加载 Brexit Background 组件
+      fetch('src/components/Background/BrexitBackground.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('brexit-background-container').innerHTML = html;
+          // 加载组件动画脚本
+          const script = document.createElement('script');
+          script.src = 'src/components/Background/BrexitBackground.js';
+          document.body.appendChild(script);
+        });
+
+      // 加载 Policy 组件
+      // fetch('src/components/Policy/Policy.html')
+      //   .then(response => response.text())
+      //   .then(html => {
+      //     document.getElementById('policy-container').innerHTML = html;
+      //     // 加载组件动画脚本
+      //     const script = document.createElement('script');
+      //     script.src = 'src/components/Policy/Policy.js';
+      //     document.body.appendChild(script);
+      //   });
+
+      // 加载 Country Scale 组件
+      // fetch('src/components/CountryScale/CountryScale.html')
+      //   .then(response => response.text())
+      //   .then(html => {
+      //     document.getElementById('country-scale-container').innerHTML = html;
+      //     // 加载组件动画脚本
+      //     const script = document.createElement('script');
+      //     script.src = 'src/components/CountryScale/CountryScale.js';
+      //     document.body.appendChild(script);
+      //   });
+
+      // 加载 Region Scale 组件
+      // fetch('src/components/RegionScale/RegionScale.html')
+      //   .then(response => response.text())
+      //   .then(html => {
+      //     document.getElementById('region-scale-container').innerHTML = html;
+      //     // 加载组件动画脚本
+      //     const script = document.createElement('script');
+      //     script.src = 'src/components/RegionScale/RegionScale.js';
+      //     document.body.appendChild(script);
+      //   });
+
+      // 加载 Goods Types 组件
+      // fetch('src/components/GoodsTypes/GoodsTypes.html')
+      //   .then(response => response.text())
+      //   .then(html => {
+      //     document.getElementById('goods-types-container').innerHTML = html;
+      //     // 加载组件动画脚本
+      //     const script = document.createElement('script');
+      //     script.src = 'src/components/GoodsTypes/GoodsTypes.js';
+      //     document.body.appendChild(script);
+      //   });
+
+      // 加载 Transportation 组件
+      fetch('src/components/Transport/Transport.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('transport-container').innerHTML = html;
+          // 加载组件动画脚本
+          const script = document.createElement('script');
+          script.src = 'src/components/Transport/Transport.js';
+          document.body.appendChild(script);
+        });
+
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
