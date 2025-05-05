@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="src/components/CountryScale/CountryScale.css">
     <link rel="stylesheet" href="src/components/RegionScale/RegionScale.css">
     <link rel="stylesheet" href="src/components/GoodsTypes/GoodsTypes.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
   </head>
   <body>
     <!-- 导航栏 -->
@@ -57,7 +59,7 @@
       <section id="section4" class="full-page">
         <div class="content">
           <!-- 使用 Country Scale 组件 -->
-          <!-- <div id="country-scale-container"></div> -->
+          <div id="country-scale-container"></div>
         </div>
       </section>
 
@@ -118,15 +120,15 @@
       //   });
 
       // 加载 Country Scale 组件
-      // fetch('src/components/CountryScale/CountryScale.html')
-      //   .then(response => response.text())
-      //   .then(html => {
-      //     document.getElementById('country-scale-container').innerHTML = html;
-      //     // 加载组件动画脚本
-      //     const script = document.createElement('script');
-      //     script.src = 'src/components/CountryScale/CountryScale.js';
-      //     document.body.appendChild(script);
-      //   });
+      fetch('src/components/CountryScale/CountryScale.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('country-scale-container').innerHTML = html;
+          // 加载组件动画脚本
+          const script = document.createElement('script');
+          script.src = 'src/components/CountryScale/CountryScale.js';
+          document.body.appendChild(script);
+        });
 
       // 加载 Region Scale 组件
       // fetch('src/components/RegionScale/RegionScale.html')
