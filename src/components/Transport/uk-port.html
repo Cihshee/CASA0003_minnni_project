@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo Transport of UK Ports</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+
+        /* 首页样式 */
+        .homepage {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url('./img/homepage.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            scroll-snap-align: start;
+        }
+
+        .homepage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+            z-index: 1;
+        }
+
+        .homepage h1 {
+            position: relative;
+            z-index: 2;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 3.8rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .homepage h3 {
+            position: relative;
+            z-index: 2;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 1.8rem;
+            font-weight: 400;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+            opacity: 0.9;
+        }
+
+        .start-button {
+            position: relative;
+            z-index: 2;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: 2px solid white;
+            border-radius: 30px;
+            background: transparent;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .start-button:hover {
+            background: white;
+            color: black;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 地图页面样式 */
+        .map-container {
+            height: 100vh;
+            position: relative;
+            scroll-snap-align: start;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 地图控件样式 */
+        .map-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            width: 300px;
+        }
+
+        .map-overlay-inner {
+            padding: 20px;
+        }
+
+        .map-overlay h2 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .map-overlay p {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .port-control {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .port-control label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        #port-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .direction-control {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .direction-control label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        #direction {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+
+        .year-control {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .year-control label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        #slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .data-source {
+            font-size: 12px;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .data-source a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .data-source a:hover {
+            text-decoration: underline;
+        }
+
+        /* 添加图例样式 */
+        .legend-control {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .legend-control label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* 修改图表容器样式 */
+        .chart-container {
+            position: fixed;
+            bottom: 40px;  /* 增加底部间距 */
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            width: 1200px;
+            height: 300px;
+            display: none;
+            margin-left: 160px;  /* 向右偏移以避免与左侧控件重叠 */
+        }
+
+        .charts-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .chart-box {
+            flex: 1;
+            position: relative;
+        }
+
+        /* 修改悬浮卡片样式 */
+        .popup-chart {
+            display: none;
+            position: absolute;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            pointer-events: none;
+            z-index: 100;
+            width: 300px;
+            height: auto;
+        }
+
+        .popup-chart h4 {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: #333;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .trade-flows {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .trade-flow {
+            flex: 1;
+            text-align: center;
+        }
+
+        .flow-title {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .flow-percentage {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .flow-value {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .divider {
+            width: 1px;
+            background-color: #eee;
+            margin: 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 首页 -->
+        <div class="homepage">
+            <h1>Cargo Flow of UK Ports</h1>
+            <h3>Regional Trade Patterns of Top 30 UK Ports (2015-2023)</h3>
+            <button class="start-button">Explore</button>
+        </div>
+
+        <!-- 地图页面 -->
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-overlay top">
+                <!-- 地图控件内容 -->
+                <div class='map-overlay-inner'>
+                    <h2>UK Ports Flow</h2>
+                    <p>Choose a port to view freight flows and cargo tonnage.</p>
+                    
+                    <div class="port-control">
+                        <label>Choose Port:</label>
+                        <select id="port-select">
+                            <option value="">All Ports</option>
+                        </select>
+                    </div>
+
+                    <div class="direction-control">
+                        <label>Direction:</label>
+                        <select id="direction">
+                            <option value="Inwards">Inward Flow</option>
+                            <option value="Outwards">Outward Flow</option>
+                        </select>
+                    </div>
+
+                    <div class="year-control">
+                        <label>Year: <span id="year">2015</span></label>
+                        <input 
+                            id="slider" 
+                            type="range" 
+                            min="0" 
+                            max="8" 
+                            step="1" 
+                            value="0"
+                            list="tickmarks"
+                        />
+                        <datalist id="tickmarks">
+                            <option value="0" label="2015">
+                            <option value="1" label="2016">
+                            <option value="2" label="2017">
+                            <option value="3" label="2018">
+                            <option value="4" label="2019">
+                            <option value="5" label="2020">
+                            <option value="6" label="2021">
+                            <option value="7" label="2022">
+                            <option value="8" label="2023">
+                        </datalist>
+                    </div>
+
+                    <div class="legend-control">
+                        <label>Destination Regions:</label>
+                        <div class="legend-items">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #9467bd;"></div>
+                                <span>Africa</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #ff7f0e;"></div>
+                                <span>America</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #2ca02c;"></div>
+                                <span>Asia</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #8c564b;"></div>
+                                <span>Australasia</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #1f77b4;"></div>
+                                <span>EU</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #e377c2;"></div>
+                                <span>Other Europe & Mediterranean</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #17becf;"></div>
+                                <span>UK</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #7f7f7f;"></div>
+                                <span>Other Regions</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="data-source">
+                        Data Source: <a href="https://www.gov.uk/government/statistical-data-sets/port-and-domestic-waterborne-freight-statistics-port" target="_blank">Department for Transport</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 修改图表容器结构 -->
+        <div class="chart-container" id="chart-container">
+            <div class="charts-wrapper">
+                <div class="chart-box">
+                    <canvas id="inward-chart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <canvas id="outward-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 修改悬浮卡片容器内容 -->
+        <div id="popup-chart" class="popup-chart">
+            <h4></h4>
+            <div class="trade-flows">
+                <div class="trade-flow">
+                    <div class="flow-title">Outward</div>
+                    <div class="flow-percentage">44.00%</div>
+                    <div class="flow-value">of all ports</div>
+                </div>
+                <div class="divider"></div>
+                <div class="trade-flow">
+                    <div class="flow-title">Inward</div>
+                    <div class="flow-percentage">3.30%</div>
+                    <div class="flow-value">of all ports</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加Chart.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 添加Chart.js数据标签插件 -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script>
+        // 点击Start按钮滚动到地图页面
+        document.querySelector('.start-button').addEventListener('click', () => {
+            document.querySelector('.map-container').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 全局变量
+        let portData = null;        // 用于图表数据
+        let flowData = null;        // 用于流向线数据
+        let currentYear = 2015;
+        let currentDirection = 'Inwards';
+        let currentPort = '';
+        let mapLoaded = false;
+        let mapStyleLoaded = false;
+        let filteredData = [];
+        let inwardChart = null;  // 用于存储进口图表实例
+        let outwardChart = null; // 用于存储出口图表实例
+        let yearPlayInterval = null; // 用于存储年份播放的interval ID
+        let hoverChart = null;  // 用于存储悬浮卡片图表实例
+
+        // 在全局变量部分添加颜色映射
+        const regionColors = {
+            'Africa (excluding Mediterranean)': '#9467bd',      // 紫色
+            'America': '#ff7f0e',                              // 橙色
+            'Asia (excluding Mediterranean)': '#2ca02c',        // 绿色
+            'Australasia': '#8c564b',                          // 棕色
+            'European Union (excluding United Kingdom)': '#1f77b4',  // 蓝色
+            'Other Europe (excluding European Union) & Mediterranean': '#e377c2',  // 粉色
+            'United Kingdom (inc CHI & IOM)': '#68d8d6',       // 青色
+            'Other': '#7f7f7f'                                 // 灰色
+        };
+
+        // 添加区域缩写映射
+        const regionAbbreviations = {
+            'Africa (excluding Mediterranean)': 'AFR',
+            'America': 'AME',
+            'Asia (excluding Mediterranean)': 'ASI',
+            'Australasia': 'AUS',
+            'European Union (excluding United Kingdom)': 'EU',
+            'Other Europe (excluding European Union) & Mediterranean': 'OE&M',
+            'United Kingdom (inc CHI & IOM)': 'UK',
+            'Other': 'OTH'
+        };
+
+        // 添加年度总量数据
+        const yearlyTotals = {
+            2015: { Inwards: 276346.3163, Outwards: 161570.1146 },
+            2016: { Inwards: 262471.4211, Outwards: 160284.3571 },
+            2017: { Inwards: 260304.7465, Outwards: 161268.0357 },
+            2018: { Inwards: 269930.8563, Outwards: 154300.8780 },
+            2019: { Inwards: 272280.3001, Outwards: 148252.1207 },
+            2020: { Inwards: 242477.6790, Outwards: 139992.6041 },
+            2021: { Inwards: 252891.2719, Outwards: 134348.0751 },
+            2022: { Inwards: 267141.3703, Outwards: 135722.2211 },
+            2023: { Inwards: 254612.8163, Outwards: 126671.6067 }
+        };
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoieWl5YW9jdWlpaSIsImEiOiJjbTY4MnFqZTgwYjEwMm5xejZraTBoMzJjIn0.32mcU30CT9cEByX-ZHvgzw';
+        
+        // 初始化地图
+        const map = new mapboxgl.Map({
+            container: 'map',
+            //style: 'mapbox://styles/yiyaocuiii/cm7w0vtat00p301sd0pac2xxl',
+            style: 'mapbox://styles/yiyaocuiii/cmacxq3j700p101skdehe2igj',
+            center: [-2, 54],
+            zoom: 5
+        });
+
+        // 加载数据
+        async function loadData() {
+            try {
+                // 加载两个数据文件
+                const [flowResponse, portResponse] = await Promise.all([
+                    fetch('https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/port0499-2015-2023-country.json'),
+                    fetch('https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/port0499-2015-2023-final.json')
+                ]);
+                
+                flowData = await flowResponse.json();
+                portData = await portResponse.json();
+                
+                checkInitialization();
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        // 检查初始化条件
+        function checkInitialization() {
+            if (mapLoaded && mapStyleLoaded && portData && flowData) {
+                initializeVisualization();
+            }
+        }
+
+        // 初始化可视化
+        function initializeVisualization() {
+            try {
+                initializePortSelect();
+                addPortLayer();
+                addFlowLayer();
+                updateVisualization();
+                setupEventListeners();
+                setupHoverEvents();
+            } catch (error) {
+                console.error('Error in initialization:', error);
+            }
+        }
+
+        // 初始化港口选择下拉框
+        function initializePortSelect() {
+            if (!portData) return;
+            
+            const portSelect = document.getElementById('port-select');
+            const uniquePorts = [...new Set(portData.map(d => d.port))].sort();
+            
+            uniquePorts.forEach(port => {
+                const option = document.createElement('option');
+                option.value = port;
+                option.textContent = port;
+                portSelect.appendChild(option);
+            });
+        }
+
+        // 等待地图加载完成
+        map.on('load', () => {
+            mapLoaded = true;
+            checkInitialization();
+        });
+
+        // 等待地图样式加载完成
+        map.on('style.load', () => {
+            mapStyleLoaded = true;
+            checkInitialization();
+        });
+
+        // 添加港口点图层
+        function addPortLayer() {
+            if (!portData) return;
+            
+            try {
+                const uniquePorts = [];
+                const seenPorts = new Set();
+
+                portData.forEach(d => {
+                    if (!seenPorts.has(d.port)) {
+                        seenPorts.add(d.port);
+                        uniquePorts.push({
+                            port: d.port,
+                            coordinates: [parseFloat(d.port_lon), parseFloat(d.port_lat)]
+                        });
+                    }
+                });
+
+                map.addSource('ports', {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: uniquePorts.map(p => ({
+                            type: 'Feature',
+                            properties: { port: p.port },
+                            geometry: {
+                                type: 'Point',
+                                coordinates: p.coordinates
+                            }
+                        }))
+                    }
+                });
+
+                map.addLayer({
+                    id: 'ports-circle',
+                    type: 'circle',
+                    source: 'ports',
+                    paint: {
+                        'circle-radius': 6,
+                        'circle-color': '#1f77b4',
+                        'circle-stroke-width': 2,
+                        'circle-stroke-color': '#fff'
+                    }
+                });
+
+                map.addLayer({
+                    id: 'ports-label',
+                    type: 'symbol',
+                    source: 'ports',
+                    layout: {
+                        'text-field': ['get', 'port'],
+                        'text-offset': [0, 1.5],
+                        'text-anchor': 'top',
+                        'text-size': 12
+                    },
+                    paint: {
+                        'text-color': '#333',
+                        'text-halo-color': '#fff',
+                        'text-halo-width': 2
+                    }
+                });
+            } catch (error) {
+                console.error('Error adding port layer:', error);
+            }
+        }
+
+        // 修改流向线图层
+        function addFlowLayer() {
+            map.addSource('flows', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: []
+                },
+                lineMetrics: true  // 启用线条度量
+            });
+
+            // 添加流向线图层
+            map.addLayer({
+                id: 'flow-lines',
+                type: 'line',
+                source: 'flows',
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': ['get', 'color'],
+                    'line-width': [
+                        'interpolate',
+                        ['linear'],
+                        ['line-progress'],
+                        0, ['*', ['get', 'weight'], 0.7],  // 起点更粗
+                        1, ['*', ['get', 'weight'], 0.1]   // 终点更细
+                    ],
+                    'line-opacity': 0.8
+                }
+            });
+        }
+
+        // 更新可视化
+        function updateVisualization() {
+            if (!flowData) return;
+
+            // 筛选当前年份和方向的数据
+            filteredData = flowData.filter(d => 
+                parseInt(d.year) === currentYear && 
+                d.direction === currentDirection &&
+                (!currentPort || d.port === currentPort)  // 添加港口筛选条件
+            );
+
+            // 如果没有选择特定港口，则不显示流向线
+            if (!currentPort) {
+                map.getSource('flows').setData({
+                    type: 'FeatureCollection',
+                    features: []
+                });
+                return;
+            }
+
+            // 修改流向线特征创建
+            const flowFeatures = filteredData.map(d => {
+                const portCoords = [parseFloat(d.port_lon), parseFloat(d.port_lat)];
+                const countryCoords = [parseFloat(d.country_lon), parseFloat(d.country_lat)];
+                
+                const tonnage = parseFloat(d.cargo_tonnage);
+                const baseWeight = Math.max(2, Math.log(tonnage) / Math.log(10) * 2);
+
+                const midPoint = getMidPoint(portCoords, countryCoords);
+                const curvedPath = createCurvedPath(portCoords, countryCoords, midPoint);
+
+                return {
+                    type: 'Feature',
+                    properties: {
+                        weight: baseWeight,
+                        tonnage: tonnage,
+                        port: d.port,
+                        destination: d.destination_region,
+                        color: regionColors[d.destination_region] || regionColors['Other']
+                    },
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: curvedPath
+                    }
+                };
+            });
+
+            // 更新流向线数据
+            try {
+                map.getSource('flows').setData({
+                    type: 'FeatureCollection',
+                    features: flowFeatures
+                });
+            } catch (error) {
+                console.error('Error updating flows:', error);
+            }
+        }
+
+        // 更新年份和图表
+        function updateYear(newYear) {
+            currentYear = newYear;
+            document.getElementById('year').textContent = currentYear;
+            updateVisualization();
+            
+            // 更新图表的年份指示线
+            [inwardChart, outwardChart].forEach(chart => {
+                if (chart) {
+                    chart.options.plugins.annotation.annotations.line1.value = currentYear;
+                    chart.options.plugins.annotation.annotations.line1.label.content = currentYear.toString();
+                    chart.update();
+                }
+            });
+        }
+
+        // 添加年份自动播放功能
+        function startYearPlay() {
+            if (yearPlayInterval) return;
+
+            const slider = document.getElementById('slider');
+            yearPlayInterval = setInterval(() => {
+                let currentValue = parseInt(slider.value);
+                if (currentValue >= 8) {
+                    stopYearPlay();
+                    return;
+                }
+                slider.value = currentValue + 1;
+                updateYear(2015 + parseInt(slider.value));
+            }, 1000);
+        }
+
+        function stopYearPlay() {
+            if (yearPlayInterval) {
+                clearInterval(yearPlayInterval);
+                yearPlayInterval = null;
+            }
+        }
+
+        // 修改事件监听器设置
+        function setupEventListeners() {
+            // 年份滑块事件
+            document.getElementById('slider').addEventListener('input', (e) => {
+                updateYear(2015 + parseInt(e.target.value));
+                stopYearPlay();
+            });
+
+            // 方向选择事件
+            document.getElementById('direction').addEventListener('change', (e) => {
+                currentDirection = e.target.value;
+                updateVisualization();
+                if (currentPort) {
+                    document.getElementById('slider').value = '0';
+                    updateYear(2015);
+                    startYearPlay();
+                }
+            });
+
+            // 港口选择事件
+            document.getElementById('port-select').addEventListener('change', (e) => {
+                currentPort = e.target.value;
+                stopYearPlay();
+                
+                if (currentPort) {
+                    document.getElementById('slider').value = '0';
+                    updateYear(2015);
+                    
+                    const flowFeatures = map.getSource('flows')._data.features;
+                    const viewport = calculateViewport(flowFeatures);
+                    
+                    if (viewport) {
+                        map.flyTo({
+                            center: viewport.center,
+                            zoom: viewport.zoom,
+                            duration: 3000,
+                            essential: true
+                        });
+                    }
+                    
+                    // 更新港口样式
+                    ['circle-color', 'circle-opacity'].forEach(prop => {
+                        map.setPaintProperty('ports-circle', prop, [
+                            'case',
+                            ['==', ['get', 'port'], currentPort],
+                            prop === 'circle-color' ? '#ff7f0e' : 1,
+                            prop === 'circle-color' ? '#1f77b4' : 0.2
+                        ]);
+                    });
+                    
+                    map.setPaintProperty('ports-label', 'text-opacity', [
+                        'case',
+                        ['==', ['get', 'port'], currentPort],
+                        1,
+                        0.2
+                    ]);
+                    
+                    updateTrendChart(currentPort);
+                    
+                    if (currentDirection) {
+                        startYearPlay();
+                    }
+                } else {
+                    map.flyTo({
+                        center: [-2, 54],
+                        zoom: 5,
+                        duration: 3000,
+                        essential: true
+                    });
+                    
+                    // 重置港口样式
+                    map.setPaintProperty('ports-circle', 'circle-color', '#1f77b4');
+                    map.setPaintProperty('ports-circle', 'circle-opacity', 1);
+                    map.setPaintProperty('ports-label', 'text-opacity', 1);
+                    
+                    updateTrendChart(null);
+                }
+                
+                updateVisualization();
+            });
+        }
+
+        // 计算两点之间的中点
+        function getMidPoint(point1, point2) {
+            return [
+                (point1[0] + point2[0]) / 2,
+                (point1[1] + point2[1]) / 2
+            ];
+        }
+
+        // 创建弧线路径
+        function createCurvedPath(start, end, mid) {
+            const curvePoints = [];
+            const steps = 100; // 增加平滑度
+            
+            // 计算控制点（向上偏移）
+            const controlPoint = [
+                mid[0],
+                mid[1] + calculateControlPointOffset(start, end)
+            ];
+
+            // 使用二次贝塞尔曲线生成路径点
+            for (let i = 0; i <= steps; i++) {
+                const t = i / steps;
+                const point = quadraticBezier(start, controlPoint, end, t);
+                curvePoints.push(point);
+            }
+            
+            return curvePoints;
+        }
+
+        // 计算控制点偏移量
+        function calculateControlPointOffset(start, end) {
+            const distance = Math.sqrt(
+                Math.pow(end[0] - start[0], 2) + 
+                Math.pow(end[1] - start[1], 2)
+            );
+            return distance * 0.3; // 增加弧度
+        }
+
+        // 二次贝塞尔曲线插值
+        function quadraticBezier(p0, p1, p2, t) {
+            const x = Math.pow(1 - t, 2) * p0[0] + 
+                     2 * (1 - t) * t * p1[0] + 
+                     Math.pow(t, 2) * p2[0];
+            const y = Math.pow(1 - t, 2) * p0[1] + 
+                     2 * (1 - t) * t * p1[1] + 
+                     Math.pow(t, 2) * p2[1];
+            return [x, y];
+        }
+
+        // 计算适当的缩放级别和中心点
+        function calculateViewport(features) {
+            if (!features || features.length === 0) return null;
+
+            let minLng = Infinity;
+            let maxLng = -Infinity;
+            let minLat = Infinity;
+            let maxLat = -Infinity;
+
+            // 遍历所有坐标点找到边界
+            features.forEach(feature => {
+                feature.geometry.coordinates.forEach(coord => {
+                    minLng = Math.min(minLng, coord[0]);
+                    maxLng = Math.max(maxLng, coord[0]);
+                    minLat = Math.min(minLat, coord[1]);
+                    maxLat = Math.max(maxLat, coord[1]);
+                });
+            });
+
+            // 计算中心点
+            const center = [
+                (minLng + maxLng) / 2,
+                (minLat + maxLat) / 2
+            ];
+
+            // 计算适当的缩放级别
+            const lngDiff = maxLng - minLng;
+            const latDiff = maxLat - minLat;
+            const maxDiff = Math.max(lngDiff, latDiff);
+            
+            // 根据经纬度差值确定缩放级别
+            let zoom = 2;
+            if (maxDiff < 50) zoom = 3;
+            if (maxDiff < 20) zoom = 4;
+            if (maxDiff < 10) zoom = 5;
+            if (maxDiff < 5) zoom = 6;
+
+            return { center, zoom };
+        }
+
+        // 更新趋势图表
+        function updateTrendChart(port) {
+            const chartContainer = document.getElementById('chart-container');
+            
+            if (!port) {
+                chartContainer.style.display = 'none';
+                return;
+            }
+
+            chartContainer.style.display = 'block';
+
+            const years = Array.from({length: 9}, (_, i) => 2015 + i);
+            const regions = [...new Set(portData.map(d => d.destination_region))];
+            
+            // 通用图表配置
+            const chartConfig = {
+                type: 'line',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { boxWidth: 20 }
+                        },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    scaleID: 'x',
+                                    value: currentYear,
+                                    borderColor: '#FF3333',
+                                    borderWidth: 3,
+                                    borderDash: [6, 6],
+                                    label: {
+                                        display: true,
+                                        content: currentYear.toString(),
+                                        position: 'start',
+                                        backgroundColor: '#FF3333',
+                                        color: 'white',
+                                        font: {
+                                            size: 14,
+                                            weight: 'bold'
+                                        },
+                                        padding: 6
+                                    }
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.y.toFixed(2)} thousand tonnes`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Thousand Tonnes'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toFixed(2);
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Year'
+                            },
+                            ticks: {
+                                maxRotation: 0,
+                                autoSkip: false,
+                                padding: 10
+                            },
+                            grid: {
+                                display: true,
+                                drawBorder: true,
+                                drawOnChartArea: true,
+                                drawTicks: true,
+                                tickLength: 10
+                            }
+                        }
+                    }
+                }
+            };
+
+            // 准备数据函数
+            function prepareData(direction) {
+                return regions.map(region => ({
+                    region: region,
+                    data: years.map(year => {
+                        const matchingData = portData.find(d => 
+                            d.port === port && 
+                            d.destination_region === region && 
+                            parseInt(d.year) === year &&
+                            d.direction === direction
+                        );
+                        return matchingData ? parseFloat(matchingData.cargo_tonnage) : 0;
+                    })
+                }));
+            }
+
+            // 销毁旧图表
+            if (inwardChart) inwardChart.destroy();
+            if (outwardChart) outwardChart.destroy();
+
+            // 创建进口图表
+            const inwardData = prepareData('Inwards');
+            inwardChart = new Chart(document.getElementById('inward-chart').getContext('2d'), {
+                ...chartConfig,
+                data: {
+                    labels: years,
+                    datasets: regions.map((region, index) => ({
+                        label: regionAbbreviations[region],
+                        data: inwardData[index].data,
+                        borderColor: regionColors[region],
+                        backgroundColor: regionColors[region],
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4
+                    }))
+                },
+                options: {
+                    ...chartConfig.options,
+                    plugins: {
+                        ...chartConfig.options.plugins,
+                        title: {
+                            display: true,
+                            text: `Inward Freight Flow for ${port}`,
+                            font: { size: 16 }
+                        }
+                    }
+                }
+            });
+
+            // 创建出口图表
+            const outwardData = prepareData('Outwards');
+            outwardChart = new Chart(document.getElementById('outward-chart').getContext('2d'), {
+                ...chartConfig,
+                data: {
+                    labels: years,
+                    datasets: regions.map((region, index) => ({
+                        label: regionAbbreviations[region],
+                        data: outwardData[index].data,
+                        borderColor: regionColors[region],
+                        backgroundColor: regionColors[region],
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4
+                    }))
+                },
+                options: {
+                    ...chartConfig.options,
+                    plugins: {
+                        ...chartConfig.options.plugins,
+                        title: {
+                            display: true,
+                            text: `Outward Freight Flow for ${port}`,
+                            font: { size: 16 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 添加鼠标悬浮事件处理函数
+        function setupHoverEvents() {
+            const popup = document.getElementById('popup-chart');
+            
+            map.on('mousemove', 'ports-circle', (e) => {
+                const port = e.features[0].properties.port;
+                if (port === currentPort) {
+                    // 更新悬浮卡片位置
+                    popup.style.left = (e.point.x + 10) + 'px';
+                    popup.style.top = (e.point.y + 10) + 'px';
+                    
+                    // 显示悬浮卡片
+                    popup.style.display = 'block';
+                    
+                    // 更新直方图
+                    updateHoverChart(port);
+                }
+            });
+
+            map.on('mouseleave', 'ports-circle', () => {
+                popup.style.display = 'none';
+                if (hoverChart) {
+                    hoverChart.destroy();
+                    hoverChart = null;
+                }
+            });
+        }
+
+        // 更新悬浮卡片中的内容
+        function updateHoverChart(port) {
+            // 获取当前年份的数据
+            const inwardData = flowData.filter(d => 
+                parseInt(d.year) === currentYear && 
+                d.direction === 'Inwards' &&
+                d.port === port
+            );
+
+            const outwardData = flowData.filter(d => 
+                parseInt(d.year) === currentYear && 
+                d.direction === 'Outwards' &&
+                d.port === port
+            );
+
+            // 计算总进出口量
+            const totalInward = inwardData.reduce((sum, d) => sum + parseFloat(d.cargo_tonnage), 0);
+            const totalOutward = outwardData.reduce((sum, d) => sum + parseFloat(d.cargo_tonnage), 0);
+
+            // 计算占比
+            const inwardPercentage = (totalInward / yearlyTotals[currentYear].Inwards * 100).toFixed(2);
+            const outwardPercentage = (totalOutward / yearlyTotals[currentYear].Outwards * 100).toFixed(2);
+
+            // 更新标题
+            document.querySelector('#popup-chart h4').textContent = `${port} - ${currentYear}`;
+            
+            // 更新百分比
+            const tradeFlows = document.querySelectorAll('.trade-flow');
+            tradeFlows[0].querySelector('.flow-percentage').textContent = `${outwardPercentage}%`;
+            tradeFlows[1].querySelector('.flow-percentage').textContent = `${inwardPercentage}%`;
+
+            // 显示悬浮卡片
+            document.getElementById('popup-chart').style.display = 'block';
+        }
+
+        // 开始加载数据
+        loadData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+.region-scale-section {
+    width: 100%;
+    padding: 2rem;
+    color: #fff;
+  }
+  
+  .region-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .region-description {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #ccc;
+  }
+  
+  .year-selector {
+    text-align: center;
+    margin: 1rem 0 0rem;
+  }
+  .year-button {
+    padding: 6px 12px;
+    margin: 0 4px;
+    margin-top: 1rem;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .year-button:hover {
+    background: #f0f0f0;
+  }
+  .year-button.active {
+    background: #2166ac;
+    color: #fff;
+    border-color: #2166ac;
+    font-weight: bold;
+  }
+  
+  
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    color: #333;
+    z-index: 1000;
+  }
+  
+
+  #heatmap-svg {
+    width: 100%;
+    overflow-x: auto;
+  }
+  #heatmap-svg svg {
+    display: block;
+    margin: 0 auto;
+  }
+  
+
+  #heatmap-svg svg .tick text {
+    font-size: 15px;
+  }
+  
+  #heatmap-svg svg .legend text {
+    font-size: 15px;
+    fill: #fff;
+  }
+  
+
+  @media (max-width: 768px) {
+    .region-header h2 { font-size: 1.8rem; }
+    .year-button { padding: 4px 8px; font-size: 12px; margin: 2px; }
+  }
+  

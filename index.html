@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="src/components/GoodsType/GoodsType.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
+    <!-- 添加Mapbox GL JS脚本和样式 -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
   </head>
   <body>
     <!-- 导航栏 -->
@@ -77,7 +80,7 @@
       <section id="section5" class="full-page"> 
         <div class="content">
           <!-- 使用 Region Scale 组件 -->
-          <!-- <div id="region-scale-container"></div> -->
+          <div id="region-scale-container"></div>
         </div>
       </section>
 
@@ -141,15 +144,15 @@
         });
 
       // 加载 Region Scale 组件
-      // fetch('src/components/RegionScale/RegionScale.html')
-      //   .then(response => response.text())
-      //   .then(html => {
-      //     document.getElementById('region-scale-container').innerHTML = html;
-      //     // 加载组件动画脚本
-      //     const script = document.createElement('script');
-      //     script.src = 'src/components/RegionScale/RegionScale.js';
-      //     document.body.appendChild(script);
-      //   });
+      fetch('src/components/RegionScale/RegionScale.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('region-scale-container').innerHTML = html;
+          // 加载组件动画脚本
+          const script = document.createElement('script');
+          script.src = 'src/components/RegionScale/RegionScale.js';
+          document.body.appendChild(script);
+        });
 
       // 加载 Goods Types 组件
       fetch('src/components/GoodsType/GoodsType.html')
