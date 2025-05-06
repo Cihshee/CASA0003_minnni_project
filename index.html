@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="src/components/Policy/Policy.css">
     <link rel="stylesheet" href="src/components/CountryScale/CountryScale.css">
     <link rel="stylesheet" href="src/components/RegionScale/RegionScale.css">
-    <link rel="stylesheet" href="src/components/GoodsTypes/GoodsTypes.css">
+    <link rel="stylesheet" href="src/components/GoodsType/GoodsType.css">
   </head>
   <body>
     <!-- 导航栏 -->
@@ -33,10 +33,20 @@
 
     <!-- 主要内容区域 -->
     <main>
-      <section id="section1" class="full-page">
-        <div class="content">
-          <h1>Brexit Commodity Import and Export Network</h1>
-          <p>Explore the impact of Brexit on the commodity import and export trade network...</p>
+      <section id="section1" class="full-page hero-section" style="position:relative;overflow:hidden;">
+        <video autoplay muted loop playsinline id="bg-video"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.45;">
+          <source src="cover.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;">
+          <h1 class="hero-title highlight-title">Brexit Commodity Import & Export Network</h1>
+          <h2 class="hero-subtitle highlight-subtitle">Following the Trade</h2>
+          <p class="hero-desc highlight-desc">
+            An exploration of the impact of Brexit on the global commodity import and export trade network.
+          </p>
+          <a href="#section2" class="hero-btn">Learn More</a>
         </div>
       </section>
 
@@ -71,7 +81,7 @@
       <section id="section6" class="full-page">
         <div class="content">
           <!-- 使用 Goods Types 组件 -->
-          <!-- <div id="goods-types-container"></div> -->
+          <div id="goods-types-container"></div>
         </div>
       </section>
 
@@ -140,15 +150,15 @@
       //   });
 
       // 加载 Goods Types 组件
-      // fetch('src/components/GoodsTypes/GoodsTypes.html')
-      //   .then(response => response.text())
-      //   .then(html => {
-      //     document.getElementById('goods-types-container').innerHTML = html;
-      //     // 加载组件动画脚本
-      //     const script = document.createElement('script');
-      //     script.src = 'src/components/GoodsTypes/GoodsTypes.js';
-      //     document.body.appendChild(script);
-      //   });
+      fetch('src/components/GoodsType/GoodsType.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('goods-types-container').innerHTML = html;
+          // 加载组件动画脚本
+          const script = document.createElement('script');
+          script.src = 'src/components/GoodsType/GoodsType.js';
+          document.body.appendChild(script);
+        });
 
       // 加载 Transportation 组件
       fetch('src/components/Transport/Transport.html')
