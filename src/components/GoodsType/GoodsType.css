@@ -1,5 +1,5 @@
 .goods-type-section {
-    padding: 2rem;
+    padding: 1rem 0 0 0;
   }
   .goods-type-section h2 {
     font-size: 2rem;
@@ -89,6 +89,67 @@
     }
     .goods-card {
       margin-bottom: 1rem;
+    }
+  }
+  .goods-summary-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    justify-items: center;
+    width: 100%;
+    max-width: none;
+  }
+  .goods-summary-chart-block {
+    /* Remove background and border-radius for seamless look */
+    background: none;
+    border-radius: 0;
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+    box-shadow: none;
+    margin: 0;
+    width: 99%;
+    max-width: 1100px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(.4,2,.6,1), transform 0.7s cubic-bezier(.4,2,.6,1);
+  }
+  .goods-summary-chart-block.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .goods-summary-chart-title {
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+  .goods-summary-chart-canvas {
+    width: 100% !important;
+    max-width: 1050px;
+    height: 220px !important;
+    background: transparent;
+    margin: 0 auto;
+    display: block;
+  }
+  /* Chart.js global font size override */
+  :root {
+    --chartjs-font-size: 11px;
+  }
+  @media (max-width: 1200px) {
+    .goods-summary-charts {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    .goods-summary-chart-block {
+      max-width: 99vw;
+      min-width: 0;
+      width: 99vw;
     }
   }
   
