@@ -80,7 +80,7 @@
       <section id="section5" class="full-page"> 
         <div class="content">
           <!-- 使用 Region Scale 组件 -->
-          <!-- <div id="region-scale-container"></div> -->
+          <div id="region-scale-container"></div>
         </div>
       </section>
 
@@ -145,15 +145,15 @@
         });
 
       // 加载 Region Scale 组件
-      // fetch('src/components/RegionScale/RegionScale.html')
-      //   .then(response => response.text())
-      //   .then(html => {
-      //     document.getElementById('region-scale-container').innerHTML = html;
-      //     // 加载组件动画脚本
-      //     const script = document.createElement('script');
-      //     script.src = 'src/components/RegionScale/RegionScale.js';
-      //     document.body.appendChild(script);
-      //   });
+      fetch('src/components/RegionScale/RegionScale.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('region-scale-container').innerHTML = html;
+          // 加载组件动画脚本
+          const script = document.createElement('script');
+          script.src = 'src/components/RegionScale/RegionScale.js';
+          document.body.appendChild(script);
+        });
 
       // 加载 Goods Types 组件
       fetch('src/components/GoodsType/GoodsType.html')

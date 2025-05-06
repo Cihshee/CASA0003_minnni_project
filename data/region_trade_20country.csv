@@ -1,0 +1,2161 @@
+Region,Country20,Year,Trade_Balance_m,Exports_m,Imports_m
+East,Australia,2016,196.86,308.25,111.39
+East,Australia,2017,231.01,353.08,122.06
+East,Australia,2018,258.83,412.46,153.63
+East,Australia,2019,300.31,454.22,153.91
+East,Australia,2020,349.22,492.9,143.68
+East,Australia,2021,355.22,497.62,142.4
+East,Australia,2022,365.79,523.69,157.9
+East,Australia,2023,348.26,508.6,160.34
+East,Australia,2024,228.48,411.01,182.53
+East,Belgium,2016,-1271.69,1680.85,2952.53
+East,Belgium,2017,-1475.47,2228.32,3703.79
+East,Belgium,2018,-2108.77,1798.28,3907.05
+East,Belgium,2019,-1610.82,1406.85,3017.66
+East,Belgium,2020,-1781.14,1165.81,2946.95
+East,Belgium,2021,-153.03,2647.02,2800.05
+East,Belgium,2022,10265.55,13296.78,3031.23
+East,Belgium,2023,2070.24,5281.22,3210.98
+East,Belgium,2024,-661.92,2744.97,3406.89
+East,Canada,2016,-23.43,326.1,349.52
+East,Canada,2017,-25.96,352.75,378.71
+East,Canada,2018,105.13,496.01,390.88
+East,Canada,2019,86.49,393.19,306.7
+East,Canada,2020,48.85,301.12,252.27
+East,Canada,2021,16.47,282.5,266.03
+East,Canada,2022,-14.16,329.57,343.72
+East,Canada,2023,-76.49,346.07,422.56
+East,Canada,2024,4.47,339.66,335.2
+East,China,2016,-2272.06,989.79,3261.86
+East,China,2017,-1995.27,1248.6,3243.87
+East,China,2018,-1914.26,1323.61,3237.87
+East,China,2019,-1556.29,1734.32,3290.61
+East,China,2020,-1035.63,2060.24,3095.87
+East,China,2021,-2371.31,1572.04,3943.34
+East,China,2022,-3637.58,1230.05,4867.63
+East,China,2023,-2954.45,970.16,3924.61
+East,China,2024,-3101.36,1071.01,4172.37
+East,France,2016,-1311.5,1565.97,2877.46
+East,France,2017,-1386.32,1676.45,3062.77
+East,France,2018,-1296.49,1707.31,3003.8
+East,France,2019,-1095.12,1694.27,2789.38
+East,France,2020,-630.68,1561.9,2192.58
+East,France,2021,-330.18,1867.16,2197.34
+East,France,2022,-946.44,2175.11,3121.54
+East,France,2023,-1498.91,2300.92,3799.83
+East,France,2024,-846.23,2103.87,2950.1
+East,Germany,2016,-4303.42,2692.05,6995.47
+East,Germany,2017,-4094.67,3052.57,7147.24
+East,Germany,2018,-3654.79,3114.24,6769.03
+East,Germany,2019,-3107.74,3189.05,6296.78
+East,Germany,2020,-2388.06,2912.2,5300.27
+East,Germany,2021,-1554.29,2730.16,4284.44
+East,Germany,2022,-2584.88,2578.44,5163.32
+East,Germany,2023,-3162,2743.12,5905.12
+East,Germany,2024,-2509.93,2379.69,4889.61
+East,India,2016,-246.22,310.05,556.27
+East,India,2017,-178.66,421.39,600.06
+East,India,2018,-142.29,428.5,570.78
+East,India,2019,-283.34,448.24,731.58
+East,India,2020,-238.27,376.4,614.67
+East,India,2021,-313.51,400.51,714.02
+East,India,2022,-269.38,616.06,885.44
+East,India,2023,-225.45,639.35,864.8
+East,India,2024,-355.41,533.49,888.9
+East,Ireland,2016,-558.24,1414.08,1972.32
+East,Ireland,2017,-384.35,1623.31,2007.67
+East,Ireland,2018,187.72,1661.83,1474.11
+East,Ireland,2019,177.95,1648.88,1470.93
+East,Ireland,2020,-224.19,1558.51,1782.7
+East,Ireland,2021,350.11,1168.7,818.59
+East,Ireland,2022,338.61,1475.05,1136.44
+East,Ireland,2023,391.77,1595.23,1203.46
+East,Ireland,2024,147.42,1414.95,1267.53
+East,Italy,2016,-1090.96,1172.66,2263.62
+East,Italy,2017,-1400.13,1149.59,2549.71
+East,Italy,2018,-1815.76,1139.02,2954.78
+East,Italy,2019,-1697.33,999.03,2696.36
+East,Italy,2020,-1525.77,887.85,2413.62
+East,Italy,2021,-1538.93,956.88,2495.82
+East,Italy,2022,-2118.85,907.93,3026.79
+East,Italy,2023,-2047.93,1046.29,3094.22
+East,Italy,2024,-2075.4,911.12,2986.51
+East,Japan,2016,-305.73,453.66,759.39
+East,Japan,2017,-189.02,836.97,1025.98
+East,Japan,2018,-35.62,802.44,838.05
+East,Japan,2019,70.07,862.33,792.26
+East,Japan,2020,272.07,860.9,588.83
+East,Japan,2021,436.68,951.66,514.98
+East,Japan,2022,-31.28,788.18,819.46
+East,Japan,2023,-369.07,655.58,1024.65
+East,Japan,2024,-85.85,566.86,652.71
+East,Netherlands,2016,-3065,2077.28,5142.28
+East,Netherlands,2017,-3806.12,1881.52,5687.64
+East,Netherlands,2018,-4451.17,1805.18,6256.35
+East,Netherlands,2019,-4197.71,1739.74,5937.46
+East,Netherlands,2020,-3034.9,1536.54,4571.44
+East,Netherlands,2021,-1008.85,2650.42,3659.28
+East,Netherlands,2022,-675.7,5015.02,5690.72
+East,Netherlands,2023,-2733.18,2620.55,5353.73
+East,Netherlands,2024,-2277.91,2557.07,4834.98
+East,Norway,2016,-5.63,235.82,241.45
+East,Norway,2017,108.46,303.97,195.52
+East,Norway,2018,31.54,321.11,289.57
+East,Norway,2019,19.04,317.88,298.84
+East,Norway,2020,-50.44,386.05,436.49
+East,Norway,2021,-37.78,320.17,357.95
+East,Norway,2022,-284.07,200.82,484.88
+East,Norway,2023,-230.62,218.96,449.58
+East,Norway,2024,-147.38,206.54,353.92
+East,Poland,2016,-990.61,593.32,1583.93
+East,Poland,2017,-1011.16,597.67,1608.83
+East,Poland,2018,-822.92,533.88,1356.79
+East,Poland,2019,-849.54,426.79,1276.33
+East,Poland,2020,-677.22,468.26,1145.48
+East,Poland,2021,-535.66,479.85,1015.5
+East,Poland,2022,-671.71,616.87,1288.58
+East,Poland,2023,-787.54,658.3,1445.84
+East,Poland,2024,-838.09,618.07,1456.17
+East,Rest of EU,2016,-1160.89,1560.61,2721.49
+East,Rest of EU,2017,-1004.79,1591.54,2596.32
+East,Rest of EU,2018,-1097.07,1677.43,2774.49
+East,Rest of EU,2019,-1205.9,1611.58,2817.48
+East,Rest of EU,2020,-933.86,1383.62,2317.46
+East,Rest of EU,2021,-994.94,1379.2,2374.13
+East,Rest of EU,2022,-1852.18,1399.95,3252.11
+East,Rest of EU,2023,-1986.06,1508.62,3494.7
+East,Rest of EU,2024,-1859.97,1433.6,3293.57
+East,Rest of world,2016,-686.55,5276.32,5962.85
+East,Rest of world,2017,-1015.58,5973.74,6989.32
+East,Rest of world,2018,-1388.38,5367.54,6755.91
+East,Rest of world,2019,-688.18,5784.32,6472.52
+East,Rest of world,2020,-570.81,5310.8,5881.59
+East,Rest of world,2021,-1348.89,5742.76,7091.66
+East,Rest of world,2022,-2052.21,6086.8,8138.99
+East,Rest of world,2023,-828.85,6497.04,7325.9
+East,Rest of world,2024,-1450.39,5958.98,7409.35
+East,Singapore,2016,67.56,184.89,117.33
+East,Singapore,2017,53.12,186.33,133.21
+East,Singapore,2018,22.59,182.15,159.57
+East,Singapore,2019,31.42,193.91,162.48
+East,Singapore,2020,-17.29,162.94,180.23
+East,Singapore,2021,-161.06,158.26,319.32
+East,Singapore,2022,-82.9,174.1,257
+East,Singapore,2023,-59.07,167.15,226.22
+East,Singapore,2024,-18.07,154.19,172.27
+East,Spain,2016,-1526.98,1025.73,2552.71
+East,Spain,2017,-1364.27,1036.54,2400.81
+East,Spain,2018,-675.53,1054.09,1729.62
+East,Spain,2019,-1312.89,1063.43,2376.32
+East,Spain,2020,-1176.13,870.47,2046.6
+East,Spain,2021,-1350.71,691.6,2042.31
+East,Spain,2022,-1042.16,834.18,1876.34
+East,Spain,2023,-1105.39,863.57,1968.96
+East,Spain,2024,-1364.72,749.33,2114.05
+East,Sweden,2016,-190.95,354.19,545.15
+East,Sweden,2017,-221.99,411.28,633.26
+East,Sweden,2018,-171.57,386.79,558.36
+East,Sweden,2019,-116.96,389.35,506.31
+East,Sweden,2020,-197.01,291.91,488.91
+East,Sweden,2021,-243.38,404.49,647.87
+East,Sweden,2022,-521.73,355.86,877.59
+East,Sweden,2023,-612.89,332.33,945.23
+East,Sweden,2024,-493.05,296.42,789.47
+East,Switzerland,2016,-618.23,373.08,991.32
+East,Switzerland,2017,-397.77,274.27,672.03
+East,Switzerland,2018,-227.71,276.21,503.92
+East,Switzerland,2019,-392.85,299.49,692.34
+East,Switzerland,2020,-473.57,373.1,846.67
+East,Switzerland,2021,-730.26,545.03,1275.29
+East,Switzerland,2022,-896.06,353.68,1249.74
+East,Switzerland,2023,-844.28,309.15,1153.43
+East,Switzerland,2024,-931.23,293.08,1224.31
+East,United States,2016,1021.33,4115.62,3094.29
+East,United States,2017,575.21,3778.8,3203.58
+East,United States,2018,559.29,3845.07,3285.78
+East,United States,2019,1015.47,4278.18,3262.71
+East,United States,2020,756.18,3937.49,3181.3
+East,United States,2021,1133.65,4512.14,3378.49
+East,United States,2022,1411.79,5135.01,3723.22
+East,United States,2023,1884.73,6175.19,4290.46
+East,United States,2024,2172.32,6153.22,3980.91
+East Midlands,Australia,2016,139.9,189.03,49.13
+East Midlands,Australia,2017,180.95,229.56,48.61
+East Midlands,Australia,2018,182.05,244.52,62.48
+East Midlands,Australia,2019,122.68,208.13,85.45
+East Midlands,Australia,2020,118.03,199.38,81.35
+East Midlands,Australia,2021,163.52,236.06,72.55
+East Midlands,Australia,2022,178.97,245.86,66.89
+East Midlands,Australia,2023,201.35,254.98,53.63
+East Midlands,Australia,2024,198.71,256.09,57.38
+East Midlands,Belgium,2016,-441.12,1072.34,1513.46
+East Midlands,Belgium,2017,-600.22,1064.85,1665.07
+East Midlands,Belgium,2018,-649.57,1170.95,1820.52
+East Midlands,Belgium,2019,-436.09,1494.71,1930.79
+East Midlands,Belgium,2020,-382.94,1258.95,1641.89
+East Midlands,Belgium,2021,112.35,1339.72,1227.37
+East Midlands,Belgium,2022,-238.07,1098.88,1336.95
+East Midlands,Belgium,2023,306.08,1737.38,1431.31
+East Midlands,Belgium,2024,-97.21,1165.08,1262.29
+East Midlands,Canada,2016,40.31,286.08,245.77
+East Midlands,Canada,2017,106.91,356.07,249.16
+East Midlands,Canada,2018,150.96,394.98,244.01
+East Midlands,Canada,2019,181.14,404.4,223.26
+East Midlands,Canada,2020,72.89,322.9,250.01
+East Midlands,Canada,2021,-157.35,271.06,428.41
+East Midlands,Canada,2022,-114.09,256.03,370.13
+East Midlands,Canada,2023,13.51,338.26,324.75
+East Midlands,Canada,2024,114.84,352.85,238.01
+East Midlands,China,2016,-1800.58,661.88,2462.45
+East Midlands,China,2017,-1890,735.24,2625.24
+East Midlands,China,2018,-1945.53,717.07,2662.59
+East Midlands,China,2019,-2140.61,739.85,2880.45
+East Midlands,China,2020,-2944.5,555.11,3499.61
+East Midlands,China,2021,-2819.47,580.04,3399.51
+East Midlands,China,2022,-3358.76,549.24,3908
+East Midlands,China,2023,-2685.53,568.98,3254.51
+East Midlands,China,2024,-2576.3,558.79,3135.08
+East Midlands,France,2016,-285.58,895.24,1180.82
+East Midlands,France,2017,569.47,1804.63,1235.16
+East Midlands,France,2018,610.9,1946.24,1335.34
+East Midlands,France,2019,501.42,1832.82,1331.4
+East Midlands,France,2020,368.36,1475.24,1106.88
+East Midlands,France,2021,36.12,1586.95,1550.83
+East Midlands,France,2022,-537.27,2135.85,2673.12
+East Midlands,France,2023,-621.07,2417.73,3038.8
+East Midlands,France,2024,-268.55,2526.72,2795.28
+East Midlands,Germany,2016,-1429.1,2063.93,3493.03
+East Midlands,Germany,2017,-1610.45,2435.62,4046.07
+East Midlands,Germany,2018,-1508.98,2644.97,4153.94
+East Midlands,Germany,2019,-1512.89,2743.56,4256.45
+East Midlands,Germany,2020,-1426.1,2249.8,3675.9
+East Midlands,Germany,2021,-1751.08,1881.75,3632.83
+East Midlands,Germany,2022,-1641.46,2460.53,4101.99
+East Midlands,Germany,2023,-1583.79,2868.65,4452.43
+East Midlands,Germany,2024,-1244.42,2617.11,3861.53
+East Midlands,India,2016,-258.18,224.15,482.32
+East Midlands,India,2017,-322.56,249.61,572.17
+East Midlands,India,2018,-355.16,243.8,598.96
+East Midlands,India,2019,-401.86,193.88,595.74
+East Midlands,India,2020,-259.78,186.01,445.79
+East Midlands,India,2021,-339.52,222.05,561.57
+East Midlands,India,2022,-448.25,246.6,694.85
+East Midlands,India,2023,-307.92,312.74,620.65
+East Midlands,India,2024,-318.93,308.44,627.38
+East Midlands,Ireland,2016,764.35,1258.44,494.09
+East Midlands,Ireland,2017,642.47,1215.93,573.46
+East Midlands,Ireland,2018,827.59,1327.63,500.04
+East Midlands,Ireland,2019,867.29,1339.89,472.6
+East Midlands,Ireland,2020,847.25,1269.04,421.8
+East Midlands,Ireland,2021,599.12,1016.7,417.57
+East Midlands,Ireland,2022,857.41,1297.51,440.1
+East Midlands,Ireland,2023,781.07,1272.04,490.97
+East Midlands,Ireland,2024,578.82,1155.04,576.21
+East Midlands,Italy,2016,-625.98,590.61,1216.59
+East Midlands,Italy,2017,-689.83,627.23,1317.07
+East Midlands,Italy,2018,-677.87,618.03,1295.91
+East Midlands,Italy,2019,-584.39,785.58,1369.97
+East Midlands,Italy,2020,-486.71,581.66,1068.37
+East Midlands,Italy,2021,-566.43,638.35,1204.78
+East Midlands,Italy,2022,-932.15,633.85,1565.99
+East Midlands,Italy,2023,-919.53,612.85,1532.38
+East Midlands,Italy,2024,-988.62,550.59,1539.21
+East Midlands,Japan,2016,-488.59,371.18,859.77
+East Midlands,Japan,2017,-594.49,448.83,1043.31
+East Midlands,Japan,2018,-559.58,580.91,1140.48
+East Midlands,Japan,2019,-732.76,547.71,1280.47
+East Midlands,Japan,2020,-513.7,366.88,880.58
+East Midlands,Japan,2021,-1096.55,336.42,1432.97
+East Midlands,Japan,2022,-1076.33,426.48,1502.81
+East Midlands,Japan,2023,-1220.91,553.78,1774.69
+East Midlands,Japan,2024,-811.6,755.96,1567.56
+East Midlands,Netherlands,2016,-1411.06,764.82,2175.88
+East Midlands,Netherlands,2017,-1669.96,850.16,2520.11
+East Midlands,Netherlands,2018,-1740.28,875.35,2615.63
+East Midlands,Netherlands,2019,-1737.08,997.73,2734.81
+East Midlands,Netherlands,2020,-1525.09,755.94,2281.03
+East Midlands,Netherlands,2021,-1078.74,1258.82,2337.56
+East Midlands,Netherlands,2022,-1744.41,1442.06,3186.47
+East Midlands,Netherlands,2023,-1940.28,1100.13,3040.41
+East Midlands,Netherlands,2024,-1636.86,1083.61,2720.47
+East Midlands,Norway,2016,71.52,187.99,116.47
+East Midlands,Norway,2017,60,169.41,109.41
+East Midlands,Norway,2018,81.21,181.05,99.84
+East Midlands,Norway,2019,96.32,191.49,95.16
+East Midlands,Norway,2020,204.92,265.7,60.78
+East Midlands,Norway,2021,74.79,155.16,80.37
+East Midlands,Norway,2022,77.71,166.12,88.41
+East Midlands,Norway,2023,83.31,175.34,92.03
+East Midlands,Norway,2024,85.87,190.29,104.42
+East Midlands,Poland,2016,-354.38,243.56,597.94
+East Midlands,Poland,2017,-337.47,272.39,609.85
+East Midlands,Poland,2018,-301.68,311.5,613.18
+East Midlands,Poland,2019,-360.49,336.12,696.61
+East Midlands,Poland,2020,-332.3,299.62,631.92
+East Midlands,Poland,2021,-310.4,295.35,605.74
+East Midlands,Poland,2022,-329.98,346.91,676.89
+East Midlands,Poland,2023,-291.71,429.66,721.38
+East Midlands,Poland,2024,-387.62,377.23,764.85
+East Midlands,Rest of EU,2016,-671.47,951.04,1622.5
+East Midlands,Rest of EU,2017,-507.69,1167.05,1674.73
+East Midlands,Rest of EU,2018,-835.14,1189.34,2024.47
+East Midlands,Rest of EU,2019,-953.42,1098,2051.43
+East Midlands,Rest of EU,2020,-671.72,957.91,1629.61
+East Midlands,Rest of EU,2021,-772.94,988.35,1761.27
+East Midlands,Rest of EU,2022,-1072.21,1037.14,2109.32
+East Midlands,Rest of EU,2023,-1123.68,1029.24,2152.91
+East Midlands,Rest of EU,2024,-1197.17,992.22,2189.4
+East Midlands,Rest of world,2016,3.63,3486.39,3482.77
+East Midlands,Rest of world,2017,80.59,4098.74,4018.17
+East Midlands,Rest of world,2018,97.4,4449.55,4352.15
+East Midlands,Rest of world,2019,643.3,5412.86,4769.54
+East Midlands,Rest of world,2020,675.76,4850.21,4174.49
+East Midlands,Rest of world,2021,-311.64,4216.98,4528.63
+East Midlands,Rest of world,2022,25.86,5544.79,5518.97
+East Midlands,Rest of world,2023,1188.62,6694.07,5505.49
+East Midlands,Rest of world,2024,2070.16,6726.62,4656.48
+East Midlands,Singapore,2016,1015.29,1188.69,173.4
+East Midlands,Singapore,2017,1131.64,1300.98,169.34
+East Midlands,Singapore,2018,1062.41,1329.08,266.66
+East Midlands,Singapore,2019,1213.25,1524.74,311.5
+East Midlands,Singapore,2020,973.53,1318.74,345.22
+East Midlands,Singapore,2021,893.23,1153.96,260.74
+East Midlands,Singapore,2022,1538.68,1812.46,273.78
+East Midlands,Singapore,2023,1766.19,2138.67,372.48
+East Midlands,Singapore,2024,1987.37,2161.09,173.71
+East Midlands,Spain,2016,-150.1,730.89,880.98
+East Midlands,Spain,2017,-198.37,746.84,945.22
+East Midlands,Spain,2018,-96.4,793.41,889.81
+East Midlands,Spain,2019,40.98,921.8,880.82
+East Midlands,Spain,2020,-135.92,691.73,827.65
+East Midlands,Spain,2021,-114.58,751.21,865.79
+East Midlands,Spain,2022,-175.95,954.81,1130.76
+East Midlands,Spain,2023,-593.38,685.81,1279.19
+East Midlands,Spain,2024,-733.03,764.13,1497.16
+East Midlands,Sweden,2016,208.45,547.49,339.04
+East Midlands,Sweden,2017,151.24,528.22,376.98
+East Midlands,Sweden,2018,57.78,514.27,456.49
+East Midlands,Sweden,2019,56.51,559.08,502.57
+East Midlands,Sweden,2020,36.45,434.6,398.16
+East Midlands,Sweden,2021,93.37,455.19,361.81
+East Midlands,Sweden,2022,-91.52,364.34,455.86
+East Midlands,Sweden,2023,-296.59,227.69,524.27
+East Midlands,Sweden,2024,-244.86,212.66,457.51
+East Midlands,Switzerland,2016,32.26,124.64,92.38
+East Midlands,Switzerland,2017,19.38,125.72,106.33
+East Midlands,Switzerland,2018,14.38,134.29,119.92
+East Midlands,Switzerland,2019,16.77,154.38,137.62
+East Midlands,Switzerland,2020,45.27,149.91,104.64
+East Midlands,Switzerland,2021,-85.27,160.07,245.35
+East Midlands,Switzerland,2022,-134.73,136.65,271.39
+East Midlands,Switzerland,2023,-120.32,121.54,241.86
+East Midlands,Switzerland,2024,-108.87,133.92,242.79
+East Midlands,United States,2016,-179.46,1907.97,2087.43
+East Midlands,United States,2017,-312.77,2128.1,2440.87
+East Midlands,United States,2018,21.31,2526.41,2505.1
+East Midlands,United States,2019,147.85,2851.41,2703.55
+East Midlands,United States,2020,639.14,2539.06,1899.93
+East Midlands,United States,2021,970.97,2501.02,1530.06
+East Midlands,United States,2022,509.17,3057.03,2547.87
+East Midlands,United States,2023,1360.7,3929.07,2568.36
+East Midlands,United States,2024,1196.43,3575.34,2378.91
+London,Australia,2016,41.11,282.35,241.24
+London,Australia,2017,-105.88,334.42,440.31
+London,Australia,2018,16.41,378.79,362.38
+London,Australia,2019,56.94,351.93,294.99
+London,Australia,2020,255.25,435.75,180.5
+London,Australia,2021,14.74,388.27,373.53
+London,Australia,2022,99.21,437.49,338.29
+London,Australia,2023,-178.48,370.49,548.97
+London,Australia,2024,-167.97,360.97,528.95
+London,Belgium,2016,-1778.13,740.86,2518.98
+London,Belgium,2017,-2351.19,721.52,3072.71
+London,Belgium,2018,-2357.33,911.86,3269.19
+London,Belgium,2019,-2276.4,900.67,3177.07
+London,Belgium,2020,-2045.95,871.62,2917.56
+London,Belgium,2021,-1132.93,1313.62,2446.55
+London,Belgium,2022,-1578.74,1811.91,3390.65
+London,Belgium,2023,-1447.35,1606.51,3053.85
+London,Belgium,2024,-2160.75,1268.25,3429.01
+London,Canada,2016,-57.89,456,513.89
+London,Canada,2017,-86.26,371.36,457.61
+London,Canada,2018,-152.58,328.62,481.2
+London,Canada,2019,-133.68,242.82,376.5
+London,Canada,2020,991.81,1264.27,272.46
+London,Canada,2021,989.75,1229.82,240.07
+London,Canada,2022,858.34,1397.45,539.11
+London,Canada,2023,321.22,863.52,542.3
+London,Canada,2024,331.59,644.22,312.63
+London,China,2016,-7232.77,1082.5,8315.27
+London,China,2017,-7042.65,1875.89,8918.54
+London,China,2018,-7985.77,1224.96,9210.72
+London,China,2019,-9901.16,1163.57,11064.73
+London,China,2020,-3986.83,1086.22,5073.05
+London,China,2021,-5293.39,2579.5,7872.9
+London,China,2022,-5992.85,2337.28,8330.13
+London,China,2023,-7561.22,1567.5,9128.71
+London,China,2024,-6843.62,1635.72,8479.35
+London,France,2016,-2213.46,2100.03,4313.48
+London,France,2017,-2042.3,2267.04,4309.34
+London,France,2018,-2869.8,2278.95,5148.75
+London,France,2019,-3824.21,3504.3,7328.51
+London,France,2020,-2823.51,2281.33,5104.84
+London,France,2021,-1598.06,2056.55,3654.61
+London,France,2022,-3280.09,2346.36,5626.45
+London,France,2023,-4794.14,2368.05,7162.19
+London,France,2024,-4322.8,2349.8,6672.6
+London,Germany,2016,-2912.88,2745.67,5658.55
+London,Germany,2017,-2903.88,3069.48,5973.36
+London,Germany,2018,-2887.16,3209.68,6096.85
+London,Germany,2019,-1652.48,4213.41,5865.89
+London,Germany,2020,-1587.47,4122.57,5710.05
+London,Germany,2021,-1843.16,2505.08,4348.24
+London,Germany,2022,-1440,3865.36,5305.36
+London,Germany,2023,-3054.99,2609.76,5664.75
+London,Germany,2024,-1838.16,2606.73,4444.89
+London,India,2016,-710.99,406.6,1117.58
+London,India,2017,-773.19,557.12,1330.31
+London,India,2018,-156.09,1055.9,1211.99
+London,India,2019,-564.6,984.25,1548.84
+London,India,2020,-761.93,366.05,1127.98
+London,India,2021,-858.69,829.04,1687.73
+London,India,2022,544.14,2665.15,2121.01
+London,India,2023,-890.92,1164.34,2055.26
+London,India,2024,-360.48,1821.28,2181.76
+London,Ireland,2016,-35.1,1710.26,1745.36
+London,Ireland,2017,368.25,1936.8,1568.55
+London,Ireland,2018,366.73,1993.03,1626.29
+London,Ireland,2019,467.92,2370.2,1902.28
+London,Ireland,2020,277.21,2131.4,1854.19
+London,Ireland,2021,-183.59,1571.23,1754.82
+London,Ireland,2022,714.16,2675.96,1961.8
+London,Ireland,2023,605.91,2842.45,2236.55
+London,Ireland,2024,-240.4,2094.82,2335.22
+London,Italy,2016,-2026.16,1050.47,3076.63
+London,Italy,2017,-2251.41,1033.5,3284.91
+London,Italy,2018,-2265.34,1093.19,3358.53
+London,Italy,2019,-2544.02,1244.87,3788.89
+London,Italy,2020,-2232.97,1200.14,3433.11
+London,Italy,2021,-2161.98,902.81,3064.79
+London,Italy,2022,-2800.6,1165.15,3965.75
+London,Italy,2023,-2544.84,1101.81,3646.65
+London,Italy,2024,-2936.08,781.17,3717.25
+London,Japan,2016,-155.92,517.32,673.24
+London,Japan,2017,-104.11,489.67,593.78
+London,Japan,2018,-292.97,530.55,823.52
+London,Japan,2019,-99.48,482.16,581.64
+London,Japan,2020,189.73,654.36,464.63
+London,Japan,2021,144.18,532.41,388.24
+London,Japan,2022,-91.97,458.95,550.91
+London,Japan,2023,-200.99,384.12,585.12
+London,Japan,2024,125.94,581.65,455.71
+London,Netherlands,2016,-2281.46,1730.83,4012.29
+London,Netherlands,2017,-2223.3,2189.37,4412.67
+London,Netherlands,2018,-2240.9,2889.1,5130.01
+London,Netherlands,2019,-3048.68,2530.55,5579.23
+London,Netherlands,2020,-2460.24,2027.9,4488.14
+London,Netherlands,2021,-248.31,3687.59,3935.9
+London,Netherlands,2022,-4510.87,4894.94,9405.8
+London,Netherlands,2023,-3917.09,4070.15,7987.24
+London,Netherlands,2024,-3332.1,3391.18,6723.28
+London,Norway,2016,-1935.88,162.68,2098.55
+London,Norway,2017,-1440.73,168.38,1609.11
+London,Norway,2018,-1131.85,157.41,1289.26
+London,Norway,2019,-2091.43,232.56,2324
+London,Norway,2020,-1952.29,261.44,2213.73
+London,Norway,2021,-1193.3,171.43,1364.72
+London,Norway,2022,-2980.87,224.22,3205.09
+London,Norway,2023,-2076.56,341.77,2418.33
+London,Norway,2024,-1971.87,339.97,2311.84
+London,Poland,2016,-763.44,392.68,1156.12
+London,Poland,2017,-517.36,547.61,1064.97
+London,Poland,2018,-688.88,447.73,1136.61
+London,Poland,2019,-700.99,829.13,1530.12
+London,Poland,2020,-1044.61,564.7,1609.31
+London,Poland,2021,-857.49,269.68,1127.17
+London,Poland,2022,-401.31,846.81,1248.12
+London,Poland,2023,-434.43,837.67,1272.1
+London,Poland,2024,-484.76,737.16,1221.92
+London,Rest of EU,2016,-1433.13,1733.38,3166.53
+London,Rest of EU,2017,-1310.92,1862.09,3173.01
+London,Rest of EU,2018,-1578.35,1894.78,3473.12
+London,Rest of EU,2019,-1841.13,1953.13,3794.26
+London,Rest of EU,2020,-1311.24,1753.94,3065.2
+London,Rest of EU,2021,-1450.47,1132.11,2582.59
+London,Rest of EU,2022,-1474.96,1983.99,3458.96
+London,Rest of EU,2023,-1998.8,1335.64,3334.44
+London,Rest of EU,2024,-1848.81,1251.43,3100.23
+London,Rest of world,2016,-4432.75,7282.27,11715.01
+London,Rest of world,2017,-4047.68,9619.51,13667.18
+London,Rest of world,2018,-4660.68,9733.42,14394.09
+London,Rest of world,2019,-7103.09,8100.98,15204.09
+London,Rest of world,2020,-3757.06,7826.27,11583.36
+London,Rest of world,2021,-7889.03,8482.56,16371.58
+London,Rest of world,2022,-14100.13,9968.57,24068.69
+London,Rest of world,2023,-6755.04,9196.65,15951.65
+London,Rest of world,2024,-4887.66,8334.43,13222.07
+London,Singapore,2016,-19.4,300.38,319.79
+London,Singapore,2017,-17.91,326.18,344.08
+London,Singapore,2018,117.75,358.25,240.5
+London,Singapore,2019,68.65,468.2,399.55
+London,Singapore,2020,149.42,306.57,157.15
+London,Singapore,2021,-122.31,271.03,393.35
+London,Singapore,2022,-165.03,360.65,525.68
+London,Singapore,2023,-126.29,344.35,470.64
+London,Singapore,2024,-124.29,308.17,432.46
+London,Spain,2016,-854.28,907.43,1761.7
+London,Spain,2017,-939.63,910.51,1850.13
+London,Spain,2018,-786.32,893.56,1679.88
+London,Spain,2019,-1221.07,1205,2426.06
+London,Spain,2020,-1007.06,1061.55,2068.6
+London,Spain,2021,-1128.23,665.46,1793.7
+London,Spain,2022,-1632.66,738.98,2371.64
+London,Spain,2023,-1997.74,696.46,2694.2
+London,Spain,2024,-2061.32,655.79,2717.11
+London,Sweden,2016,-302.53,431.84,734.37
+London,Sweden,2017,-183.02,624.25,807.27
+London,Sweden,2018,-489.8,530.67,1020.47
+London,Sweden,2019,-158.68,554.91,713.59
+London,Sweden,2020,-109.9,512.31,622.21
+London,Sweden,2021,-288.94,277.5,566.44
+London,Sweden,2022,60.94,839.32,778.37
+London,Sweden,2023,-371.55,305.39,676.94
+London,Sweden,2024,-268.85,450.38,719.24
+London,Switzerland,2016,832.91,1888.7,1055.79
+London,Switzerland,2017,762.83,2063.08,1300.25
+London,Switzerland,2018,561.51,1715.44,1153.93
+London,Switzerland,2019,72.53,1485.31,1412.78
+London,Switzerland,2020,557.22,1598.66,1041.44
+London,Switzerland,2021,-464.43,1555.62,2020.05
+London,Switzerland,2022,-757.52,1835.71,2593.24
+London,Switzerland,2023,-839.28,1372.46,2211.74
+London,Switzerland,2024,-1628.44,1030.79,2659.24
+London,United States,2016,869.68,5885.16,5015.48
+London,United States,2017,1251.7,5322.64,4070.93
+London,United States,2018,1297.92,5934.18,4636.26
+London,United States,2019,545.29,5406.03,4860.75
+London,United States,2020,426.61,4666.93,4240.31
+London,United States,2021,692.53,5008.59,4316.06
+London,United States,2022,-4788.58,5799.97,10588.55
+London,United States,2023,-5739.16,5230.54,10969.7
+London,United States,2024,-3985.74,5449.6,9435.34
+North East,Australia,2016,152.86,203.81,50.95
+North East,Australia,2017,184.39,237.03,52.63
+North East,Australia,2018,203.36,267.54,64.18
+North East,Australia,2019,156.66,233.91,77.24
+North East,Australia,2020,120.81,193.96,73.14
+North East,Australia,2021,97.01,171.8,74.79
+North East,Australia,2022,65.53,175.87,110.34
+North East,Australia,2023,247.94,326.21,78.27
+North East,Australia,2024,136.86,224.54,87.69
+North East,Belgium,2016,195.61,701.33,505.72
+North East,Belgium,2017,196.42,818.75,622.34
+North East,Belgium,2018,236.77,830.18,593.42
+North East,Belgium,2019,204.4,787.41,583.01
+North East,Belgium,2020,-154.04,521.19,675.23
+North East,Belgium,2021,-380.96,493.18,874.14
+North East,Belgium,2022,-1098.42,525.67,1624.09
+North East,Belgium,2023,-767.5,676.8,1444.3
+North East,Belgium,2024,-775.05,736.16,1511.21
+North East,Canada,2016,-17.71,77.66,95.37
+North East,Canada,2017,-14.18,84.31,98.48
+North East,Canada,2018,-44.42,80,124.42
+North East,Canada,2019,-81.8,71.32,153.12
+North East,Canada,2020,-67.09,57.27,124.36
+North East,Canada,2021,-89.49,63.38,152.87
+North East,Canada,2022,-61.46,99.84,161.3
+North East,Canada,2023,12.58,106.43,93.85
+North East,Canada,2024,15.37,93.06,77.7
+North East,China,2016,-679.57,347.22,1026.79
+North East,China,2017,-727.8,406.8,1134.6
+North East,China,2018,-808.88,327.78,1136.65
+North East,China,2019,-891.17,325.52,1216.68
+North East,China,2020,-548.12,486.97,1035.09
+North East,China,2021,-912.73,328.71,1241.44
+North East,China,2022,-1165.79,377.9,1543.69
+North East,China,2023,-1177.04,297.29,1474.33
+North East,China,2024,-1280.81,457.97,1738.78
+North East,France,2016,-844.27,441.91,1286.17
+North East,France,2017,-671.72,575.34,1247.06
+North East,France,2018,-615.19,636.96,1252.15
+North East,France,2019,-817.72,628.72,1446.43
+North East,France,2020,-686.55,474.24,1160.79
+North East,France,2021,-116.38,813.37,929.75
+North East,France,2022,-5.09,956.26,961.35
+North East,France,2023,-310.13,971.41,1281.54
+North East,France,2024,-462,733.92,1195.92
+North East,Germany,2016,-683.56,1235.46,1919.02
+North East,Germany,2017,-781.93,1161.23,1943.15
+North East,Germany,2018,-654.11,1201.96,1856.08
+North East,Germany,2019,-819.08,1163.37,1982.45
+North East,Germany,2020,-539.21,1225.64,1764.85
+North East,Germany,2021,-39.51,1405.8,1445.31
+North East,Germany,2022,158.38,1498.09,1339.71
+North East,Germany,2023,-148.57,1390.31,1538.87
+North East,Germany,2024,-272.97,1126.41,1399.38
+North East,India,2016,-102.59,105.45,208.04
+North East,India,2017,-84.71,137.34,222.05
+North East,India,2018,-83.43,137.49,220.92
+North East,India,2019,-20.74,175.28,196.02
+North East,India,2020,36.1,187.37,151.27
+North East,India,2021,-65.3,139.79,205.09
+North East,India,2022,-116.94,147.98,264.91
+North East,India,2023,-114.65,152.84,267.49
+North East,India,2024,-109.35,141.18,250.53
+North East,Ireland,2016,148.99,411.04,262.04
+North East,Ireland,2017,227.53,455.52,227.98
+North East,Ireland,2018,271.55,473.54,201.99
+North East,Ireland,2019,256.03,455.4,199.38
+North East,Ireland,2020,263.8,443.12,179.32
+North East,Ireland,2021,257.23,405.77,148.54
+North East,Ireland,2022,313.97,492.31,178.34
+North East,Ireland,2023,324.09,469.52,145.43
+North East,Ireland,2024,261.43,419.24,157.81
+North East,Italy,2016,159.1,565.48,406.37
+North East,Italy,2017,209.06,653.47,444.4
+North East,Italy,2018,187.6,656.42,468.83
+North East,Italy,2019,-23.01,592.91,615.92
+North East,Italy,2020,30.88,498.79,467.91
+North East,Italy,2021,33.91,504.59,470.68
+North East,Italy,2022,131.36,620.54,489.18
+North East,Italy,2023,379.66,899.85,520.19
+North East,Italy,2024,181.97,736.2,554.24
+North East,Japan,2016,-454.78,208.19,662.97
+North East,Japan,2017,-657.68,254.83,912.51
+North East,Japan,2018,-842.8,268.8,1111.59
+North East,Japan,2019,-662.99,355.04,1018.03
+North East,Japan,2020,-142.35,408.23,550.58
+North East,Japan,2021,-297.7,353.58,651.29
+North East,Japan,2022,-616.44,342.13,958.57
+North East,Japan,2023,-976.9,237.91,1214.82
+North East,Japan,2024,-877.59,275.76,1153.36
+North East,Netherlands,2016,804.62,1708.39,903.77
+North East,Netherlands,2017,529.4,1446.94,917.54
+North East,Netherlands,2018,398.52,1530.83,1132.3
+North East,Netherlands,2019,601.44,1637.69,1036.26
+North East,Netherlands,2020,448.77,1302.26,853.5
+North East,Netherlands,2021,151.19,1101.47,950.29
+North East,Netherlands,2022,-915.16,991.64,1906.79
+North East,Netherlands,2023,-353.66,1097.66,1451.33
+North East,Netherlands,2024,-111.87,1242.19,1354.06
+North East,Norway,2016,36.44,213.86,177.42
+North East,Norway,2017,87.76,184.84,97.09
+North East,Norway,2018,242.77,354.37,111.6
+North East,Norway,2019,196.04,307.8,111.75
+North East,Norway,2020,102.17,255.45,153.28
+North East,Norway,2021,-253.51,203.74,457.25
+North East,Norway,2022,-554.2,537.66,1091.86
+North East,Norway,2023,-767.62,231.71,999.33
+North East,Norway,2024,-779.73,143.28,923.01
+North East,Poland,2016,-118.92,259.98,378.91
+North East,Poland,2017,49.12,442.88,393.77
+North East,Poland,2018,14,416.42,402.42
+North East,Poland,2019,-23.62,377.66,401.28
+North East,Poland,2020,-55.12,294.01,349.14
+North East,Poland,2021,-29.57,245.16,274.73
+North East,Poland,2022,-23.58,269.3,292.88
+North East,Poland,2023,-67.12,297.67,364.79
+North East,Poland,2024,-28.03,330.18,358.21
+North East,Rest of EU,2016,-178.11,780.1,958.19
+North East,Rest of EU,2017,-179.31,798.74,978.06
+North East,Rest of EU,2018,-381.51,797.55,1179.06
+North East,Rest of EU,2019,-404.23,864.28,1268.54
+North East,Rest of EU,2020,-170.95,838.68,1009.64
+North East,Rest of EU,2021,-32.25,882.51,914.77
+North East,Rest of EU,2022,123.65,956.2,832.57
+North East,Rest of EU,2023,46.41,973.69,927.28
+North East,Rest of EU,2024,22.78,957.28,934.5
+North East,Rest of world,2016,721.29,2433.16,1711.92
+North East,Rest of world,2017,832.74,2740.64,1907.89
+North East,Rest of world,2018,306.23,2537.85,2231.64
+North East,Rest of world,2019,327.13,2444.22,2117.13
+North East,Rest of world,2020,208.61,2145.14,1936.55
+North East,Rest of world,2021,-195.31,2101.74,2297.09
+North East,Rest of world,2022,-235.5,2397.32,2632.88
+North East,Rest of world,2023,587.68,2461.5,1873.82
+North East,Rest of world,2024,767.82,2761.09,1993.25
+North East,Singapore,2016,99.01,129.09,30.09
+North East,Singapore,2017,81.69,111.31,29.62
+North East,Singapore,2018,87.05,122.09,35.04
+North East,Singapore,2019,44.98,95.22,50.24
+North East,Singapore,2020,10.63,75.66,65.02
+North East,Singapore,2021,-12.15,69.17,81.32
+North East,Singapore,2022,21.76,106.31,84.54
+North East,Singapore,2023,41.41,93.12,51.71
+North East,Singapore,2024,56.66,116.19,59.53
+North East,Spain,2016,-63.43,782.54,845.97
+North East,Spain,2017,-19.97,890.45,910.42
+North East,Spain,2018,164.23,972.27,808.04
+North East,Spain,2019,121.9,1038.49,916.59
+North East,Spain,2020,69.56,635.16,565.6
+North East,Spain,2021,133.52,540.55,407.03
+North East,Spain,2022,166.55,576.05,409.5
+North East,Spain,2023,203.24,726.15,522.9
+North East,Spain,2024,240.15,705.73,465.58
+North East,Sweden,2016,156.24,364.81,208.57
+North East,Sweden,2017,169.55,369.76,200.22
+North East,Sweden,2018,213.28,379.68,166.4
+North East,Sweden,2019,207.68,355.91,148.23
+North East,Sweden,2020,170.79,301.69,130.9
+North East,Sweden,2021,151.9,308.77,156.87
+North East,Sweden,2022,102.65,342.43,239.77
+North East,Sweden,2023,118.15,323.71,205.56
+North East,Sweden,2024,109.26,276.89,167.63
+North East,Switzerland,2016,19.85,78.62,58.78
+North East,Switzerland,2017,24.36,79.49,55.14
+North East,Switzerland,2018,20.6,75.8,55.2
+North East,Switzerland,2019,14.56,67.89,53.34
+North East,Switzerland,2020,23.92,120.43,96.5
+North East,Switzerland,2021,-42.28,138.18,180.46
+North East,Switzerland,2022,-75.23,155.35,230.58
+North East,Switzerland,2023,-19.7,104,123.7
+North East,Switzerland,2024,10.89,126.3,115.41
+North East,United States,2016,104.47,918.75,814.28
+North East,United States,2017,280.33,1063.86,783.53
+North East,United States,2018,256.05,1102.65,846.6
+North East,United States,2019,157.94,1211.95,1054
+North East,United States,2020,31.41,1145.34,1113.92
+North East,United States,2021,335.11,1354.89,1019.78
+North East,United States,2022,389.68,1408.45,1018.77
+North East,United States,2023,851.67,1724.83,873.16
+North East,United States,2024,1178.92,2108.37,929.45
+North West,Australia,2016,266.04,352.38,86.34
+North West,Australia,2017,319.39,404.71,85.32
+North West,Australia,2018,347.29,435.21,87.92
+North West,Australia,2019,321.33,409.67,88.34
+North West,Australia,2020,376.77,457.94,81.16
+North West,Australia,2021,290.3,389.12,98.83
+North West,Australia,2022,347.77,446.81,99.04
+North West,Australia,2023,394.29,468.73,74.44
+North West,Australia,2024,332.32,403.27,70.95
+North West,Belgium,2016,-1568.53,869.25,2437.78
+North West,Belgium,2017,-955.31,946.48,1901.79
+North West,Belgium,2018,-885.7,956.11,1841.81
+North West,Belgium,2019,-892.91,1085.71,1978.62
+North West,Belgium,2020,-657,1031.89,1688.89
+North West,Belgium,2021,-17.81,1692.16,1709.97
+North West,Belgium,2022,-669.88,1478.67,2148.55
+North West,Belgium,2023,-767.5,1423.32,2190.82
+North West,Belgium,2024,-1336.52,1733,3069.52
+North West,Canada,2016,-123.92,337.65,461.57
+North West,Canada,2017,-163.33,333.59,496.92
+North West,Canada,2018,60.55,578.64,518.09
+North West,Canada,2019,12.82,490,477.19
+North West,Canada,2020,-52.88,356.54,409.42
+North West,Canada,2021,-265.54,290.75,556.28
+North West,Canada,2022,-199.61,531.84,731.44
+North West,Canada,2023,-409.14,485.98,895.12
+North West,Canada,2024,-441.04,358.19,799.23
+North West,China,2016,-2609.94,1657.28,4267.22
+North West,China,2017,-2644.03,1773.16,4417.19
+North West,China,2018,-2841.3,1612.76,4454.06
+North West,China,2019,-3115.27,1525.71,4640.98
+North West,China,2020,-2982.4,1662.46,4644.86
+North West,China,2021,-4151.19,1816.88,5968.06
+North West,China,2022,-5394.03,1881.49,7275.52
+North West,China,2023,-4357.3,1661.77,6019.06
+North West,China,2024,-4392.45,1775.11,6167.56
+North West,France,2016,-225.44,1526.67,1752.11
+North West,France,2017,-332.02,1676.02,2008.04
+North West,France,2018,-264.37,1683.64,1948.01
+North West,France,2019,-321.4,1806.82,2128.22
+North West,France,2020,-190.54,1475.42,1665.97
+North West,France,2021,-563.39,1389.39,1952.79
+North West,France,2022,-1045.65,1558.04,2603.68
+North West,France,2023,-1474.76,1539.93,3014.7
+North West,France,2024,-1053.7,1621.21,2674.91
+North West,Germany,2016,-1818.78,3171.2,4989.98
+North West,Germany,2017,-2159.76,3390.42,5550.18
+North West,Germany,2018,-2506.6,3225.23,5731.83
+North West,Germany,2019,-2554.92,3101.46,5656.38
+North West,Germany,2020,-2143,2632.76,4775.76
+North West,Germany,2021,-2118.16,2856.51,4974.67
+North West,Germany,2022,-2627.06,3178.16,5805.22
+North West,Germany,2023,-3776.51,3045.56,6822.07
+North West,Germany,2024,-2858.43,2770.91,5629.34
+North West,India,2016,-347.37,262.7,610.07
+North West,India,2017,-364.86,281.37,646.23
+North West,India,2018,-317.58,331.97,649.55
+North West,India,2019,-364.95,313.06,678.01
+North West,India,2020,-316.37,240.17,556.54
+North West,India,2021,-421.3,355.45,776.75
+North West,India,2022,-366.82,467.75,834.57
+North West,India,2023,-351.22,460.8,812.01
+North West,India,2024,-322.21,412.36,734.57
+North West,Ireland,2016,827.19,1598.77,771.57
+North West,Ireland,2017,925.14,1827.47,902.33
+North West,Ireland,2018,864.59,1831.77,967.17
+North West,Ireland,2019,908.49,1806.87,898.38
+North West,Ireland,2020,1022.96,1815.58,792.62
+North West,Ireland,2021,884.71,1610.01,725.3
+North West,Ireland,2022,1390.66,2202.63,811.97
+North West,Ireland,2023,1598.94,2399.02,800.09
+North West,Ireland,2024,907.78,1876.31,968.53
+North West,Italy,2016,-597.69,906.56,1504.24
+North West,Italy,2017,-713.37,914.45,1627.82
+North West,Italy,2018,-769.01,916.27,1685.28
+North West,Italy,2019,-964.66,894.94,1859.61
+North West,Italy,2020,-893.9,772.8,1666.69
+North West,Italy,2021,-871.39,890.7,1762.09
+North West,Italy,2022,-1439.14,925.09,2364.24
+North West,Italy,2023,-1326.46,897.03,2223.49
+North West,Italy,2024,-1102.44,830.89,1933.34
+North West,Japan,2016,99.73,414.79,315.05
+North West,Japan,2017,68.26,438.04,369.78
+North West,Japan,2018,38.7,412.69,373.99
+North West,Japan,2019,65.09,379.36,314.27
+North West,Japan,2020,117.08,354.5,237.41
+North West,Japan,2021,220.13,520.57,300.44
+North West,Japan,2022,99.94,499.77,399.84
+North West,Japan,2023,51.29,448.07,396.78
+North West,Japan,2024,145.5,580.26,434.76
+North West,Netherlands,2016,-1303.69,1667.52,2971.21
+North West,Netherlands,2017,-1635.65,1556.19,3191.84
+North West,Netherlands,2018,-1541.32,1780.88,3322.19
+North West,Netherlands,2019,-1475.99,1867.33,3343.32
+North West,Netherlands,2020,-1449.23,1515.46,2964.69
+North West,Netherlands,2021,126.98,2732.54,2605.57
+North West,Netherlands,2022,-1646.23,3226.4,4872.63
+North West,Netherlands,2023,-2037.64,2696.43,4734.06
+North West,Netherlands,2024,-1815.3,2689.28,4504.58
+North West,Norway,2016,-43.64,162.8,206.44
+North West,Norway,2017,-231.89,183.75,415.64
+North West,Norway,2018,-252.97,158.65,411.61
+North West,Norway,2019,-256.78,186.39,443.17
+North West,Norway,2020,-337.16,202.5,539.67
+North West,Norway,2021,-682.62,158.91,841.53
+North West,Norway,2022,-294.05,187.43,481.48
+North West,Norway,2023,-307.61,193.6,501.21
+North West,Norway,2024,-925.32,232.21,1157.53
+North West,Poland,2016,-212.36,477.04,689.4
+North West,Poland,2017,-332.46,544.27,876.72
+North West,Poland,2018,-318.79,547.92,866.71
+North West,Poland,2019,-327.62,550.81,878.43
+North West,Poland,2020,-350.43,503.9,854.33
+North West,Poland,2021,-223.47,543.65,767.12
+North West,Poland,2022,-271.06,606.35,877.41
+North West,Poland,2023,-422.58,579.94,1002.53
+North West,Poland,2024,-445.19,600.27,1045.45
+North West,Rest of EU,2016,-954.59,1726.21,2680.78
+North West,Rest of EU,2017,-998.76,1890.59,2889.36
+North West,Rest of EU,2018,-1736.66,1862.54,3599.2
+North West,Rest of EU,2019,-1422.86,1834.3,3257.18
+North West,Rest of EU,2020,-1245.29,1618.13,2863.41
+North West,Rest of EU,2021,-1935.22,1687.37,3622.56
+North West,Rest of EU,2022,-1321.91,1953.26,3275.15
+North West,Rest of EU,2023,-1661.01,1778.02,3439.04
+North West,Rest of EU,2024,-1631.65,1658.56,3290.2
+North West,Rest of world,2016,-221.56,6020.79,6242.32
+North West,Rest of world,2017,-388.42,6571.52,6959.91
+North West,Rest of world,2018,-2029.16,5826.78,7855.91
+North West,Rest of world,2019,-1867.28,4976.77,6844.07
+North West,Rest of world,2020,-1033.32,4598.28,5631.61
+North West,Rest of world,2021,-1403.6,5665.82,7069.41
+North West,Rest of world,2022,-1430.14,6865.94,8296.08
+North West,Rest of world,2023,-271.93,6831.6,7103.49
+North West,Rest of world,2024,-1243.13,5817.27,7060.38
+North West,Singapore,2016,149.83,318.93,169.1
+North West,Singapore,2017,137.26,313.85,176.59
+North West,Singapore,2018,103.42,293.26,189.84
+North West,Singapore,2019,166.58,304.3,137.72
+North West,Singapore,2020,169.64,294.09,124.45
+North West,Singapore,2021,177.37,292.08,114.71
+North West,Singapore,2022,188.07,313.01,124.94
+North West,Singapore,2023,264.26,369.57,105.3
+North West,Singapore,2024,302.25,390.09,87.84
+North West,Spain,2016,-110.19,925.97,1036.16
+North West,Spain,2017,-44.72,947.3,992.02
+North West,Spain,2018,-62.83,1007.98,1070.8
+North West,Spain,2019,-145.27,967.75,1113.02
+North West,Spain,2020,-87.51,877.33,964.84
+North West,Spain,2021,-506.27,787.01,1293.28
+North West,Spain,2022,-645.3,977.48,1622.78
+North West,Spain,2023,-427.58,1026.89,1454.46
+North West,Spain,2024,-627.46,1197.46,1824.91
+North West,Sweden,2016,-241.36,409.78,651.14
+North West,Sweden,2017,-208.31,470.38,678.68
+North West,Sweden,2018,-105.06,482.21,587.27
+North West,Sweden,2019,-153.79,382.6,536.4
+North West,Sweden,2020,-23.86,381.56,405.42
+North West,Sweden,2021,17.28,447.17,429.89
+North West,Sweden,2022,-344.41,454.84,799.25
+North West,Sweden,2023,-128.32,432.4,560.72
+North West,Sweden,2024,5.45,533.27,527.82
+North West,Switzerland,2016,107.77,364.52,256.76
+North West,Switzerland,2017,103.36,350.41,247.05
+North West,Switzerland,2018,105.89,355.21,249.32
+North West,Switzerland,2019,138.63,400.91,262.29
+North West,Switzerland,2020,87.65,298.35,210.71
+North West,Switzerland,2021,-107.84,380.5,488.34
+North West,Switzerland,2022,-114.51,418.3,532.82
+North West,Switzerland,2023,-89.33,358.95,448.28
+North West,Switzerland,2024,7.65,351.91,344.26
+North West,United States,2016,2406.18,4646,2239.82
+North West,United States,2017,1526.97,3916.54,2389.57
+North West,United States,2018,1194.54,3590.46,2395.92
+North West,United States,2019,1273.24,4021.57,2748.33
+North West,United States,2020,539.23,3211.1,2671.87
+North West,United States,2021,1364.94,4220.35,2855.41
+North West,United States,2022,439.1,4692.17,4253.07
+North West,United States,2023,1664.7,4778.66,3113.96
+North West,United States,2024,1099.11,4914.16,3815.06
+Northern Ireland,Australia,2016,59.61,75.42,15.82
+Northern Ireland,Australia,2017,95.74,125.13,29.4
+Northern Ireland,Australia,2018,127.71,156.77,29.06
+Northern Ireland,Australia,2019,167.21,189.25,22.04
+Northern Ireland,Australia,2020,106.85,117.51,10.65
+Northern Ireland,Australia,2021,145.95,154.31,8.35
+Northern Ireland,Australia,2022,182.15,194.33,12.18
+Northern Ireland,Australia,2023,240.71,254.58,13.87
+Northern Ireland,Australia,2024,163.21,176.4,13.19
+Northern Ireland,Belgium,2016,-60.84,132.12,192.96
+Northern Ireland,Belgium,2017,-69.75,158.28,228.03
+Northern Ireland,Belgium,2018,-49.83,204.84,254.66
+Northern Ireland,Belgium,2019,-148.14,197.41,345.55
+Northern Ireland,Belgium,2020,-97.26,210.73,307.99
+Northern Ireland,Belgium,2021,-107.19,178.97,286.15
+Northern Ireland,Belgium,2022,-125.13,234.28,359.4
+Northern Ireland,Belgium,2023,111.46,426.69,315.23
+Northern Ireland,Belgium,2024,-6.21,324.64,330.85
+Northern Ireland,Canada,2016,322.02,363,40.98
+Northern Ireland,Canada,2017,433.43,482.32,48.89
+Northern Ireland,Canada,2018,462.2,517.56,55.36
+Northern Ireland,Canada,2019,561.76,596.06,34.3
+Northern Ireland,Canada,2020,383.23,413.19,29.95
+Northern Ireland,Canada,2021,290.74,325.5,34.75
+Northern Ireland,Canada,2022,366.8,403.16,36.35
+Northern Ireland,Canada,2023,473.69,510.62,36.92
+Northern Ireland,Canada,2024,453.48,499.54,46.06
+Northern Ireland,China,2016,-495.44,127.8,623.24
+Northern Ireland,China,2017,-498.23,167.34,665.57
+Northern Ireland,China,2018,-514.63,167.94,682.57
+Northern Ireland,China,2019,-554.44,170.57,725.01
+Northern Ireland,China,2020,-534.46,136.47,670.93
+Northern Ireland,China,2021,-662.6,141.93,804.52
+Northern Ireland,China,2022,-866.11,127.38,993.49
+Northern Ireland,China,2023,-719.77,143.9,863.66
+Northern Ireland,China,2024,-857.38,124.79,982.17
+Northern Ireland,France,2016,84.09,391.02,306.93
+Northern Ireland,France,2017,90.81,446.86,356.05
+Northern Ireland,France,2018,26.54,398.47,371.93
+Northern Ireland,France,2019,81.92,401.9,319.98
+Northern Ireland,France,2020,53.76,290.09,236.33
+Northern Ireland,France,2021,36.99,267.22,230.24
+Northern Ireland,France,2022,0.42,337.42,337
+Northern Ireland,France,2023,43.86,394.84,350.98
+Northern Ireland,France,2024,82.86,418.94,336.09
+Northern Ireland,Germany,2016,-119.7,384.08,503.79
+Northern Ireland,Germany,2017,-151.68,402.68,554.36
+Northern Ireland,Germany,2018,-76.85,456.79,533.64
+Northern Ireland,Germany,2019,-84.68,468.4,553.08
+Northern Ireland,Germany,2020,-114.95,333.66,448.61
+Northern Ireland,Germany,2021,-157.69,325.98,483.67
+Northern Ireland,Germany,2022,-174.76,360.12,534.89
+Northern Ireland,Germany,2023,-114.42,508.03,622.45
+Northern Ireland,Germany,2024,-183.49,471.25,654.73
+Northern Ireland,India,2016,-64.6,17.47,82.07
+Northern Ireland,India,2017,-71.14,25.5,96.64
+Northern Ireland,India,2018,-73.51,24.81,98.32
+Northern Ireland,India,2019,-78.44,26.05,104.49
+Northern Ireland,India,2020,-61.3,22.67,83.97
+Northern Ireland,India,2021,-71.81,49.79,121.6
+Northern Ireland,India,2022,-107.93,32.46,140.38
+Northern Ireland,India,2023,-82.21,39.51,121.72
+Northern Ireland,India,2024,-59.98,64.88,124.86
+Northern Ireland,Ireland,2016,422.91,2367.95,1945.05
+Northern Ireland,Ireland,2017,829.07,2881.41,2052.33
+Northern Ireland,Ireland,2018,1003.61,3204.54,2200.93
+Northern Ireland,Ireland,2019,815.15,3216.62,2401.48
+Northern Ireland,Ireland,2020,884.25,3115.56,2231.32
+Northern Ireland,Ireland,2021,407.16,3253.61,2846.45
+Northern Ireland,Ireland,2022,338.31,3818.97,3480.66
+Northern Ireland,Ireland,2023,725.06,4164.15,3439.08
+Northern Ireland,Ireland,2024,864.41,4422.06,3557.65
+Northern Ireland,Italy,2016,-92.58,97.25,189.83
+Northern Ireland,Italy,2017,-154.28,104.36,258.64
+Northern Ireland,Italy,2018,-189.77,117.13,306.9
+Northern Ireland,Italy,2019,-214.41,106.89,321.29
+Northern Ireland,Italy,2020,-149.96,96.92,246.88
+Northern Ireland,Italy,2021,-172.89,109.39,282.28
+Northern Ireland,Italy,2022,-179.09,134.09,313.18
+Northern Ireland,Italy,2023,-176.32,158.58,334.9
+Northern Ireland,Italy,2024,-213.01,143.72,356.72
+Northern Ireland,Japan,2016,-82.57,53.01,135.58
+Northern Ireland,Japan,2017,-99.71,55.11,154.82
+Northern Ireland,Japan,2018,-88.13,59.63,147.76
+Northern Ireland,Japan,2019,-78.19,65.5,143.69
+Northern Ireland,Japan,2020,-41.19,56.1,97.28
+Northern Ireland,Japan,2021,-26.52,63,89.52
+Northern Ireland,Japan,2022,23.63,114.78,91.16
+Northern Ireland,Japan,2023,-12.54,107.72,120.26
+Northern Ireland,Japan,2024,-25.87,77.2,103.07
+Northern Ireland,Netherlands,2016,-325.75,236.23,561.97
+Northern Ireland,Netherlands,2017,-380.41,280.99,661.4
+Northern Ireland,Netherlands,2018,-425.57,232.06,657.63
+Northern Ireland,Netherlands,2019,-399.2,285.39,684.59
+Northern Ireland,Netherlands,2020,-310.4,304.4,614.8
+Northern Ireland,Netherlands,2021,-153.1,343.31,496.42
+Northern Ireland,Netherlands,2022,-161.35,452.39,613.74
+Northern Ireland,Netherlands,2023,-206.29,411.85,618.14
+Northern Ireland,Netherlands,2024,-258.27,369.08,627.35
+Northern Ireland,Norway,2016,19.88,29.39,9.51
+Northern Ireland,Norway,2017,24.92,33.57,8.66
+Northern Ireland,Norway,2018,28.15,41.14,13
+Northern Ireland,Norway,2019,27.28,35.02,7.74
+Northern Ireland,Norway,2020,25.36,34.53,9.17
+Northern Ireland,Norway,2021,12.65,34.1,21.45
+Northern Ireland,Norway,2022,65.51,88.06,22.55
+Northern Ireland,Norway,2023,63.04,80.92,17.87
+Northern Ireland,Norway,2024,59.07,75.35,16.28
+Northern Ireland,Poland,2016,1.89,93.14,91.25
+Northern Ireland,Poland,2017,-7.3,94.78,102.08
+Northern Ireland,Poland,2018,-4.72,108.9,113.62
+Northern Ireland,Poland,2019,-18.38,99.56,117.94
+Northern Ireland,Poland,2020,-1.45,79.07,80.53
+Northern Ireland,Poland,2021,-12.89,65.07,77.96
+Northern Ireland,Poland,2022,-1.48,96.16,97.64
+Northern Ireland,Poland,2023,19.96,123.88,103.92
+Northern Ireland,Poland,2024,31.84,132.38,100.53
+Northern Ireland,Rest of EU,2016,12.96,309.74,296.79
+Northern Ireland,Rest of EU,2017,60.46,388.73,328.28
+Northern Ireland,Rest of EU,2018,98.73,444.03,345.31
+Northern Ireland,Rest of EU,2019,56.8,401.33,344.53
+Northern Ireland,Rest of EU,2020,17.01,321.61,304.6
+Northern Ireland,Rest of EU,2021,-22.19,335.48,357.68
+Northern Ireland,Rest of EU,2022,-63.84,411.28,475.12
+Northern Ireland,Rest of EU,2023,-70.73,453.59,524.31
+Northern Ireland,Rest of EU,2024,-80.43,425.86,506.3
+Northern Ireland,Rest of world,2016,337.72,1107.6,769.87
+Northern Ireland,Rest of world,2017,417.69,1270.42,852.73
+Northern Ireland,Rest of world,2018,445.75,1321.17,875.48
+Northern Ireland,Rest of world,2019,492.9,1331.36,838.46
+Northern Ireland,Rest of world,2020,399.1,1085.75,686.65
+Northern Ireland,Rest of world,2021,229.47,1086.47,856.98
+Northern Ireland,Rest of world,2022,110.29,1158.09,1047.8
+Northern Ireland,Rest of world,2023,226.01,1203.44,977.43
+Northern Ireland,Rest of world,2024,199.69,1179.36,979.7
+Northern Ireland,Singapore,2016,54.07,61.13,7.06
+Northern Ireland,Singapore,2017,56.26,63.71,7.46
+Northern Ireland,Singapore,2018,84.46,91.53,7.07
+Northern Ireland,Singapore,2019,99.11,104.88,5.77
+Northern Ireland,Singapore,2020,56.12,65.18,9.06
+Northern Ireland,Singapore,2021,63.56,78.74,15.18
+Northern Ireland,Singapore,2022,52.75,66.04,13.29
+Northern Ireland,Singapore,2023,51.32,61.52,10.21
+Northern Ireland,Singapore,2024,80.32,98.22,17.9
+Northern Ireland,Spain,2016,-27.76,123.08,150.84
+Northern Ireland,Spain,2017,-21.17,155.71,176.88
+Northern Ireland,Spain,2018,-7.92,170.3,178.22
+Northern Ireland,Spain,2019,-22.47,169.94,192.41
+Northern Ireland,Spain,2020,-47.08,123,170.08
+Northern Ireland,Spain,2021,-30.35,157.6,187.95
+Northern Ireland,Spain,2022,-97.07,160.06,257.13
+Northern Ireland,Spain,2023,-22.73,241.5,264.23
+Northern Ireland,Spain,2024,34.62,263.17,228.55
+Northern Ireland,Sweden,2016,-16.53,45.57,62.1
+Northern Ireland,Sweden,2017,-33,45.86,78.86
+Northern Ireland,Sweden,2018,-42.51,54.79,97.29
+Northern Ireland,Sweden,2019,-43.22,50.27,93.49
+Northern Ireland,Sweden,2020,-73.12,35,108.12
+Northern Ireland,Sweden,2021,-53.41,42.9,96.3
+Northern Ireland,Sweden,2022,-50.15,47.66,97.8
+Northern Ireland,Sweden,2023,-58.48,42.42,100.9
+Northern Ireland,Sweden,2024,-30.41,85.67,116.08
+Northern Ireland,Switzerland,2016,47.43,73.35,25.92
+Northern Ireland,Switzerland,2017,36.97,55.7,18.73
+Northern Ireland,Switzerland,2018,32.31,56.09,23.78
+Northern Ireland,Switzerland,2019,42.98,67.1,24.12
+Northern Ireland,Switzerland,2020,43.93,64.83,20.9
+Northern Ireland,Switzerland,2021,21.94,51.97,30.02
+Northern Ireland,Switzerland,2022,12.69,40.93,28.25
+Northern Ireland,Switzerland,2023,76.24,105,28.77
+Northern Ireland,Switzerland,2024,34.2,58.77,24.57
+Northern Ireland,United States,2016,837.5,1734.42,896.92
+Northern Ireland,United States,2017,704.42,1462.8,758.38
+Northern Ireland,United States,2018,273.17,1078.99,805.81
+Northern Ireland,United States,2019,379.56,1165.39,785.82
+Northern Ireland,United States,2020,398.21,967.39,569.19
+Northern Ireland,United States,2021,385.1,908.7,523.6
+Northern Ireland,United States,2022,410.99,1050.46,639.47
+Northern Ireland,United States,2023,696.68,1531.87,835.19
+Northern Ireland,United States,2024,925.74,1678.51,752.77
+Scotland,Australia,2016,277.1,355.4,78.31
+Scotland,Australia,2017,259.5,351.21,91.71
+Scotland,Australia,2018,263.53,335.3,71.77
+Scotland,Australia,2019,276.63,351.57,74.93
+Scotland,Australia,2020,259.28,320.63,61.35
+Scotland,Australia,2021,259.65,333.07,73.41
+Scotland,Australia,2022,297.08,382.47,85.39
+Scotland,Australia,2023,239.48,306.4,66.93
+Scotland,Australia,2024,328.36,403.57,75.2
+Scotland,Belgium,2016,-113.72,540.27,653.99
+Scotland,Belgium,2017,-108.55,618.46,727.01
+Scotland,Belgium,2018,-10.73,717.05,727.78
+Scotland,Belgium,2019,-185.2,552.11,737.31
+Scotland,Belgium,2020,-224.89,484.41,709.3
+Scotland,Belgium,2021,-111.47,596.18,707.65
+Scotland,Belgium,2022,-302.41,713.58,1015.99
+Scotland,Belgium,2023,-295.74,581.9,877.64
+Scotland,Belgium,2024,-333.72,535.74,869.46
+Scotland,Canada,2016,136.85,382.22,245.37
+Scotland,Canada,2017,328.56,561.27,232.72
+Scotland,Canada,2018,333.51,572.51,239
+Scotland,Canada,2019,179.52,408.25,228.73
+Scotland,Canada,2020,223.72,400.62,176.9
+Scotland,Canada,2021,156.43,411,254.57
+Scotland,Canada,2022,190.93,511.23,320.29
+Scotland,Canada,2023,135.91,477.88,341.97
+Scotland,Canada,2024,153.05,421.85,268.8
+Scotland,China,2016,-935.8,1578.09,2513.89
+Scotland,China,2017,-505.85,2228.05,2733.9
+Scotland,China,2018,-1433.24,1457.15,2890.39
+Scotland,China,2019,1685.74,4532.05,2846.3
+Scotland,China,2020,-1183.77,1836.92,3020.69
+Scotland,China,2021,-2527.36,1052.13,3579.49
+Scotland,China,2022,-2882.11,825.2,3707.32
+Scotland,China,2023,-2353.62,805.16,3158.78
+Scotland,China,2024,-1706.1,1133.54,2839.64
+Scotland,France,2016,525.59,1430.19,904.6
+Scotland,France,2017,718.82,1674.5,955.68
+Scotland,France,2018,614.23,1612.16,997.93
+Scotland,France,2019,894.6,1864.36,969.76
+Scotland,France,2020,780.57,1506.73,726.16
+Scotland,France,2021,1536.34,2235.83,699.49
+Scotland,France,2022,1411.7,2607.98,1196.28
+Scotland,France,2023,665.1,2212.16,1547.06
+Scotland,France,2024,1047.35,2147.32,1099.97
+Scotland,Germany,2016,513.96,2352.75,1838.79
+Scotland,Germany,2017,882.44,2803.75,1921.31
+Scotland,Germany,2018,735.91,2736.91,2001
+Scotland,Germany,2019,1613.46,3501.9,1888.44
+Scotland,Germany,2020,770.94,2289.24,1518.31
+Scotland,Germany,2021,1021.12,2247.27,1226.15
+Scotland,Germany,2022,821.13,2656.88,1835.75
+Scotland,Germany,2023,750.41,2577.91,1827.5
+Scotland,Germany,2024,648.4,2456.93,1808.53
+Scotland,India,2016,19.88,320.3,300.42
+Scotland,India,2017,240.41,562.9,322.49
+Scotland,India,2018,304.37,620.22,315.85
+Scotland,India,2019,28.69,394.82,366.13
+Scotland,India,2020,64.57,313.1,248.53
+Scotland,India,2021,118.62,448.78,330.17
+Scotland,India,2022,299.32,746.41,447.09
+Scotland,India,2023,91.84,534.3,442.46
+Scotland,India,2024,192.26,609.56,417.3
+Scotland,Ireland,2016,515.98,992.2,476.23
+Scotland,Ireland,2017,761.4,1288.38,526.99
+Scotland,Ireland,2018,1018.11,1531.35,513.24
+Scotland,Ireland,2019,698.2,1242.33,544.13
+Scotland,Ireland,2020,635.87,1136.46,500.59
+Scotland,Ireland,2021,1694.5,2222.61,528.11
+Scotland,Ireland,2022,3197.8,3975.94,778.15
+Scotland,Ireland,2023,1718.17,2331.11,612.95
+Scotland,Ireland,2024,1246.59,1919.75,673.16
+Scotland,Italy,2016,-37.28,616.28,653.56
+Scotland,Italy,2017,-82.84,566.48,649.32
+Scotland,Italy,2018,29.09,748.74,719.65
+Scotland,Italy,2019,-60.27,693.39,753.66
+Scotland,Italy,2020,21.06,626.66,605.61
+Scotland,Italy,2021,218.9,826.2,607.3
+Scotland,Italy,2022,-20.69,854.7,875.38
+Scotland,Italy,2023,-171.94,729.11,901.04
+Scotland,Italy,2024,-231.74,712.85,944.59
+Scotland,Japan,2016,54.11,338.84,284.74
+Scotland,Japan,2017,74.4,404.92,330.53
+Scotland,Japan,2018,79.47,459.4,379.93
+Scotland,Japan,2019,166.27,501.34,335.07
+Scotland,Japan,2020,166,403.17,237.17
+Scotland,Japan,2021,167.92,438.63,270.71
+Scotland,Japan,2022,238.77,570.61,331.84
+Scotland,Japan,2023,271.54,543.29,271.75
+Scotland,Japan,2024,249.57,484.09,234.52
+Scotland,Netherlands,2016,1617.56,3067.04,1449.48
+Scotland,Netherlands,2017,2734.41,4316.74,1582.33
+Scotland,Netherlands,2018,4970.25,6913.29,1943.04
+Scotland,Netherlands,2019,3754.51,5890.4,2135.89
+Scotland,Netherlands,2020,3358.75,5051.4,1692.65
+Scotland,Netherlands,2021,4354.44,5554.1,1199.66
+Scotland,Netherlands,2022,4039.15,6393.71,2354.55
+Scotland,Netherlands,2023,3845.43,6290.77,2445.34
+Scotland,Netherlands,2024,3237.03,5210.4,1973.37
+Scotland,Norway,2016,-1675.77,1069.62,2745.39
+Scotland,Norway,2017,-3064.21,790.66,3854.87
+Scotland,Norway,2018,-3075.47,966.64,4042.11
+Scotland,Norway,2019,-1539.64,890.73,2430.37
+Scotland,Norway,2020,-100.13,1515.77,1615.9
+Scotland,Norway,2021,-5136.77,919.9,6056.67
+Scotland,Norway,2022,-9212.17,767.34,9979.51
+Scotland,Norway,2023,-4348.22,791.49,5139.71
+Scotland,Norway,2024,-3198.75,792.36,3991.1
+Scotland,Poland,2016,-474.48,268.12,742.6
+Scotland,Poland,2017,-519.85,301.3,821.14
+Scotland,Poland,2018,-315.52,542.15,857.67
+Scotland,Poland,2019,-414.86,486.03,900.89
+Scotland,Poland,2020,-490.15,365.88,856.03
+Scotland,Poland,2021,-424.68,427.89,852.57
+Scotland,Poland,2022,-274.92,1004.74,1279.66
+Scotland,Poland,2023,-76.07,1061.77,1137.84
+Scotland,Poland,2024,-315.4,967.37,1282.77
+Scotland,Rest of EU,2016,-183.85,964.59,1148.44
+Scotland,Rest of EU,2017,-21.43,1142.15,1163.58
+Scotland,Rest of EU,2018,98.82,1331.58,1232.75
+Scotland,Rest of EU,2019,-21.92,1285.24,1307.17
+Scotland,Rest of EU,2020,-67.95,1105.01,1172.96
+Scotland,Rest of EU,2021,201.26,1381.91,1180.64
+Scotland,Rest of EU,2022,169.82,1677.23,1507.43
+Scotland,Rest of EU,2023,47.54,1828.74,1781.2
+Scotland,Rest of EU,2024,511.83,2097.13,1585.28
+Scotland,Rest of world,2016,933.33,4933.48,4000.17
+Scotland,Rest of world,2017,2010.48,5612.99,3602.57
+Scotland,Rest of world,2018,1503.88,5600.25,4096.44
+Scotland,Rest of world,2019,1285.79,5256.93,3971.14
+Scotland,Rest of world,2020,1253.28,4520.63,3267.36
+Scotland,Rest of world,2021,1569.64,4963.8,3394.17
+Scotland,Rest of world,2022,1059.1,6145.36,5086.26
+Scotland,Rest of world,2023,1807.06,5839.67,4032.6
+Scotland,Rest of world,2024,2269.91,5913.11,3643.23
+Scotland,Singapore,2016,-170.15,532.34,702.48
+Scotland,Singapore,2017,-444.26,674.67,1118.93
+Scotland,Singapore,2018,355.19,579.61,224.42
+Scotland,Singapore,2019,242.14,598.15,356.01
+Scotland,Singapore,2020,218.62,483.8,265.18
+Scotland,Singapore,2021,255.9,436.36,180.46
+Scotland,Singapore,2022,393.31,626.3,232.99
+Scotland,Singapore,2023,479.25,738.95,259.69
+Scotland,Singapore,2024,465.19,710.38,245.19
+Scotland,Spain,2016,467.11,867.24,400.13
+Scotland,Spain,2017,482.63,917.18,434.56
+Scotland,Spain,2018,-81.55,796.68,878.23
+Scotland,Spain,2019,411.23,858.88,447.65
+Scotland,Spain,2020,489.35,871.88,382.53
+Scotland,Spain,2021,191.65,649.2,457.54
+Scotland,Spain,2022,252.72,896.14,643.42
+Scotland,Spain,2023,75.66,798.71,723.05
+Scotland,Spain,2024,8.88,671.53,662.65
+Scotland,Sweden,2016,12.73,265.57,252.84
+Scotland,Sweden,2017,-9.69,308.54,318.23
+Scotland,Sweden,2018,22.23,326.96,304.73
+Scotland,Sweden,2019,30.66,368.84,338.19
+Scotland,Sweden,2020,-0.09,313.78,313.86
+Scotland,Sweden,2021,-2.33,291.14,293.47
+Scotland,Sweden,2022,572.2,887.04,314.84
+Scotland,Sweden,2023,495.58,908.53,412.95
+Scotland,Sweden,2024,557.85,962.32,404.48
+Scotland,Switzerland,2016,57.19,163.23,106.04
+Scotland,Switzerland,2017,2.53,144.56,142.04
+Scotland,Switzerland,2018,32.73,161.33,128.6
+Scotland,Switzerland,2019,0.75,158.34,157.59
+Scotland,Switzerland,2020,34.71,157.57,122.86
+Scotland,Switzerland,2021,-28.91,194.15,223.05
+Scotland,Switzerland,2022,-42.1,221.65,263.75
+Scotland,Switzerland,2023,-64.06,158.24,222.3
+Scotland,Switzerland,2024,-102.47,158.54,261.02
+Scotland,United States,2016,911.11,3123.22,2212.11
+Scotland,United States,2017,669.47,3356.56,2687.09
+Scotland,United States,2018,1445.88,4250.88,2805
+Scotland,United States,2019,1031.35,3942,2910.66
+Scotland,United States,2020,362.43,2882.49,2520.05
+Scotland,United States,2021,536.55,3302.11,2765.57
+Scotland,United States,2022,-413.03,3854.1,4267.13
+Scotland,United States,2023,282.28,3976.24,3693.95
+Scotland,United States,2024,279.74,3983.64,3703.9
+South East,Australia,2016,-65.14,507.72,572.87
+South East,Australia,2017,-73.58,542.52,616.1
+South East,Australia,2018,-17.36,510.2,527.56
+South East,Australia,2019,-55.25,544.54,599.8
+South East,Australia,2020,-32.08,541.8,573.88
+South East,Australia,2021,-98.17,544.53,642.7
+South East,Australia,2022,131.74,535.31,403.58
+South East,Australia,2023,132.31,560.61,428.3
+South East,Australia,2024,141.37,522.85,381.49
+South East,Belgium,2016,-3968.17,2092.97,6061.14
+South East,Belgium,2017,-3839.7,2368.28,6207.98
+South East,Belgium,2018,-3985.38,2452.49,6437.87
+South East,Belgium,2019,-4491.09,2041.41,6532.5
+South East,Belgium,2020,-3894.76,1614.06,5508.82
+South East,Belgium,2021,-3863.31,2432.17,6295.48
+South East,Belgium,2022,-2859.04,2570.75,5429.8
+South East,Belgium,2023,-2738.46,2275.83,5014.28
+South East,Belgium,2024,-3370.96,2099.1,5470.06
+South East,Canada,2016,-14.05,542.68,556.73
+South East,Canada,2017,-17.75,602.63,620.38
+South East,Canada,2018,-44.31,641.55,685.86
+South East,Canada,2019,-87.13,608.28,695.42
+South East,Canada,2020,-85.55,409.24,494.79
+South East,Canada,2021,-95.33,491.7,587.03
+South East,Canada,2022,-429.01,489.13,918.14
+South East,Canada,2023,-679.72,457.24,1136.95
+South East,Canada,2024,-350.91,466.24,817.15
+South East,China,2016,-3941.8,1289.43,5231.23
+South East,China,2017,-3458.09,1804.96,5263.05
+South East,China,2018,-1728.46,3911.49,5639.95
+South East,China,2019,-4760.15,1874.64,6634.79
+South East,China,2020,-5087.66,1583.57,6671.23
+South East,China,2021,-6885.66,1832.11,8717.76
+South East,China,2022,-8248.93,1409.83,9658.75
+South East,China,2023,-6403.19,1281.17,7684.36
+South East,China,2024,-7161.51,1050.31,8211.83
+South East,France,2016,-1640.26,2643.51,4283.77
+South East,France,2017,-1548.71,3072.96,4621.67
+South East,France,2018,-2123.18,3003.85,5127.03
+South East,France,2019,-2180.98,2765.02,4946
+South East,France,2020,-1571.93,2319.96,3891.89
+South East,France,2021,-1728.25,2787.04,4515.29
+South East,France,2022,-1546.74,4642.74,6189.48
+South East,France,2023,-4281.78,2666.95,6948.73
+South East,France,2024,-4156.38,2478.99,6635.37
+South East,Germany,2016,-16648.19,4399.02,21047.21
+South East,Germany,2017,-17663.21,4791.7,22454.91
+South East,Germany,2018,-18242.39,4483.69,22726.08
+South East,Germany,2019,-18069.5,4970.76,23040.26
+South East,Germany,2020,-14773.72,4346.88,19120.6
+South East,Germany,2021,-14371.79,4477.81,18849.6
+South East,Germany,2022,-21174.4,4854.02,26028.42
+South East,Germany,2023,-23184.86,4445.44,27630.31
+South East,Germany,2024,-23249.36,4512.88,27762.23
+South East,India,2016,-322.59,457.41,780
+South East,India,2017,-576.79,532.51,1109.3
+South East,India,2018,-554.92,587.39,1142.31
+South East,India,2019,-519.84,562.28,1082.13
+South East,India,2020,-445.45,404.89,850.34
+South East,India,2021,-469.95,479.41,949.36
+South East,India,2022,-858.21,527.45,1385.66
+South East,India,2023,-735.5,553.93,1289.43
+South East,India,2024,-782.01,625.37,1407.38
+South East,Ireland,2016,879.14,2260.95,1381.81
+South East,Ireland,2017,913.85,2390.27,1476.43
+South East,Ireland,2018,1188.98,2548.79,1359.81
+South East,Ireland,2019,1149.82,2445.23,1295.41
+South East,Ireland,2020,1370.76,2547.98,1177.22
+South East,Ireland,2021,2104.51,3263.25,1158.74
+South East,Ireland,2022,2005.39,3455.74,1450.35
+South East,Ireland,2023,3226,4493.36,1267.37
+South East,Ireland,2024,1669.99,2730.52,1060.53
+South East,Italy,2016,-1746.16,1307.29,3053.45
+South East,Italy,2017,-1762.87,1288.97,3051.85
+South East,Italy,2018,-1743.36,1366.03,3109.39
+South East,Italy,2019,-1971.07,1367.02,3338.09
+South East,Italy,2020,-1596.89,1338.39,2935.28
+South East,Italy,2021,-1712.85,1293.4,3006.25
+South East,Italy,2022,-3451.03,988.04,4439.06
+South East,Italy,2023,-2667.26,1011.12,3678.37
+South East,Italy,2024,-1841.54,1049.16,2890.7
+South East,Japan,2016,-399.73,1045.98,1445.71
+South East,Japan,2017,-701.17,1241.92,1943.09
+South East,Japan,2018,-406.79,1430.84,1837.63
+South East,Japan,2019,-508.43,1331.02,1839.45
+South East,Japan,2020,-688.12,1083.03,1771.16
+South East,Japan,2021,-178.21,968.25,1146.46
+South East,Japan,2022,-648.05,767.56,1415.61
+South East,Japan,2023,-1111.88,710.53,1822.41
+South East,Japan,2024,-751.28,775.58,1526.85
+South East,Netherlands,2016,-3698.26,2305.97,6004.23
+South East,Netherlands,2017,-4346,3117.74,7463.74
+South East,Netherlands,2018,-4431.14,3295.44,7726.58
+South East,Netherlands,2019,-5256.54,2851.47,8108.01
+South East,Netherlands,2020,-4448.34,2326.71,6775.05
+South East,Netherlands,2021,-3456.64,2865.47,6322.11
+South East,Netherlands,2022,-6045.28,3848.88,9894.15
+South East,Netherlands,2023,-7296.67,3074.05,10370.72
+South East,Netherlands,2024,-5662.12,3046.64,8708.76
+South East,Norway,2016,-369.69,276.57,646.26
+South East,Norway,2017,-1348.86,330.47,1679.33
+South East,Norway,2018,-2151.58,334.39,2485.97
+South East,Norway,2019,-932.56,349.89,1282.44
+South East,Norway,2020,-536.44,308.13,844.58
+South East,Norway,2021,-1103.92,292.92,1396.84
+South East,Norway,2022,-1224.07,351.01,1575.08
+South East,Norway,2023,-980.16,412.92,1393.08
+South East,Norway,2024,-460.64,449.8,910.44
+South East,Poland,2016,-574.63,689.28,1263.91
+South East,Poland,2017,-757.27,692.21,1449.49
+South East,Poland,2018,-780.81,690.39,1471.2
+South East,Poland,2019,-920.7,716.5,1637.2
+South East,Poland,2020,-1110.69,680.65,1791.34
+South East,Poland,2021,-1473,494.98,1967.98
+South East,Poland,2022,-1408.69,501.59,1910.27
+South East,Poland,2023,-1386.58,578.98,1965.56
+South East,Poland,2024,-1283.04,603.17,1886.21
+South East,Rest of EU,2016,-3679.33,2771.62,6450.94
+South East,Rest of EU,2017,-4784.92,2771.2,7556.12
+South East,Rest of EU,2018,-4774.76,2876.32,7651.08
+South East,Rest of EU,2019,-5922.98,3018.89,8941.88
+South East,Rest of EU,2020,-3814.64,2580.98,6395.61
+South East,Rest of EU,2021,-3845.35,1949.06,5794.4
+South East,Rest of EU,2022,-4675.59,2158.36,6833.96
+South East,Rest of EU,2023,-5254.69,2171.44,7426.12
+South East,Rest of EU,2024,-5460.08,2281.72,7741.77
+South East,Rest of world,2016,-4028.24,8129.52,12157.75
+South East,Rest of world,2017,-4580.12,9305.55,13885.67
+South East,Rest of world,2018,-5405.21,8274.56,13679.74
+South East,Rest of world,2019,-6243.32,8204.13,14447.43
+South East,Rest of world,2020,-5848.7,6292.83,12141.51
+South East,Rest of world,2021,-6448.74,6980.89,13429.61
+South East,Rest of world,2022,-10248.78,7593.22,17841.96
+South East,Rest of world,2023,-7043.2,7877.78,14920.99
+South East,Rest of world,2024,-7112.77,7857.33,14970.1
+South East,Singapore,2016,43.94,406.7,362.76
+South East,Singapore,2017,97.87,451.11,353.24
+South East,Singapore,2018,63.1,435.7,372.6
+South East,Singapore,2019,139.88,495.76,355.88
+South East,Singapore,2020,104.28,350.58,246.31
+South East,Singapore,2021,117.18,337.71,220.53
+South East,Singapore,2022,77.72,387.71,309.98
+South East,Singapore,2023,150.54,393.63,243.09
+South East,Singapore,2024,115.57,392.84,277.27
+South East,Spain,2016,-1343.96,1196.86,2540.82
+South East,Spain,2017,-1228.47,1280.19,2508.66
+South East,Spain,2018,-1169.04,1300.6,2469.64
+South East,Spain,2019,-1460.8,1271.1,2731.9
+South East,Spain,2020,-1302.25,947.15,2249.4
+South East,Spain,2021,-1492.48,961.05,2453.53
+South East,Spain,2022,-2398.54,1039.45,3438
+South East,Spain,2023,-2658.83,943.95,3602.78
+South East,Spain,2024,-2614.97,1043.98,3658.95
+South East,Sweden,2016,-460.1,628.36,1088.46
+South East,Sweden,2017,-621.84,651.29,1273.13
+South East,Sweden,2018,-794.07,706.82,1500.88
+South East,Sweden,2019,-777.74,591.67,1369.41
+South East,Sweden,2020,-527.37,552.67,1080.05
+South East,Sweden,2021,-616.88,456.36,1073.24
+South East,Sweden,2022,-379.01,460.1,839.11
+South East,Sweden,2023,-408.96,439.39,848.35
+South East,Sweden,2024,-197.19,525.32,722.52
+South East,Switzerland,2016,-1055.23,867.05,1922.28
+South East,Switzerland,2017,-720.35,903.67,1624.01
+South East,Switzerland,2018,-800.8,893.22,1694.02
+South East,Switzerland,2019,-770.8,1023.42,1794.22
+South East,Switzerland,2020,-690.95,866.27,1557.21
+South East,Switzerland,2021,-1664.62,944.61,2609.23
+South East,Switzerland,2022,-1402.7,1063.83,2466.53
+South East,Switzerland,2023,-1305.08,893.38,2198.45
+South East,Switzerland,2024,-1292.25,701.38,1993.63
+South East,United States,2016,360.77,7047.32,6686.55
+South East,United States,2017,195.33,7265.43,7070.09
+South East,United States,2018,-385.34,7379.12,7764.46
+South East,United States,2019,537.91,9206.44,8668.54
+South East,United States,2020,111.09,5993.5,5882.41
+South East,United States,2021,19.97,6481.85,6461.87
+South East,United States,2022,-4162.84,6460.2,10623.04
+South East,United States,2023,-4688.23,6284.52,10972.76
+South East,United States,2024,-3782.29,6413.22,10195.51
+South West,Australia,2016,137.7,258.77,121.07
+South West,Australia,2017,144.61,312.86,168.25
+South West,Australia,2018,167.88,298.96,131.09
+South West,Australia,2019,158.51,285.78,127.27
+South West,Australia,2020,117.63,237.22,119.59
+South West,Australia,2021,141.17,270.43,129.25
+South West,Australia,2022,119.68,250.25,130.57
+South West,Australia,2023,140.87,250.08,109.21
+South West,Australia,2024,151,253.87,102.87
+South West,Belgium,2016,-307.56,407.05,714.61
+South West,Belgium,2017,-243.53,445.16,688.7
+South West,Belgium,2018,-213.55,440.62,654.18
+South West,Belgium,2019,-201.93,459.89,661.82
+South West,Belgium,2020,-334.67,400.03,734.7
+South West,Belgium,2021,34.25,679.49,645.24
+South West,Belgium,2022,-659.87,705.55,1365.42
+South West,Belgium,2023,-973.49,553.06,1526.55
+South West,Belgium,2024,-752.95,478.49,1231.44
+South West,Canada,2016,53.91,334.32,280.41
+South West,Canada,2017,31.1,312.98,281.88
+South West,Canada,2018,55.34,309.44,254.1
+South West,Canada,2019,-3.43,349.92,353.34
+South West,Canada,2020,189.33,368.31,178.98
+South West,Canada,2021,71.43,307.78,236.34
+South West,Canada,2022,115.64,416.44,300.79
+South West,Canada,2023,11.92,360.26,348.35
+South West,Canada,2024,168.78,432.91,264.14
+South West,China,2016,-1875.25,432.85,2308.11
+South West,China,2017,-1873.89,565.35,2439.24
+South West,China,2018,-1700.81,667.78,2368.58
+South West,China,2019,-1847.08,602.08,2449.16
+South West,China,2020,-1775,582.31,2357.31
+South West,China,2021,-2656.53,892.1,3548.63
+South West,China,2022,-2661.51,822.93,3484.44
+South West,China,2023,-2261.56,833.88,3095.44
+South West,China,2024,-2413.71,703.56,3117.26
+South West,France,2016,318.88,1734.91,1416.03
+South West,France,2017,786.96,2280.65,1493.69
+South West,France,2018,882.15,2332.54,1450.39
+South West,France,2019,940.69,2327.56,1386.86
+South West,France,2020,409.33,1549.35,1140.01
+South West,France,2021,454.15,1659.58,1205.43
+South West,France,2022,-226.69,1947.82,2174.5
+South West,France,2023,-635.81,1953.21,2589.02
+South West,France,2024,-210.59,2205.7,2416.29
+South West,Germany,2016,47.21,2351.2,2303.99
+South West,Germany,2017,266.28,2680.43,2414.15
+South West,Germany,2018,216.29,2754.64,2538.35
+South West,Germany,2019,98.38,2647.32,2548.93
+South West,Germany,2020,-256.66,1980.72,2237.38
+South West,Germany,2021,-51.08,2319.37,2370.45
+South West,Germany,2022,-511.43,2417.63,2929.06
+South West,Germany,2023,40.56,2886.64,2846.07
+South West,Germany,2024,385.83,3087.95,2702.12
+South West,India,2016,-126.19,240.73,366.92
+South West,India,2017,-95.85,344.48,440.32
+South West,India,2018,-141.74,363.71,505.45
+South West,India,2019,-120.67,362.19,482.87
+South West,India,2020,-164.84,215.38,380.23
+South West,India,2021,-68.54,446.68,515.22
+South West,India,2022,205.4,825.17,619.77
+South West,India,2023,-45.7,492.3,538
+South West,India,2024,107.36,579.05,471.69
+South West,Ireland,2016,133.6,758.18,624.58
+South West,Ireland,2017,209.05,790.55,581.5
+South West,Ireland,2018,371.3,904.82,533.52
+South West,Ireland,2019,259.85,819.76,559.91
+South West,Ireland,2020,302.35,788.44,486.1
+South West,Ireland,2021,395.98,869.5,473.52
+South West,Ireland,2022,398.99,970.46,571.47
+South West,Ireland,2023,617.85,1075.75,457.9
+South West,Ireland,2024,319.84,838.83,519
+South West,Italy,2016,-424.47,475.13,899.6
+South West,Italy,2017,-420.96,468.24,889.2
+South West,Italy,2018,-499.84,437.87,937.7
+South West,Italy,2019,-492.02,524.34,1016.36
+South West,Italy,2020,-468.3,384.17,852.48
+South West,Italy,2021,-276.21,581.04,857.25
+South West,Italy,2022,-523.67,565.76,1089.43
+South West,Italy,2023,-499.55,601.27,1100.82
+South West,Italy,2024,-548.65,560.45,1109.1
+South West,Japan,2016,-631.33,419.39,1050.72
+South West,Japan,2017,-545.89,473.97,1019.86
+South West,Japan,2018,-328.7,599.77,928.47
+South West,Japan,2019,-160.49,602.74,763.23
+South West,Japan,2020,-5.81,477.92,483.73
+South West,Japan,2021,-37.87,434.76,472.63
+South West,Japan,2022,85.79,615.58,529.79
+South West,Japan,2023,70.31,491.13,420.82
+South West,Japan,2024,98.21,495.77,397.57
+South West,Netherlands,2016,-1002.48,546.25,1548.73
+South West,Netherlands,2017,-1030.86,666.07,1696.93
+South West,Netherlands,2018,-980.99,790.6,1771.58
+South West,Netherlands,2019,-1144.35,647.49,1791.84
+South West,Netherlands,2020,-1058.3,481.38,1539.68
+South West,Netherlands,2021,-421.61,888.62,1310.23
+South West,Netherlands,2022,-809.35,1130.15,1939.5
+South West,Netherlands,2023,-784.33,981.32,1765.65
+South West,Netherlands,2024,-515.49,992.39,1507.88
+South West,Norway,2016,77.98,162.75,84.77
+South West,Norway,2017,84.38,192.32,107.94
+South West,Norway,2018,116.05,225.89,109.84
+South West,Norway,2019,63.63,204.67,141.04
+South West,Norway,2020,91.87,215.99,124.12
+South West,Norway,2021,61.16,191.68,130.52
+South West,Norway,2022,5.06,180.07,175.01
+South West,Norway,2023,26.52,186.24,159.72
+South West,Norway,2024,-7.25,179.32,186.58
+South West,Poland,2016,-152.14,184.43,336.57
+South West,Poland,2017,-229.03,205.42,434.45
+South West,Poland,2018,-211.18,206.3,417.48
+South West,Poland,2019,-225.64,221.33,446.97
+South West,Poland,2020,-206.61,210.83,417.44
+South West,Poland,2021,-156.36,210.54,366.91
+South West,Poland,2022,-229.23,282.8,512.03
+South West,Poland,2023,-262.51,322.77,585.28
+South West,Poland,2024,-252.29,338.15,590.43
+South West,Rest of EU,2016,-452.95,863.05,1315.98
+South West,Rest of EU,2017,-345.82,1013.88,1359.7
+South West,Rest of EU,2018,-491.81,1095.61,1587.44
+South West,Rest of EU,2019,-491.3,980.86,1472.15
+South West,Rest of EU,2020,-343.34,848.63,1191.97
+South West,Rest of EU,2021,-207.85,1054.79,1262.64
+South West,Rest of EU,2022,-467.21,1153.43,1620.62
+South West,Rest of EU,2023,-616.85,1189.94,1806.78
+South West,Rest of EU,2024,-727.99,1047.27,1775.26
+South West,Rest of world,2016,467.69,4838.85,4371.19
+South West,Rest of world,2017,10.68,4907.39,4896.72
+South West,Rest of world,2018,-148.5,4879.42,5027.92
+South West,Rest of world,2019,-245.91,4670.97,4916.9
+South West,Rest of world,2020,11.51,4155.14,4143.6
+South West,Rest of world,2021,-365.19,4188.17,4553.38
+South West,Rest of world,2022,-771.04,5311.42,6082.48
+South West,Rest of world,2023,558.3,5721.89,5163.6
+South West,Rest of world,2024,1072.36,5289.39,4217
+South West,Singapore,2016,293.89,547.94,254.05
+South West,Singapore,2017,248.74,522.89,274.15
+South West,Singapore,2018,191.93,513.25,321.32
+South West,Singapore,2019,214.74,580.39,365.65
+South West,Singapore,2020,177.32,498.62,321.3
+South West,Singapore,2021,63.08,393.89,330.81
+South West,Singapore,2022,101.28,561.09,459.81
+South West,Singapore,2023,197.52,663.14,465.62
+South West,Singapore,2024,320.22,800.6,480.38
+South West,Spain,2016,-774.89,413.94,1188.83
+South West,Spain,2017,-605.12,456.38,1061.5
+South West,Spain,2018,-86.26,470.63,556.89
+South West,Spain,2019,-131.66,494.18,625.84
+South West,Spain,2020,-105.6,384.05,489.64
+South West,Spain,2021,-86.78,412.89,499.66
+South West,Spain,2022,-324.93,461.42,786.36
+South West,Spain,2023,-365.58,481.62,847.2
+South West,Spain,2024,-318.28,619.23,937.51
+South West,Sweden,2016,-107.02,225.91,332.94
+South West,Sweden,2017,-68.29,258.28,326.57
+South West,Sweden,2018,-85.8,265.37,351.17
+South West,Sweden,2019,-59.61,262.41,322.02
+South West,Sweden,2020,-81.66,216.67,298.33
+South West,Sweden,2021,-71.21,239.93,311.14
+South West,Sweden,2022,-103.1,264.09,367.19
+South West,Sweden,2023,-115.46,295.95,411.4
+South West,Sweden,2024,-134.07,355.31,489.38
+South West,Switzerland,2016,43.69,236.2,192.51
+South West,Switzerland,2017,-47.84,200.56,248.4
+South West,Switzerland,2018,-8.25,196.25,204.5
+South West,Switzerland,2019,-28.94,219.99,248.93
+South West,Switzerland,2020,-1.34,183.22,184.56
+South West,Switzerland,2021,-44.62,241.43,286.05
+South West,Switzerland,2022,-90.41,243.83,334.24
+South West,Switzerland,2023,-346.97,210.87,557.83
+South West,Switzerland,2024,-93.52,188.89,282.41
+South West,United States,2016,-637.04,2769.55,3406.59
+South West,United States,2017,-617.35,3348.64,3965.98
+South West,United States,2018,239.34,3764.37,3525.03
+South West,United States,2019,-19.32,3951.33,3970.65
+South West,United States,2020,522.2,3711.96,3189.76
+South West,United States,2021,434.37,3531.43,3097.06
+South West,United States,2022,140.6,4297.33,4156.73
+South West,United States,2023,-32.6,4172.84,4205.44
+South West,United States,2024,-617.26,4387.97,5005.23
+Wales,Australia,2016,58.46,106.32,47.86
+Wales,Australia,2017,76.23,154.68,78.45
+Wales,Australia,2018,24.16,134.95,110.79
+Wales,Australia,2019,66.58,132.07,65.5
+Wales,Australia,2020,73.34,115.85,42.52
+Wales,Australia,2021,73.63,132.15,58.53
+Wales,Australia,2022,37.06,134.74,97.68
+Wales,Australia,2023,109.61,174.76,65.16
+Wales,Australia,2024,116.56,155.99,39.43
+Wales,Belgium,2016,-121.89,464.61,586.5
+Wales,Belgium,2017,-120.37,473.65,594.02
+Wales,Belgium,2018,-14.87,569.43,584.29
+Wales,Belgium,2019,-86.3,546.65,632.95
+Wales,Belgium,2020,-36.79,448.63,485.42
+Wales,Belgium,2021,487.11,1009.99,522.88
+Wales,Belgium,2022,357.56,1147.2,789.64
+Wales,Belgium,2023,251.59,1054.55,802.97
+Wales,Belgium,2024,28.48,902.77,874.29
+Wales,Canada,2016,-102.74,331.94,434.68
+Wales,Canada,2017,-80.37,358.85,439.22
+Wales,Canada,2018,-140.64,346.19,486.83
+Wales,Canada,2019,-234.57,233.71,468.27
+Wales,Canada,2020,-178.99,220.1,399.09
+Wales,Canada,2021,-4.09,326.23,330.32
+Wales,Canada,2022,147.03,509.64,362.61
+Wales,Canada,2023,142.44,360.05,217.61
+Wales,Canada,2024,154.92,270.74,115.82
+Wales,China,2016,-824.93,277.34,1102.27
+Wales,China,2017,-861.33,312.92,1174.24
+Wales,China,2018,-763.15,378.74,1141.89
+Wales,China,2019,-745.08,407.2,1152.29
+Wales,China,2020,-705.03,469.92,1174.95
+Wales,China,2021,-811.61,608,1419.61
+Wales,China,2022,-1160.76,666.58,1827.34
+Wales,China,2023,-1064.59,654.65,1719.24
+Wales,China,2024,-1172.82,535.85,1708.67
+Wales,France,2016,1464.38,2334.83,870.45
+Wales,France,2017,1865.5,2754.65,889.15
+Wales,France,2018,1874.34,2683.93,809.59
+Wales,France,2019,2060.36,2818.68,758.32
+Wales,France,2020,1217.17,1841.01,623.84
+Wales,France,2021,616.77,1243.46,626.69
+Wales,France,2022,527.43,1557.68,1030.25
+Wales,France,2023,494.72,1689.18,1194.46
+Wales,France,2024,560.29,1685.05,1124.76
+Wales,Germany,2016,1094.25,3001.9,1907.65
+Wales,Germany,2017,1213.33,3234.72,2021.38
+Wales,Germany,2018,1199.06,3119.64,1920.59
+Wales,Germany,2019,1009.77,2880.57,1870.8
+Wales,Germany,2020,825.65,2156.87,1331.22
+Wales,Germany,2021,1341.38,2420.24,1078.86
+Wales,Germany,2022,1111.02,2427.24,1316.22
+Wales,Germany,2023,1479.42,2721.41,1241.98
+Wales,Germany,2024,1479.79,2692.2,1212.41
+Wales,India,2016,-117.39,98.23,215.62
+Wales,India,2017,-175.66,99.91,275.57
+Wales,India,2018,-190.95,130.09,321.03
+Wales,India,2019,-234.72,130.52,365.23
+Wales,India,2020,-115.83,59.66,175.49
+Wales,India,2021,-248.45,112.53,360.98
+Wales,India,2022,-243.29,264.9,508.18
+Wales,India,2023,-155.73,187.43,343.15
+Wales,India,2024,-310.73,226.03,536.76
+Wales,Ireland,2016,636.15,901.74,265.58
+Wales,Ireland,2017,691.38,992.41,301.03
+Wales,Ireland,2018,1186.7,1517.37,330.67
+Wales,Ireland,2019,1400.3,1695.8,295.49
+Wales,Ireland,2020,545.53,1189.6,644.08
+Wales,Ireland,2021,1393.44,1728.98,335.54
+Wales,Ireland,2022,2264.91,2944.65,679.74
+Wales,Ireland,2023,2231.31,2539.95,308.65
+Wales,Ireland,2024,1358.43,1796.93,438.5
+Wales,Italy,2016,-102.95,278.42,381.37
+Wales,Italy,2017,-116.56,298.92,415.48
+Wales,Italy,2018,-137.48,289.02,426.5
+Wales,Italy,2019,-159.47,265.39,424.85
+Wales,Italy,2020,-127.23,221.84,349.08
+Wales,Italy,2021,-100.99,280.93,381.92
+Wales,Italy,2022,-158.72,333.06,491.77
+Wales,Italy,2023,-98.21,366.36,464.57
+Wales,Italy,2024,-256.78,289.01,545.79
+Wales,Japan,2016,-159.12,157.84,316.96
+Wales,Japan,2017,-257.66,199.29,456.95
+Wales,Japan,2018,-351.24,249.82,601.06
+Wales,Japan,2019,-343.39,295.85,639.24
+Wales,Japan,2020,-315.44,205.44,520.87
+Wales,Japan,2021,-384.42,194.87,579.28
+Wales,Japan,2022,-400.65,299.48,700.13
+Wales,Japan,2023,11.08,324.7,313.62
+Wales,Japan,2024,-54.41,200.68,255.09
+Wales,Netherlands,2016,-217.94,580.41,798.36
+Wales,Netherlands,2017,-346.77,695.91,1042.68
+Wales,Netherlands,2018,-306.81,746.47,1053.29
+Wales,Netherlands,2019,-15.57,981.13,996.7
+Wales,Netherlands,2020,-49.71,854.97,904.67
+Wales,Netherlands,2021,-162.1,873.74,1035.84
+Wales,Netherlands,2022,-108.43,1256.03,1364.46
+Wales,Netherlands,2023,-70.33,1285.89,1356.22
+Wales,Netherlands,2024,-401.49,999.61,1401.1
+Wales,Norway,2016,-457.09,51.09,508.18
+Wales,Norway,2017,-851.12,79.13,930.25
+Wales,Norway,2018,-289.48,79.86,369.35
+Wales,Norway,2019,-526.88,101.49,628.37
+Wales,Norway,2020,-228.33,105.33,333.66
+Wales,Norway,2021,-377.7,97.31,475
+Wales,Norway,2022,-915.68,127.25,1042.93
+Wales,Norway,2023,-646.6,86.68,733.28
+Wales,Norway,2024,-262.45,81.9,344.34
+Wales,Poland,2016,-60.01,141.35,201.36
+Wales,Poland,2017,-75.78,170.85,246.62
+Wales,Poland,2018,-76.33,173.99,250.32
+Wales,Poland,2019,-109.62,142.13,251.75
+Wales,Poland,2020,-100.91,132.74,233.65
+Wales,Poland,2021,-105.71,124.16,229.87
+Wales,Poland,2022,-154.83,149.54,304.37
+Wales,Poland,2023,-114.02,181.67,295.69
+Wales,Poland,2024,-125.11,174.28,299.39
+Wales,Rest of EU,2016,-353.9,510.78,864.66
+Wales,Rest of EU,2017,-372.43,583.97,956.4
+Wales,Rest of EU,2018,-337.14,649.28,986.42
+Wales,Rest of EU,2019,-233.78,662.59,896.36
+Wales,Rest of EU,2020,-141.15,556.13,697.27
+Wales,Rest of EU,2021,-20.88,694.09,714.97
+Wales,Rest of EU,2022,-152.76,857.8,1010.6
+Wales,Rest of EU,2023,-160.11,842.72,1002.83
+Wales,Rest of EU,2024,-218.81,704.86,923.66
+Wales,Rest of world,2016,-954.74,2424.73,3379.42
+Wales,Rest of world,2017,-1409.73,2719.64,4129.36
+Wales,Rest of world,2018,-2260.04,2620.65,4880.7
+Wales,Rest of world,2019,-1884.49,2658.51,4543.02
+Wales,Rest of world,2020,-667.48,2337.69,3005.14
+Wales,Rest of world,2021,-2349.08,2221.74,4570.82
+Wales,Rest of world,2022,-4244.76,3180.14,7424.92
+Wales,Rest of world,2023,-3289.98,2895.31,6185.32
+Wales,Rest of world,2024,-2903.36,2529.67,5433.03
+Wales,Singapore,2016,35.34,160.42,125.08
+Wales,Singapore,2017,10.94,182.99,172.05
+Wales,Singapore,2018,51.05,202.74,151.68
+Wales,Singapore,2019,43.96,222.22,178.26
+Wales,Singapore,2020,23.77,181.14,157.37
+Wales,Singapore,2021,-28.99,125,153.99
+Wales,Singapore,2022,-25.41,180.07,205.48
+Wales,Singapore,2023,-79.69,156.71,236.4
+Wales,Singapore,2024,-130.52,160.15,290.68
+Wales,Spain,2016,-211.85,394.48,606.33
+Wales,Spain,2017,-121.79,482.09,603.88
+Wales,Spain,2018,39.02,491.68,452.66
+Wales,Spain,2019,20.78,471.14,450.35
+Wales,Spain,2020,-66.04,347.32,413.36
+Wales,Spain,2021,-326.88,393.18,720.07
+Wales,Spain,2022,-282.32,482.9,765.22
+Wales,Spain,2023,-179.27,535.89,715.15
+Wales,Spain,2024,-219.4,465.99,685.39
+Wales,Sweden,2016,-61.46,243.83,305.29
+Wales,Sweden,2017,-40.53,276.11,316.64
+Wales,Sweden,2018,-66.59,293.79,360.38
+Wales,Sweden,2019,-34.84,297.64,332.48
+Wales,Sweden,2020,-28.55,220.39,248.94
+Wales,Sweden,2021,39.23,326.31,287.08
+Wales,Sweden,2022,99.83,407.43,307.6
+Wales,Sweden,2023,53.98,332.93,278.95
+Wales,Sweden,2024,81.86,294.4,212.54
+Wales,Switzerland,2016,48.88,109.84,60.96
+Wales,Switzerland,2017,36.08,158.51,122.43
+Wales,Switzerland,2018,-12.99,124.64,137.63
+Wales,Switzerland,2019,37.42,124.24,86.82
+Wales,Switzerland,2020,26.38,94.34,67.96
+Wales,Switzerland,2021,-10.19,112.39,122.58
+Wales,Switzerland,2022,42.54,174.19,131.65
+Wales,Switzerland,2023,34.04,130.17,96.13
+Wales,Switzerland,2024,50.13,123.4,73.27
+Wales,United States,2016,137.65,2095.18,1957.53
+Wales,United States,2017,-158.12,2288.59,2446.7
+Wales,United States,2018,-525.78,2445.21,2970.99
+Wales,United States,2019,-445.66,2738.91,3184.57
+Wales,United States,2020,-659.17,1792.8,2451.97
+Wales,United States,2021,50.89,2191.82,2140.93
+Wales,United States,2022,-333.96,3392.34,3726.3
+Wales,United States,2023,-746.08,2942.62,3688.7
+Wales,United States,2024,-1972.05,2238.29,4210.34
+West Midlands,Australia,2016,617.83,697.35,79.53
+West Midlands,Australia,2017,701.85,837.83,135.99
+West Midlands,Australia,2018,465.48,565.31,99.83
+West Midlands,Australia,2019,439.57,526.97,87.4
+West Midlands,Australia,2020,266.36,353.59,87.23
+West Midlands,Australia,2021,327.08,437.43,110.35
+West Midlands,Australia,2022,399.97,543.88,143.91
+West Midlands,Australia,2023,625.35,707.75,82.4
+West Midlands,Australia,2024,560.16,653.09,92.93
+West Midlands,Belgium,2016,-1182.55,770.34,1952.89
+West Midlands,Belgium,2017,-881.31,882.61,1763.92
+West Midlands,Belgium,2018,-844.14,970.08,1814.22
+West Midlands,Belgium,2019,-987.85,802.14,1789.99
+West Midlands,Belgium,2020,-978.98,621.46,1600.44
+West Midlands,Belgium,2021,-580.08,675.41,1255.48
+West Midlands,Belgium,2022,-941.77,807.96,1749.73
+West Midlands,Belgium,2023,-1040.87,972.42,2013.29
+West Midlands,Belgium,2024,-1594.03,850.5,2444.53
+West Midlands,Canada,2016,288.98,566.02,277.04
+West Midlands,Canada,2017,223.92,609.67,385.75
+West Midlands,Canada,2018,183.2,599.32,416.12
+West Midlands,Canada,2019,461.71,715.51,253.8
+West Midlands,Canada,2020,285.71,482.69,196.97
+West Midlands,Canada,2021,310.98,519.81,208.84
+West Midlands,Canada,2022,328.52,556.38,227.86
+West Midlands,Canada,2023,425.34,643.5,218.17
+West Midlands,Canada,2024,471.94,630.65,158.71
+West Midlands,China,2016,-166.7,3290.71,3457.4
+West Midlands,China,2017,161.89,3996.27,3834.39
+West Midlands,China,2018,-669.31,3146.42,3815.73
+West Midlands,China,2019,-1750.89,2244.16,3995.05
+West Midlands,China,2020,-1748.75,2190.14,3938.89
+West Midlands,China,2021,-2979.87,2348.1,5327.97
+West Midlands,China,2022,-3784.33,2301.41,6085.75
+West Midlands,China,2023,-2785.42,2820.29,5605.71
+West Midlands,China,2024,-2826,2726.02,5552.01
+West Midlands,France,2016,-183.66,1878.32,2061.98
+West Midlands,France,2017,-105.75,2182.15,2287.89
+West Midlands,France,2018,-50.9,2204.57,2255.47
+West Midlands,France,2019,22.52,2187.04,2164.52
+West Midlands,France,2020,-246.96,1508,1754.96
+West Midlands,France,2021,-36.05,1610.41,1646.46
+West Midlands,France,2022,-1276.73,1791.91,3068.64
+West Midlands,France,2023,-1813.77,2069.43,3883.2
+West Midlands,France,2024,-676.79,2120.73,2797.51
+West Midlands,Germany,2016,-2726.28,3303.24,6029.52
+West Midlands,Germany,2017,-3289.18,3595.73,6884.91
+West Midlands,Germany,2018,-3460.61,3455.66,6916.27
+West Midlands,Germany,2019,-3044.12,3280.42,6324.53
+West Midlands,Germany,2020,-1990.8,2672.03,4662.83
+West Midlands,Germany,2021,-2495.65,2351.18,4846.83
+West Midlands,Germany,2022,-2942.43,2873.37,5815.8
+West Midlands,Germany,2023,-2710.89,3321.26,6032.15
+West Midlands,Germany,2024,-3001.58,2953.95,5955.53
+West Midlands,India,2016,-306.9,320.63,627.53
+West Midlands,India,2017,-321.12,392.09,713.2
+West Midlands,India,2018,-337.71,423.03,760.73
+West Midlands,India,2019,-489.03,316.89,805.92
+West Midlands,India,2020,-380.04,231.85,611.89
+West Midlands,India,2021,-641.11,325.84,966.95
+West Midlands,India,2022,-670.09,452.57,1122.66
+West Midlands,India,2023,-580.9,494.32,1075.22
+West Midlands,India,2024,-487.76,592.15,1079.91
+West Midlands,Ireland,2016,356.2,1338.41,982.21
+West Midlands,Ireland,2017,517.76,1457.61,939.85
+West Midlands,Ireland,2018,604.31,1552.84,948.53
+West Midlands,Ireland,2019,765.51,1796.73,1031.22
+West Midlands,Ireland,2020,707.37,1601,893.63
+West Midlands,Ireland,2021,670.33,1536.35,866.02
+West Midlands,Ireland,2022,529.19,1727.21,1198.02
+West Midlands,Ireland,2023,274.55,1646.99,1372.44
+West Midlands,Ireland,2024,-106.13,1597.89,1704.03
+West Midlands,Italy,2016,-333.31,1218.66,1551.97
+West Midlands,Italy,2017,-345.98,1410.36,1756.35
+West Midlands,Italy,2018,-394.86,1366.59,1761.45
+West Midlands,Italy,2019,-493.2,1231.71,1724.92
+West Midlands,Italy,2020,-542.68,827.98,1370.66
+West Midlands,Italy,2021,-457.7,985.12,1442.83
+West Midlands,Italy,2022,-1040.95,1028.58,2069.53
+West Midlands,Italy,2023,-760.11,1183.57,1943.68
+West Midlands,Italy,2024,-1534.71,1073.49,2608.19
+West Midlands,Japan,2016,-336.33,402.43,738.76
+West Midlands,Japan,2017,-280.42,482.97,763.38
+West Midlands,Japan,2018,-333.52,436.9,770.42
+West Midlands,Japan,2019,-248.84,472.69,721.53
+West Midlands,Japan,2020,-284.75,284.99,569.75
+West Midlands,Japan,2021,-264.26,309.85,574.12
+West Midlands,Japan,2022,-246.16,311.91,558.07
+West Midlands,Japan,2023,-96,530.95,626.94
+West Midlands,Japan,2024,72.57,601.67,529.1
+West Midlands,Netherlands,2016,-946.86,1171.65,2118.52
+West Midlands,Netherlands,2017,-932.57,1317.11,2249.68
+West Midlands,Netherlands,2018,-1060.86,1353.56,2414.42
+West Midlands,Netherlands,2019,-1045.56,1225.52,2271.08
+West Midlands,Netherlands,2020,-873.52,1011.41,1884.92
+West Midlands,Netherlands,2021,-414.01,1356.12,1770.13
+West Midlands,Netherlands,2022,-954.98,1663.92,2618.9
+West Midlands,Netherlands,2023,-569.93,1759.41,2329.34
+West Midlands,Netherlands,2024,-657.64,1529.43,2187.08
+West Midlands,Norway,2016,-113.98,186.38,300.36
+West Midlands,Norway,2017,-139.78,220.53,360.31
+West Midlands,Norway,2018,-107.74,191.29,299.02
+West Midlands,Norway,2019,101.57,192.85,91.29
+West Midlands,Norway,2020,95.08,156.75,61.67
+West Midlands,Norway,2021,68.18,168.85,100.67
+West Midlands,Norway,2022,117.83,300.56,182.73
+West Midlands,Norway,2023,53.09,229.89,176.8
+West Midlands,Norway,2024,12.57,191.77,179.19
+West Midlands,Poland,2016,-508.66,384.77,893.43
+West Midlands,Poland,2017,-535.17,514.88,1050.05
+West Midlands,Poland,2018,-606.8,623.71,1230.51
+West Midlands,Poland,2019,-628.48,549.87,1178.35
+West Midlands,Poland,2020,-562.59,423.18,985.77
+West Midlands,Poland,2021,-537.47,459.85,997.32
+West Midlands,Poland,2022,-650.66,554.81,1205.47
+West Midlands,Poland,2023,-820.81,640.83,1461.63
+West Midlands,Poland,2024,-814.18,718.94,1533.12
+West Midlands,Rest of EU,2016,-1613.01,1570.89,3183.89
+West Midlands,Rest of EU,2017,-1847.14,1909.27,3756.41
+West Midlands,Rest of EU,2018,-2308.68,2099.48,4408.16
+West Midlands,Rest of EU,2019,-2175.4,2252.75,4428.15
+West Midlands,Rest of EU,2020,-1533.07,1899.63,3432.68
+West Midlands,Rest of EU,2021,-1557.63,1860.56,3418.19
+West Midlands,Rest of EU,2022,-2232.17,2081.9,4314.08
+West Midlands,Rest of EU,2023,-2297.68,2541.68,4839.35
+West Midlands,Rest of EU,2024,-2331.34,2457.82,4789.16
+West Midlands,Rest of world,2016,-201.32,4737.92,4939.26
+West Midlands,Rest of world,2017,196.71,5554.74,5358.07
+West Midlands,Rest of world,2018,490.55,5810.23,5319.65
+West Midlands,Rest of world,2019,-406.75,4927.95,5334.71
+West Midlands,Rest of world,2020,-781.73,3651.53,4433.27
+West Midlands,Rest of world,2021,-1975.34,4246.52,6221.86
+West Midlands,Rest of world,2022,-1771.35,5016.54,6787.9
+West Midlands,Rest of world,2023,294.35,6180.57,5886.18
+West Midlands,Rest of world,2024,114.64,6155.48,6040.88
+West Midlands,Singapore,2016,217.29,343.97,126.68
+West Midlands,Singapore,2017,195.79,340.27,144.49
+West Midlands,Singapore,2018,44.53,216.12,171.59
+West Midlands,Singapore,2019,9.57,240.86,231.29
+West Midlands,Singapore,2020,15.45,185.57,170.12
+West Midlands,Singapore,2021,-9.49,164.43,173.92
+West Midlands,Singapore,2022,22.71,188.13,165.42
+West Midlands,Singapore,2023,172.47,326.93,154.46
+West Midlands,Singapore,2024,227.15,381.27,154.12
+West Midlands,Spain,2016,-451.29,835.27,1286.56
+West Midlands,Spain,2017,-249.84,956.14,1205.98
+West Midlands,Spain,2018,-381.31,886.4,1267.71
+West Midlands,Spain,2019,-497.91,819.93,1317.84
+West Midlands,Spain,2020,-498.04,597.79,1095.83
+West Midlands,Spain,2021,-687.96,551.32,1239.28
+West Midlands,Spain,2022,-834.67,640.48,1475.15
+West Midlands,Spain,2023,-666.29,769.85,1436.15
+West Midlands,Spain,2024,-1034.71,754.32,1789.03
+West Midlands,Sweden,2016,-341.09,399.43,740.52
+West Midlands,Sweden,2017,-353.47,469.14,822.61
+West Midlands,Sweden,2018,-131.23,502.12,633.35
+West Midlands,Sweden,2019,-155.17,458.74,613.9
+West Midlands,Sweden,2020,-45.28,369.87,415.15
+West Midlands,Sweden,2021,-263.89,366.33,630.22
+West Midlands,Sweden,2022,-465.72,411.31,877.03
+West Midlands,Sweden,2023,-443.62,444.44,888.05
+West Midlands,Sweden,2024,-427.29,374.24,801.52
+West Midlands,Switzerland,2016,55.35,368.39,313.04
+West Midlands,Switzerland,2017,53.35,391.97,338.62
+West Midlands,Switzerland,2018,78.28,416.84,338.56
+West Midlands,Switzerland,2019,136.47,406.88,270.41
+West Midlands,Switzerland,2020,83.67,266.73,183.06
+West Midlands,Switzerland,2021,-260.57,297.55,558.12
+West Midlands,Switzerland,2022,-281.87,307.95,589.82
+West Midlands,Switzerland,2023,-160.76,380.42,541.18
+West Midlands,Switzerland,2024,34.68,453.56,418.89
+West Midlands,United States,2016,4111.48,5954.02,1842.54
+West Midlands,United States,2017,4032.88,5949.95,1917.07
+West Midlands,United States,2018,4496.37,6639.86,2143.49
+West Midlands,United States,2019,4934.24,7012.02,2077.79
+West Midlands,United States,2020,3624.88,5277.37,1652.49
+West Midlands,United States,2021,3366.77,4964.36,1597.6
+West Midlands,United States,2022,4009.72,6388.21,2378.5
+West Midlands,United States,2023,5335.72,7278.1,1942.38
+West Midlands,United States,2024,6552.25,8459.29,1907.04
+Yorkshire and The Humber,Australia,2016,87.91,183.16,95.25
+Yorkshire and The Humber,Australia,2017,111.86,214.7,102.84
+Yorkshire and The Humber,Australia,2018,231.06,296.85,65.79
+Yorkshire and The Humber,Australia,2019,135.74,252.53,116.79
+Yorkshire and The Humber,Australia,2020,132.57,233.42,100.86
+Yorkshire and The Humber,Australia,2021,146.23,244.49,98.27
+Yorkshire and The Humber,Australia,2022,112.44,284.09,171.66
+Yorkshire and The Humber,Australia,2023,181.69,280.43,98.74
+Yorkshire and The Humber,Australia,2024,187,259.99,72.99
+Yorkshire and The Humber,Belgium,2016,-192.12,897.3,1089.42
+Yorkshire and The Humber,Belgium,2017,-222.42,1080.07,1302.48
+Yorkshire and The Humber,Belgium,2018,-225.93,1190.21,1416.14
+Yorkshire and The Humber,Belgium,2019,-312.01,1082.79,1394.8
+Yorkshire and The Humber,Belgium,2020,-549.76,709.87,1259.62
+Yorkshire and The Humber,Belgium,2021,361.84,1359.57,997.73
+Yorkshire and The Humber,Belgium,2022,-37.57,1523.56,1561.13
+Yorkshire and The Humber,Belgium,2023,545.93,1899.91,1353.98
+Yorkshire and The Humber,Belgium,2024,27.1,1639.84,1612.74
+Yorkshire and The Humber,Canada,2016,-34.54,285.02,319.56
+Yorkshire and The Humber,Canada,2017,-63.22,232.13,295.35
+Yorkshire and The Humber,Canada,2018,159.77,391.62,231.85
+Yorkshire and The Humber,Canada,2019,74.93,383.44,308.51
+Yorkshire and The Humber,Canada,2020,17.44,316.39,298.95
+Yorkshire and The Humber,Canada,2021,-2.65,321.26,323.91
+Yorkshire and The Humber,Canada,2022,-273.19,347.23,620.42
+Yorkshire and The Humber,Canada,2023,175.46,441.6,266.15
+Yorkshire and The Humber,Canada,2024,106.81,359.41,252.6
+Yorkshire and The Humber,China,2016,-2603.22,424.72,3027.95
+Yorkshire and The Humber,China,2017,-2717.25,497.32,3214.57
+Yorkshire and The Humber,China,2018,-2371.81,626.11,2997.92
+Yorkshire and The Humber,China,2019,-2422.23,828,3250.23
+Yorkshire and The Humber,China,2020,-2664.69,530.66,3195.35
+Yorkshire and The Humber,China,2021,-3450.88,579.94,4030.83
+Yorkshire and The Humber,China,2022,-3842.9,750.26,4593.15
+Yorkshire and The Humber,China,2023,-3398.76,638.51,4037.27
+Yorkshire and The Humber,China,2024,-3670.27,592.01,4262.28
+Yorkshire and The Humber,France,2016,-52.19,1065,1117.19
+Yorkshire and The Humber,France,2017,-33.77,1327.66,1361.42
+Yorkshire and The Humber,France,2018,15.68,1366.04,1350.36
+Yorkshire and The Humber,France,2019,-179.86,1210.57,1390.43
+Yorkshire and The Humber,France,2020,-172.88,914.23,1087.12
+Yorkshire and The Humber,France,2021,4.79,964.31,959.52
+Yorkshire and The Humber,France,2022,-420.97,1124.97,1545.94
+Yorkshire and The Humber,France,2023,-459.42,1127.75,1587.17
+Yorkshire and The Humber,France,2024,-461.3,1024.26,1485.56
+Yorkshire and The Humber,Germany,2016,-1504.85,1285.55,2790.4
+Yorkshire and The Humber,Germany,2017,-1816.87,1414.09,3230.96
+Yorkshire and The Humber,Germany,2018,-1592.23,1571.81,3164.03
+Yorkshire and The Humber,Germany,2019,-1683.78,1444.13,3127.91
+Yorkshire and The Humber,Germany,2020,-1225.26,1348.85,2574.11
+Yorkshire and The Humber,Germany,2021,-1279.41,1424.72,2704.13
+Yorkshire and The Humber,Germany,2022,-1571.74,1516.7,3088.44
+Yorkshire and The Humber,Germany,2023,-1719.88,1427.21,3147.09
+Yorkshire and The Humber,Germany,2024,-2134.24,1288.94,3423.19
+Yorkshire and The Humber,India,2016,-267.36,180.9,448.25
+Yorkshire and The Humber,India,2017,-331.12,172.06,503.18
+Yorkshire and The Humber,India,2018,-274.13,228.54,502.67
+Yorkshire and The Humber,India,2019,-285.31,257.64,542.95
+Yorkshire and The Humber,India,2020,-285.14,151.4,436.53
+Yorkshire and The Humber,India,2021,-413.12,189.33,602.45
+Yorkshire and The Humber,India,2022,-441.44,327.23,768.66
+Yorkshire and The Humber,India,2023,-340.99,306.31,647.3
+Yorkshire and The Humber,India,2024,-326.21,321.3,647.51
+Yorkshire and The Humber,Ireland,2016,160.34,1005.43,845.09
+Yorkshire and The Humber,Ireland,2017,246.56,1064.8,818.24
+Yorkshire and The Humber,Ireland,2018,345.66,1174.86,829.19
+Yorkshire and The Humber,Ireland,2019,492.33,1204.53,712.2
+Yorkshire and The Humber,Ireland,2020,630.13,1282.75,652.62
+Yorkshire and The Humber,Ireland,2021,418.81,1019.59,600.77
+Yorkshire and The Humber,Ireland,2022,507.3,1269.06,761.76
+Yorkshire and The Humber,Ireland,2023,447.55,1310.66,863.11
+Yorkshire and The Humber,Ireland,2024,389.9,1259.17,869.28
+Yorkshire and The Humber,Italy,2016,-427.06,541.05,968.11
+Yorkshire and The Humber,Italy,2017,-447.28,630.52,1077.8
+Yorkshire and The Humber,Italy,2018,-384.28,696.78,1081.06
+Yorkshire and The Humber,Italy,2019,-492.27,623,1115.26
+Yorkshire and The Humber,Italy,2020,-425.47,524.68,950.16
+Yorkshire and The Humber,Italy,2021,-445.53,575.16,1020.7
+Yorkshire and The Humber,Italy,2022,-738.56,657.35,1395.91
+Yorkshire and The Humber,Italy,2023,-638.83,667.07,1305.9
+Yorkshire and The Humber,Italy,2024,-753.35,605.12,1358.47
+Yorkshire and The Humber,Japan,2016,-30.32,116.89,147.2
+Yorkshire and The Humber,Japan,2017,-10.11,150.09,160.2
+Yorkshire and The Humber,Japan,2018,12.78,175.69,162.91
+Yorkshire and The Humber,Japan,2019,16.83,165.59,148.76
+Yorkshire and The Humber,Japan,2020,-1,126.22,127.22
+Yorkshire and The Humber,Japan,2021,-5.31,154.73,160.03
+Yorkshire and The Humber,Japan,2022,-76.09,192.48,268.57
+Yorkshire and The Humber,Japan,2023,-54.46,166.46,220.91
+Yorkshire and The Humber,Japan,2024,-50.99,165.24,216.23
+Yorkshire and The Humber,Netherlands,2016,-2587.21,1351.17,3938.38
+Yorkshire and The Humber,Netherlands,2017,-3724.35,1603.47,5327.81
+Yorkshire and The Humber,Netherlands,2018,-3177.05,2071.57,5248.62
+Yorkshire and The Humber,Netherlands,2019,-3574.78,1826.72,5401.5
+Yorkshire and The Humber,Netherlands,2020,-2954.17,1393.54,4347.71
+Yorkshire and The Humber,Netherlands,2021,-340.49,1745.37,2085.86
+Yorkshire and The Humber,Netherlands,2022,-1332.84,2341.34,3674.18
+Yorkshire and The Humber,Netherlands,2023,-1456.23,1816.06,3272.28
+Yorkshire and The Humber,Netherlands,2024,-1721.64,1628.64,3350.28
+Yorkshire and The Humber,Norway,2016,-3906.66,169.8,4076.46
+Yorkshire and The Humber,Norway,2017,-5427.55,195.68,5623.23
+Yorkshire and The Humber,Norway,2018,-6283.58,203.64,6487.22
+Yorkshire and The Humber,Norway,2019,-3930.68,186.42,4117.1
+Yorkshire and The Humber,Norway,2020,-2910.73,158.29,3069.02
+Yorkshire and The Humber,Norway,2021,-11323.1,204.94,11528.03
+Yorkshire and The Humber,Norway,2022,-19263.27,251.43,19514.7
+Yorkshire and The Humber,Norway,2023,-9404.38,243.61,9647.99
+Yorkshire and The Humber,Norway,2024,-8251.09,229.35,8480.44
+Yorkshire and The Humber,Poland,2016,-170.36,268.16,438.52
+Yorkshire and The Humber,Poland,2017,-234.82,311.71,546.53
+Yorkshire and The Humber,Poland,2018,-137.64,356.08,493.72
+Yorkshire and The Humber,Poland,2019,-128.29,344.43,472.72
+Yorkshire and The Humber,Poland,2020,-211.39,296.66,508.05
+Yorkshire and The Humber,Poland,2021,-310.93,276.92,587.86
+Yorkshire and The Humber,Poland,2022,-410.58,351.96,762.54
+Yorkshire and The Humber,Poland,2023,-477.35,337.82,815.17
+Yorkshire and The Humber,Poland,2024,-559.2,346.84,906.04
+Yorkshire and The Humber,Rest of EU,2016,-705.95,1030.17,1736.12
+Yorkshire and The Humber,Rest of EU,2017,-603.11,1216.7,1819.8
+Yorkshire and The Humber,Rest of EU,2018,-636.87,1329.79,1966.66
+Yorkshire and The Humber,Rest of EU,2019,-768.94,1200.41,1969.33
+Yorkshire and The Humber,Rest of EU,2020,-902.34,1061.17,1963.51
+Yorkshire and The Humber,Rest of EU,2021,-748.21,1038.36,1786.56
+Yorkshire and The Humber,Rest of EU,2022,-1148.4,1319.37,2467.77
+Yorkshire and The Humber,Rest of EU,2023,-1051.11,1132.36,2183.47
+Yorkshire and The Humber,Rest of EU,2024,-1459.96,1170.36,2630.31
+Yorkshire and The Humber,Rest of world,2016,-1038.04,2752.27,3790.3
+Yorkshire and The Humber,Rest of world,2017,-931.67,3252.83,4184.5
+Yorkshire and The Humber,Rest of world,2018,-1462.46,3117.67,4580.15
+Yorkshire and The Humber,Rest of world,2019,-2040.53,2856.41,4896.91
+Yorkshire and The Humber,Rest of world,2020,-1354.45,2446.26,3800.69
+Yorkshire and The Humber,Rest of world,2021,-1952.37,2999.31,4951.69
+Yorkshire and The Humber,Rest of world,2022,-2149.93,3592.68,5742.61
+Yorkshire and The Humber,Rest of world,2023,-986.99,3444.92,4431.94
+Yorkshire and The Humber,Rest of world,2024,-1199.51,3141.65,4341.13
+Yorkshire and The Humber,Singapore,2016,67.29,120.73,53.44
+Yorkshire and The Humber,Singapore,2017,143.89,216.38,72.5
+Yorkshire and The Humber,Singapore,2018,97.56,154.15,56.59
+Yorkshire and The Humber,Singapore,2019,127.31,177.33,50.02
+Yorkshire and The Humber,Singapore,2020,112.1,158.11,46.01
+Yorkshire and The Humber,Singapore,2021,100.12,174.09,73.97
+Yorkshire and The Humber,Singapore,2022,94.18,170.79,76.62
+Yorkshire and The Humber,Singapore,2023,158.58,208.53,49.95
+Yorkshire and The Humber,Singapore,2024,148.55,209.11,60.55
+Yorkshire and The Humber,Spain,2016,-95.98,419.87,515.85
+Yorkshire and The Humber,Spain,2017,-17.33,518.91,536.25
+Yorkshire and The Humber,Spain,2018,-64.67,569.21,633.88
+Yorkshire and The Humber,Spain,2019,-216.26,481.07,697.33
+Yorkshire and The Humber,Spain,2020,-204,402.23,606.23
+Yorkshire and The Humber,Spain,2021,-276.48,413.13,689.61
+Yorkshire and The Humber,Spain,2022,-474,518.09,992.09
+Yorkshire and The Humber,Spain,2023,-560.35,446.06,1006.4
+Yorkshire and The Humber,Spain,2024,-573.4,477.22,1050.61
+Yorkshire and The Humber,Sweden,2016,-202.94,425.91,628.85
+Yorkshire and The Humber,Sweden,2017,-191.84,529.97,721.81
+Yorkshire and The Humber,Sweden,2018,-127.39,582.98,710.37
+Yorkshire and The Humber,Sweden,2019,-131.51,488.92,620.43
+Yorkshire and The Humber,Sweden,2020,-168.16,420.58,588.74
+Yorkshire and The Humber,Sweden,2021,-158.42,559.28,717.7
+Yorkshire and The Humber,Sweden,2022,-30.18,787.86,818.04
+Yorkshire and The Humber,Sweden,2023,-87.68,571.6,659.28
+Yorkshire and The Humber,Sweden,2024,-122.63,506.54,629.18
+Yorkshire and The Humber,Switzerland,2016,238.9,389.89,150.99
+Yorkshire and The Humber,Switzerland,2017,269.51,400.77,131.26
+Yorkshire and The Humber,Switzerland,2018,350.11,443.13,93.02
+Yorkshire and The Humber,Switzerland,2019,247.42,388,140.58
+Yorkshire and The Humber,Switzerland,2020,419.64,515.94,96.3
+Yorkshire and The Humber,Switzerland,2021,-225.24,106.99,332.23
+Yorkshire and The Humber,Switzerland,2022,-129.84,181.89,311.73
+Yorkshire and The Humber,Switzerland,2023,-144.13,116.98,261.11
+Yorkshire and The Humber,Switzerland,2024,-157.04,109.51,266.56
+Yorkshire and The Humber,United States,2016,94.92,1888.04,1793.13
+Yorkshire and The Humber,United States,2017,-180.73,1853.81,2034.53
+Yorkshire and The Humber,United States,2018,52.26,1678.97,1626.71
+Yorkshire and The Humber,United States,2019,-220.1,1696.71,1916.81
+Yorkshire and The Humber,United States,2020,-208.49,1588.77,1797.26
+Yorkshire and The Humber,United States,2021,-327.65,1984.98,2312.64
+Yorkshire and The Humber,United States,2022,-276.17,2949.89,3226.06
+Yorkshire and The Humber,United States,2023,-1071.26,2601.8,3673.07
+Yorkshire and The Humber,United States,2024,-628.16,2507.21,3135.37
