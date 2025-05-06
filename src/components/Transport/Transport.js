@@ -118,13 +118,13 @@ function initTransport() {
                 // 暂时不做功能，仅显示提示信息
                 clearMapContainer();
                 mapContainer.style.display = 'block';
-                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">机场数据功能尚未实现</div>';
+                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Coding...</div>';
             } else if (type === 'rail') {
                 console.log('显示铁路信息...');
                 // 暂时不做功能，仅显示提示信息
                 clearMapContainer();
                 mapContainer.style.display = 'block';
-                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">铁路数据功能尚未实现</div>';
+                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Coding...</div>';
             }
         });
     });
