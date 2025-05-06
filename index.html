@@ -22,6 +22,47 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
   </head>
   <body>
+    <!-- Side Navigation Dots -->
+    <div class="side-nav" id="side-nav">
+      <div class="side-nav-dot" data-target="section1"></div>
+      <div class="side-nav-dot" data-target="section1b"></div>
+      <div class="side-nav-dot" data-target="section2"></div>
+      <div class="side-nav-dot" data-target="section3"></div>
+      <div class="side-nav-dot" data-target="section4"></div>
+      <div class="side-nav-dot" data-target="section5"></div>
+      <div class="side-nav-dot" data-target="section6"></div>
+      <div class="side-nav-dot" data-target="section7"></div>
+      <div class="side-nav-dot" data-target="section8"></div>
+      <div class="side-nav-dot" data-target="section9"></div>
+    </div>
+    <script>
+      // Side nav scroll and highlight logic
+      const dots = Array.from(document.querySelectorAll('.side-nav-dot'));
+      const sections = [
+        'section1','section1b','section2','section3','section4','section5','section6','section7','section8','section9'
+      ].map(id => document.getElementById(id));
+      function updateActiveDot() {
+        let idx = 0;
+        const scrollY = window.scrollY || window.pageYOffset;
+        for (let i = 0; i < sections.length; i++) {
+          if (sections[i]) {
+            const rect = sections[i].getBoundingClientRect();
+            if (rect.top <= window.innerHeight * 0.33) idx = i;
+          }
+        }
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+      window.addEventListener('scroll', updateActiveDot);
+      window.addEventListener('resize', updateActiveDot);
+      updateActiveDot();
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', e => {
+          e.preventDefault();
+          if (sections[i]) sections[i].scrollIntoView({behavior:'smooth'});
+        });
+      });
+    </script>
+
     <!-- 导航栏 -->
     <nav class="navbar">
       <ul>
@@ -39,22 +80,33 @@
 
     <!-- 主要内容区域 -->
     <main>
-      <section id="section1" class="full-page hero-section" style="position:relative;overflow:hidden;">
+      <section id="section1" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;min-height:100vh;background:#2a2a2a;">
+        <div class="hero-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;max-width:1200px;margin:2vh auto 0 auto;padding-left:0;">
+          <div id="lottie-title" style="width:1800px;max-width:99vw;height:500px;min-height:200px;display:flex;align-items:center;justify-content:flex-start;pointer-events:none;margin-bottom:0;margin-left:-400px;">
+            <div id="lottie-title-player" style="width:1800px;max-width:99vw;height:500px;"></div>
+          </div>
+          <p class="hero-desc highlight-desc" style="margin-top:-18px;margin-bottom:0;font-size:1.25rem;margin-left:120px;">
+            An exploration of the impact of Brexit on the global commodity import and export trade network.
+          </p>
+        </div>
+      </section>
+      <section id="section1b" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:60vh;background:#2a2a2a;">
         <video autoplay muted loop playsinline id="bg-video"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0.45;">
+          style="position:relative;width:50vw;height:auto;max-width:1000px;max-height:80vh;object-fit:cover;z-index:0;border-radius:1.5rem;box-shadow:0 4px 32px rgba(0,0,0,0.18);border:4px solid #444;">
           <source src="cover.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
-        <div class="hero-overlay"></div>
-        <div class="hero-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;">
-          <h1 class="hero-title highlight-title">Brexit Commodity Import & Export Network</h1>
-          <h2 class="hero-subtitle highlight-subtitle">Following the Trade</h2>
-          <p class="hero-desc highlight-desc">
-            An exploration of the impact of Brexit on the global commodity import and export trade network.
-          </p>
-          <a href="#section2" class="hero-btn">Learn More</a>
-        </div>
       </section>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+      <script>
+        lottie.loadAnimation({
+          container: document.getElementById('lottie-title-player'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: '/Bouncing-period-[remix].json'
+        });
+      </script>
 
       <section id="section2" class="full-page">
         <div class="content">
@@ -179,5 +231,69 @@
     </script>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Full-page scroll (one section per scroll)
+      (function() {
+        const sections = Array.from(document.querySelectorAll('.full-page'));
+        let isScrolling = false;
+        let currentIdx = 0;
+        function scrollToSection(idx) {
+          if (idx < 0 || idx >= sections.length) return;
+          isScrolling = true;
+          sections[idx].scrollIntoView({behavior: 'smooth'});
+          setTimeout(() => { isScrolling = false; }, 900);
+        }
+        function findCurrentSection() {
+          let idx = 0;
+          for (let i = 0; i < sections.length; i++) {
+            const rect = sections[i].getBoundingClientRect();
+            if (rect.top <= window.innerHeight * 0.33) idx = i;
+          }
+          return idx;
+        }
+        document.addEventListener('wheel', function(e) {
+          if (isScrolling) return e.preventDefault();
+          const delta = e.deltaY;
+          currentIdx = findCurrentSection();
+          if (delta > 0 && currentIdx < sections.length - 1) {
+            e.preventDefault();
+            scrollToSection(currentIdx + 1);
+          } else if (delta < 0 && currentIdx > 0) {
+            e.preventDefault();
+            scrollToSection(currentIdx - 1);
+          }
+        }, {passive: false});
+        document.addEventListener('keydown', function(e) {
+          if (isScrolling) return;
+          currentIdx = findCurrentSection();
+          if ((e.key === 'ArrowDown' || e.key === 'PageDown') && currentIdx < sections.length - 1) {
+            e.preventDefault();
+            scrollToSection(currentIdx + 1);
+          } else if ((e.key === 'ArrowUp' || e.key === 'PageUp') && currentIdx > 0) {
+            e.preventDefault();
+            scrollToSection(currentIdx - 1);
+          }
+        });
+        // Touch support
+        let touchStartY = null;
+        document.addEventListener('touchstart', e => {
+          if (e.touches.length === 1) touchStartY = e.touches[0].clientY;
+        });
+        document.addEventListener('touchend', e => {
+          if (touchStartY === null) return;
+          const touchEndY = e.changedTouches[0].clientY;
+          const delta = touchStartY - touchEndY;
+          currentIdx = findCurrentSection();
+          if (Math.abs(delta) > 60 && !isScrolling) {
+            if (delta > 0 && currentIdx < sections.length - 1) {
+              scrollToSection(currentIdx + 1);
+            } else if (delta < 0 && currentIdx > 0) {
+              scrollToSection(currentIdx - 1);
+            }
+          }
+          touchStartY = null;
+        });
+      })();
+    </script>
   </body>
 </html>

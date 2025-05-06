@@ -1,10 +1,13 @@
 .hero-section {
   position: relative;
   min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 .hero-overlay {
@@ -118,4 +121,75 @@
   border-radius: 0.5rem;
   display: inline-block;
   padding: 0.5rem 1rem;
+}
+
+html, body {
+  scroll-behavior: smooth;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+main {
+  height: 100vh;
+  min-height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 70px;
+}
+
+.full-page {
+  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+  padding: 0;
+  margin: 0;
+}
+
+/* --- Side Navigation Dots --- */
+.side-nav {
+  position: fixed;
+  top: 50%;
+  right: 2.5vw;
+  transform: translateY(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  pointer-events: none;
+}
+.side-nav-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #444;
+  border: 2.5px solid #fff;
+  opacity: 0.55;
+  transition: background 0.3s, border 0.3s, opacity 0.3s, transform 0.3s;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.side-nav-dot.active {
+  background: #357abd;
+  border: 3.5px solid #ffe0b2;
+  opacity: 1;
+  transform: scale(1.35);
+  box-shadow: 0 0 12px #ffe0b2, 0 0 2px #357abd;
+}
+.side-nav-dot:hover {
+  opacity: 0.85;
+  transform: scale(1.15);
+}
+@media (max-width: 900px) {
+  .side-nav {
+    right: 1vw;
+    gap: 0.8rem;
+  }
+  .side-nav-dot {
+    width: 13px;
+    height: 13px;
+  }
 } 
