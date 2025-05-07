@@ -87,11 +87,10 @@ main {
     max-width: 1200px;
     width: 100%;
     padding: 2rem;
-    background-color: #333333;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 .content:hover {

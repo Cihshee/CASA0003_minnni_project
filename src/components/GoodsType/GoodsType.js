@@ -61,16 +61,34 @@ console.log('GoodsType.js loaded');
           easing: 'easeOutQuart'
         },
         plugins: {
-          legend: { display: true, position: 'bottom', labels: { color: '#fff' } },
+          legend: { display: false },
           title: { display: false }
         },
         scales: {
           x: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.08)' } },
-          y: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.08)' } }
+          y: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.08)' }, suggestedMax: undefined, stepSize: 20000000 }
         }
       }
     });
   }
+
+  // Legend items and colors (should match chart datasets)
+  const legendItems = [
+    { label: '0 Food & live animals', color: '#d9534f' },
+    { label: '1 Beverages & tobacco', color: '#f0ad4e' },
+    { label: '2 Crude materials, inedible, except fuels', color: '#bada55' },
+    { label: '3 Mineral fuels, lubricants & related materials', color: '#5cb85c' },
+    { label: '4 Animal & vegetable oils, fats & waxes', color: '#5bc0de' },
+    { label: '5 Chemicals & related products, nes', color: '#428bca' },
+    { label: '6 Manufactured goods classified chiefly by material', color: '#6f42c1' },
+  ];
+  function renderLegend() {
+    const legend = document.getElementById('goods-summary-legend');
+    legend.innerHTML = legendItems.map(item =>
+      `<span class="goods-summary-legend-item"><span class="goods-summary-legend-color" style="background:${item.color}"></span>${item.label}</span>`
+    ).join('');
+  }
+  renderLegend();
 
   // 只要脚本被插入就立即执行
   fetch(csvPath)

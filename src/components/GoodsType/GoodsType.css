@@ -1,5 +1,6 @@
 .goods-type-section {
     padding: 1rem 0 0 0;
+    background: none;
   }
   .goods-type-section h2 {
     font-size: 2rem;
@@ -99,17 +100,17 @@
     justify-items: center;
     width: 100%;
     max-width: none;
+    background: none;
   }
   .goods-summary-chart-block {
-    /* Remove background and border-radius for seamless look */
     background: none;
     border-radius: 0;
     padding: 1rem 0.5rem 0.5rem 0.5rem;
     box-shadow: none;
     margin: 0;
     width: 99%;
-    max-width: 1100px;
-    min-width: 320px;
+    max-width: 700px;
+    min-width: 220px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -131,8 +132,8 @@
   }
   .goods-summary-chart-canvas {
     width: 100% !important;
-    max-width: 1050px;
-    height: 220px !important;
+    max-width: 700px;
+    height: 180px !important;
     background: transparent;
     margin: 0 auto;
     display: block;
@@ -151,5 +152,78 @@
       min-width: 0;
       width: 99vw;
     }
+  }
+  .goods-type-icons-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2.2rem;
+    margin: 0.5rem 0 2.5rem 0;
+    flex-wrap: wrap;
+  }
+  .goods-type-icon-btn {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    background: #7682ab78;
+    border: 2px solid #bbb;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s, transform 0.2s, background 0.2s, border 0.2s;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+  }
+  .goods-type-icon-btn img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .goods-type-icon-btn:hover, .goods-type-icon-btn.active {
+    box-shadow: 0 4px 24px #357abd44, 0 0 0 3px #357abd33;
+    background: #f0f6ff;
+    transform: scale(1.08);
+  }
+  @media (max-width: 900px) {
+    .goods-type-icons-row {
+      gap: 1.1rem;
+    }
+    .goods-type-icon-btn {
+      width: 54px;
+      height: 54px;
+    }
+    .goods-type-icon-btn img {
+      width: 34px;
+      height: 34px;
+    }
+  }
+  .goods-summary-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem 1.1rem;
+    font-size: 0.82rem;
+    color: #e0e0e0;
+    margin: 0.2rem 0 0.7rem 0;
+    line-height: 1.1;
+    max-width: 98vw;
+  }
+  .goods-summary-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+  .goods-summary-legend-color {
+    width: 12px;
+    height: 3px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-right: 0.2rem;
   }
   
