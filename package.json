@@ -12,7 +12,7 @@
     "vite": "^6.3.4"
   },
   "dependencies": {
-    "chart.js": "^4.4.9"
+    "chart.js": "^4.4.9",
     "mapbox-gl": "^3.11.1"
   }
 }

@@ -87,8 +87,6 @@ function initTransport() {
         }
     }
     
-    
-    
     // 为按钮添加点击事件
     buttons.forEach(button => {
         console.log('为按钮添加点击事件:', button.dataset.type);
@@ -130,7 +128,6 @@ function initTransport() {
     });
     
     // 默认选中并点击port按钮
-    console.log('尝试默认点击port按钮...');
     const portButton = document.querySelector('.transport-button[data-type="port"]');
     if (portButton) {
         console.log('找到port按钮，触发点击');

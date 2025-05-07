@@ -14,36 +14,41 @@
     z-index: 10;
     display: flex;
     flex-direction: row;
-    gap: 30px;
+   
+    gap: 2.2rem;
     padding: 20px;
     width: 100%;
+    
 }
 
 .transport-button {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: none;
-    background: rgb(79, 76, 76);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background: #7682ab78;
+    border: 2px solid #bbb;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: box-shadow 0.2s, transform 0.2s, background 0.2s, border 0.2s;
+    padding: 0;
+    outline: none;
 }
 
-.transport-button:hover {
-    transform: scale(1.1);
-}
-
-.transport-button.active {
-    background: #007bff;
+.transport-button:hover, .transport-button.active {
+    box-shadow: 0 4px 24px #357abd44, 0 0 0 3px #357abd33;
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.08);
 }
 
 .transport-button img {
     width: 30px;
     height: 30px;
+    object-fit: contain;
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 #map {
@@ -51,4 +56,18 @@
     width: 100%;
     position: relative;
     margin-top: 0;
+}
+
+@media (max-width: 900px) {
+    .button-container {
+        gap: 1.1rem;
+    }
+    .transport-button {
+        width: 54px;
+        height: 54px;
+    }
+    .transport-button img {
+        width: 34px;
+        height: 34px;
+    }
 }
