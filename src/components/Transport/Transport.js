@@ -18,12 +18,19 @@ function initTransport() {
     
     console.log('开始初始化Transport组件...');
     
-    // 获取地图容器和按钮
+    // 获取元素
     const mapContainer = document.getElementById('map');
+    const portContent = document.getElementById('port-content');
     const buttons = document.querySelectorAll('.transport-button');
+    const exploreMapBtn = document.getElementById('explore-map-btn');
     
     console.log('地图容器:', mapContainer);
     console.log('找到按钮数量:', buttons.length);
+    
+    // 初始隐藏port内容
+    if (portContent) {
+        portContent.style.display = 'none';
+    }
     
     // 确保地图容器和按钮存在
     if (!mapContainer) {
@@ -38,6 +45,31 @@ function initTransport() {
     
     // 定义地图变量，但不立即初始化
     let map = null;
+    let currentMapType = '';
+    
+    // 检查是否从港口页面返回
+    function checkReturnFromPortPage() {
+        const returnedFromPortPage = sessionStorage.getItem('returnedFromPortPage');
+        if (returnedFromPortPage === 'true') {
+            // 清除返回标记
+            sessionStorage.removeItem('returnedFromPortPage');
+            
+            // 获取存储的位置
+            const savedPosition = sessionStorage.getItem('mapPosition');
+            if (savedPosition) {
+                try {
+                    const position = JSON.parse(savedPosition);
+                    if (map && position.center && position.zoom) {
+                        // 恢复地图位置
+                        map.setCenter(position.center);
+                        map.setZoom(position.zoom);
+                    }
+                } catch (error) {
+                    console.error('解析存储的位置数据时出错:', error);
+                }
+            }
+        }
+    }
     
     // 创建地图的函数
     function createMap() {
@@ -61,14 +93,14 @@ function initTransport() {
             // 监听地图加载事件
             map.on('load', () => {
                 console.log('地图加载成功');
+                
+                // 在地图加载完成后检查是否从港口页面返回
+                checkReturnFromPortPage();
             });
             
             map.on('error', (error) => {
                 console.error('地图加载错误:', error);
             });
-            
-            // 显示地图容器
-            mapContainer.style.display = 'block';
             
             console.log('地图初始化完成');
             
@@ -85,6 +117,36 @@ function initTransport() {
             map.remove();
             map = null;
         }
+    }
+    
+    // 为探索地图按钮添加点击事件
+    if (exploreMapBtn) {
+        exploreMapBtn.addEventListener('click', function() {
+            console.log('点击了探索地图按钮');
+            
+            // 隐藏port内容
+            if (portContent) {
+                portContent.style.display = 'none';
+            }
+            
+            // 显示地图
+            mapContainer.style.display = 'block';
+            
+            // 创建地图
+            createMap();
+            
+            // 保存当前位置到会话存储，方便返回时恢复
+            if (map) {
+                const position = {
+                    center: map.getCenter(),
+                    zoom: map.getZoom()
+                };
+                sessionStorage.setItem('mapPosition', JSON.stringify(position));
+            }
+            
+            // 根据当前地图类型跳转到相应页面
+            window.location.href = '/src/components/Transport/uk-port.html';
+        });
     }
     
     // 为按钮添加点击事件
@@ -104,25 +166,47 @@ function initTransport() {
             
             // 获取按钮类型
             const type = this.dataset.type;
+            currentMapType = type;
             
             // 根据按钮类型执行不同操作
             if (type === 'port') {
-                console.log('显示地图...');
-                // 创建并显示地图
-                clearMapContainer(); // 先清除容器
-                createMap();
+                console.log('显示港口内容...');
+                // 隐藏地图
+                mapContainer.style.display = 'none';
+                
+                // 显示港口内容
+                if (portContent) {
+                    portContent.style.display = 'flex';
+                }
+                
+                // 清除地图
+                clearMapContainer();
             } else if (type === 'airport') {
                 console.log('显示机场信息...');
-                // 暂时不做功能，仅显示提示信息
-                clearMapContainer();
+                // 隐藏港口内容
+                if (portContent) {
+                    portContent.style.display = 'none';
+                }
+                
+                // 显示提示信息
                 mapContainer.style.display = 'block';
                 mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Coding...</div>';
+                
+                // 清除地图
+                clearMapContainer();
             } else if (type === 'rail') {
                 console.log('显示铁路信息...');
-                // 暂时不做功能，仅显示提示信息
-                clearMapContainer();
+                // 隐藏港口内容
+                if (portContent) {
+                    portContent.style.display = 'none';
+                }
+                
+                // 显示提示信息
                 mapContainer.style.display = 'block';
                 mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Coding...</div>';
+                
+                // 清除地图
+                clearMapContainer();
             }
         });
     });
@@ -133,8 +217,48 @@ function initTransport() {
         console.log('找到port按钮，触发点击');
         portButton.classList.add('active');
         portButton.click();
+        
+        // 初始化视频处理
+        initPortVideo();
     } else {
         console.error('找不到port按钮');
+    }
+}
+
+// 初始化港口视频
+function initPortVideo() {
+    const video = document.getElementById('port-video');
+    
+    if (video) {
+        // 监听视频错误事件
+        video.addEventListener('error', function() {
+            handleVideoError();
+        });
+        
+        // 检查视频是否可以播放
+        if (video.readyState === 0) {
+            // 设置超时，如果视频在一定时间内没有加载，显示错误信息
+            setTimeout(function() {
+                if (video.readyState === 0) {
+                    handleVideoError();
+                }
+            }, 3000);
+        }
+    }
+}
+
+// 处理视频加载错误
+function handleVideoError() {
+    const videoSection = document.querySelector('.port-video-section');
+    
+    if (videoSection) {
+        // 创建一个占位符显示
+        videoSection.innerHTML = `
+            <div class="video-placeholder">
+                <p>Failed to load uk-port.MP4 video</p>
+                <p>Please ensure the video file is uploaded to the correct location</p>
+            </div>
+        `;
     }
 }
 

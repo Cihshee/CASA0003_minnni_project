@@ -14,11 +14,12 @@
     z-index: 10;
     display: flex;
     flex-direction: row;
-   
+    justify-content: center;
+    align-items: center;
     gap: 2.2rem;
-    padding: 20px;
+    padding: 30px 20px 10px 20px;
     width: 100%;
-    
+    flex-wrap: wrap;
 }
 
 .transport-button {
@@ -58,9 +59,106 @@
     margin-top: 0;
 }
 
+/* 港口内容上下布局 */
+.port-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 120px);
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+/* 视频部分 - 上方 */
+.port-video-section {
+    width: 100%;
+    height: 60vh; /* 视频占据60%的可视高度 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 港口视频样式 */
+#port-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* 当视频无法加载时显示的占位符 */
+.video-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 18px;
+    border-radius: 12px;
+}
+
+/* 文字部分 - 下方 */
+.port-text-section {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.port-text-section h3 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.port-text-section p {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+/* 探索地图按钮样式 */
+.explore-map-btn {
+    position: relative;
+    margin-top: 20px;
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.explore-map-btn:hover {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+}
+
 @media (max-width: 900px) {
     .button-container {
         gap: 1.1rem;
+        padding: 25px 0px 0px 0px;
     }
     .transport-button {
         width: 54px;
@@ -69,5 +167,29 @@
     .transport-button img {
         width: 34px;
         height: 34px;
+    }
+    
+    /* 小屏幕上调整高度比例 */
+    .port-video-section {
+        height: 40vh; /* 在小屏幕上减小视频高度 */
+    }
+    
+    .port-text-section {
+        padding: 15px;
+    }
+    
+    .port-text-section h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .port-text-section p {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .explore-map-btn {
+        padding: 8px 16px;
+        font-size: 14px;
     }
 }
