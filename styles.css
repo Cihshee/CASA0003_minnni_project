@@ -93,6 +93,16 @@ main {
     border: none !important;
 }
 
+.content-transport {
+    max-width: 1800px;
+    width: 100%;
+    padding: 2rem;
+    background: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
 .content:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);

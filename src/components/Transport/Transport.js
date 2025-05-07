@@ -190,7 +190,7 @@ function initTransport() {
                 
                 // 显示提示信息
                 mapContainer.style.display = 'block';
-                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Coding...</div>';
+                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Air transport, accounting for around 40% of the UK’s export value despite only 1% of its total cargo volume, is crucial for quickly moving high-value goods across global markets.</div>';
                 
                 // 清除地图
                 clearMapContainer();
@@ -203,7 +203,7 @@ function initTransport() {
                 
                 // 显示提示信息
                 mapContainer.style.display = 'block';
-                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Coding...</div>';
+                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Rail transport in the UK moves approximately 86 million tonnes of freight annually, providing an efficient and eco-friendly option for domestic goods movement over longer distances.</div>';
                 
                 // 清除地图
                 clearMapContainer();
