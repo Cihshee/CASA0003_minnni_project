@@ -145,11 +145,11 @@ function renderHeatmap(data, regions, countries, year) {
     top: 40, 
     right: 190,
     bottom: 120,
-    left: 80 
+    left: 40 
   };
   const totalW = Math.min(container.node().clientWidth, 900);
   const width = 780 - margin.left - margin.right;  
-  const height = 480 - margin.top - margin.bottom;
+  const height = 500 - margin.top - margin.bottom;
 
 
   const svg = container.append('svg')
