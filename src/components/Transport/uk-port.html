@@ -555,7 +555,7 @@
                 // 加载两个数据文件
                 const [flowResponse, portResponse] = await Promise.all([
                     fetch('https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/port0499-2016-2023-EU-top30-latlon.json'),
-                    fetch('https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/port0499-2015-2023-final.json')
+                    fetch('https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/port0499-2016-2023-EU-top30-latlon.json')
                 ]);
                 
                 flowData = await flowResponse.json();
@@ -742,8 +742,8 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 1.2],  // 从1.8降低到1.2
-                        1, ['*', ['get', 'weight'], 0.6]   // 从0.9降低到0.6
+                        0, ['*', ['get', 'weight'], 1.6],  // 从1.8降低到1.2
+                        1, ['*', ['get', 'weight'], 0.8]   // 从0.9降低到0.6
                     ],
                     'line-opacity': 0.35,  // 从0.4降低到0.35
                     'line-blur': 1.2  // 从2降低到1.2，减少模糊程度
@@ -1028,6 +1028,32 @@
                 }
                 
                 updateVisualization();
+            });
+            
+            // 新增：添加地图点击事件，点击港口时自动选择该港口
+            map.on('click', 'ports-circle', (e) => {
+                if (e.features && e.features.length > 0) {
+                    const port = e.features[0].properties.port;
+                    console.log('点击了港口:', port);
+                    
+                    // 设置下拉框的值
+                    const portSelect = document.getElementById('port-select');
+                    portSelect.value = port;
+                    
+                    // 手动触发change事件以应用选择
+                    const event = new Event('change');
+                    portSelect.dispatchEvent(event);
+                }
+            });
+            
+            // 鼠标移到港口上时改变鼠标指针样式
+            map.on('mouseenter', 'ports-circle', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            
+            // 鼠标移出港口时恢复默认指针样式
+            map.on('mouseleave', 'ports-circle', () => {
+                map.getCanvas().style.cursor = '';
             });
         }
 
