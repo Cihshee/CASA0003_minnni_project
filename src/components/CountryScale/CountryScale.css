@@ -26,12 +26,12 @@
     z-index: 1000;
 }
   
-.chart-section h2 .imports {
-    color: #ff9466;
+.country-chart-section h2 .imports {
+    color: #ff9466;  /* 橙色 */
 }
   
-.chart-section h2 .exports {
-    color: #94bed9;
+.country-chart-section h2 .exports {
+    color: #94bed9;  /* 浅蓝色 */
 }
 
 .scroll-container {
