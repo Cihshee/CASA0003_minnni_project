@@ -1,108 +1,126 @@
 .goods-type-section {
     padding: 1rem 0 0 0;
     background: none;
-  }
-  .goods-type-section h2 {
+}
+
+.goods-type-section h2 {
     font-size: 2rem;
     margin-bottom: 2rem;
     color: #ffffff;
     text-align: center;
-  }
-  .goods-types {
+}
+
+.goods-types {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
-  }
-  .goods-card {
+}
+
+.goods-card {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 0;
     transform: translateY(20px);
-  }
-  .goods-card:hover {
+}
+
+.goods-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  }
-  .goods-card h3 {
+}
+
+.goods-card h3 {
     color: #ffffff;
     margin-bottom: 1rem;
     font-size: 1.5rem;
-  }
-  .goods-content p, .goods-content li {
+}
+
+.goods-content p, .goods-content li {
     color: #e0e0e0;
-  }
-  .goods-content ul {
+}
+
+.goods-content ul {
     list-style-type: none;
     padding: 0;
-  }
-  .goods-content li {
+}
+
+.goods-content li {
     margin-bottom: 0.5rem;
     padding-left: 1.5rem;
     position: relative;
-  }
-  .goods-content li::before {
+}
+
+.goods-content li::before {
     content: '•';
     color: #ffffff;
     position: absolute;
     left: 0;
-  }
-  .goods-chart {
+}
+
+.goods-chart {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-  }
-  .goods-chart h3 {
+}
+
+.goods-chart h3 {
     color: #ffffff;
     margin-bottom: 1.5rem;
     text-align: center;
-  }
-  .chart-container {
+}
+
+.chart-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  .chart-bar {
+}
+
+.chart-bar {
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
-  .chart-label {
+}
+
+.chart-label {
     color: #ffffff;
     width: 80px;
     text-align: right;
-  }
-  .chart-progress {
+}
+
+.chart-progress {
     flex: 1;
     height: 20px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-  }
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .goods-types {
-      grid-template-columns: 1fr;
+        grid-template-columns: 1fr;
     }
     .goods-card {
-      margin-bottom: 1rem;
+        margin-bottom: 1rem;
     }
-  }
-  .goods-summary-charts {
+}
+
+.goods-summary-charts {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 4rem;
     justify-items: center;
     width: 100%;
     max-width: none;
     background: none;
-  }
-  .goods-summary-chart-block {
+}
+
+.goods-summary-chart-block {
     background: none;
     border-radius: 0;
     padding: 1rem 0.5rem 0.5rem 0.5rem;
@@ -117,43 +135,49 @@
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.7s cubic-bezier(.4,2,.6,1), transform 0.7s cubic-bezier(.4,2,.6,1);
-  }
-  .goods-summary-chart-block.visible {
+}
+
+.goods-summary-chart-block.visible {
     opacity: 1;
     transform: translateY(0);
-  }
-  .goods-summary-chart-title {
+}
+
+.goods-summary-chart-title {
     color: #fff;
     font-size: 1.05rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     text-align: center;
     letter-spacing: 0.5px;
-  }
-  .goods-summary-chart-canvas {
+}
+
+.goods-summary-chart-canvas {
     width: 100% !important;
     max-width: 700px;
     height: 180px !important;
     background: transparent;
     margin: 0 auto;
     display: block;
-  }
-  /* Chart.js global font size override */
-  :root {
+}
+
+/* Chart.js global font size override */
+:root {
     --chartjs-font-size: 11px;
-  }
-  @media (max-width: 1200px) {
+}
+
+@media (max-width: 1200px) {
     .goods-summary-charts {
-      grid-template-columns: 1fr;
-      gap: 1.2rem;
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
     }
     .goods-summary-chart-block {
-      max-width: 99vw;
-      min-width: 0;
-      width: 99vw;
+        max-width: 99vw;
+        min-width: 0;
+        width: 99vw;
     }
-  }
-  .goods-type-icons-row {
+}
+
+.goods-type-icons-row {
     position: sticky;
     top: 0;
     z-index: 100;
@@ -163,8 +187,9 @@
     justify-content: center;
     gap: 18px;
     border-bottom: 1px solid #444;
-  }
-  .goods-type-icon-btn {
+}
+
+.goods-type-icon-btn {
     width: 74px;
     height: 74px;
     border-radius: 50%;
@@ -178,33 +203,37 @@
     cursor: pointer;
     padding: 0;
     outline: none;
-  }
-  .goods-type-icon-btn img {
+}
+
+.goods-type-icon-btn img {
     width: 48px;
     height: 48px;
     object-fit: contain;
     border-radius: 50%;
     pointer-events: none;
-  }
-  .goods-type-icon-btn:hover, .goods-type-icon-btn.active {
+}
+
+.goods-type-icon-btn:hover, .goods-type-icon-btn.active {
     box-shadow: 0 4px 24px #357abd44, 0 0 0 3px #357abd33;
     background: #f0f6ff;
     transform: scale(1.08);
-  }
-  @media (max-width: 900px) {
+}
+
+@media (max-width: 900px) {
     .goods-type-icons-row {
-      gap: 1.1rem;
+        gap: 1.1rem;
     }
     .goods-type-icon-btn {
-      width: 54px;
-      height: 54px;
+        width: 54px;
+        height: 54px;
     }
     .goods-type-icon-btn img {
-      width: 34px;
-      height: 34px;
+        width: 34px;
+        height: 34px;
     }
-  }
-  .goods-summary-legend {
+}
+
+.goods-summary-legend {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -215,21 +244,24 @@
     margin: 0.2rem 0 0.7rem 0;
     line-height: 1.1;
     max-width: 98vw;
-  }
-  .goods-summary-legend-item {
+}
+
+.goods-summary-legend-item {
     display: flex;
     align-items: center;
     gap: 0.2rem;
-  }
-  .goods-summary-legend-color {
+}
+
+.goods-summary-legend-color {
     width: 12px;
     height: 3px;
     border-radius: 2px;
     display: inline-block;
     margin-right: 0.2rem;
-  }
-  /* 强制地图容器有宽高，防止被flex挤压为0 */
-  .goods-type-detail-map {
+}
+
+/* 强制地图容器有宽高，防止被flex挤压为0 */
+.goods-type-detail-map {
     min-width: 320px !important;
     min-height: 320px !important;
     width: 48vw !important;
@@ -243,32 +275,35 @@
     border: 2px solid #333;
     flex: 0 0 auto !important;
     display: block !important;
-  }
-  .goods-type-detail-main {
+}
+
+.goods-type-detail-main {
     display: flex;
     flex-direction: row;
     gap: 32px;
     align-items: flex-start;
     justify-content: center;
     margin-top: 32px;
-  }
-  @media (max-width: 900px) {
+}
+
+@media (max-width: 900px) {
     .goods-type-detail-main {
-      flex-direction: column;
-      gap: 16px;
-      align-items: stretch;
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
     }
     .goods-type-detail-map, .goods-type-detail-bar {
-      width: 98vw;
-      min-width: 0;
-      max-width: 100vw;
-      height: 320px;
-      min-height: 220px;
-      max-height: 340px;
+        width: 98vw;
+        min-width: 0;
+        max-width: 100vw;
+        height: 320px;
+        min-height: 220px;
+        max-height: 340px;
     }
-  }
-  /* 新版详情区flex布局 */
-  .goods-detail-main-flex {
+}
+
+/* 新版详情区flex布局 */
+.goods-detail-main-flex {
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -276,8 +311,9 @@
     gap: 40px;
     margin-top: 36px;
     width: 100%;
-  }
-  .goods-detail-side {
+}
+
+.goods-detail-side {
     display: flex;
     flex-direction: column;
     gap: 32px;
