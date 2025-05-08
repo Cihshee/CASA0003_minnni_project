@@ -1,6 +1,7 @@
 .chart-container {
     width: 100%;
-    padding: 1rem;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
 }
   
 .svg-content-responsive {
@@ -37,7 +38,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 1.5rem;
+    margin-top: 3rem;
 }
 
 .scroll-content-wrapper {
@@ -102,6 +104,11 @@
 
 .chart-section h2 {
     margin-bottom: 1.5rem;
+}
+
+.country-chart-section {
+    margin-top: 12rem;
+    margin-bottom: 12rem;
 }
 
 @media (max-width: 768px) {

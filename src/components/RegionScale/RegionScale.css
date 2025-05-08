@@ -17,7 +17,6 @@
   
   .year-selector {
     text-align: center;
-    margin: 1rem 0 0rem;
   }
   .year-button {
     padding: 6px 12px;
@@ -58,18 +57,44 @@
   }
   
 
-  #heatmap-svg {
+  .region-chart-section {
     width: 100%;
-    overflow-x: auto;
-  }
-  #heatmap-svg svg {
-    display: block;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
-
-  #heatmap-svg svg .tick text {
-    font-size: 15px;
+  .region-title {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  
+  #heatmap-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #heatmap-svg {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #heatmap-svg svg {
+    margin: 0 auto;
+    display: block;
+  }
+  
+  
+  #heatmap-svg svg .tick text,
+  #heatmap-svg svg .legend text {
+    font-size: 12px;
+    fill: #fff;
   }
   
   #heatmap-svg svg .legend text {
@@ -77,9 +102,25 @@
     fill: #fff;
   }
   
-
+  
+  .chart-container {
+    width: 100%;
+    overflow: visible;
+    position: relative;
+  }
+  
   @media (max-width: 768px) {
     .region-header h2 { font-size: 1.8rem; }
     .year-button { padding: 4px 8px; font-size: 12px; margin: 2px; }
   }
   
+  .scroll-graphic {
+    position: sticky;
+    top: 55vh;           /* 从视窗顶部50%开始 */
+    transform: translateY(-50%);  /* 向上移动自身50%以实现垂直居中 */
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+  }
+

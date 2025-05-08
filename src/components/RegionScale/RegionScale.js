@@ -141,22 +141,35 @@ function renderHeatmap(data, regions, countries, year) {
   });
 
 
-  const margin = { top: 40, right: 160, bottom: 120, left: 150 };
+  const margin = { 
+    top: 40, 
+    right: 190,
+    bottom: 120,
+    left: 80 
+  };
   const totalW = Math.min(container.node().clientWidth, 900);
-  const width = totalW - margin.left - margin.right;
-  const height = 520 - margin.top - margin.bottom;
+  const width = 780 - margin.left - margin.right;  
+  const height = 480 - margin.top - margin.bottom;
 
 
   const svg = container.append('svg')
     .attr('width', totalW)
     .attr('height', height + margin.top + margin.bottom)
     .style('overflow', 'visible')
+    .style('display', 'block')
+    .style('margin', 'auto')
     .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
 
-  const xScale = d3.scaleBand().domain(countries).range([0, width]).padding(0.1);
-  const yScale = d3.scaleBand().domain(regions).range([0, height]).padding(0.1);
+  const xScale = d3.scaleBand()
+    .domain(countries)
+    .range([0, width])
+    .padding(0.1);
+  const yScale = d3.scaleBand()
+    .domain(regions)
+    .range([0, height])
+    .padding(0.1);
   const colorScale = d3.scaleThreshold()
     .domain(heatmapBounds.slice(1, -1))
     .range(heatmapColors);
@@ -203,15 +216,18 @@ function renderHeatmap(data, regions, countries, year) {
     .call(d3.axisBottom(xScale))
     .selectAll('text')
       .attr('transform', 'rotate(-65)')
-      .style('text-anchor', 'end');
+      .style('text-anchor', 'end')
+      .style('font-size', '12px');
   svg.append('g').call(d3.axisLeft(yScale));
 
   const legend = svg.append('g')
     .attr('class', 'legend')
-    .attr('transform', `translate(${width + 20}, 0)`);
+    .attr('transform', `translate(${width + 15}, 0)`);
 
   legend.append('text')
-    .attr('x', 0).attr('y', 0)
+    .attr('x', 0)
+    .attr('y', 0)
+    .style('font-size', '12px')
     .text('£ Million');
 
   const legendItems = legend.selectAll('.legend-item')
@@ -229,6 +245,7 @@ function renderHeatmap(data, regions, countries, year) {
   legendItems.append('text')
     .attr('x', 20)
     .attr('y', 12)
+    .style('font-size', '12px')
     .text((d, i) => {
       return `${heatmapBounds[i]} to ${heatmapBounds[i + 1]}`;
     });
