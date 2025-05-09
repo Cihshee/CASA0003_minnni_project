@@ -1362,7 +1362,7 @@ console.log('GoodsType.js loaded');
     
     try {
         // 使用新的文件路径格式，添加 public 目录
-        const response = await fetch(`/public/data/split/sitc_${sitcIndex}.json`);
+        const response = await fetch(`/data/split/sitc_${sitcIndex}.json`);
         if (!response.ok) throw new Error(`Failed to load SITC ${sitcIndex} data`);
         
         const data = await response.json();
