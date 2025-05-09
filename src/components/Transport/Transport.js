@@ -188,9 +188,25 @@ function initTransport() {
                     portContent.style.display = 'none';
                 }
                 
-                // 显示提示信息
+                // 显示地图容器并准备显示柱状图
                 mapContainer.style.display = 'block';
-                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Air transport, accounting for around 40% of the UK’s export value despite only 1% of its total cargo volume, is crucial for quickly moving high-value goods across global markets.</div>';
+                mapContainer.innerHTML = `
+                    <div id="airport-content" class="airport-content">
+                        <div class="chart-controls">
+                            <label for="airportSelect">Select Airport:</label>
+                            <select id="airportSelect"></select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="airportChart"></canvas>
+                        </div>
+                        <div class="airport-info">
+                            <p>Air transport, accounting for around 40% of the UK's export value despite only 1% of its total cargo volume, is crucial for quickly moving high-value goods across global markets.</p>
+                        </div>
+                    </div>
+                `;
+                
+                // 加载机场数据并显示柱状图
+                loadAirportData();
                 
                 // 清除地图
                 clearMapContainer();
@@ -259,6 +275,277 @@ function handleVideoError() {
                 <p>Please ensure the video file is uploaded to the correct location</p>
             </div>
         `;
+    }
+}
+
+// 加载机场数据并创建柱状图
+function loadAirportData() {
+    console.log('加载机场数据...');
+    
+    fetch('/data/Air_Freight_by_Type_and_Nationality_2016-2024.json')
+        .then(response => {
+            if (!response.ok) {
+                // 如果第一个路径不正确，尝试备用路径
+                console.log('尝试备用路径...');
+                return fetch('../../../data/Air_Freight_by_Type_and_Nationality_2016-2024.json');
+            }
+            return response;
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok, unable to load data file');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('成功加载机场数据:', data.length);
+            processAirportData(data);
+        })
+        .catch(error => {
+            console.error('加载机场数据时出错:', error);
+            const chartContainer = document.querySelector('.chart-container');
+            if (chartContainer) {
+                chartContainer.innerHTML = `
+                    <div class="error-message">
+                        <p>Unable to load airport data</p>
+                        <p>Error details: ${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+}
+
+// 处理机场数据并创建柱状图
+function processAirportData(data) {
+    console.log('处理机场数据...');
+    
+    // 获取所有机场
+    const airports = [...new Set(data.map(item => item.airport))].sort();
+    
+    // 填充机场选择下拉框
+    const airportSelect = document.getElementById('airportSelect');
+    if (airportSelect) {
+        airportSelect.innerHTML = '';
+        
+        // 按总货运量对机场进行排序（使用2024年或最新年份的数据）
+        const years = [...new Set(data.map(item => item.year))].sort();
+        const latestYear = years[years.length - 1];
+        const latestYearData = data.filter(item => item.year === latestYear);
+        
+        // 获取前15个主要机场
+        const mainAirports = latestYearData
+            .sort((a, b) => parseFloat(b.total_freight) - parseFloat(a.total_freight))
+            .slice(0, 15)
+            .map(item => item.airport);
+            
+        // 添加主要机场选项
+        mainAirports.forEach(airport => {
+            const option = document.createElement('option');
+            option.value = airport;
+            option.textContent = airport;
+            airportSelect.appendChild(option);
+        });
+        
+        // 默认选择货运量最大的机场（第一个）
+        airportSelect.value = mainAirports[0];
+        
+        // 添加机场变更事件监听器
+        airportSelect.addEventListener('change', function() {
+            createAirportChart(data, this.value);
+        });
+    }
+    
+    // 初始创建图表 - 使用第一个主要机场
+    if (airportSelect && airportSelect.value) {
+        createAirportChart(data, airportSelect.value);
+    }
+}
+
+// 创建机场货运柱状图
+function createAirportChart(data, selectedAirport) {
+    console.log(`创建${selectedAirport}机场货运柱状图...`);
+    
+    // 筛选选定机场的数据
+    const airportData = data.filter(item => item.airport === selectedAirport);
+    
+    // 按年份排序
+    airportData.sort((a, b) => a.year.localeCompare(b.year));
+    
+    // 准备图表数据
+    const years = airportData.map(item => item.year);
+    
+    // 创建数据集
+    const datasets = [
+        {
+            label: 'UK - Unloaded',
+            data: airportData.map(item => parseFloat(item.UK_set_down)),
+            backgroundColor: 'rgba(148, 190, 217, 1)',
+            borderColor: 'rgba(148, 190, 217, 1)',
+            borderWidth: 1,
+            stack: 'UK'
+        },
+        {
+            label: 'UK - Loaded',
+            data: airportData.map(item => parseFloat(item.UK_picked_up)),
+            backgroundColor: 'rgba(148, 190, 217, 0.5)',
+            borderColor: 'rgba(148, 190, 217, 1)',
+            borderWidth: 1,
+            stack: 'UK'
+        },
+        {
+            label: 'EU - Unloaded',
+            data: airportData.map(item => parseFloat(item.EU_set_down)),
+            backgroundColor: 'rgba(221, 195, 45, 1)',
+            borderColor: 'rgba(255, 195, 45, 1)',
+            borderWidth: 1,
+            stack: 'EU'
+        },
+        {
+            label: 'EU - Loaded',
+            data: airportData.map(item => parseFloat(item.EU_picked_up)),
+            backgroundColor: 'rgba(255, 195, 45, 0.5)',
+            borderColor: 'rgba(255, 195, 45, 1)',
+            borderWidth: 1,
+            stack: 'EU'
+        },
+        {
+            label: 'Non-EU - Unloaded',
+            data: airportData.map(item => parseFloat(item.non_EU_set_down)),
+            backgroundColor: 'rgba(255, 148, 102, 1)',
+            borderColor: 'rgba(255, 148, 102, 1)',
+            borderWidth: 1,
+            stack: 'NonEU'
+        },
+        {
+            label: 'Non-EU - Loaded',
+            data: airportData.map(item => parseFloat(item.non_EU_picked_up)),
+            backgroundColor: 'rgba(255, 148, 102, 0.5)',
+            borderColor: 'rgba(255, 148, 102, 1)',
+            borderWidth: 1,
+            stack: 'NonEU'
+        }
+    ];
+    
+    // 获取图表容器
+    const chartCanvas = document.getElementById('airportChart');
+    
+    // 如果已存在图表，销毁它
+    if (window.airportChartInstance) {
+        window.airportChartInstance.destroy();
+    }
+    
+    // 创建新图表
+    if (chartCanvas) {
+        window.airportChartInstance = new Chart(chartCanvas, {
+            type: 'bar',
+            data: {
+                labels: years,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: `${selectedAirport} Airport Freight Traffic (2016-2024)`,
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        color: 'white',
+                        padding: {
+                            top: 10,
+                            bottom: 20
+                        }
+                    },
+                    subtitle: {
+                        display: true,
+                        text: 'By Freight Type and Nationality (tonnes)',
+                        color: 'white',
+                        padding: {
+                            bottom: 10
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: 'white',
+                            padding: 15,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Freight Type',
+                            color: 'white'
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-US').format(context.parsed.y) + ' tonnes';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year',
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            color: 'white',
+                            callback: function(value) {
+                                if (value >= 1000000) {
+                                    return (value / 1000000).toFixed(1) + 'M';
+                                } else if (value >= 1000) {
+                                    return (value / 1000).toFixed(1) + 'K';
+                                }
+                                return value;
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Freight Volume (tonnes)',
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 }
 
