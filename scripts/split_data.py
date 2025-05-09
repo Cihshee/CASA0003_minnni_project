@@ -26,7 +26,7 @@ input("Press Enter to continue with data splitting...")
 sitc_types = [
     '0 Food & live animals',
     '1 Beverages & tobacco',
-    '2 Crude materials',
+    '2 Crude materials, inedible, except fuels',
     '3 Mineral fuels, lubricants & related materials',
     '4 Animal & vegetable oils, fats & waxes',
     '5 Chemicals & related products',

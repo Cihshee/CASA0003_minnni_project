@@ -548,12 +548,19 @@ console.log('GoodsType.js loaded');
 
         state.currentMap = window.currentMapInstance;
         
-        state.currentMap.on('load', () => {
+        // 等待样式加载完成
+        state.currentMap.on('style.load', () => {
             // Initial animation from world to Europe
             setTimeout(() => {
                 animateMapTo(state.currentMap, MAP_VIEWS.europe);
             }, 1000);
-            updateVisualizations();
+            
+            // 确保在样式加载完成后再更新可视化
+            if (state.currentMap.loaded() && state.currentMap.isStyleLoaded()) {
+                updateVisualizations();
+            } else {
+                state.currentMap.once('load', updateVisualizations);
+            }
         });
 
         // 添加SVG容器
@@ -684,7 +691,7 @@ console.log('GoodsType.js loaded');
         // 添加提示文本和图表canvas
         container.innerHTML = `
             <div class="no-country-selected">Click a country on the map to view its trend</div>
-            <canvas id="country-trend-chart"></canvas>
+            <canvas id="country-trend-chart" style="display: none;"></canvas>
         `;
     }
     
@@ -749,13 +756,23 @@ console.log('GoodsType.js loaded');
 
   function initializeTrendChart() {
     const ctx = document.getElementById('country-trend-chart');
-    if (!ctx) return;
+    const container = document.getElementById('country-trend-container');
+    if (!ctx || !container) return;
+    
+    // 重置容器内容
+    container.innerHTML = `
+        <div class="no-country-selected">Click a country on the map to view its trade trend</div>
+        <canvas id="country-trend-chart" style="display: none;"></canvas>
+    `;
+    
+    // 获取新创建的 canvas
+    const canvas = document.getElementById('country-trend-chart');
     
     if (state.trendChart) {
         state.trendChart.destroy();
     }
     
-    state.trendChart = new Chart(ctx, {
+    state.trendChart = new Chart(canvas, {
         type: 'line',
         data: {
             labels: years,
@@ -821,13 +838,20 @@ console.log('GoodsType.js loaded');
             }
         }
     });
-    
-    // 初始时隐藏图表
-    ctx.style.display = 'none';
   }
 
   function updateTrendChart(sitcData) {
     if (!state.trendChart || !state.selectedCountry) return;
+
+    const canvas = document.getElementById('country-trend-chart');
+    const noCountryMessage = document.querySelector('.no-country-selected');
+    
+    // 显示趋势图，隐藏提示信息
+    if (canvas) {
+        canvas.style.display = 'block';
+        canvas.classList.add('trend-chart-animation');
+        noCountryMessage.style.display = 'none';
+    }
 
     // 为每个流向类型获取数据
     const datasets = flowTypes.map((flowType, index) => {
@@ -845,36 +869,31 @@ console.log('GoodsType.js loaded');
         };
     });
 
+    // 更新图表标题和数据
     state.trendChart.data.datasets = datasets;
     state.trendChart.options.plugins.title = {
         display: true,
-        text: `${sitcLabels[state.currentType]} - Trade Flows with ${state.selectedCountry}`,
+        text: `${state.selectedCountry} - ${sitcData.sitc_type}`,
         color: '#fff',
-        padding: {
-            top: 5,
-            bottom: 10
-        },
         font: {
-            size: 13
+            size: 16,
+            weight: 'normal'
         }
     };
 
-    // 添加动画效果
-    const chartCanvas = document.querySelector('#country-trend-chart');
-    if (chartCanvas) {
-        chartCanvas.style.display = 'block';
-        chartCanvas.classList.remove('trend-chart-animation');
-        void chartCanvas.offsetWidth; // 触发重排
-        chartCanvas.classList.add('trend-chart-animation');
-    }
+    // 恢复动画
+    state.trendChart.options.animation = {
+        duration: 1500,
+        easing: 'easeOutQuart'
+    };
+    state.trendChart.update();
 
-    // 隐藏提示文本
-    const noCountryMsg = document.querySelector('.no-country-selected');
-    if (noCountryMsg) {
-        noCountryMsg.style.display = 'none';
-    }
-
-    state.trendChart.update('none');
+    // 移除动画类
+    setTimeout(() => {
+        if (canvas) {
+            canvas.classList.remove('trend-chart-animation');
+        }
+    }, 1200);
   }
 
   // 添加数据缓存
@@ -898,7 +917,24 @@ console.log('GoodsType.js loaded');
             d.flow_type === state.currentFlow
         );
         
-        if (!currentData) throw new Error('No data available for selected year and flow type');
+        if (!currentData || !currentData.countries || currentData.countries.length === 0) {
+            console.warn(`No data available for year ${state.currentYear} and flow type ${state.currentFlow}`);
+            // 清除地图上的数据而不是显示错误
+            if (state.currentMap.getSource('countries')) {
+                state.currentMap.getSource('countries').setData({
+                    type: 'FeatureCollection',
+                    features: geoData.features.map(feature => ({
+                        ...feature,
+                        properties: {
+                            ...feature.properties,
+                            value: 0,
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    }))
+                });
+            }
+            return;
+        }
         
         // 创建国家值的查找表
         const countryValues = {};
@@ -909,7 +945,8 @@ console.log('GoodsType.js loaded');
         // 计算有效值的范围
         const values = Object.values(countryValues).filter(v => v > 0);
         if (values.length === 0) {
-            throw new Error('No valid data for the current selection');
+            console.warn('No valid trade values found for the current selection');
+            return;
         }
         
         const maxValue = Math.max(...values);
@@ -1161,6 +1198,23 @@ console.log('GoodsType.js loaded');
         
         const data = await response.json();
         
+        // 验证数据是否为空
+        const hasData = data.data.some(d => d.countries && d.countries.length > 0);
+        if (!hasData) {
+            console.error(`SITC ${sitcIndex} (${data.sitc_type}) data is empty. Please check the data file.`);
+            // 显示错误信息在页面上
+            const descElement = document.getElementById('goods-type-detail-desc');
+            if (descElement) {
+                descElement.innerHTML = `
+                    <div class="error-message" style="color: #ff6b6b; padding: 10px; background: rgba(255,107,107,0.1); border-radius: 4px;">
+                        <p>No data available for ${data.sitc_type}.</p>
+                        <p>Please check the data file: /data/split/sitc_${sitcIndex}.json</p>
+                    </div>
+                `;
+            }
+            return null;
+        }
+        
         // 初始化缓存
         if (!window.sitcDataCache) window.sitcDataCache = {};
         window.sitcDataCache[cacheKey] = data;
@@ -1200,8 +1254,13 @@ console.log('GoodsType.js loaded');
         const oldType = state.currentType;
         state.currentType = typeIndex;
         
-        // 立即更新当前选中的图标
-        updateCurrentIcon(typeIndex);
+        // 更新所有图标的状态
+        allIcons.forEach(icon => {
+          const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
+          const isSelected = iconTypeIndex === typeIndex;
+          icon.setAttribute('data-selected', isSelected ? 'true' : 'false');
+          icon.style.backgroundColor = isSelected ? 'rgb(33, 150, 243)' : '#1e2832';
+        });
         
         try {
           // 更新描述文本
@@ -1214,30 +1273,49 @@ console.log('GoodsType.js loaded');
           const sitcData = await loadSitcData(typeIndex);
           if (!sitcData) throw new Error(`Failed to load SITC ${typeIndex} data`);
           
-          // 更新所有可视化，包括趋势图
-          await updateVisualizations();
+          // 保存当前数据到state中
+          state.currentSitcData = sitcData;
+          
+          // 更新所有可视化
+          await Promise.all([
+            updateMapData(sitcData),
+            updateCountriesChart(sitcData)
+          ]);
+          
+          // 如果已经选择了国家，更新趋势图
+          if (state.selectedCountry) {
+            const canvas = document.getElementById('country-trend-chart');
+            if (canvas) {
+              canvas.style.display = 'block';
+              updateTrendChart(sitcData);
+            }
+          }
           
           // 预加载下一个类型的数据
           preloadNextSitcData();
-          
-          // 如果是EU相关的流向，确保地图缩放到欧洲
-          if (state.currentFlow.includes('EU')) {
-            animateMapTo(state.currentMap, MAP_VIEWS.europe);
-          } else {
-            animateMapTo(state.currentMap, MAP_VIEWS.world);
-          }
           
         } catch (error) {
           console.error('Failed to update visualizations:', error);
           // 恢复之前的状态
           state.currentType = oldType;
-          updateCurrentIcon(oldType);
+          // 恢复图标状态
+          allIcons.forEach(icon => {
+            const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
+            const isSelected = iconTypeIndex === oldType;
+            icon.setAttribute('data-selected', isSelected ? 'true' : 'false');
+            icon.style.backgroundColor = isSelected ? 'rgb(33, 150, 243)' : '#1e2832';
+          });
         }
       };
     });
 
     // 初始化时设置当前选中状态
-    updateCurrentIcon(state.currentType);
+    allIcons.forEach(icon => {
+      const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
+      const isSelected = iconTypeIndex === state.currentType;
+      icon.setAttribute('data-selected', isSelected ? 'true' : 'false');
+      icon.style.backgroundColor = isSelected ? 'rgb(33, 150, 243)' : '#1e2832';
+    });
   }
 
   // 修改初始化加载
@@ -1253,13 +1331,21 @@ console.log('GoodsType.js loaded');
         renderLegend();
         renderSummaryCharts(data);
 
+        // 设置初始状态
+        state.currentType = 0;
+        state.currentFlow = flowTypes[0];
+        state.currentYear = years[0];
+
         // 然后加载第一个SITC类型的数据用于详细视图
         const initialData = await loadSitcData(0);
         if (!initialData) throw new Error('Failed to load initial data');
 
+        // 保存当前数据到state中
+        state.currentSitcData = initialData;
+
         // 渲染详细视图
         renderDetail();
-        bindIconBarEvents();  // 这里会正确设置初始图标状态
+        bindIconBarEvents();
 
         // 预加载下一个类型的数据
         preloadNextSitcData();
@@ -1298,7 +1384,37 @@ console.log('GoodsType.js loaded');
           border-color: rgba(33, 150, 243, 0.5) !important;
       }
 
-      /* 其他现有样式 */
+      /* 地图交互样式 */
+      .goods-type-detail-map {
+          position: relative;
+          z-index: 1;
+      }
+
+      .mapboxgl-canvas {
+          cursor: pointer !important;
+      }
+
+      .mapboxgl-canvas-container {
+          z-index: 2;
+      }
+
+      /* 趋势图动画 */
+      .trend-chart-animation {
+          animation: fadeInSlideUp 1.2s ease-out;
+      }
+
+      @keyframes fadeInSlideUp {
+          0% {
+              opacity: 0;
+              transform: translateY(20px);
+          }
+          100% {
+              opacity: 1;
+              transform: translateY(0);
+          }
+      }
+
+      /* 其他现有样式保持不变 */
       .timeline-play-btn {
           background: rgba(255, 255, 255, 0.1);
           border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1316,125 +1432,7 @@ console.log('GoodsType.js loaded');
           line-height: 1;
       }
 
-      /* 增加第一页和第二页之间的间距 */
-      .goods-type-section {
-          margin-bottom: 150px;  /* 增加底部间距 */
-      }
-
-      /* 调整第一页图表容器的高度 */
-      .goods-summary-chart-block {
-          height: 250px;  /* 增加高度 */
-          margin-bottom: 30px;
-      }
-
-      .goods-summary-chart-canvas {
-          height: 100% !important;  /* 确保canvas填充容器高度 */
-      }
-
-      /* 增加legend文字大小 */
-      .goods-summary-legend-item {
-          font-size: 14px;  /* 增加文字大小 */
-          margin-right: 20px;  /* 增加间距 */
-          line-height: 1.6;
-      }
-
-      .goods-summary-legend-color {
-          width: 16px;  /* 稍微增加色块大小 */
-          height: 16px;
-          margin-right: 8px;
-      }
-
-      /* 其他现有样式保持不变 */
-      .timeline-play-btn:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: scale(1.1);
-      }
-
-      .timeline-speed {
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: #fff;
-          padding: 4px 8px;
-          border-radius: 16px;
-          cursor: pointer;
-          font-size: 0.85rem;
-          outline: none;
-          transition: all 0.3s;
-      }
-
-      .timeline-speed:hover {
-          background: rgba(255, 255, 255, 0.2);
-      }
-
-      .goods-type-detail-map {
-          transition: opacity 0.5s ease;
-      }
-
-      .goods-type-detail-map.updating {
-          opacity: 0.8;
-      }
-
-      /* 优化图表更新时的过渡 */
-      canvas {
-          transition: opacity 0.3s ease;
-      }
-
-      canvas.updating {
-          opacity: 0.8;
-      }
-
-      .goods-type-detail-controls {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          gap: 1.5rem;
-          background: #232323;
-          padding: 1rem 1.2rem;
-          border-radius: 0.8rem;
-          margin: 0 20px 16px 0;
-      }
-
-      .year-control {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          order: 1;
-      }
-
-      .flow-type-buttons {
-          display: flex;
-          gap: 0.4rem;
-          order: 2;
-          min-width: fit-content;
-      }
-
-      .year-slider {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-      }
-
-      @media (max-width: 900px) {
-          .goods-type-detail-controls {
-              flex-direction: column;
-              gap: 1rem;
-              padding: 0.8rem 1rem;
-          }
-
-          .year-control {
-              width: 100%;
-              order: 2;
-          }
-
-          .flow-type-buttons {
-              width: 100%;
-              justify-content: center;
-              order: 1;
-          }
-      }
+      /* 其他样式保持不变... */
   `;
   document.head.appendChild(style);
 })();

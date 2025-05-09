@@ -197,7 +197,11 @@
     min-width: 100px;
 }
 
+/* 图标基础样式 */
 .goods-type-icon-btn {
+    background-color: #1e2832 !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.3s ease !important;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -217,13 +221,26 @@
     transition: all 0.3s;
 }
 
-/* Remove conflicting hover and active states since they're handled by data attributes */
-.goods-type-icon-btn:hover img {
-    opacity: 1;
+/* 当前选中的图标样式 - 使用更高优先级 */
+.goods-type-icon-btn[data-selected="true"] {
+    background-color: rgb(33, 150, 243) !important;
+    border-color: rgb(33, 150, 243) !important;
+    box-shadow: 0 0 15px rgba(33, 150, 243, 0.5) !important;
+    transform: translateX(5px) !important;
 }
 
 .goods-type-icon-btn[data-selected="true"] img {
     opacity: 1;
+}
+
+/* 悬停效果 - 只对未选中的图标应用 */
+.goods-type-icon-btn:not([data-selected="true"]):hover {
+    background-color: rgba(33, 150, 243, 0.2) !important;
+    border-color: rgba(33, 150, 243, 0.5) !important;
+}
+
+.goods-type-icon-btn:not([data-selected="true"]):hover img {
+    opacity: 0.9;
 }
 
 /* Map interaction styles */
