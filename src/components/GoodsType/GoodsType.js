@@ -173,8 +173,18 @@ console.log('GoodsType.js loaded');
   renderLegend();
 
   function setIconBarActive(idx) {
-    document.querySelectorAll('#goods-type-icons-row-summary .goods-type-icon-btn, #goods-type-icons-row-detail .goods-type-icon-btn').forEach((btn,i)=>{
-      btn.classList.toggle('active', i===idx);
+    document.querySelectorAll('.goods-type-icon-btn').forEach((btn, i) => {
+      btn.setAttribute('data-selected', i === idx ? 'true' : 'false');
+    });
+  }
+
+  function updateCurrentIcon(index) {
+    // Update all icons in both summary and detail views
+    document.querySelectorAll('.goods-type-icon-btn').forEach(icon => {
+      const typeIndex = parseInt(icon.getAttribute('data-type'));
+      icon.setAttribute('data-selected', typeIndex === index ? 'true' : 'false');
+      // Remove any lingering active class to avoid conflicts
+      icon.classList.remove('active');
     });
   }
 
@@ -392,10 +402,34 @@ console.log('GoodsType.js loaded');
             `${((state.currentYear - 2016) / (2024 - 2016)) * 100}%`;
     });
 
-    // 使用Promise来处理数据更新
+    // 使用Promise来处理数据更新，但不更新趋势图
     return new Promise((resolve) => {
-        updateVisualizations().then(resolve);
+        updateVisualizationsExceptTrend().then(resolve);
     });
+  }
+
+  // 新增一个不更新趋势图的可视化更新函数
+  async function updateVisualizationsExceptTrend() {
+    try {
+        const sitcData = await loadSitcData(state.currentType);
+        if (!sitcData) throw new Error('Failed to load SITC data');
+
+        lastLoadedData = sitcData;
+        
+        // 只更新地图和国家排名图表
+        await Promise.all([
+            updateMapData(sitcData),
+            new Promise(resolve => {
+                requestAnimationFrame(() => {
+                    updateCountriesChart(sitcData);
+                    resolve();
+                });
+            })
+        ]);
+
+    } catch (error) {
+        console.error('Error updating visualizations:', error);
+    }
   }
 
   // Add geoData variable and loading
@@ -846,37 +880,6 @@ console.log('GoodsType.js loaded');
   // 添加数据缓存
   let lastLoadedData = null;
 
-  // 修改可视化更新函数，减少闪烁
-  async function updateVisualizations() {
-    try {
-        const sitcData = await loadSitcData(state.currentType);
-        if (!sitcData) throw new Error('Failed to load SITC data');
-
-        lastLoadedData = sitcData;
-        
-        // 批量更新所有可视化
-        await Promise.all([
-            updateMapData(sitcData),
-            new Promise(resolve => {
-                requestAnimationFrame(() => {
-                    updateCountriesChart(sitcData);
-                    if (state.selectedCountry) {
-                        updateTrendChart(sitcData);
-                    }
-                    resolve();
-                });
-            })
-        ]);
-
-        const descElement = document.getElementById('goods-type-detail-desc');
-        if (descElement) {
-            descElement.textContent = sitcDescriptions[state.currentType];
-        }
-    } catch (error) {
-        console.error('Error updating visualizations:', error);
-    }
-  }
-
   // 修改地图更新函数
   async function updateMapData(sitcData) {
     if (!state.currentMap) return;
@@ -1142,7 +1145,7 @@ console.log('GoodsType.js loaded');
     countriesChart.update('none');
   }
 
-  // 修改数据加载函数
+  // 修改数据加载函数，使用新的文件命名
   async function loadSitcData(sitcIndex) {
     const cacheKey = `sitc_${sitcIndex}`;
     
@@ -1152,6 +1155,7 @@ console.log('GoodsType.js loaded');
     }
     
     try {
+        // 使用新的文件路径格式
         const response = await fetch(`/data/split/sitc_${sitcIndex}.json`);
         if (!response.ok) throw new Error(`Failed to load SITC ${sitcIndex} data`);
         
@@ -1175,7 +1179,7 @@ console.log('GoodsType.js loaded');
     }
   }
 
-  // 添加预加载函数
+  // 修改预加载函数
   function preloadNextSitcData() {
     const nextType = (state.currentType + 1) % sitcLabels.length;
     loadSitcData(nextType).catch(() => {}); // 忽略预加载错误
@@ -1183,39 +1187,89 @@ console.log('GoodsType.js loaded');
 
   // 修改图标点击事件处理
   function bindIconBarEvents() {
-    document.querySelectorAll('#goods-type-icons-row-summary .goods-type-icon-btn, #goods-type-icons-row-detail .goods-type-icon-btn').forEach((btn,i)=>{
-        btn.onclick = async () => {
-            if (state.currentType === i) return; // 避免重复加载
-            
-            const oldType = state.currentType;
-            state.currentType = i;
-            setIconBarActive(i);
-            
-            try {
-                await updateMapData();
-                preloadNextSitcData(); // 预加载下一个类型的数据
-            } catch (error) {
-                console.error('Failed to update map:', error);
-                // 恢复之前的状态
-                state.currentType = oldType;
-                setIconBarActive(oldType);
-            }
-        };
+    // 获取所有图标
+    const allIcons = document.querySelectorAll('.goods-type-icon-btn');
+
+    // 为每个图标添加点击事件
+    allIcons.forEach(btn => {
+      const typeIndex = parseInt(btn.getAttribute('data-type'));
+      
+      btn.onclick = async () => {
+        if (state.currentType === typeIndex) return;
+        
+        const oldType = state.currentType;
+        state.currentType = typeIndex;
+        
+        // 立即更新当前选中的图标
+        updateCurrentIcon(typeIndex);
+        
+        try {
+          // 更新描述文本
+          const descElement = document.getElementById('goods-type-detail-desc');
+          if (descElement) {
+            descElement.textContent = sitcDescriptions[typeIndex];
+          }
+
+          // 加载新的SITC数据
+          const sitcData = await loadSitcData(typeIndex);
+          if (!sitcData) throw new Error(`Failed to load SITC ${typeIndex} data`);
+          
+          // 更新所有可视化，包括趋势图
+          await updateVisualizations();
+          
+          // 预加载下一个类型的数据
+          preloadNextSitcData();
+          
+          // 如果是EU相关的流向，确保地图缩放到欧洲
+          if (state.currentFlow.includes('EU')) {
+            animateMapTo(state.currentMap, MAP_VIEWS.europe);
+          } else {
+            animateMapTo(state.currentMap, MAP_VIEWS.world);
+          }
+          
+        } catch (error) {
+          console.error('Failed to update visualizations:', error);
+          // 恢复之前的状态
+          state.currentType = oldType;
+          updateCurrentIcon(oldType);
+        }
+      };
     });
+
+    // 初始化时设置当前选中状态
+    updateCurrentIcon(state.currentType);
   }
 
-  // 加载数据后初始化
-  fetch(csvPath)
-    .then(r => r.text())
-    .then(csvText => {
-      const {data} = parseCSV(csvText);
-      state.allData = data;
-      renderLegend();
-      renderSummaryCharts(data);
-      renderDetail();
-      bindIconBarEvents();
-      setIconBarActive(state.currentType);
-    });
+  // 修改初始化加载
+  async function initialize() {
+    try {
+        // 首先加载CSV数据用于summary图表
+        const response = await fetch(csvPath);
+        const csvText = await response.text();
+        const {data} = parseCSV(csvText);
+        state.allData = data;
+        
+        // 渲染summary部分
+        renderLegend();
+        renderSummaryCharts(data);
+
+        // 然后加载第一个SITC类型的数据用于详细视图
+        const initialData = await loadSitcData(0);
+        if (!initialData) throw new Error('Failed to load initial data');
+
+        // 渲染详细视图
+        renderDetail();
+        bindIconBarEvents();  // 这里会正确设置初始图标状态
+
+        // 预加载下一个类型的数据
+        preloadNextSitcData();
+    } catch (error) {
+        console.error('Initialization failed:', error);
+    }
+  }
+
+  // 启动初始化
+  initialize();
 
   const MAPBOX_TOKEN = 'pk.eyJ1IjoieWl4aW5nLWxpIiwiYSI6ImNtN3FtNWh6YjA0ancybnM4aGxjZnlheTEifQ.sKwaoIMQR65VQmYDbnu2MQ';
   const MAPBOX_STYLE = 'mapbox://styles/yixing-li/cmaa8uo1j00j001sgc3051vxu';
@@ -1223,6 +1277,28 @@ console.log('GoodsType.js loaded');
   // 添加样式
   const style = document.createElement('style');
   style.textContent = `
+      /* 图标基础样式 */
+      .goods-type-icon-btn {
+          background-color: #1e2832 !important;
+          border: 2px solid rgba(255, 255, 255, 0.2) !important;
+          transition: all 0.3s ease !important;
+      }
+
+      /* 当前选中的图标样式 - 使用更高优先级 */
+      .goods-type-icon-btn[data-selected="true"] {
+          background-color: rgb(33, 150, 243) !important;
+          border-color: rgb(33, 150, 243) !important;
+          box-shadow: 0 0 15px rgba(33, 150, 243, 0.5) !important;
+          transform: translateX(5px) !important;
+      }
+
+      /* 悬停效果 */
+      .goods-type-icon-btn:hover {
+          background-color: rgba(33, 150, 243, 0.2) !important;
+          border-color: rgba(33, 150, 243, 0.5) !important;
+      }
+
+      /* 其他现有样式 */
       .timeline-play-btn {
           background: rgba(255, 255, 255, 0.1);
           border: 1px solid rgba(255, 255, 255, 0.2);

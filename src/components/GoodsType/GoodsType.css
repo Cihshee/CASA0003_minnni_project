@@ -201,13 +201,9 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: rgba(53, 122, 189, 0.1);
-    border: 2px solid rgba(53, 122, 189, 0.3);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
     cursor: pointer;
     padding: 0;
     outline: none;
@@ -221,23 +217,12 @@
     transition: all 0.3s;
 }
 
-.goods-type-icon-btn:hover {
-    background: rgba(53, 122, 189, 0.2);
-    border-color: rgba(53, 122, 189, 0.5);
-    transform: translateX(5px);
-}
-
+/* Remove conflicting hover and active states since they're handled by data attributes */
 .goods-type-icon-btn:hover img {
     opacity: 1;
 }
 
-.goods-type-icon-btn.active {
-    background: rgba(53, 122, 189, 0.8);
-    border-color: #fff;
-    box-shadow: 0 0 10px rgba(53, 122, 189, 0.5);
-}
-
-.goods-type-icon-btn.active img {
+.goods-type-icon-btn[data-selected="true"] img {
     opacity: 1;
 }
 
