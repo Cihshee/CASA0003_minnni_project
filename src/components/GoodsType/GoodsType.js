@@ -608,7 +608,7 @@ console.log('GoodsType.js loaded');
   // Load GeoJSON data
   async function loadGeoData() {
     try {
-        const response = await fetch('public/data/countries.geojson');
+        const response = await fetch('/public/data/countries.geojson');
         if (!response.ok) throw new Error('Failed to load GeoJSON data');
         geoData = await response.json();
         return true;
