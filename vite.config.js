@@ -11,9 +11,18 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    copyPublicDir: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html')
+      },
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.includes('data/')) {
+            return assetInfo.name;
+          }
+          return `assets/[name]-[hash][extname]`;
+        }
       }
     }
   },
