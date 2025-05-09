@@ -4,7 +4,7 @@
 console.log('GoodsType.js loaded');
 
 (function() {
-  const csvPath = '/data/Goodstype_full_summary_data_merged.csv';
+  const csvPath = 'public/data/Goodstype_full_summary_data_merged.csv';
   const flowTypes = [
     'EU - Exports',
     'EU - Imports',
@@ -608,7 +608,7 @@ console.log('GoodsType.js loaded');
   // Load GeoJSON data
   async function loadGeoData() {
     try {
-        const response = await fetch('/data/countries.geojson');
+        const response = await fetch('public/data/countries.geojson');
         if (!response.ok) throw new Error('Failed to load GeoJSON data');
         geoData = await response.json();
         return true;

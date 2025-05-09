@@ -44,7 +44,7 @@ function loadData() {
   const svgContainer = document.getElementById('heatmap-svg');
   svgContainer.innerHTML = '<div class="loading">Loading data, please wait…</div>';
 
-  d3.csv('data/region_trade_20country.csv')
+  d3.csv('public/data/region_trade_20country.csv')
     .then(data => {
       data.forEach(d => {
         d.Year = +d.Year;

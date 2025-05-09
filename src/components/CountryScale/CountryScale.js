@@ -42,7 +42,7 @@ const timelineDates = [
 ];
 
 
-d3.csv("data/eu_trade.csv").then(data => {
+d3.csv("public/data/eu_trade.csv").then(data => {
   data.forEach(d => {
     d.month         = parseDate(d.month);
     d.exports       = +d.exports;
