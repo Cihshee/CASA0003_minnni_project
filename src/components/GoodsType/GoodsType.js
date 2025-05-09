@@ -4,7 +4,7 @@
 console.log('GoodsType.js loaded');
 
 (function() {
-  const csvPath = 'public/data/Goodstype_full_summary_data_merged.csv';
+  const csvPath = './data/Goodstype_full_summary_data_merged.csv';
   const flowTypes = [
     'EU - Exports',
     'EU - Imports',
@@ -357,7 +357,7 @@ console.log('GoodsType.js loaded');
           // 依次显示每个图表
           charts.forEach((chart, index) => {
             if (!chart.rendered) {
-              setTimeout(() => {
+          setTimeout(() => {
                 chart.block.style.opacity = '1';
                 chart.block.style.transform = 'translateY(0)';
                 drawChart(chart.ctx, data, chart.flowtype);
@@ -610,7 +610,8 @@ console.log('GoodsType.js loaded');
   // Load GeoJSON data
   async function loadGeoData() {
     try {
-        const response = await fetch('/public/data/countries.geojson');
+        // 使用GitHub Pages兼容的路径
+        const response = await fetch('./data/countries.geojson');
         if (!response.ok) throw new Error('Failed to load GeoJSON data');
         geoData = await response.json();
         return true;
@@ -1381,8 +1382,9 @@ console.log('GoodsType.js loaded');
     }
     
     try {
-        // 使用直接文件名访问
-        const response = await fetch(`/data/split/${fileName}`);
+        // 使用GitHub Pages兼容的路径
+        // 注意：对于GitHub Pages，我们需要直接使用相对于仓库根目录的路径
+        const response = await fetch(`./data/split/${fileName}`);
         if (!response.ok) throw new Error(`Failed to load ${fileName}`);
         
         const data = await response.json();
@@ -1397,7 +1399,7 @@ console.log('GoodsType.js loaded');
                 descElement.innerHTML = `
                     <div class="error-message" style="color: #ff6b6b; padding: 10px; background: rgba(255,107,107,0.1); border-radius: 4px;">
                         <p>No data available for ${data.sitc_type}.</p>
-                        <p>Please check the data file: /data/split/${fileName}</p>
+                        <p>Please check the data file: ./data/split/${fileName}</p>
                     </div>
                 `;
             }
@@ -1510,8 +1512,8 @@ console.log('GoodsType.js loaded');
   // 修改初始化加载
   async function initialize() {
     try {
-        // 首先加载CSV数据用于summary图表
-        const response = await fetch(csvPath);
+        // 使用GitHub Pages兼容的路径
+        const response = await fetch('./data/Goodstype_full_summary_data_merged.csv');
         const csvText = await response.text();
         const {data} = parseCSV(csvText);
         state.allData = data;
