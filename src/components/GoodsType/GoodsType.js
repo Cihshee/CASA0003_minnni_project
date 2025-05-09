@@ -1414,6 +1414,34 @@ console.log('GoodsType.js loaded');
           }
       }
 
+      /* Summary 图表样式 */
+      .goods-type-section {
+          margin-bottom: 120px !important;  /* 增加第一页和第二页之间的间距 */
+          padding-bottom: 50px !important;  /* 添加内边距 */
+      }
+
+      .goods-summary-chart-block {
+          height: 270px !important;  /* 增加图表高度 */
+          margin-bottom: 20px !important;  /* 增加图表之间的间距 */
+      }
+
+      .goods-summary-chart-canvas {
+          height: 100% !important;  /* 确保canvas填充容器高度 */
+      }
+
+      /* 增加legend文字大小 */
+      .goods-summary-legend-item {
+          font-size: 14px !important;  /* 增加文字大小 */
+          margin-right: 20px !important;  /* 增加间距 */
+          line-height: 1.6 !important;
+      }
+
+      .goods-summary-legend-color {
+          width: 16px !important;  /* 稍微增加色块大小 */
+          height: 16px !important;
+          margin-right: 8px !important;
+      }
+
       /* 其他现有样式保持不变 */
       .timeline-play-btn {
           background: rgba(255, 255, 255, 0.1);

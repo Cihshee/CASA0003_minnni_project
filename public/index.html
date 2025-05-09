@@ -7,11 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="src/components/Transport/Transport.css">
-    <link rel="stylesheet" href="src/components/CountryScale/CountryScale.css">
-    <link rel="stylesheet" href="src/components/RegionScale/RegionScale.css">
-    <link rel="stylesheet" href="src/components/GoodsType/GoodsType.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/src/components/Transport/Transport.css">
+    <link rel="stylesheet" href="/src/components/CountryScale/CountryScale.css">
+    <link rel="stylesheet" href="/src/components/RegionScale/RegionScale.css">
+    <link rel="stylesheet" href="/src/components/GoodsType/GoodsType.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
     <!-- 添加Mapbox GL JS脚本和样式 -->
@@ -30,7 +30,7 @@
       <div class="side-nav-dot" data-target="section8"></div>
       <div class="side-nav-dot" data-target="section9"></div>
     </div>
-    <script>
+    <script type="module">
       // Side nav scroll and highlight logic
       const dots = Array.from(document.querySelectorAll('.side-nav-dot'));
       const sections = [
@@ -87,13 +87,13 @@
       <section id="section1b" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;min-height:60vh;background:#2a2a2a;">
         <video autoplay muted loop playsinline id="bg-video"
           style="position:relative;width:50vw;height:auto;max-width:1200px;max-height:100vh;object-fit:cover;z-index:0;border-radius:1.5rem;box-shadow:0 4px 32px rgba(0,0,0,0.18);border:4px solid #444;margin-bottom:20vh;">
-          <source src="public/cover.mp4" type="video/mp4">
+          <source src="/cover.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       </section>
 
       <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-      <script>
+      <script type="module">
         lottie.loadAnimation({
           container: document.getElementById('lottie-title-player'),
           renderer: 'svg',
@@ -143,55 +143,59 @@
         </div>
       </section>
 
-    <script>
+    <script type="module">
       // 加载 Country Scale 组件
-      fetch('src/components/CountryScale/CountryScale.html')
+      fetch('/src/components/CountryScale/CountryScale.html')
         .then(response => response.text())
         .then(html => {
           document.getElementById('country-scale-container').innerHTML = html;
           // 加载组件动画脚本
           const script = document.createElement('script');
-          script.src = 'src/components/CountryScale/CountryScale.js';
+          script.type = 'module';
+          script.src = '/src/components/CountryScale/CountryScale.js';
           document.body.appendChild(script);
         });
 
       // 加载 Region Scale 组件
-      fetch('src/components/RegionScale/RegionScale.html')
+      fetch('/src/components/RegionScale/RegionScale.html')
         .then(response => response.text())
         .then(html => {
           document.getElementById('region-scale-container').innerHTML = html;
           // 加载组件动画脚本
           const script = document.createElement('script');
-          script.src = 'src/components/RegionScale/RegionScale.js';
+          script.type = 'module';
+          script.src = '/src/components/RegionScale/RegionScale.js';
           document.body.appendChild(script);
         });
 
       // 加载 Goods Types 组件
-      fetch('src/components/GoodsType/GoodsType.html')
+      fetch('/src/components/GoodsType/GoodsType.html')
         .then(response => response.text())
         .then(html => {
           document.getElementById('goods-types-container').innerHTML = html;
           // 加载组件动画脚本
           const script = document.createElement('script');
-          script.src = 'src/components/GoodsType/GoodsType.js';
+          script.type = 'module';
+          script.src = '/src/components/GoodsType/GoodsType.js';
           document.body.appendChild(script);
         });
 
       // 加载 Transportation 组件
-      fetch('src/components/Transport/Transport.html')
+      fetch('/src/components/Transport/Transport.html')
         .then(response => response.text())
         .then(html => {
           document.getElementById('transport-container').innerHTML = html;
           // 加载组件动画脚本
           const script = document.createElement('script');
-          script.src = 'src/components/Transport/Transport.js';
+          script.type = 'module';
+          script.src = '/src/components/Transport/Transport.js';
           document.body.appendChild(script);
         });
 
     </script>
-    <script src="script.js"></script>
+    <script type="module" src="/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
+    <script type="module">
       // 删除原有的自动吸附和自动滑动功能代码
       // 仅保留基本的部分用于侧边导航点的正常工作
       (function() {
@@ -232,4 +236,3 @@
     </script>
   </body>
 </html>
-
