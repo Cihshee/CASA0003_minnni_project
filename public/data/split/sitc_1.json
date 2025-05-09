@@ -1,0 +1,2265 @@
+{
+  "sitc_type": "1 Beverages & tobacco",
+  "data": [
+    {
+      "year": 2016,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Estonia",
+          "Value (\uffe1)": 3715824
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 540966040
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 194035455
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 19836541
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 269428512
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 22040590
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 44439603
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 105461246
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 55048687
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 12091751
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 260809064
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 4439627
+        }
+      ]
+    },
+    {
+      "year": 2016,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Austria",
+          "Value (\uffe1)": 98632536
+        },
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 212376912
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 22969182
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1148261080
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 257804773
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 146143273
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 731353500
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 406980500
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 98978499
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 42537113
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 196991772
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 82969697
+        }
+      ]
+    },
+    {
+      "year": 2016,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 101413948
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 51869538
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 83280954
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 25787485
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 8522685
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 11972686
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 178992750
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 96532935
+        },
+        {
+          "Country": "Iraq",
+          "Value (\uffe1)": 4952359
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 79409746
+        },
+        {
+          "Country": "Lebanon",
+          "Value (\uffe1)": 8079716
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 109189019
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 36959653
+        },
+        {
+          "Country": "Peru",
+          "Value (\uffe1)": 18161277
+        },
+        {
+          "Country": "Russia",
+          "Value (\uffe1)": 3657585
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 225807877
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 109112756
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 87465872
+        },
+        {
+          "Country": "Switzerland",
+          "Value (\uffe1)": 4011284
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 176966075
+        },
+        {
+          "Country": "Thailand",
+          "Value (\uffe1)": 4172541
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 47451779
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 128437579
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1487457021
+        },
+        {
+          "Country": "Uruguay",
+          "Value (\uffe1)": 4058603
+        }
+      ]
+    },
+    {
+      "year": 2016,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 66558323
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 232762673
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 24065961
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 185051901
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 59226753
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 220568530
+        },
+        {
+          "Country": "Russia",
+          "Value (\uffe1)": 13421411
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 93178846
+        },
+        {
+          "Country": "Switzerland",
+          "Value (\uffe1)": 22874295
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 223186854
+        }
+      ]
+    },
+    {
+      "year": 2017,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 4019869
+        },
+        {
+          "Country": "Bulgaria",
+          "Value (\uffe1)": 4102620
+        },
+        {
+          "Country": "Cyprus",
+          "Value (\uffe1)": 3963981
+        },
+        {
+          "Country": "Estimates",
+          "Value (\uffe1)": 7353501
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 508085495
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 218931372
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 20254805
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 240125526
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 24844826
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 114073192
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 110884299
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 53090539
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 10208704
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 3937734
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 268479367
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 4283797
+        }
+      ]
+    },
+    {
+      "year": 2017,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Austria",
+          "Value (\uffe1)": 89106537
+        },
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 148664796
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 27758868
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1230724956
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 279962998
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 144085570
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 698187684
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 385283498
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 273968071
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 32634230
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 210712198
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 89737802
+        }
+      ]
+    },
+    {
+      "year": 2017,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 104215581
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 44516652
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 87928595
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 74630079
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 4690168
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 16765069
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 186166607
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 103492942
+        },
+        {
+          "Country": "Iraq",
+          "Value (\uffe1)": 10588090
+        },
+        {
+          "Country": "Israel",
+          "Value (\uffe1)": 9207728
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 102703185
+        },
+        {
+          "Country": "Lebanon",
+          "Value (\uffe1)": 24435413
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 106550886
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 6359515
+        },
+        {
+          "Country": "Peru",
+          "Value (\uffe1)": 13983104
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 292091588
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 128245115
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 68215767
+        },
+        {
+          "Country": "Switzerland",
+          "Value (\uffe1)": 4480084
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 162158799
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 39292494
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 130613601
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1534863077
+        },
+        {
+          "Country": "Uruguay",
+          "Value (\uffe1)": 13782705
+        }
+      ]
+    },
+    {
+      "year": 2017,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 76503407
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 240895074
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 179630817
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 78391056
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 255307716
+        },
+        {
+          "Country": "Russia",
+          "Value (\uffe1)": 23013005
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 104463085
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 287316456
+        }
+      ]
+    },
+    {
+      "year": 2018,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 17468344
+        },
+        {
+          "Country": "Estimates",
+          "Value (\uffe1)": 6364517
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 473717155
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 233459919
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 23791656
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 307202820
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 38107581
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 133768603
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 122533634
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 71392975
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 5247820
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 273424186
+        }
+      ]
+    },
+    {
+      "year": 2018,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Austria",
+          "Value (\uffe1)": 58804748
+        },
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 160095226
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 30115255
+        },
+        {
+          "Country": "Estimates",
+          "Value (\uffe1)": 8794075
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1234512780
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 321428418
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 207642723
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 831140586
+        },
+        {
+          "Country": "Lithuania",
+          "Value (\uffe1)": 7802599
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 311844112
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 197246196
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 37206101
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 242699141
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 55388601
+        }
+      ]
+    },
+    {
+      "year": 2018,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 115061103
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 56608205
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 94632364
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 4363324
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 112064531
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 13736729
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 21567173
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 191853467
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 138882539
+        },
+        {
+          "Country": "Iraq",
+          "Value (\uffe1)": 4459255
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 127766966
+        },
+        {
+          "Country": "Lebanon",
+          "Value (\uffe1)": 20572893
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 132235774
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 33790549
+        },
+        {
+          "Country": "Peru",
+          "Value (\uffe1)": 4662653
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 322446070
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 111923627
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 66728608
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 170674035
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 24806213
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 147815419
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1549856517
+        },
+        {
+          "Country": "Uruguay",
+          "Value (\uffe1)": 4962806
+        }
+      ]
+    },
+    {
+      "year": 2018,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 81650354
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 251093270
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 183917017
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 117477838
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 238168425
+        },
+        {
+          "Country": "Russia",
+          "Value (\uffe1)": 15923693
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 113708691
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 289253974
+        }
+      ]
+    },
+    {
+      "year": 2019,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 8846038
+        },
+        {
+          "Country": "Bulgaria",
+          "Value (\uffe1)": 5936357
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 4403590
+        },
+        {
+          "Country": "Estimates",
+          "Value (\uffe1)": 8438732
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 457085365
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 262623995
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 25592904
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 304854081
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 45403995
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 145230183
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 144282630
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 82648720
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 10440345
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 9058355
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 273619732
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 4636738
+        }
+      ]
+    },
+    {
+      "year": 2019,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Austria",
+          "Value (\uffe1)": 83644656
+        },
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 172187908
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 29164053
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1354669285
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 354171904
+        },
+        {
+          "Country": "Hungary",
+          "Value (\uffe1)": 6816646
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 239457905
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 831785174
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 272036876
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 177849166
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 33755959
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 4846694
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 237891498
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 38873057
+        }
+      ]
+    },
+    {
+      "year": 2019,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 119719617
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 57656610
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 92179681
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 162318639
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 33798894
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 6746956
+        },
+        {
+          "Country": "Ecuador",
+          "Value (\uffe1)": 4305580
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 155624529
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 166465829
+        },
+        {
+          "Country": "Iraq",
+          "Value (\uffe1)": 10274555
+        },
+        {
+          "Country": "Israel",
+          "Value (\uffe1)": 11928180
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 148951549
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 121266953
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 47936079
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 303510885
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 120034347
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 70405968
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 211057438
+        },
+        {
+          "Country": "Thailand",
+          "Value (\uffe1)": 4455931
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 34562486
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 102204509
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1557097069
+        }
+      ]
+    },
+    {
+      "year": 2019,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 94692620
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 240379990
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 188963123
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 106174254
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 247717494
+        },
+        {
+          "Country": "Russia",
+          "Value (\uffe1)": 9092591
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 101931756
+        },
+        {
+          "Country": "Switzerland",
+          "Value (\uffe1)": 4155689
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 281034445
+        }
+      ]
+    },
+    {
+      "year": 2020,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 8938958
+        },
+        {
+          "Country": "Bulgaria",
+          "Value (\uffe1)": 7815422
+        },
+        {
+          "Country": "Estimates",
+          "Value (\uffe1)": 31169144
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 383202746
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 184497148
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 7329608
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 352490987
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 50846541
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 180683215
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 124263982
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 99706808
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 3747597
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 152946140
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 12889134
+        }
+      ]
+    },
+    {
+      "year": 2020,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Austria",
+          "Value (\uffe1)": 89827382
+        },
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 204158048
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 20041500
+        },
+        {
+          "Country": "Estimates",
+          "Value (\uffe1)": 42017813
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1256842688
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 260331170
+        },
+        {
+          "Country": "Hungary",
+          "Value (\uffe1)": 14587103
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 233942546
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 775820547
+        },
+        {
+          "Country": "Lithuania",
+          "Value (\uffe1)": 111512563
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 399321415
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 287363890
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 56732396
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 3667502
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 284874316
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 33362233
+        }
+      ]
+    },
+    {
+      "year": 2020,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 123914559
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 46320462
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 94452000
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 113729158
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 29189223
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 3654676
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 136316015
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 96082974
+        },
+        {
+          "Country": "Iraq",
+          "Value (\uffe1)": 4092304
+        },
+        {
+          "Country": "Israel",
+          "Value (\uffe1)": 5916070
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 117119938
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 79656966
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 10897188
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 258165044
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 81181776
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 27900954
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 185129360
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 52861950
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 36092018
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1178298247
+        }
+      ]
+    },
+    {
+      "year": 2020,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 103553343
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 284507384
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 210657158
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 53037305
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 268917738
+        },
+        {
+          "Country": "Russia",
+          "Value (\uffe1)": 21839994
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 101764407
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 295722251
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 34904574
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 10790989
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 407659249
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 152803877
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 4861020
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 297752484
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 46258402
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 158829532
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 120949773
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 113802595
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 23657419
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 166873809
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 15597373
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Austria",
+          "Value (\uffe1)": 140314398
+        },
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 161132037
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 53240725
+        },
+        {
+          "Country": "Estimates",
+          "Value (\uffe1)": 22909800
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1382822360
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 163856565
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 172776008
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 804565478
+        },
+        {
+          "Country": "Lithuania",
+          "Value (\uffe1)": 8539692
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 332293351
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 131568544
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 79129902
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 5151733
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 315093912
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 67997579
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 123023127
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 93027527
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 110064105
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 29779907
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 200116823
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 40080792
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 42428873
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 155122874
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 146298535
+        },
+        {
+          "Country": "Israel",
+          "Value (\uffe1)": 35858401
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 138365400
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 107955834
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 69286903
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 234563097
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 77175884
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 58651089
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 232175865
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 57880404
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 83121290
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1210844886
+        },
+        {
+          "Country": "Uruguay",
+          "Value (\uffe1)": 4406201
+        },
+        {
+          "Country": "Vietnam",
+          "Value (\uffe1)": 16530925
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 102679032
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 251737844
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 190009237
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 30909779
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 214998639
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 126880733
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 228705134
+        }
+      ]
+    },
+    {
+      "year": 2022,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 16794562
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 519530513
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 246547047
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 5061543
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 358229430
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 88941530
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 81291599
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 139792342
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 128954475
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 37820956
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 220409643
+        }
+      ]
+    },
+    {
+      "year": 2022,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 499391909
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 16781917
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1708941923
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 238148414
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 310331275
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 980992944
+        },
+        {
+          "Country": "Lithuania",
+          "Value (\uffe1)": 61093561
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 579269156
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 152535442
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 56265661
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 321666920
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 52139374
+        }
+      ]
+    },
+    {
+      "year": 2022,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 161374554
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 152728317
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 145784124
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 17027527
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 239691141
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 85389993
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 78749583
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 150238593
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 282280137
+        },
+        {
+          "Country": "Iraq",
+          "Value (\uffe1)": 10538171
+        },
+        {
+          "Country": "Israel",
+          "Value (\uffe1)": 53674766
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 183056853
+        },
+        {
+          "Country": "Lebanon",
+          "Value (\uffe1)": 5381213
+        },
+        {
+          "Country": "Malaysia",
+          "Value (\uffe1)": 5870182
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 136614900
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 203353746
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 340308304
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 105538917
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 125437585
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 320619728
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 105550182
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 158544491
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1535649398
+        },
+        {
+          "Country": "Vietnam",
+          "Value (\uffe1)": 66428334
+        }
+      ]
+    },
+    {
+      "year": 2022,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 108041482
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 276452977
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 191939872
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 26774158
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 222132000
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 128721770
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 258846800
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 52441618
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 488420633
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 220195358
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 15917726
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 400410300
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 82962833
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 80341598
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 152682384
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 135305651
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 30011909
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 193156135
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 542877227
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 55887269
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1771985017
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 264984086
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 354167580
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 1008128025
+        },
+        {
+          "Country": "Lithuania",
+          "Value (\uffe1)": 67028633
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 618010031
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 133754017
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 73518799
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 344112730
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 68294234
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 114826778
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 76529044
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 107594546
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 236989175
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 22396270
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 41772399
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 141973123
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 219322417
+        },
+        {
+          "Country": "Iraq",
+          "Value (\uffe1)": 13457430
+        },
+        {
+          "Country": "Israel",
+          "Value (\uffe1)": 28394451
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 184948904
+        },
+        {
+          "Country": "Macao",
+          "Value (\uffe1)": 5583458
+        },
+        {
+          "Country": "Malaysia",
+          "Value (\uffe1)": 5315612
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 107251571
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 53702741
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 414707153
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 35096530
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 129863804
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 345549818
+        },
+        {
+          "Country": "Thailand",
+          "Value (\uffe1)": 5670608
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 130821983
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 131274801
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1464903534
+        },
+        {
+          "Country": "Vietnam",
+          "Value (\uffe1)": 34030793
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 86193721
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 224195143
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 153530636
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 64300887
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 242451787
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 115890272
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 205648049
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "flow_type": "EU - Exports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 72874076
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 426251755
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 183623559
+        },
+        {
+          "Country": "Greece",
+          "Value (\uffe1)": 6282038
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 405076256
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 93871031
+        },
+        {
+          "Country": "Latvia",
+          "Value (\uffe1)": 83102570
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 93030959
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 136773235
+        },
+        {
+          "Country": "Romania",
+          "Value (\uffe1)": 52884132
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 199090218
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "flow_type": "EU - Imports",
+      "countries": [
+        {
+          "Country": "Belgium",
+          "Value (\uffe1)": 558970658
+        },
+        {
+          "Country": "Denmark",
+          "Value (\uffe1)": 55416949
+        },
+        {
+          "Country": "France",
+          "Value (\uffe1)": 1650366649
+        },
+        {
+          "Country": "Germany",
+          "Value (\uffe1)": 348869179
+        },
+        {
+          "Country": "Ireland",
+          "Value (\uffe1)": 375247732
+        },
+        {
+          "Country": "Italy",
+          "Value (\uffe1)": 981203390
+        },
+        {
+          "Country": "Netherlands",
+          "Value (\uffe1)": 588928188
+        },
+        {
+          "Country": "Poland",
+          "Value (\uffe1)": 103707509
+        },
+        {
+          "Country": "Portugal",
+          "Value (\uffe1)": 65078387
+        },
+        {
+          "Country": "Spain",
+          "Value (\uffe1)": 295131876
+        },
+        {
+          "Country": "Sweden",
+          "Value (\uffe1)": 67602121
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "flow_type": "Non EU - Exports",
+      "countries": [
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 112104293
+        },
+        {
+          "Country": "Brazil",
+          "Value (\uffe1)": 113223170
+        },
+        {
+          "Country": "Canada",
+          "Value (\uffe1)": 108457069
+        },
+        {
+          "Country": "China",
+          "Value (\uffe1)": 163132120
+        },
+        {
+          "Country": "Colombia",
+          "Value (\uffe1)": 33442089
+        },
+        {
+          "Country": "Dominican Rep",
+          "Value (\uffe1)": 86517792
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 80584912
+        },
+        {
+          "Country": "India",
+          "Value (\uffe1)": 250157819
+        },
+        {
+          "Country": "Iraq",
+          "Value (\uffe1)": 4641278
+        },
+        {
+          "Country": "Israel",
+          "Value (\uffe1)": 39648127
+        },
+        {
+          "Country": "Japan",
+          "Value (\uffe1)": 190446696
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 80138624
+        },
+        {
+          "Country": "Panama",
+          "Value (\uffe1)": 76664857
+        },
+        {
+          "Country": "Singapore",
+          "Value (\uffe1)": 313073393
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 33572019
+        },
+        {
+          "Country": "South Korea",
+          "Value (\uffe1)": 120215990
+        },
+        {
+          "Country": "Taiwan",
+          "Value (\uffe1)": 301325070
+        },
+        {
+          "Country": "Turkey",
+          "Value (\uffe1)": 179268745
+        },
+        {
+          "Country": "UAE",
+          "Value (\uffe1)": 146203334
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 1549172393
+        },
+        {
+          "Country": "Vietnam",
+          "Value (\uffe1)": 4565501
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "flow_type": "Non EU - Imports",
+      "countries": [
+        {
+          "Country": "Argentina",
+          "Value (\uffe1)": 90029963
+        },
+        {
+          "Country": "Australia",
+          "Value (\uffe1)": 228851161
+        },
+        {
+          "Country": "Chile",
+          "Value (\uffe1)": 169527311
+        },
+        {
+          "Country": "Hong Kong",
+          "Value (\uffe1)": 7589775
+        },
+        {
+          "Country": "Mexico",
+          "Value (\uffe1)": 10105847
+        },
+        {
+          "Country": "New Zealand",
+          "Value (\uffe1)": 207563870
+        },
+        {
+          "Country": "South Africa",
+          "Value (\uffe1)": 111331487
+        },
+        {
+          "Country": "United States",
+          "Value (\uffe1)": 241633116
+        }
+      ]
+    }
+  ]
+}

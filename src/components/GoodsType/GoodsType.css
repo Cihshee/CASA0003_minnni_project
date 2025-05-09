@@ -177,56 +177,134 @@
     }
 }
 
+/* 图标布局 */
 .goods-type-icons-row {
+    display: none !important;
+}
+
+#goods-detail-area .goods-type-icons-row {
+    display: flex !important;
     position: sticky;
-    top: 0;
+    top: 180px;
+    left: 0;
+    flex-direction: column;
+    gap: 16px;
     z-index: 100;
-    background: #232323;
-    padding: 16px 0 8px 0;
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    border-bottom: 1px solid #444;
+    background: none;
+    padding: 16px;
+    border: none;
+    height: fit-content;
+    min-width: 100px;
 }
 
 .goods-type-icon-btn {
-    width: 74px;
-    height: 74px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: #7682ab78;
-    border: 2px solid #bbb;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    background: rgba(53, 122, 189, 0.1);
+    border: 2px solid rgba(53, 122, 189, 0.3);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: box-shadow 0.2s, transform 0.2s, background 0.2s, border 0.2s;
+    transition: all 0.3s;
     cursor: pointer;
     padding: 0;
     outline: none;
 }
 
 .goods-type-icon-btn img {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
-    border-radius: 50%;
-    pointer-events: none;
+    opacity: 0.8;
+    transition: all 0.3s;
 }
 
-.goods-type-icon-btn:hover, .goods-type-icon-btn.active {
-    box-shadow: 0 4px 24px #357abd44, 0 0 0 3px #357abd33;
-    background: #f0f6ff;
-    transform: scale(1.08);
+.goods-type-icon-btn:hover {
+    background: rgba(53, 122, 189, 0.2);
+    border-color: rgba(53, 122, 189, 0.5);
+    transform: translateX(5px);
+}
+
+.goods-type-icon-btn:hover img {
+    opacity: 1;
+}
+
+.goods-type-icon-btn.active {
+    background: rgba(53, 122, 189, 0.8);
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(53, 122, 189, 0.5);
+}
+
+.goods-type-icon-btn.active img {
+    opacity: 1;
+}
+
+/* Map interaction styles */
+.mapboxgl-canvas-container {
+    cursor: default !important;
+}
+
+.mapboxgl-canvas-container.mapboxgl-interactive {
+    cursor: default !important;
+}
+
+.mapboxgl-canvas-container.mapboxgl-interactive path[class*="country"],
+.mapboxgl-canvas-container.mapboxgl-interactive path.country {
+    cursor: pointer !important;
+    transition: fill-opacity 0.3s ease, stroke 0.3s ease !important;
+}
+
+.mapboxgl-canvas-container.mapboxgl-interactive path[class*="country"]:hover,
+.mapboxgl-canvas-container.mapboxgl-interactive path.country:hover {
+    fill-opacity: 0.7 !important;
+    stroke: #ffffff !important;
+    stroke-width: 1px !important;
+}
+
+/* Country hover effect */
+.country-hover {
+    fill-opacity: 0.7 !important;
+    stroke: #ffffff !important;
+    stroke-width: 1px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Country selected effect */
+.country-selected {
+    fill-opacity: 0.8 !important;
+    stroke: #ffffff !important;
+    stroke-width: 2px !important;
+}
+
+/* 确保地图容器有正确的z-index */
+.goods-type-detail-map {
+    z-index: 1;
+    position: relative;
+}
+
+/* 确保地图交互层在正确的位置 */
+.mapboxgl-canvas-container {
+    z-index: 2;
 }
 
 @media (max-width: 900px) {
-    .goods-type-icons-row {
-        gap: 1.1rem;
+    #goods-detail-area .goods-type-icons-row {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        padding: 12px 0;
+        min-width: 0;
+        gap: 12px;
     }
+
     .goods-type-icon-btn {
-        width: 54px;
-        height: 54px;
+        width: 50px;
+        height: 50px;
     }
+
     .goods-type-icon-btn img {
         width: 34px;
         height: 34px;
@@ -260,21 +338,59 @@
     margin-right: 0.2rem;
 }
 
-/* 强制地图容器有宽高，防止被flex挤压为0 */
+/* 优化地图容器样式 */
 .goods-type-detail-map {
-    min-width: 320px !important;
-    min-height: 320px !important;
-    width: 48vw !important;
-    height: 48vw !important;
-    max-width: 700px !important;
-    max-height: 520px !important;
-    background: #181818;
-    border-radius: 1.5rem;
+    position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 32px rgba(0,0,0,0.18);
     border: 2px solid #333;
-    flex: 0 0 auto !important;
-    display: block !important;
+    transition: border-color 0.3s;
+    min-width: 800px !important;
+    min-height: 500px !important;
+    width: 70% !important;
+    height: 500px !important;
+    max-width: none !important;
+    max-height: none !important;
+    background: #181818;
+    border-radius: 1rem;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+    flex: 1;
+}
+
+.goods-type-detail-map:hover {
+    border-color: rgba(53, 122, 189, 0.5);
+}
+
+.map-loading,
+.map-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.map-error {
+    background: rgba(220, 53, 69, 0.8);
+}
+
+.goods-type-detail-map.updating {
+    opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+    .goods-type-detail-map {
+        width: 98vw !important;
+        min-width: 0 !important;
+        height: 320px !important;
+        min-height: 220px !important;
+        max-height: 340px !important;
+    }
 }
 
 .goods-type-detail-main {
@@ -284,62 +400,60 @@
     align-items: flex-start;
     justify-content: center;
     margin-top: 32px;
-}
-
-@media (max-width: 900px) {
-    .goods-type-detail-main {
-        flex-direction: column;
-        gap: 16px;
-        align-items: stretch;
-    }
-    .goods-type-detail-map, .goods-type-detail-bar {
-        width: 98vw;
-        min-width: 0;
-        max-width: 100vw;
-        height: 320px;
-        min-height: 220px;
-        max-height: 340px;
-    }
+    position: relative;
 }
 
 /* 新版详情区flex布局 */
 .goods-detail-main-flex {
+    margin-left: 0;
     display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 36px;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    padding: 0 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.goods-detail-top {
+    display: flex;
+    gap: 24px;
     width: 100%;
 }
 
 .goods-detail-side {
+    width: 300px;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    min-width: 320px;
-    max-width: 420px;
-    width: 28vw;
-    justify-content: flex-start;
-  }
-  .goods-type-detail-desc {
-    font-size: 1.1rem;
+    gap: 16px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: 0.6s;
+}
+
+.goods-type-detail-desc {
+    font-size: 0.9rem;
     color: #e0e0e0;
     background: #232323;
-    border-radius: 1rem;
-    padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+    border-radius: 0.8rem;
+    padding: 1rem;
     margin-bottom: 0.5rem;
-    min-height: 120px;
+    min-height: 100px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-  }
-  .goods-type-detail-bar {
+}
+
+.goods-type-detail-bar {
     background: #232323;
     border-radius: 1rem;
     min-height: 180px;
     padding: 1rem 0.5rem;
     box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-  }
-  @media (max-width: 900px) {
+}
+
+@media (max-width: 900px) {
     .goods-detail-main-flex {
       flex-direction: column;
       gap: 18px;
@@ -351,13 +465,647 @@
       width: 98vw;
       gap: 18px;
     }
-  }
-  #goods-detail-area {
-    display: block !important;
-  }
-  #goods-detail-area,
-  .goods-detail-main-flex,
-  .goods-type-detail-map {
+}
+
+#goods-detail-area {
+    display: flex !important;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    position: relative;
     background: none !important;
-  }
+}
+
+.goods-type-detail-charts {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.goods-type-trend-chart,
+.goods-type-top-countries {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+}
+
+.goods-type-trend-chart h3,
+.goods-type-top-countries h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+}
+
+.goods-type-trend-chart canvas,
+.goods-type-top-countries canvas {
+    height: 180px !important;
+}
+
+/* 优化控件样式 */
+.goods-type-detail-controls {
+    background: #232323;
+    padding: 1rem 1.2rem;
+    border-radius: 0.8rem;
+    margin: 0 20px 16px 0;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: 0.2s;
+}
+
+.flow-type-buttons {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.flow-type-btn {
+    background: rgba(53, 122, 189, 0.1);
+    color: #fff;
+    border: 1px solid rgba(53, 122, 189, 0.3);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+}
+
+.flow-type-btn:hover {
+    background: rgba(53, 122, 189, 0.2);
+    border-color: rgba(53, 122, 189, 0.5);
+    transform: translateY(-1px);
+}
+
+.flow-type-btn.active {
+    background: rgba(53, 122, 189, 0.8);
+    border-color: rgba(53, 122, 189, 1);
+    font-weight: 500;
+}
+
+/* 年份控制样式 */
+.year-control {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.year-slider {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.year-dots {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 6px;
+    position: relative;
+}
+
+.year-line {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1.5px;
+    position: relative;
+    margin: 0 6px;
+}
+
+.year-progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, rgb(53, 122, 189) 0%, rgb(83, 152, 219) 100%);
+    border-radius: 1.5px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.year-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 4px;
+    position: relative;
+    z-index: 1;
+}
+
+.year-dot .dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(53, 122, 189, 0.3);
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.year-dot .year-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(0);
+}
+
+.year-dot:hover .dot {
+    transform: scale(1.3);
+    background: rgba(53, 122, 189, 0.5);
+    border-color: rgba(53, 122, 189, 0.8);
+}
+
+.year-dot:hover .year-label {
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(2px);
+}
+
+.year-dot.active .dot {
+    transform: scale(1.5);
+    background: rgb(53, 122, 189);
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(53, 122, 189, 0.5);
+}
+
+.year-dot.active .year-label {
+    color: #fff;
+    font-weight: 500;
+    transform: translateY(2px);
+}
+
+.current-year {
+    min-width: 4rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(53, 122, 189, 0.15);
+    border: 1px solid rgba(53, 122, 189, 0.3);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* 调整主内容区域边距 */
+.goods-detail-main-flex {
+    margin-left: 0;
+}
+
+@media (max-width: 900px) {
+    #goods-detail-area {
+        flex-direction: column;
+    }
+
+    .goods-type-icons-row {
+        position: static;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        padding: 12px 0;
+        min-width: 0;
+    }
+
+    .goods-detail-main-flex {
+        width: 100%;
+        padding: 0;
+    }
+
+    .goods-type-detail-controls {
+        margin: 0 20px 16px 20px;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .flow-type-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .year-control {
+        width: 100%;
+    }
+
+    .year-dot .year-label {
+        font-size: 0.7rem;
+        transform: rotate(-45deg);
+        margin-top: 4px;
+    }
+
+    .year-dot.active .year-label {
+        transform: rotate(-45deg) scale(1.1);
+    }
+
+    .goods-detail-main-flex {
+        margin-left: 20px;
+    }
+
+    .goods-type-icon-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .flow-type-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* 时间轴样式 */
+.timeline-slider-container {
+    padding: 2rem;
+    position: relative;
+    margin-top: 1rem;
+}
+
+.timeline-track {
+    position: relative;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timeline-progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: rgb(53, 122, 189);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.timeline-point {
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.timeline-point .point {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(53, 122, 189, 0.5);
+    border-radius: 50%;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.timeline-point .year-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.timeline-point:hover .point {
+    transform: scale(1.2);
+    background: rgba(53, 122, 189, 0.8);
+    border-color: rgb(53, 122, 189);
+}
+
+.timeline-point:hover .year-label {
+    color: #fff;
+    transform: translateY(2px);
+}
+
+.timeline-point.active .point {
+    background: rgb(53, 122, 189);
+    border-color: #fff;
+    transform: scale(1.3);
+    box-shadow: 0 0 10px rgba(53, 122, 189, 0.5);
+}
+
+.timeline-point.active .year-label {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* 国家趋势图样式 */
+#country-trend-container {
+    position: relative;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 0.8rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.no-country-selected {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    text-align: center;
+    width: 100%;
+}
+
+#country-trend-chart {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* 响应式调整 */
+@media (max-width: 900px) {
+    .timeline-slider-container {
+        padding: 1rem;
+    }
+
+    .timeline-point .year-label {
+        font-size: 0.7rem;
+        transform: rotate(-45deg);
+        margin-top: 8px;
+    }
+
+    .timeline-point.active .year-label {
+        transform: rotate(-45deg) scale(1.1);
+    }
+}
+
+/* 优化图表容器 */
+#goods-countries-chart-container {
+    position: relative;
+    height: 240px;
+}
+
+.goods-type-top-countries canvas {
+    cursor: pointer;
+}
+
+.goods-type-top-countries canvas:hover {
+    opacity: 0.9;
+}
+
+/* 添加图表加载和错误状态样式 */
+.chart-loading,
+.chart-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: #fff;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+}
+
+.chart-error {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+/* 底部时间轴图表 */
+.goods-timeline-chart {
+    width: 100%;
+    height: 200px;
+    background: #232323;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: 0.8s;
+}
+
+.goods-timeline-chart h3 {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+.goods-timeline-chart canvas {
+    width: 100% !important;
+    height: 160px !important;
+    background: transparent;
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+    .goods-detail-top {
+        flex-direction: column;
+    }
+    
+    .goods-type-detail-map {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+    
+    .goods-detail-side {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* 地图弹出框样式 */
+.map-popup {
+    background: rgba(0, 0, 0, 0.85) !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+    max-width: 180px !important;
+}
+
+.map-popup .mapboxgl-popup-content {
+    background: none !important;
+    padding: 6px 10px !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+}
+
+.map-popup .mapboxgl-popup-tip {
+    display: none !important;
+}
+
+.map-popup-content {
+    color: #fff;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.map-popup-content h4 {
+    margin: 0 0 2px 0;
+    font-size: 0.85rem;
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.map-popup-content p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.75rem;
+    letter-spacing: 0.1px;
+}
+
+/* 调整图表容器间距 */
+.goods-type-top-countries {
+    margin-top: 0;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+}
+
+.goods-type-top-countries h3 {
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+    color: #fff;
+}
+
+.goods-type-top-countries canvas {
+    height: 240px !important;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 图标动画 */
+.goods-type-icons-row {
+    position: sticky;
+    top: 180px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+    background: none;
+    padding: 16px;
+    border: none;
+    height: fit-content;
+    min-width: 80px;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: 1s;
+}
+
+@keyframes slideRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 趋势图动画 */
+.trend-chart-animation {
+    animation: chartGrow 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes chartGrow {
+    from {
+        opacity: 0;
+        transform: scaleX(0);
+        transform-origin: left;
+    }
+    to {
+        opacity: 1;
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+}
+
+.timeline-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 10px;
+}
+
+.timeline-play-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    padding: 0;
+}
+
+.timeline-play-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.timeline-play-btn i {
+    font-size: 0.8rem;
+}
+
+.timeline-speed {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.timeline-speed:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.timeline-speed option {
+    background: #232323;
+    color: #fff;
+    padding: 4px;
+}
+
+@media (max-width: 768px) {
+    .timeline-controls {
+        margin: 8px 0;
+    }
+    
+    .timeline-play-btn,
+    .timeline-speed {
+        height: 24px;
+        font-size: 0.75rem;
+    }
+}
+
+/* 添加年份切换动画 */
+.year-dot, .year-progress {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 优化图表标题样式 */
+.goods-timeline-chart h3 {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 5px 0 10px 0;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
   
