@@ -145,7 +145,7 @@ function initTransport() {
             }
             
             // 根据当前地图类型跳转到相应页面
-            window.location.href = '/src/components/Transport/uk-port.html';
+            window.location.href = './src/components/Transport/uk-port.html';
         });
     }
     
