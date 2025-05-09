@@ -356,7 +356,7 @@ console.log('GoodsType.js loaded');
           // 依次显示每个图表
           charts.forEach((chart, index) => {
             if (!chart.rendered) {
-              setTimeout(() => {
+          setTimeout(() => {
                 chart.block.style.opacity = '1';
                 chart.block.style.transform = 'translateY(0)';
                 drawChart(chart.ctx, data, chart.flowtype);
@@ -533,6 +533,12 @@ console.log('GoodsType.js loaded');
     animationState.isPlaying = true;
     const interval = 2000 / animationState.speed; // 基础间隔2秒
 
+    // Update play button UI
+    const playBtn = document.querySelector('.timeline-play-btn');
+    if (playBtn && playBtn.querySelector('.play-icon')) {
+        playBtn.querySelector('.play-icon').textContent = '⏸';
+    }
+
     const animate = async () => {
         if (!animationState.isPlaying) return;
 
@@ -554,6 +560,12 @@ console.log('GoodsType.js loaded');
     }
     animationState.isPlaying = false;
     animationState.intervalId = null;
+
+    // Update play button UI
+    const playBtn = document.querySelector('.timeline-play-btn');
+    if (playBtn && playBtn.querySelector('.play-icon')) {
+        playBtn.querySelector('.play-icon').textContent = '▶';
+    }
   }
 
   // 修改更新年份函数，减少闪烁
@@ -609,7 +621,7 @@ console.log('GoodsType.js loaded');
   // Load GeoJSON data
   async function loadGeoData() {
     try {
-        const response = await fetch('/public/data/countries.geojson');
+        const response = await fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/countries.geojson');
         if (!response.ok) throw new Error('Failed to load GeoJSON data');
         geoData = await response.json();
         return true;
@@ -626,8 +638,8 @@ console.log('GoodsType.js loaded');
       zoom: 1.5
     },
     europe: {
-      center: [15, 54],
-      zoom: 3.5
+      center: [10, 50],  // 稍微向西和向北调整中心点
+      zoom: 3.0  // 减小zoom值以显示更大范围
     }
   };
 
@@ -1380,8 +1392,8 @@ console.log('GoodsType.js loaded');
     }
     
     try {
-        // 直接从本地相对路径读取文件
-        const response = await fetch(`/public/data/split/${fileName}`);
+        // 从GitHub仓库原始文件URL直接读取
+        const response = await fetch(`https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/split/${fileName}`);
         if (!response.ok) throw new Error(`Failed to load ${fileName}`);
         
         const data = await response.json();
@@ -1396,7 +1408,7 @@ console.log('GoodsType.js loaded');
                 descElement.innerHTML = `
                     <div class="error-message" style="color: #ff6b6b; padding: 10px; background: rgba(255,107,107,0.1); border-radius: 4px;">
                         <p>No data available for ${data.sitc_type}.</p>
-                        <p>Please check the data file: /public/data/split/${fileName}</p>
+                        <p>Please check the data file: ${fileName}</p>
                     </div>
                 `;
             }
@@ -1451,6 +1463,15 @@ console.log('GoodsType.js loaded');
         });
         
         try {
+          // Store current animation state
+          const wasPlaying = animationState.isPlaying;
+          const currentSpeed = animationState.speed;
+          
+          // Pause animation temporarily during data loading
+          if (wasPlaying) {
+            stopTimelineAnimation();
+          }
+          
           // 更新描述文本
           const descElement = document.getElementById('goods-type-detail-desc');
           if (descElement) {
@@ -1477,6 +1498,15 @@ console.log('GoodsType.js loaded');
               canvas.style.display = 'block';
               updateTrendChart(sitcData);
             }
+          }
+          
+          // Resume animation if it was playing before
+          if (wasPlaying) {
+            // Short delay to ensure UI is updated
+            setTimeout(() => {
+              animationState.speed = currentSpeed;
+              startTimelineAnimation();
+            }, 500);
           }
           
           // 预加载下一个类型的数据
@@ -1612,6 +1642,12 @@ console.log('GoodsType.js loaded');
         
         // 预加载下一个类型的数据
         preloadNextSitcData();
+
+        // Auto-start the timeline animation after data is loaded
+        setTimeout(() => {
+            startTimelineAnimation();
+            // Play button UI is now updated in startTimelineAnimation function
+        }, 1000); // Short delay to ensure everything is rendered
     } catch (error) {
         console.error('Failed to load initial data:', error);
     }
