@@ -99,45 +99,149 @@ console.log('GoodsType.js loaded');
   }
 
   function drawChart(ctx, dataRows, flowtype) {
-    const datasets = dataRows.map((row, idx) => ({
-      label: row['SitcCommodityHierarchy - SITC1'],
-      data: years.map(year => getValue(row, flowtype, year)),
-      borderColor: `hsl(${idx*40%360},70%,60%)`,
-      backgroundColor: 'transparent',
-      tension: 0.3,
-      pointRadius: 2,
-      borderWidth: 2
-    }));
-    console.log('Drawing chart for', flowtype, datasets);
+    // 插值函数：在两个点之间生成平滑的中间点
+    function interpolatePoints(data) {
+      const interpolatedData = [];
+      const interpolationPoints = 30; // 每两个真实数据点之间插入的点数
+      
+      for (let i = 0; i < data.length - 1; i++) {
+        const start = data[i];
+        const end = data[i + 1];
+        interpolatedData.push(start);
+        
+        for (let j = 1; j < interpolationPoints; j++) {
+          const fraction = j / interpolationPoints;
+          const value = start + (end - start) * fraction;
+          interpolatedData.push(value);
+        }
+      }
+      interpolatedData.push(data[data.length - 1]);
+      return interpolatedData;
+    }
+
+    // 生成插值后的年份标签
+    const interpolatedYears = [];
+    for (let i = 0; i < years.length - 1; i++) {
+      interpolatedYears.push(years[i]);
+      for (let j = 1; j < 30; j++) {
+        interpolatedYears.push(years[i]);
+      }
+    }
+    interpolatedYears.push(years[years.length - 1]);
+
+    const datasets = dataRows.map((row, idx) => {
+      const originalData = years.map(year => getValue(row, flowtype, year));
+      const interpolatedData = interpolatePoints(originalData);
+      
+      return {
+        label: row['SitcCommodityHierarchy - SITC1'],
+        data: interpolatedData,
+        borderColor: `hsl(${idx*40%360},70%,60%)`,
+        backgroundColor: 'transparent',
+        tension: 0.3,
+        pointRadius: (ctx) => {
+          // 只在原始数据点显示点
+          const index = ctx.dataIndex;
+          return index % 30 === 0 ? 3 : 0;
+        },
+        borderWidth: 2,
+        pointBorderWidth: 2,
+        pointHoverRadius: 5,
+        pointHoverBorderWidth: 2,
+        pointHitRadius: 10
+      };
+    });
+
     if (!ctx) {
       console.error('No canvas context!');
       return;
     }
+
+    const totalDuration = 3000;
+    const delayBetweenPoints = totalDuration / interpolatedYears.length;
+    
+    const animation = {
+      x: {
+        type: 'number',
+        easing: 'linear',
+        duration: delayBetweenPoints,
+        from: NaN,
+        delay(ctx) {
+          if (ctx.type !== 'data' || ctx.xStarted) {
+            return 0;
+          }
+          ctx.xStarted = true;
+          return ctx.index * delayBetweenPoints;
+        }
+      },
+      y: {
+        type: 'number',
+        easing: 'linear',
+        duration: delayBetweenPoints,
+        from: (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(0) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].y,
+        delay(ctx) {
+          if (ctx.type !== 'data' || ctx.yStarted) {
+            return 0;
+          }
+          ctx.yStarted = true;
+          return ctx.index * delayBetweenPoints;
+        }
+      }
+    };
+
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: years,
+        labels: interpolatedYears,
         datasets
       },
       options: {
         responsive: true,
-        animation: {
-          duration: 1800,
-          easing: 'easeOutQuart'
+        animation,
+        interaction: {
+          intersect: false,
+          mode: 'nearest'
         },
         plugins: {
           legend: { display: false },
           title: { display: false },
           tooltip: {
+            enabled: true,
+            mode: 'nearest',
+            intersect: false,
             callbacks: {
+              title: function(context) {
+                // 只显示年份
+                const yearIndex = Math.floor(context[0].dataIndex / 30);
+                return years[yearIndex];
+              },
               label: function(context) {
-                return `${context.dataset.label}: £${formatToMillions(context.parsed.y)}`;
+                // 只显示当前悬停的数据点
+                if (context.dataIndex % 30 === 0) {
+                  return `${context.dataset.label}: £${formatToMillions(context.parsed.y)}`;
+                }
+                return null;
               }
             }
           }
         },
         scales: {
-          x: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.08)' } },
+          x: { 
+            ticks: { 
+              color: '#fff',
+              callback: function(value, index) {
+                // 显示实际年份
+                if (index % 30 === 0) {
+                  const yearIndex = index / 30;
+                  return years[yearIndex];
+                }
+                return '';
+              },
+              maxRotation: 0,
+              autoSkip: false
+            }, 
+            grid: { color: 'rgba(255,255,255,0.08)' }
+          },
           y: { 
             ticks: { 
               color: '#fff',
@@ -145,12 +249,38 @@ console.log('GoodsType.js loaded');
                 return '£' + formatToMillions(value, true);
               }
             }, 
-            grid: { color: 'rgba(255,255,255,0.08)' }, 
-            suggestedMax: undefined, 
-            stepSize: 20000000 
+            grid: { color: 'rgba(255,255,255,0.08)' }
           }
         }
-      }
+      },
+      plugins: [{
+        id: 'valueLabels',
+        afterDatasetsDraw(chart) {
+          const ctx = chart.ctx;
+          chart.data.datasets.forEach((dataset, datasetIndex) => {
+            const meta = chart.getDatasetMeta(datasetIndex);
+            if (!meta.hidden) {
+              const lastVisiblePoint = meta.data
+                .filter((_, index) => dataset.data[index] !== null)
+                .pop();
+              
+              if (lastVisiblePoint) {
+                ctx.save();
+                ctx.fillStyle = dataset.borderColor;
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(
+                  `£${formatToMillions(dataset.data[dataset.data.length - 1])}`,
+                  lastVisiblePoint.x + 10,
+                  lastVisiblePoint.y
+                );
+                ctx.restore();
+              }
+            }
+          });
+        }
+      }]
     });
   }
 
@@ -188,41 +318,57 @@ console.log('GoodsType.js loaded');
     });
   }
 
-  // summary区渲染（四张图表）
+  // 修改summary区渲染（四张图表）
   function renderSummaryCharts(data) {
     const chartContainer = document.getElementById('goods-summary-charts');
     if (!chartContainer) return;
     chartContainer.innerHTML = '';
+    
+    // 创建图表但先不渲染
+    const charts = [];
     flowTypes.forEach((flowtype, idx) => {
       const block = document.createElement('div');
       block.className = 'goods-summary-chart-block';
+      block.style.opacity = '0';  // 初始设置为不可见
+      block.style.transform = 'translateY(20px)';  // 初始位置略微向下
+      block.style.transition = 'all 0.8s ease';
       block.innerHTML = `
         <div class="goods-summary-chart-title">${flowtype} (2016-2024)</div>
         <canvas class="goods-summary-chart-canvas" width="800" height="340"></canvas>
       `;
       chartContainer.appendChild(block);
+      
+      const ctx = block.querySelector('canvas').getContext('2d');
+      charts.push({
+        block,
+        ctx,
+        flowtype,
+        rendered: false
+      });
     });
-    // IntersectionObserver for动画
-    const section = document.querySelector('.goods-type-section');
-    const blocks = Array.from(document.querySelectorAll('.goods-summary-chart-block'));
-    let animated = false;
-    const observer = new window.IntersectionObserver((entries) => {
+
+    // 创建观察器
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting && !animated) {
-          animated = true;
-          // Animate blocks one by one
-          blocks.forEach((block, i) => {
-            setTimeout(() => {
-              block.classList.add('visible');
-              const ctx = block.querySelector('canvas').getContext('2d');
-              drawChart(ctx, data, flowTypes[i]);
-            }, i * 600);
+        if (entry.isIntersecting) {
+          const container = entry.target;
+          // 依次显示每个图表
+          charts.forEach((chart, index) => {
+            if (!chart.rendered) {
+              setTimeout(() => {
+                chart.block.style.opacity = '1';
+                chart.block.style.transform = 'translateY(0)';
+                drawChart(chart.ctx, data, chart.flowtype);
+                chart.rendered = true;
+              }, index * 300);  // 每个图表间隔300ms
+            }
           });
-          observer.disconnect();
+          observer.disconnect();  // 动画触发后解除观察
         }
       });
-    }, { threshold: 0.2 });
-    observer.observe(section);
+    }, { threshold: 0.2 });  // 当20%的内容可见时触发
+
+    observer.observe(chartContainer);
   }
 
   // 添加动画控制状态
@@ -232,10 +378,15 @@ console.log('GoodsType.js loaded');
     intervalId: null
   };
 
-  // 修改渲染详情区域的函数
+  // 修改详情区域渲染函数
   function renderDetail() {
     const detailSection = document.getElementById('goods-type-detail-container');
     if (!detailSection) return;
+    
+    // 添加初始样式
+    detailSection.style.opacity = '0';
+    detailSection.style.transform = 'translateY(20px)';
+    detailSection.style.transition = 'all 0.8s ease';
     
     detailSection.innerHTML = `
         <div class="goods-type-detail-controls">
@@ -293,66 +444,84 @@ console.log('GoodsType.js loaded');
         </div>
     `;
 
-    // 绑定控件事件
-    const playBtn = document.querySelector('.timeline-play-btn');
-    const speedSelect = document.querySelector('.timeline-speed');
+    // 创建观察器
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // 显示整个详情区域
+          detailSection.style.opacity = '1';
+          detailSection.style.transform = 'translateY(0)';
+          
+          // 初始化地图和图表
+          setTimeout(() => {
+            createMapboxMapWhenVisible();
+            initializeCharts();
+          }, 400);  // 等待过渡动画完成后初始化
 
+          observer.disconnect();  // 动画触发后解除观察
+        }
+      });
+    }, { threshold: 0.1 });  // 当10%的内容可见时触发
+
+    observer.observe(detailSection);
+
+    // 绑定控件事件
+    bindDetailEvents();
+  }
+
+  // 提取事件绑定到单独的函数
+  function bindDetailEvents() {
     // 恢复 flow type 按钮事件
     document.querySelectorAll('.flow-type-btn').forEach(btn => {
-        btn.onclick = e => {
-            document.querySelectorAll('.flow-type-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            state.currentFlow = btn.dataset.flow;
-            
-            // 添加地图动画
-            if (state.currentFlow.includes('Non EU')) {
-                animateMapTo(state.currentMap, MAP_VIEWS.world);
-            } else {
-                animateMapTo(state.currentMap, MAP_VIEWS.europe);
-            }
-            
-            updateVisualizations();
-        };
+      btn.onclick = e => {
+        document.querySelectorAll('.flow-type-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.currentFlow = btn.dataset.flow;
+        
+        // 添加地图动画
+        if (state.currentFlow.includes('Non EU')) {
+          animateMapTo(state.currentMap, MAP_VIEWS.world);
+        } else {
+          animateMapTo(state.currentMap, MAP_VIEWS.europe);
+        }
+        
+        updateVisualizations();
+      };
     });
 
     // 恢复时间轴点击事件
     document.querySelectorAll('.year-dot').forEach(dot => {
-        dot.onclick = e => {
-            const year = +e.currentTarget.dataset.year;
-            updateYear(year);
-        };
+      dot.onclick = e => {
+        const year = +e.currentTarget.dataset.year;
+        updateYear(year);
+      };
     });
 
     // 播放按钮事件
-    playBtn.onclick = () => {
+    const playBtn = document.querySelector('.timeline-play-btn');
+    if (playBtn) {
+      playBtn.onclick = () => {
         if (animationState.isPlaying) {
-            stopTimelineAnimation();
-            playBtn.querySelector('.play-icon').textContent = '▶';
+          stopTimelineAnimation();
+          playBtn.querySelector('.play-icon').textContent = '▶';
         } else {
-            startTimelineAnimation();
-            playBtn.querySelector('.play-icon').textContent = '⏸';
+          startTimelineAnimation();
+          playBtn.querySelector('.play-icon').textContent = '⏸';
         }
-    };
+      };
+    }
 
     // 速度选择事件
-    speedSelect.onchange = (e) => {
+    const speedSelect = document.querySelector('.timeline-speed');
+    if (speedSelect) {
+      speedSelect.onchange = (e) => {
         animationState.speed = Number(e.target.value);
         if (animationState.isPlaying) {
-            stopTimelineAnimation();
-            startTimelineAnimation();
+          stopTimelineAnimation();
+          startTimelineAnimation();
         }
-    };
-
-    // 初始化地图和图表
-    createMapboxMapWhenVisible();
-    initializeCharts();
-
-    // 自动开始播放
-    setTimeout(() => {
-        if (!animationState.isPlaying) {
-            startTimelineAnimation();
-        }
-    }, 1000);
+      };
+    }
   }
 
   function startTimelineAnimation() {
@@ -1192,8 +1361,8 @@ console.log('GoodsType.js loaded');
     }
     
     try {
-        // 使用新的文件路径格式
-        const response = await fetch(`/data/split/sitc_${sitcIndex}.json`);
+        // 使用新的文件路径格式，添加 public 目录
+        const response = await fetch(`/public/data/split/sitc_${sitcIndex}.json`);
         if (!response.ok) throw new Error(`Failed to load SITC ${sitcIndex} data`);
         
         const data = await response.json();
@@ -1208,7 +1377,7 @@ console.log('GoodsType.js loaded');
                 descElement.innerHTML = `
                     <div class="error-message" style="color: #ff6b6b; padding: 10px; background: rgba(255,107,107,0.1); border-radius: 4px;">
                         <p>No data available for ${data.sitc_type}.</p>
-                        <p>Please check the data file: /data/split/sitc_${sitcIndex}.json</p>
+                        <p>Please check the data file: /public/data/split/sitc_${sitcIndex}.json</p>
                     </div>
                 `;
             }

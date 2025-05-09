@@ -1,0 +1,45 @@
+<div id="goods-summary-area">
+--<div class="goods-type-section">
+----<div class="goods-type-icons-row" id="goods-type-icons-row-summary">
+------<button class="goods-type-icon-btn" data type="0"><img src="/public/public/public/goods-icons/0-Food-and-live-animals.png" alt="Food-and-live-animals"></button>
+------<button class="goods-type-icon-btn" data type="1"><img src="/public/public/public/goods-icons/1-Beverages-and-tobacco.png" alt="Beverages-and-tobacco"></button>
+------<button class="goods-type-icon-btn" data type="2"><img src="/public/public/public/goods-icons/2-Crude-materials.png" alt="Crude-materials"></button>
+------<button class="goods-type-icon-btn" data type="3"><img src="/public/public/public/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png" alt="Mineral-fuels-lubricants-and-related-materials"></button>
+------<button class="goods-type-icon-btn" data type="4"><img src="/public/public/public/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png" alt="Animal-and-vegetable-oils-fats-and-waxes"></button>
+------<button class="goods-type-icon-btn" data type="5"><img src="/public/public/public/goods-icons/5-Chemicals-and-related-products.png" alt="Chemicals-and-related-products"></button>
+------<button class="goods-type-icon-btn" data type="6"><img src="/public/public/public/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png" alt="Manufactured-goods-classified-chiefly-by-material"></button>
+------<button class="goods-type-icon-btn" data type="7"><img src="/public/public/public/goods-icons/7-Machinery-and-transport-equipment.png" alt="Machinery-and-transport-equipment"></button>
+------<button class="goods-type-icon-btn" data type="8"><img src="/public/public/public/goods-icons/8-Miscellaneous-manufactured-articles.png" alt="Miscellaneous-manufactured-articles"></button>
+----</div>
+----<div class="goods-summary-legend" id="goods-summary-legend"></div>
+----<div id="goods-summary-charts" class="goods-summary-charts"></div>
+--</div>
+</div>
+
+<div id="goods-detail-area" style="display:none;">
+--<div class="goods-type-icons-row" id="goods-type-icons-row-detail">
+----<button class="goods-type-icon-btn" data type="0"><img src="/public/public/public/goods-icons/0-Food-and-live-animals.png" alt="Food-and-live-animals"></button>
+----<button class="goods-type-icon-btn" data type="1"><img src="/public/public/public/goods-icons/1-Beverages-and-tobacco.png" alt="Beverages-and-tobacco"></button>
+----<button class="goods-type-icon-btn" data type="2"><img src="/public/public/public/goods-icons/2-Crude-materials.png" alt="Crude-materials"></button>
+----<button class="goods-type-icon-btn" data type="3"><img src="/public/public/public/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png" alt="Mineral-fuels-lubricants-and-related-materials"></button>
+----<button class="goods-type-icon-btn" data type="4"><img src="/public/public/public/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png" alt="Animal-and-vegetable-oils-fats-and-waxes"></button>
+----<button class="goods-type-icon-btn" data type="5"><img src="/public/public/public/goods-icons/5-Chemicals-and-related-products.png" alt="Chemicals-and-related-products"></button>
+----<button class="goods-type-icon-btn" data type="6"><img src="/public/public/public/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png" alt="Manufactured-goods-classified-chiefly-by-material"></button>
+----<button class="goods-type-icon-btn" data type="7"><img src="/public/public/public/goods-icons/7-Machinery-and-transport-equipment.png" alt="Machinery-and-transport-equipment"></button>
+----<button class="goods-type-icon-btn" data type="8"><img src="/public/public/public/goods-icons/8-Miscellaneous-manufactured-articles.png" alt="Miscellaneous-manufactured-articles"></button>
+--</div>
+--<div id="goods-type-detail-container">
+----<div class="goods-type-detail-controls">
+------<select id="goods-flowtype" class="goods-flowtype-select"></select>
+------<div class="goods-year-slider-wrap">
+--------<input type="range" id="goods-year-slider" min="2016" max="2024" value="2016" step="1">
+--------<span id="goods-year-label">2016</span>
+------</div>
+----</div>
+----<div class="goods-type-detail-main">
+------<div class="goods-type-detail-map" id="goods-map"></div>
+------<div class="goods-type-detail-bar" id="goods-bar-chart"></div>
+----</div>
+----<div class="goods-type-detail-desc" id="goods-type-detail-desc"></div>
+--</div>
+</div>
