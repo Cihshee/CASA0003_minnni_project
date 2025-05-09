@@ -19,17 +19,16 @@ for encoding in encodings:
 else:
     raise Exception("Failed to read CSV file with any encoding")
 
-# 等待用户确认
-input("Press Enter to continue with data splitting...")
+print("Continuing with data splitting...")
 
-# SITC类型列表
+# SITC类型列表 - 修正第5项中的准确名称
 sitc_types = [
     '0 Food & live animals',
     '1 Beverages & tobacco',
     '2 Crude materials, inedible, except fuels',
     '3 Mineral fuels, lubricants & related materials',
     '4 Animal & vegetable oils, fats & waxes',
-    '5 Chemicals & related products',
+    '5 Chemicals & related products, nes',  # 修正为包含", nes"的完整名称
     '6 Manufactured goods classified chiefly by material',
     '7 Machinery & transport equipment',
     '8 Miscellaneous manufactured articles',

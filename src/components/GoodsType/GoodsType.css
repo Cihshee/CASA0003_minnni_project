@@ -1,113 +1,113 @@
 .goods-type-section {
     padding: 1rem 0 0 0;
     background: none;
-}
+  }
 
-.goods-type-section h2 {
+  .goods-type-section h2 {
     font-size: 2rem;
     margin-bottom: 2rem;
     color: #ffffff;
     text-align: center;
-}
+  }
 
-.goods-types {
+  .goods-types {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
-}
+  }
 
-.goods-card {
+  .goods-card {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 0;
     transform: translateY(20px);
-}
+  }
 
-.goods-card:hover {
+  .goods-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
+  }
 
-.goods-card h3 {
+  .goods-card h3 {
     color: #ffffff;
     margin-bottom: 1rem;
     font-size: 1.5rem;
-}
+  }
 
-.goods-content p, .goods-content li {
+  .goods-content p, .goods-content li {
     color: #e0e0e0;
-}
+  }
 
-.goods-content ul {
+  .goods-content ul {
     list-style-type: none;
     padding: 0;
-}
+  }
 
-.goods-content li {
+  .goods-content li {
     margin-bottom: 0.5rem;
     padding-left: 1.5rem;
     position: relative;
-}
+  }
 
-.goods-content li::before {
+  .goods-content li::before {
     content: '•';
     color: #ffffff;
     position: absolute;
     left: 0;
-}
+  }
 
-.goods-chart {
+  .goods-chart {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-}
+  }
 
-.goods-chart h3 {
+  .goods-chart h3 {
     color: #ffffff;
     margin-bottom: 1.5rem;
     text-align: center;
-}
+  }
 
-.chart-container {
+  .chart-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-}
+  }
 
-.chart-bar {
+  .chart-bar {
     display: flex;
     align-items: center;
     gap: 1rem;
-}
+  }
 
-.chart-label {
+  .chart-label {
     color: #ffffff;
     width: 80px;
     text-align: right;
-}
+  }
 
-.chart-progress {
+  .chart-progress {
     flex: 1;
     height: 20px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-}
+  }
 
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
     .goods-types {
-        grid-template-columns: 1fr;
+      grid-template-columns: 1fr;
     }
     .goods-card {
-        margin-bottom: 1rem;
+      margin-bottom: 1rem;
     }
-}
+  }
 
 .goods-summary-charts {
     display: grid;

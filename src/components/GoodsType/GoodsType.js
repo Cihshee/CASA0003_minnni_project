@@ -49,7 +49,9 @@ console.log('GoodsType.js loaded');
     trendChart: null,
     countriesChart: null,
     hoveredFeatureId: null,
-    popup: null
+    popup: null,
+    dataLoaded: false,
+    preloadedData: null
   };
 
   // 添加数据缓存
@@ -1351,9 +1353,27 @@ console.log('GoodsType.js loaded');
     countriesChart.update('none');
   }
 
-  // 修改数据加载函数，使用新的文件命名
+  // 修改数据加载函数，使用直接文件名而不是索引
   async function loadSitcData(sitcIndex) {
-    const cacheKey = `sitc_${sitcIndex}`;
+    const sitcFiles = [
+      'sitc_0.json', // 0 Food & live animals
+      'sitc_1.json', // 1 Beverages & tobacco 
+      'sitc_2.json', // 2 Crude materials
+      'sitc_3.json', // 3 Mineral fuels
+      'sitc_4.json', // 4 Animal & vegetable oils
+      'sitc_5.json', // 5 Chemicals & related products
+      'sitc_6.json', // 6 Manufactured goods
+      'sitc_7.json', // 7 Machinery & transport
+      'sitc_8.json'  // 8 Miscellaneous manufactured articles
+    ];
+    
+    const fileName = sitcFiles[sitcIndex];
+    if (!fileName) {
+      console.error(`Invalid SITC index: ${sitcIndex}`);
+      return null;
+    }
+    
+    const cacheKey = fileName;
     
     // 检查缓存
     if (window.sitcDataCache?.[cacheKey]) {
@@ -1361,9 +1381,9 @@ console.log('GoodsType.js loaded');
     }
     
     try {
-        // 使用新的文件路径格式，添加 public 目录
-        const response = await fetch(`/data/split/sitc_${sitcIndex}.json`);
-        if (!response.ok) throw new Error(`Failed to load SITC ${sitcIndex} data`);
+        // 使用直接文件名访问
+        const response = await fetch(`/data/split/${fileName}`);
+        if (!response.ok) throw new Error(`Failed to load ${fileName}`);
         
         const data = await response.json();
         
@@ -1377,7 +1397,7 @@ console.log('GoodsType.js loaded');
                 descElement.innerHTML = `
                     <div class="error-message" style="color: #ff6b6b; padding: 10px; background: rgba(255,107,107,0.1); border-radius: 4px;">
                         <p>No data available for ${data.sitc_type}.</p>
-                        <p>Please check the data file: /public/data/split/sitc_${sitcIndex}.json</p>
+                        <p>Please check the data file: /data/split/${fileName}</p>
                     </div>
                 `;
             }
@@ -1397,7 +1417,7 @@ console.log('GoodsType.js loaded');
         
         return data;
     } catch (error) {
-        console.error('Error loading SITC data:', error);
+        console.error(`Error loading ${fileName}:`, error);
         return null;
     }
   }
@@ -1505,21 +1525,96 @@ console.log('GoodsType.js loaded');
         state.currentFlow = flowTypes[0];
         state.currentYear = years[0];
 
-        // 然后加载第一个SITC类型的数据用于详细视图
-        const initialData = await loadSitcData(0);
-        if (!initialData) throw new Error('Failed to load initial data');
-
-        // 保存当前数据到state中
-        state.currentSitcData = initialData;
-
-        // 渲染详细视图
+        // 渲染详细视图结构，但不立即加载数据
         renderDetail();
         bindIconBarEvents();
-
+        
+        // 添加滚动监听，当用户滚动到商品类型部分时自动加载第一个物品数据
+        setupScrollObserver();
+        
+        // 预加载数据但不立即显示
+        preloadSitcData();
+    } catch (error) {
+        console.error('Initialization failed:', error);
+    }
+  }
+  
+  // 新增：预加载SITC数据但不显示
+  async function preloadSitcData() {
+    try {
+        // 预加载SITC 0数据
+        const initialData = await loadSitcData(0);
+        if (initialData) {
+            // 仅缓存数据，但不更新UI
+            state.preloadedData = initialData;
+        }
+    } catch (error) {
+        console.error('Preload data failed:', error);
+    }
+  }
+  
+  // 新增：设置滚动观察器
+  function setupScrollObserver() {
+    // 创建观察器来检测商品类型部分的可见性
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // 当商品类型部分进入视窗
+            if (entry.isIntersecting && !state.dataLoaded) {
+                state.dataLoaded = true;  // 标记数据已加载，防止重复加载
+                
+                // 加载并显示第一个物品数据
+                loadInitialData();
+                
+                // 完成后取消观察
+                observer.disconnect();
+            }
+        });
+    }, { threshold: 0.2 });  // 当20%的元素可见时触发
+    
+    // 开始观察商品类型详情容器
+    const detailContainer = document.getElementById('goods-type-detail-container');
+    if (detailContainer) {
+        observer.observe(detailContainer);
+    }
+  }
+  
+  // 新增：加载初始数据
+  async function loadInitialData() {
+    try {
+        let sitcData;
+        
+        // 如果有预加载的数据，直接使用
+        if (state.preloadedData) {
+            sitcData = state.preloadedData;
+            console.log('Using preloaded data for initial display');
+        } else {
+            // 否则加载第一个SITC类型的数据
+            sitcData = await loadSitcData(0);
+            if (!sitcData) throw new Error('Failed to load initial data');
+        }
+        
+        // 保存当前数据到state中
+        state.currentSitcData = sitcData;
+        
+        // 更新图标状态
+        updateCurrentIcon(0);
+        
+        // 更新描述文本
+        const descElement = document.getElementById('goods-type-detail-desc');
+        if (descElement) {
+            descElement.textContent = sitcDescriptions[0];
+        }
+        
+        // 更新地图和国家排名图表
+        await Promise.all([
+            updateMapData(sitcData),
+            updateCountriesChart(sitcData)
+        ]);
+        
         // 预加载下一个类型的数据
         preloadNextSitcData();
     } catch (error) {
-        console.error('Initialization failed:', error);
+        console.error('Failed to load initial data:', error);
     }
   }
 
