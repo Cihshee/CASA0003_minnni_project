@@ -145,7 +145,7 @@ function initTransport() {
             }
             
             // 根据当前地图类型跳转到相应页面
-            window.location.href = '/src/components/Transport/uk-port.html';
+            window.location.href = './src/components/Transport/uk-port.html';
         });
     }
     
@@ -282,12 +282,12 @@ function handleVideoError() {
 function loadAirportData() {
     console.log('加载机场数据...');
     
-    fetch('/data/Air_Freight_by_Type_and_Nationality_2016-2024.json')
+    fetch('public/data/Air_Freight_by_Type_and_Nationality_2016-2024.json')
         .then(response => {
             if (!response.ok) {
                 // 如果第一个路径不正确，尝试备用路径
                 console.log('尝试备用路径...');
-                return fetch('../../../data/Air_Freight_by_Type_and_Nationality_2016-2024.json');
+                return fetch('./public/data/Air_Freight_by_Type_and_Nationality_2016-2024.json');
             }
             return response;
         })
