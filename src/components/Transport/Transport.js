@@ -210,8 +210,8 @@ function initTransport() {
                 
                 // 清除地图
                 clearMapContainer();
-            } else if (type === 'rail') {
-                console.log('显示铁路信息...');
+            } else if (type === 'road') {
+                console.log('显示公路信息...');
                 // 隐藏港口内容
                 if (portContent) {
                     portContent.style.display = 'none';
@@ -219,7 +219,7 @@ function initTransport() {
                 
                 // 显示提示信息
                 mapContainer.style.display = 'block';
-                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Rail transport in the UK moves approximately 86 million tonnes of freight annually, providing an efficient and eco-friendly option for domestic goods movement over longer distances.</div>';
+                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Road transport in the UK moves approximately 86 million tonnes of freight annually, providing an efficient and eco-friendly option for domestic goods movement over longer distances.</div>';
                 
                 // 清除地图
                 clearMapContainer();
