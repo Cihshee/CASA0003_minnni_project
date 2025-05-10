@@ -71,7 +71,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1rem 2rem 2rem 2rem;
     position: relative;
     opacity: 0;
     transform: translateY(20px);
@@ -96,7 +96,7 @@ main {
 .content-transport {
     max-width: 1800px;
     width: 100%;
-    padding: 2rem;
+    padding: 0 4rem 0 4rem;
     background: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;

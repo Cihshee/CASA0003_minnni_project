@@ -98,7 +98,7 @@
     {
         "year": "2016",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "22.573",
         "UK_picked_up": "26.775",
         "EU_set_down": "4649.89",
@@ -182,7 +182,7 @@
     {
         "year": "2016",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "20324.68",
         "UK_picked_up": "20718.854",
         "EU_set_down": "107232.871",
@@ -578,7 +578,7 @@
     {
         "year": "2017",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "154.665",
         "UK_picked_up": "2.742",
         "EU_set_down": "7462.712",
@@ -662,7 +662,7 @@
     {
         "year": "2017",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "19109.28",
         "UK_picked_up": "18619.079",
         "EU_set_down": "119189.274",
@@ -1058,7 +1058,7 @@
     {
         "year": "2018",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "209.352",
         "UK_picked_up": "47.48",
         "EU_set_down": "17248.516",
@@ -1142,7 +1142,7 @@
     {
         "year": "2018",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "13181.65",
         "UK_picked_up": "12800.336",
         "EU_set_down": "124833.643",
@@ -1538,7 +1538,7 @@
     {
         "year": "2019",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "310.154",
         "UK_picked_up": "70.529",
         "EU_set_down": "16903.292",
@@ -1610,7 +1610,7 @@
     {
         "year": "2019",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "16825.197",
         "UK_picked_up": "17151.036",
         "EU_set_down": "124458.978",
@@ -1982,7 +1982,7 @@
     {
         "year": "2020",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "857.861",
         "UK_picked_up": "305.789",
         "EU_set_down": "18386.971",
@@ -2054,7 +2054,7 @@
     {
         "year": "2020",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "7549.278",
         "UK_picked_up": "7299.834",
         "EU_set_down": "143451.943",
@@ -2438,7 +2438,7 @@
     {
         "year": "2021",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "17980.175",
         "UK_picked_up": "6422.041",
         "EU_set_down": "133.641",
@@ -2522,7 +2522,7 @@
     {
         "year": "2021",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "57010.324",
         "UK_picked_up": "74753.998",
         "EU_set_down": "91376.396",
@@ -2882,7 +2882,7 @@
     {
         "year": "2022",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "15479.46",
         "UK_picked_up": "6524.817",
         "EU_set_down": "19.072",
@@ -2966,7 +2966,7 @@
     {
         "year": "2022",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "62363.615",
         "UK_picked_up": "72085.585",
         "EU_set_down": "73397.829",
@@ -3314,7 +3314,7 @@
     {
         "year": "2023",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "15820.246",
         "UK_picked_up": "6243.152",
         "EU_set_down": "0",
@@ -3386,7 +3386,7 @@
     {
         "year": "2023",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "92231.493",
         "UK_picked_up": "86431.752",
         "EU_set_down": "51278.31",
@@ -3758,7 +3758,7 @@
     {
         "year": "2024",
         "airport_group": "Other UK Airports",
-        "airport": "BELFAST INTERNATIONAL",
+        "airport": "BELFAST",
         "UK_set_down": "17008.539",
         "UK_picked_up": "6758.454",
         "EU_set_down": "0.323",
@@ -3830,7 +3830,7 @@
     {
         "year": "2024",
         "airport_group": "Other UK Airports",
-        "airport": "EAST MIDLANDS INTERNATIONAL",
+        "airport": "EAST MIDLANDS",
         "UK_set_down": "115821.532",
         "UK_picked_up": "91252.783",
         "EU_set_down": "52837.655",

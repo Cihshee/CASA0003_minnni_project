@@ -193,14 +193,14 @@ function initTransport() {
                 mapContainer.innerHTML = `
                     <div id="airport-content" class="airport-content">
                         <div class="chart-controls">
-                            <label for="airportSelect">Select Airport:</label>
-                            <select id="airportSelect"></select>
+                            <div class="airport-selector">
+                                <div class="airport-grid">
+                                    <!-- 机场图片将通过JS动态加载 -->
+                                </div>
+                            </div>
                         </div>
-                        <div class="chart-container">
+                        <div class="chart-container" style="margin-top: -3px;">
                             <canvas id="airportChart"></canvas>
-                        </div>
-                        <div class="airport-info">
-                            <p>Air transport, accounting for around 40% of the UK's export value despite only 1% of its total cargo volume, is crucial for quickly moving high-value goods across global markets.</p>
                         </div>
                     </div>
                 `;
@@ -322,42 +322,68 @@ function processAirportData(data) {
     // 获取所有机场
     const airports = [...new Set(data.map(item => item.airport))].sort();
     
-    // 填充机场选择下拉框
-    const airportSelect = document.getElementById('airportSelect');
-    if (airportSelect) {
-        airportSelect.innerHTML = '';
-        
-        // 按总货运量对机场进行排序（使用2024年或最新年份的数据）
-        const years = [...new Set(data.map(item => item.year))].sort();
-        const latestYear = years[years.length - 1];
-        const latestYearData = data.filter(item => item.year === latestYear);
-        
-        // 获取前15个主要机场
-        const mainAirports = latestYearData
-            .sort((a, b) => parseFloat(b.total_freight) - parseFloat(a.total_freight))
-            .slice(0, 15)
-            .map(item => item.airport);
-            
-        // 添加主要机场选项
-        mainAirports.forEach(airport => {
-            const option = document.createElement('option');
-            option.value = airport;
-            option.textContent = airport;
-            airportSelect.appendChild(option);
-        });
-        
-        // 默认选择货运量最大的机场（第一个）
-        airportSelect.value = mainAirports[0];
-        
-        // 添加机场变更事件监听器
-        airportSelect.addEventListener('change', function() {
-            createAirportChart(data, this.value);
-        });
-    }
+    // 按总货运量对机场进行排序（使用2024年或最新年份的数据）
+    const years = [...new Set(data.map(item => item.year))].sort();
+    const latestYear = years[years.length - 1];
+    const latestYearData = data.filter(item => item.year === latestYear);
     
-    // 初始创建图表 - 使用第一个主要机场
-    if (airportSelect && airportSelect.value) {
-        createAirportChart(data, airportSelect.value);
+    // 获取前14个主要机场（排除BOURNEMOUTH）
+    const mainAirports = latestYearData
+        .sort((a, b) => parseFloat(b.total_freight) - parseFloat(a.total_freight))
+        .map(item => item.airport)
+        .filter(airport => airport !== 'BOURNEMOUTH')
+        .slice(0, 14);
+        
+    console.log('主要机场列表:', mainAirports);
+    
+    // 创建机场图片网格
+    const airportGrid = document.querySelector('.airport-grid');
+    if (airportGrid) {
+        // 清空现有内容
+        airportGrid.innerHTML = '';
+        
+        // 为每个机场创建图片选择器
+        mainAirports.forEach(airport => {
+            // 转换机场名称为小写并将空格转化为下划线
+            const airportLower = airport.toLowerCase().replace(/\s+/g, '_');
+            
+            // 创建机场图片项
+            const airportItem = document.createElement('div');
+            airportItem.className = 'airport-item';
+            airportItem.dataset.airport = airport;
+            
+            // 添加图片和标签
+            airportItem.innerHTML = `
+                <div class="airport-image">
+                    <img src="./public/img/${airportLower}.png" alt="${airport}" />
+                </div>
+                <div class="airport-name">${airport}</div>
+            `;
+            
+            // 添加点击事件
+            airportItem.addEventListener('click', function() {
+                // 移除所有项的选中状态
+                document.querySelectorAll('.airport-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                
+                // 添加选中状态
+                this.classList.add('selected');
+                
+                // 创建所选机场的图表
+                createAirportChart(data, this.dataset.airport);
+            });
+            
+            // 添加到网格
+            airportGrid.appendChild(airportItem);
+        });
+        
+        // 默认选中第一个机场
+        const firstAirport = airportGrid.querySelector('.airport-item');
+        if (firstAirport) {
+            firstAirport.classList.add('selected');
+            createAirportChart(data, firstAirport.dataset.airport);
+        }
     }
 }
 
@@ -377,7 +403,7 @@ function createAirportChart(data, selectedAirport) {
     // 创建数据集
     const datasets = [
         {
-            label: 'UK - Unloaded',
+            label: 'UK - Set Down',
             data: airportData.map(item => parseFloat(item.UK_set_down)),
             backgroundColor: 'rgba(148, 190, 217, 1)',
             borderColor: 'rgba(148, 190, 217, 1)',
@@ -385,7 +411,7 @@ function createAirportChart(data, selectedAirport) {
             stack: 'UK'
         },
         {
-            label: 'UK - Loaded',
+            label: 'UK - Picked Up',
             data: airportData.map(item => parseFloat(item.UK_picked_up)),
             backgroundColor: 'rgba(148, 190, 217, 0.5)',
             borderColor: 'rgba(148, 190, 217, 1)',
@@ -393,7 +419,7 @@ function createAirportChart(data, selectedAirport) {
             stack: 'UK'
         },
         {
-            label: 'EU - Unloaded',
+            label: 'EU - Set Down',
             data: airportData.map(item => parseFloat(item.EU_set_down)),
             backgroundColor: 'rgba(221, 195, 45, 1)',
             borderColor: 'rgba(255, 195, 45, 1)',
@@ -401,7 +427,7 @@ function createAirportChart(data, selectedAirport) {
             stack: 'EU'
         },
         {
-            label: 'EU - Loaded',
+            label: 'EU - Picked Up',
             data: airportData.map(item => parseFloat(item.EU_picked_up)),
             backgroundColor: 'rgba(255, 195, 45, 0.5)',
             borderColor: 'rgba(255, 195, 45, 1)',
@@ -409,7 +435,7 @@ function createAirportChart(data, selectedAirport) {
             stack: 'EU'
         },
         {
-            label: 'Non-EU - Unloaded',
+            label: 'Non-EU - Set Down',
             data: airportData.map(item => parseFloat(item.non_EU_set_down)),
             backgroundColor: 'rgba(255, 148, 102, 1)',
             borderColor: 'rgba(255, 148, 102, 1)',
@@ -417,7 +443,7 @@ function createAirportChart(data, selectedAirport) {
             stack: 'NonEU'
         },
         {
-            label: 'Non-EU - Loaded',
+            label: 'Non-EU - Picked Up',
             data: airportData.map(item => parseFloat(item.non_EU_picked_up)),
             backgroundColor: 'rgba(255, 148, 102, 0.5)',
             borderColor: 'rgba(255, 148, 102, 1)',
@@ -474,11 +500,6 @@ function createAirportChart(data, selectedAirport) {
                             padding: 15,
                             usePointStyle: true,
                             pointStyle: 'circle'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Freight Type',
-                            color: 'white'
                         }
                     },
                     tooltip: {
