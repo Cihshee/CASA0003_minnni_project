@@ -678,11 +678,19 @@ console.log('GoodsType.js loaded');
     });
   }
 
-  // 添加SVG动画相关函数
+  // 添加英国坐标常量
+  const UK_COORDINATES = {
+    lng: -2.5,
+    lat: 54
+  };
+
+  // 修改抛物线生成函数
   function createParabolicCurve(startX, startY, endX, endY) {
     // 计算控制点，使曲线呈现抛物线形状
     const controlX = (startX + endX) / 2;
-    const controlY = Math.min(startY, endY) - Math.abs(endX - startX) * 0.3;
+    // 让控制点高度随距离变化，距离越远曲线越高
+    const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const controlY = Math.min(startY, endY) - distance * 0.3;
     
     return `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`;
   }
@@ -787,17 +795,19 @@ console.log('GoodsType.js loaded');
                 const path = svg.querySelector('#curve-path');
                 const dot = svg.querySelector('#moving-dot');
                 
-                // 获取鼠标位置和国家中心点
-                const mousePoint = [e.point.x, e.point.y];
+                // 获取国家中心点
                 const bounds = new mapboxgl.LngLatBounds();
                 feature.geometry.coordinates[0].forEach(coord => bounds.extend(coord));
                 const center = bounds.getCenter();
-                const centerPoint = state.currentMap.project(center);
+                
+                // 将两个地理坐标点转换为屏幕坐标
+                const countryPoint = state.currentMap.project(center);
+                const ukPoint = state.currentMap.project(UK_COORDINATES);
 
                 // 创建抛物线路径
                 const curve = createParabolicCurve(
-                    mousePoint[0], mousePoint[1],
-                    centerPoint.x, centerPoint.y
+                    countryPoint.x, countryPoint.y,
+                    ukPoint.x, ukPoint.y
                 );
 
                 // 设置路径样式和动画
@@ -1444,9 +1454,10 @@ console.log('GoodsType.js loaded');
     // 获取所有图标
     const allIcons = document.querySelectorAll('.goods-type-icon-btn');
 
-    // 为每个图标添加点击事件
+    // 为每个图标添加title属性
     allIcons.forEach(btn => {
       const typeIndex = parseInt(btn.getAttribute('data-type'));
+      btn.setAttribute('title', sitcLabels[typeIndex]); // 添加悬停提示文本
       
       btn.onclick = async () => {
         if (state.currentType === typeIndex) return;
@@ -1667,6 +1678,43 @@ console.log('GoodsType.js loaded');
           background-color: #1e2832 !important;
           border: 2px solid rgba(255, 255, 255, 0.2) !important;
           transition: all 0.3s ease !important;
+          position: relative !important;  /* 为tooltip定位添加 */
+      }
+
+      /* 图标容器样式 */
+      .goods-type-icons-row {
+          padding-left: 0 !important;  /* 移除左内边距 */
+          margin-left: -40px !important;  /* 整体向左移动 */
+      }
+
+      /* 详情区域布局调整 */
+      #goods-type-detail-container {
+          padding-left: 0 !important;  /* 移除左内边距 */
+          margin-left: -40px !important;  /* 整体向左移动 */
+      }
+
+      /* 图标tooltip样式 */
+      .goods-type-icon-btn::before {
+          content: attr(title);
+          position: absolute;
+          background: rgba(0, 0, 0, 0.8);
+          color: white;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          white-space: nowrap;
+          visibility: hidden;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          left: 120%;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 1000;
+      }
+
+      .goods-type-icon-btn:hover::before {
+          visibility: visible;
+          opacity: 1;
       }
 
       /* 当前选中的图标样式 - 使用更高优先级 */
@@ -1683,10 +1731,11 @@ console.log('GoodsType.js loaded');
           border-color: rgba(33, 150, 243, 0.5) !important;
       }
 
-      /* 地图交互样式 */
+      /* 地图容器调整 */
       .goods-type-detail-map {
           position: relative;
           z-index: 1;
+          margin-left: -20px !important;  /* 地图容器向左移动 */
       }
 
       .mapboxgl-canvas {
