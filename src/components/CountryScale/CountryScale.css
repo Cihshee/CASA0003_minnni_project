@@ -111,6 +111,15 @@
     margin-bottom: 12rem;
 }
 
+.step-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-top: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
 @media (max-width: 768px) {
     .scroll-content-wrapper {
         flex-direction: column;
@@ -128,4 +137,14 @@
         padding-top: 2rem;
         margin-top: 2rem;
     }
+}
+
+.text-link {
+    color: #94bed9;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.text-link:hover {
+    color: #ff9466;
 }
