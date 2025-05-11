@@ -99,7 +99,7 @@ console.log('GoodsType.js loaded');
     return `${(value / 1000000).toFixed(1)}M`;
   }
 
-  function drawChart(ctx, dataRows, flowtype) {
+  function drawChart(ctx, dataRows, flowtype, onAnimEnd) {
     // 插值函数：在两个点之间生成平滑的中间点
     function interpolatePoints(data) {
       const interpolatedData = [];
@@ -158,7 +158,7 @@ console.log('GoodsType.js loaded');
       return;
     }
 
-    const totalDuration = 3000;
+    const totalDuration = 5000; // 动画持续时间改为5秒
     const delayBetweenPoints = totalDuration / interpolatedYears.length;
     
     const animation = {
@@ -190,7 +190,7 @@ console.log('GoodsType.js loaded');
       }
     };
 
-    new Chart(ctx, {
+    const chart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: interpolatedYears,
@@ -198,7 +198,12 @@ console.log('GoodsType.js loaded');
       },
       options: {
         responsive: true,
-        animation,
+        animation: {
+          ...animation,
+          onProgress: function() { chart.draw(); }
+        },
+        maintainAspectRatio: false,
+        layout: { padding: { right: 100 } }, // 右侧留白更大，防止value被遮挡
         interaction: {
           intersect: false,
           mode: 'nearest'
@@ -212,12 +217,10 @@ console.log('GoodsType.js loaded');
             intersect: false,
             callbacks: {
               title: function(context) {
-                // 只显示年份
                 const yearIndex = Math.floor(context[0].dataIndex / 30);
                 return years[yearIndex];
               },
               label: function(context) {
-                // 只显示当前悬停的数据点
                 if (context.dataIndex % 30 === 0) {
                   return `${context.dataset.label}: £${formatToMillions(context.parsed.y)}`;
                 }
@@ -230,8 +233,14 @@ console.log('GoodsType.js loaded');
           x: { 
             ticks: { 
               color: '#fff',
+              font: {
+                size: 22,
+                weight: 'bold',
+                family: 'Orbitron, Montserrat, Arial, sans-serif',
+                lineHeight: 1.2,
+                style: 'normal',
+              },
               callback: function(value, index) {
-                // 显示实际年份
                 if (index % 30 === 0) {
                   const yearIndex = index / 30;
                   return years[yearIndex];
@@ -239,7 +248,8 @@ console.log('GoodsType.js loaded');
                 return '';
               },
               maxRotation: 0,
-              autoSkip: false
+              autoSkip: false,
+              padding: 18,
             }, 
             grid: { color: 'rgba(255,255,255,0.08)' }
           },
@@ -254,35 +264,124 @@ console.log('GoodsType.js loaded');
           }
         }
       },
-      plugins: [{
-        id: 'valueLabels',
-        afterDatasetsDraw(chart) {
-          const ctx = chart.ctx;
-          chart.data.datasets.forEach((dataset, datasetIndex) => {
-            const meta = chart.getDatasetMeta(datasetIndex);
-            if (!meta.hidden) {
-              const lastVisiblePoint = meta.data
-                .filter((_, index) => dataset.data[index] !== null)
-                .pop();
-              
-              if (lastVisiblePoint) {
-                ctx.save();
-                ctx.fillStyle = dataset.borderColor;
-                ctx.font = '12px Arial';
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(
-                  `£${formatToMillions(dataset.data[dataset.data.length - 1])}`,
-                  lastVisiblePoint.x + 10,
-                  lastVisiblePoint.y
-                );
-                ctx.restore();
-              }
+      plugins: [
+        // 只保留yearLabelGradient插件
+        {
+          id: 'yearLabelGradient',
+          afterDraw(chart) {
+            const xAxis = chart.scales.x;
+            const yAxis = chart.scales.y;
+            if (!xAxis || !yAxis) return;
+            const ctx = chart.ctx;
+            ctx.save();
+            for (let i = 0; i < years.length; i++) {
+              const index = i * 30;
+              const label = years[i];
+              const x = xAxis.getPixelForValue(index);
+              // 画虚线，顶部超出10px，底部超出20px
+              ctx.save();
+              ctx.beginPath();
+              ctx.setLineDash([4, 6]);
+              ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+              ctx.lineWidth = 1.2;
+              ctx.moveTo(x, yAxis.top - 10);
+              ctx.lineTo(x, yAxis.bottom + 20);
+              ctx.stroke();
+              ctx.setLineDash([]);
+              ctx.restore();
+              // 画渐变色年份数字
+              const y = xAxis.bottom + 28;
+              // 先用白色覆盖原有数字
+              ctx.save();
+              ctx.font = 'bold 22px Orbitron, Montserrat, Arial, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.globalCompositeOperation = 'source-over';
+              ctx.fillStyle = '#181c23'; // 背景色覆盖
+              ctx.fillRect(x-20, y-16, 40, 32);
+              ctx.restore();
+              // 渐变色
+              const grad = ctx.createLinearGradient(x - 20, y, x + 20, y);
+              grad.addColorStop(0, '#4fc3f7');
+              grad.addColorStop(1, '#7c4dff');
+              ctx.font = 'bold 22px Orbitron, Montserrat, Arial, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.shadowColor = 'rgba(33,150,243,0.18)';
+              ctx.shadowBlur = 8;
+              ctx.fillStyle = grad;
+              ctx.fillText(label, x, y);
+              ctx.shadowBlur = 0;
             }
-          });
+            ctx.restore();
+
+            // --- 动画亮点与value ---
+            // 动画进度
+            const anim = chart._animations && Object.values(chart._animations)[0];
+            let animProgress = 1;
+            if (anim && anim._duration > 0) {
+              animProgress = Math.min(1, anim._elapsed / anim._duration);
+            }
+            // 计算当前动画到第几个插值点（用插值算法，不依赖meta.data）
+            const metaArr = chart.getSortedVisibleDatasetMetas();
+            metaArr.forEach((meta, dIdx) => {
+              if (!meta || !meta._dataset || !meta._dataset.data || !meta._dataset.data.length) return;
+              const dataArr = meta._dataset.data;
+              const totalPoints = dataArr.length;
+              // 动画进度下的当前点（小数）
+              let floatIndex = animProgress * (totalPoints - 1);
+              if (floatIndex < 0) floatIndex = 0;
+              if (floatIndex > totalPoints - 1) floatIndex = totalPoints - 1;
+              const leftIdx = Math.floor(floatIndex);
+              const rightIdx = Math.min(leftIdx + 1, totalPoints - 1);
+              const frac = floatIndex - leftIdx;
+              // x坐标插值（像素级）
+              const x0 = xAxis.getPixelForValue(leftIdx);
+              const x1 = xAxis.getPixelForValue(rightIdx);
+              const px = x0 + (x1 - x0) * frac;
+              // y插值
+              const v0 = dataArr[leftIdx];
+              const v1 = dataArr[rightIdx];
+              const value = v0 + (v1 - v0) * frac;
+              const py = yAxis.getPixelForValue(value);
+              // 画亮点
+              ctx.save();
+              ctx.beginPath();
+              ctx.arc(px, py, 8, 0, 2 * Math.PI);
+              ctx.shadowColor = meta._dataset.borderColor || '#fff';
+              ctx.shadowBlur = 16;
+              ctx.fillStyle = meta._dataset.borderColor || '#fff';
+              ctx.globalAlpha = 0.85;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+              ctx.beginPath();
+              ctx.arc(px, py, 4.2, 0, 2 * Math.PI);
+              ctx.fillStyle = '#fff';
+              ctx.fill();
+              ctx.restore();
+              // 画value文本
+              ctx.save();
+              ctx.font = 'bold 13px Arial, sans-serif';
+              ctx.textAlign = 'left';
+              ctx.textBaseline = 'middle';
+              ctx.fillStyle = meta._dataset.borderColor || '#fff';
+              ctx.shadowColor = '#222';
+              ctx.shadowBlur = 4;
+              let valStr = formatToMillions(value);
+              ctx.fillText(valStr, px + 14, py);
+              ctx.restore();
+            });
+          }
         }
-      }]
+      ]
     });
+
+    // 动画结束后回调
+    if (onAnimEnd) {
+      setTimeout(onAnimEnd, 3000);
+    }
+    return chart;
   }
 
   // Legend items and colors (should match chart datasets)
@@ -294,6 +393,8 @@ console.log('GoodsType.js loaded');
     { label: '4 Animal & vegetable oils, fats & waxes', color: '#5bc0de' },
     { label: '5 Chemicals & related products, nes', color: '#428bca' },
     { label: '6 Manufactured goods classified chiefly by material', color: '#6f42c1' },
+    { label: '7 Machinery & transport equipment', color: '#ab47bc' },
+    { label: '8 Miscellaneous manufactured articles', color: '#ffd600' }
   ];
   function renderLegend() {
     const legend = document.getElementById('goods-summary-legend');
@@ -324,52 +425,347 @@ console.log('GoodsType.js loaded');
     const chartContainer = document.getElementById('goods-summary-charts');
     if (!chartContainer) return;
     chartContainer.innerHTML = '';
-    
-    // 创建图表但先不渲染
-    const charts = [];
-    flowTypes.forEach((flowtype, idx) => {
-      const block = document.createElement('div');
-      block.className = 'goods-summary-chart-block';
-      block.style.opacity = '0';  // 初始设置为不可见
-      block.style.transform = 'translateY(20px)';  // 初始位置略微向下
-      block.style.transition = 'all 0.8s ease';
-      block.innerHTML = `
-        <div class="goods-summary-chart-title">${flowtype} (2016-2024)</div>
-        <canvas class="goods-summary-chart-canvas" width="800" height="340"></canvas>
-      `;
-      chartContainer.appendChild(block);
-      
-      const ctx = block.querySelector('canvas').getContext('2d');
-      charts.push({
-        block,
-        ctx,
-        flowtype,
-        rendered: false
-      });
-    });
 
-    // 创建观察器
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const container = entry.target;
-          // 依次显示每个图表
-          charts.forEach((chart, index) => {
-            if (!chart.rendered) {
-          setTimeout(() => {
-                chart.block.style.opacity = '1';
-                chart.block.style.transform = 'translateY(0)';
-                drawChart(chart.ctx, data, chart.flowtype);
-                chart.rendered = true;
-              }, index * 300);  // 每个图表间隔300ms
+    // 外层整体居中wrap
+    const centerWrap = document.createElement('div');
+    centerWrap.className = 'summary-center-wrap';
+    centerWrap.style.display = 'flex';
+    centerWrap.style.flexDirection = 'column';
+    centerWrap.style.alignItems = 'center';
+    centerWrap.style.justifyContent = 'center';
+    chartContainer.appendChild(centerWrap);
+
+    // D3主图参数
+    const width = 900;
+    const height = 420;
+    const margin = { top: 40, right: 220, bottom: 70, left: 80 };
+    const svgW = width + margin.left + margin.right;
+    const svgH = height + margin.top + margin.bottom;
+
+    // 主图+右侧描述栏flex
+    const flexWrap = document.createElement('div');
+    flexWrap.className = 'summary-flex-wrap';
+    flexWrap.style.display = 'flex';
+    flexWrap.style.flexDirection = 'row';
+    flexWrap.style.alignItems = 'center';
+    flexWrap.style.justifyContent = 'center';
+    flexWrap.style.gap = '0px';
+    flexWrap.style.maxWidth = '1200px';
+    flexWrap.style.margin = '0 auto';
+    centerWrap.appendChild(flexWrap);
+
+    // SVG主图区域
+    const svgDiv = document.createElement('div');
+    svgDiv.className = 'summary-chart-area';
+    svgDiv.style.position = 'relative';
+    svgDiv.style.width = 'max-content';
+    svgDiv.style.display = 'flex';
+    svgDiv.style.justifyContent = 'center';
+    svgDiv.style.alignItems = 'center';
+    svgDiv.style.maxWidth = '1200px';
+    svgDiv.style.margin = '0 auto';
+    flexWrap.appendChild(svgDiv);
+
+    // 右侧描述栏
+    const descDiv = document.createElement('div');
+    descDiv.className = 'summary-desc-area';
+    descDiv.style.display = 'none'; // 不再显示右侧描述栏
+    flexWrap.appendChild(descDiv);
+
+    // 按钮区域（主图下方，整体居中）
+    const btnsDiv = document.createElement('div');
+    btnsDiv.className = 'summary-explore-btns';
+    btnsDiv.style.display = 'flex';
+    btnsDiv.style.flexDirection = 'column';
+    btnsDiv.style.alignItems = 'center';
+    btnsDiv.style.marginTop = '32px';
+    btnsDiv.style.opacity = '0';
+    btnsDiv.style.transform = 'translateY(30px)';
+    btnsDiv.innerHTML = `
+      <div class="summary-btn-row" style="display:flex; gap:16px; margin-bottom:8px;">
+        <button class="summary-explore-btn" data-flow="EU - Exports" data-idx="0">UK Export <span class="arrow">⟶</span><br>EU</button>
+        <button class="summary-explore-btn" data-flow="EU - Imports" data-idx="1">UK Import <span class="arrow">⟵</span><br>EU</button>
+        <button class="summary-explore-btn" data-flow="Non EU - Exports" data-idx="2">UK Export <span class="arrow">⟶</span><br>Non-EU</button>
+        <button class="summary-explore-btn" data-flow="Non EU - Imports" data-idx="3">UK Import <span class="arrow">⟵</span><br>Non-EU</button>
+      </div>
+    `;
+    centerWrap.appendChild(btnsDiv);
+
+    // D3主图SVG
+    const svg = d3.select(svgDiv)
+      .append('svg')
+      .attr('width', svgW)
+      .attr('height', svgH)
+      .attr('class', 'd3-summary-svg')
+      .style('display', 'block');
+
+    // 年份、flowType、配色等参数
+    const years = Array.from({length: 2024-2016+1}, (_,i)=>2016+i);
+    const flowTypes = [
+      'EU - Exports',
+      'EU - Imports',
+      'Non EU - Exports',
+      'Non EU - Imports'
+    ];
+    let currentFlow = flowTypes[0];
+    let animDuration = 5000;
+
+    // 颜色方案
+    const lineColors = [
+      '#d9534f', '#f0ad4e', '#bada55', '#5cb85c', '#5bc0de', '#428bca', '#6f42c1', '#ab47bc', '#ffd600'
+    ];
+
+    function getLineData(flowType) {
+      return data.map((row, idx) => {
+        return {
+          name: row['SitcCommodityHierarchy - SITC1'],
+          color: lineColors[idx % lineColors.length],
+          values: years.map(year => ({
+            year,
+            value: getValue(row, flowType, year)
+          }))
+        };
+      });
+    }
+
+    function drawD3Chart(flowType) {
+      svg.selectAll('*').remove();
+      const lineData = getLineData(flowType);
+      const x = d3.scalePoint()
+        .domain(years)
+        .range([margin.left, margin.left + width]);
+      const y = d3.scaleLinear()
+        .domain([0, d3.max(lineData, d => d3.max(d.values, v => v.value)) * 1.08])
+        .range([margin.top + height, margin.top]);
+
+      svg.append('g')
+        .attr('transform', `translate(0,${margin.top + height})`)
+        .call(d3.axisBottom(x)
+          .tickFormat(d => d)
+          .tickSize(0)
+        )
+        .selectAll('text')
+        .attr('font-size', 22)
+        .attr('font-family', 'Orbitron, Montserrat, Arial, sans-serif')
+        .attr('font-weight', 'bold')
+        .attr('fill', '#fff')
+        .attr('dy', '1.5em');
+
+      svg.append('g')
+        .attr('transform', `translate(${margin.left},0)`)
+        .call(d3.axisLeft(y)
+          .tickFormat(d => '£' + formatToMillions(d, true))
+        )
+        .selectAll('text')
+        .attr('fill', '#fff')
+        .attr('font-size', 15);
+
+      years.forEach(year => {
+        svg.append('line')
+          .attr('x1', x(year)).attr('x2', x(year))
+          .attr('y1', y.range()[0] - 10)
+          .attr('y2', y.range()[1] + 20)
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 1.2)
+          .attr('stroke-dasharray', '4,6')
+          .attr('opacity', 0.18);
+      });
+
+      const totalFrames = 1100;
+      let frame = 0;
+      function animate() {
+        svg.selectAll('.d3-line').remove();
+        svg.selectAll('.d3-dot').remove();
+        svg.selectAll('.d3-value').remove();
+        svg.selectAll('.d3-highlight-2022').remove();
+        svg.selectAll('.d3-annotation-2022').remove();
+        svg.selectAll('.d3-highlight-2020').remove();
+        svg.selectAll('.d3-annotation-2020').remove();
+        lineData.forEach((line, idx) => {
+          const floatIndex = (frame / totalFrames) * (years.length - 1);
+          const leftIdx = Math.floor(floatIndex);
+          const rightIdx = Math.min(leftIdx + 1, years.length - 1);
+          const frac = floatIndex - leftIdx;
+          const pts = line.values.slice(0, leftIdx + 1).map(d => [x(d.year), y(d.value)]);
+          if (rightIdx > leftIdx) {
+            const y0 = line.values[leftIdx].value;
+            const y1 = line.values[rightIdx].value;
+            const v = y0 + (y1 - y0) * frac;
+            const px = x(years[leftIdx]) + (x(years[rightIdx]) - x(years[leftIdx])) * frac;
+            pts.push([px, y(v)]);
+          }
+          const lineGen = d3.line().curve(d3.curveMonotoneX);
+          svg.append('path')
+            .attr('class', 'd3-line')
+            .attr('d', lineGen(pts))
+            .attr('stroke', line.color)
+            .attr('stroke-width', 2.5)
+            .attr('fill', 'none');
+          const [dotX, dotY] = pts[pts.length-1];
+          svg.append('circle')
+            .attr('class', 'd3-dot')
+            .attr('cx', dotX)
+            .attr('cy', dotY)
+            .attr('r', 8)
+            .attr('fill', line.color)
+            .attr('filter', 'url(#d3-glow)');
+          svg.append('circle')
+            .attr('class', 'd3-dot')
+            .attr('cx', dotX)
+            .attr('cy', dotY)
+            .attr('r', 4.2)
+            .attr('fill', '#fff');
+          const v = (rightIdx > leftIdx)
+            ? line.values[leftIdx].value + (line.values[rightIdx].value - line.values[leftIdx].value) * frac
+            : line.values[years.length-1].value;
+          svg.append('text')
+            .attr('class', 'd3-value')
+            .attr('x', dotX + 14)
+            .attr('y', dotY)
+            .attr('fill', line.color)
+            .attr('font-size', 13)
+            .attr('font-weight', 700)
+            .attr('alignment-baseline', 'middle')
+            .attr('font-family', 'Arial, sans-serif')
+            .attr('filter', 'url(#d3-shadow)')
+            .text(formatToMillions(v));
+
+          // --- Highlight 2022 high point for Mineral fuels (idx 3) ---
+          if (idx === 3) {
+            // 2022 annotation
+            const year2022Idx = years.indexOf(2022);
+            const frame2022 = Math.round((year2022Idx / (years.length - 1)) * totalFrames);
+            if (frame >= frame2022) {
+              const pt2022 = line.values[year2022Idx];
+              const cx = x(pt2022.year);
+              const cy = y(pt2022.value);
+              svg.append('circle')
+                .attr('class', 'd3-highlight-2022')
+                .attr('cx', cx)
+                .attr('cy', cy)
+                .attr('r', 18)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 3)
+                .attr('fill', 'none')
+                .attr('stroke-dasharray', '6,6')
+                .attr('filter', 'url(#d3-glow)');
+              // 2022 annotation fade/scale slower
+              const annProgress = Math.max(0, Math.min(1, (frame - frame2022) / 60));
+              const annOpacity = annProgress;
+              const annScale = 0.92 + 0.08 * annProgress;
+              svg.append('foreignObject')
+                .attr('class', 'd3-annotation-2022')
+                .attr('x', cx + 30)
+                .attr('y', cy - 38)
+                .attr('width', 340)
+                .attr('height', 110)
+                .style('opacity', annOpacity)
+                .style('transform', `scale(${annScale})`)
+                .style('transition', 'opacity 0.7s, transform 0.7s')
+                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\">\n                  <b>2022 High Point:</b><br>Energy exports spiked after Brexit and the Russia-Ukraine war, then normalized as the market stabilized.<br><a href=\"https://www.ons.gov.uk/economy/nationalaccounts/balanceofpayments/articles/uktradeingoodsyearinreview/2023\" target=\"_blank\" style=\"color:#4fc3f7;text-decoration:underline;display:inline-block;margin-top:6px;font-size:13px;\">Source: ONS</a>\n                </div>`);
             }
-          });
-          observer.disconnect();  // 动画触发后解除观察
+          }
+          // --- Highlight 2020 low point for Machinery & transport equipment (idx 7) ---
+          if (idx === 7) {
+            const year2020Idx = years.indexOf(2020);
+            const frame2020 = Math.round((year2020Idx / (years.length - 1)) * totalFrames);
+            if (frame >= frame2020) {
+              const pt2020 = line.values[year2020Idx];
+              const cx = x(pt2020.year);
+              const cy = y(pt2020.value);
+              svg.append('circle')
+                .attr('class', 'd3-highlight-2020')
+                .attr('cx', cx)
+                .attr('cy', cy)
+                .attr('r', 18)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 3)
+                .attr('fill', 'none')
+                .attr('stroke-dasharray', '6,6')
+                .attr('filter', 'url(#d3-glow)');
+              // 2020 annotation fade/scale
+              const annProgress = Math.max(0, Math.min(1, (frame - frame2020) / 60));
+              const annOpacity = annProgress;
+              const annScale = 0.92 + 0.08 * annProgress;
+              svg.append('foreignObject')
+                .attr('class', 'd3-annotation-2020')
+                .attr('x', cx - 350)
+                .attr('y', cy - 48)
+                .attr('width', 340)
+                .attr('height', 70)
+                .style('opacity', annOpacity)
+                .style('transform', `scale(${annScale})`)
+                .style('transition', 'opacity 0.7s, transform 0.7s')
+                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2020:</b> The pandemic caused a temporary decline in some exports.</div>`);
+            }
+          }
+        });
+        if (frame < totalFrames) {
+          frame++;
+          requestAnimationFrame(animate);
+        } else {
+          // 动画结束后弹出提示和按钮
+          // 1. 先弹出提示
+          let promptDiv = btnsDiv.querySelector('.summary-explore-prompt');
+          if (!promptDiv) {
+            promptDiv = document.createElement('div');
+            promptDiv.className = 'summary-explore-prompt';
+            promptDiv.textContent = 'Click the buttons below to explore more flow types.';
+            promptDiv.style.cssText = 'color:#fff;font-size:16px;font-weight:500;margin-bottom:12px;opacity:0;transform:translateY(18px);transition:opacity 0.7s,transform 0.7s;text-align:center;';
+            btnsDiv.insertBefore(promptDiv, btnsDiv.firstChild);
+          }
+          promptDiv.style.display = 'block';
+          setTimeout(() => {
+            promptDiv.style.opacity = '1';
+            promptDiv.style.transform = 'translateY(0)';
+          }, 80);
+          // 2. 再弹出按钮
+          btnsDiv.style.display = 'flex';
+          btnsDiv.style.opacity = '0';
+          btnsDiv.style.transform = 'translateY(30px)';
+          setTimeout(() => {
+            btnsDiv.style.transition = 'opacity 0.7s, transform 0.7s';
+            btnsDiv.style.opacity = '1';
+            btnsDiv.style.transform = 'translateY(0)';
+          }, 500);
+          // 3. 移除右侧描述栏内容
+          if (descDiv) descDiv.innerHTML = '';
         }
-      });
-    }, { threshold: 0.2 });  // 当20%的内容可见时触发
+      }
+      svg.append('defs').html(`
+        <filter id="d3-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <filter id="d3-shadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#222"/>
+        </filter>
+      `);
+      animate();
+    }
 
-    observer.observe(chartContainer);
+    // 初始渲染
+    drawD3Chart(currentFlow);
+
+    // 按钮/flowType切换逻辑
+    btnsDiv.querySelectorAll('.summary-explore-btn').forEach(btn => {
+      btn.onclick = () => {
+        currentFlow = btn.getAttribute('data-flow');
+        // 隐藏按钮和文字，重新动画
+        btnsDiv.style.opacity = '0';
+        btnsDiv.style.transform = 'translateY(30px)';
+        descDiv.querySelectorAll('.summary-desc-text').forEach(el => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(30px)';
+        });
+        setTimeout(() => {
+          drawD3Chart(currentFlow);
+        }, 300);
+      };
+    });
   }
 
   // 添加动画控制状态
@@ -1769,46 +2165,146 @@ console.log('GoodsType.js loaded');
       }
 
       .goods-summary-chart-block {
-          height: 270px !important;  /* 增加图表高度 */
-          margin-bottom: 20px !important;  /* 增加图表之间的间距 */
+          margin: 0 auto !important;
+          max-width: 1000px !important;
+          position: relative !important;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
       }
 
       .goods-summary-chart-canvas {
-          height: 100% !important;  /* 确保canvas填充容器高度 */
+          width: 900px !important;
+          height: 420px !important;
+          min-height: 420px !important;
+          max-height: 420px !important;
+          display: block;
+          margin: 0 auto;
+          background: transparent;
+          box-sizing: border-box;
+          margin-bottom: 32px;
       }
 
-      /* 增加legend文字大小 */
-      .goods-summary-legend-item {
-          font-size: 14px !important;  /* 增加文字大小 */
-          margin-right: 20px !important;  /* 增加间距 */
-          line-height: 1.6 !important;
-      }
-
-      .goods-summary-legend-color {
-          width: 16px !important;  /* 稍微增加色块大小 */
-          height: 16px !important;
-          margin-right: 8px !important;
-      }
-
-      /* 其他现有样式保持不变 */
-      .timeline-play-btn {
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: #fff;
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          cursor: pointer;
+      .summary-explore-btns {
           display: flex;
+          flex-direction: column;
           align-items: center;
-          justify-content: center;
-          transition: all 0.3s;
-          font-size: 16px;
-          padding: 0;
-          line-height: 1;
+          margin-top: 24px;
+          transition: opacity 0.5s;
       }
 
-      /* 其他样式保持不变... */
+      .summary-btn-row {
+          display: flex;
+          gap: 18px;
+          margin-bottom: 8px;
+      }
+
+      .summary-explore-btn {
+          background: transparent;
+          border: 2px solid #3776b6;
+          color: #fff;
+          padding: 12px 32px;
+          border-radius: 18px;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(.4,1.4,.6,1);
+          font-size: 14px;
+          margin: 0 2px;
+          font-weight: 500;
+          box-shadow: none;
+          letter-spacing: 0.2px;
+          outline: none;
+          position: relative;
+          text-align: center;
+          line-height: 1.3;
+          white-space: normal;
+      }
+
+      .summary-explore-btn .arrow {
+          font-size: 18px;
+          vertical-align: middle;
+          margin: 0 2px;
+          font-family: inherit;
+          font-weight: 600;
+          display: inline-block;
+      }
+
+      .summary-explore-btn[data-selected="true"], .summary-explore-btn.active {
+          background: #3776b6;
+          color: #fff;
+          border-color: #3776b6;
+          box-shadow: 0 2px 8px rgba(33,150,243,0.08);
+          z-index: 1;
+      }
+
+      .summary-explore-btn:hover {
+          background: #3776b6;
+          color: #fff;
+          border-color: #3776b6;
+          transform: translateY(-2px) scale(1.04);
+      }
+
+      .goods-summary-chart-title {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 22px;
+          color: white;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+      }
+
+      .summary-flex-wrap {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 16px;
+        margin: 0 auto;
+        max-width: 1300px;
+        width: 100%;
+      }
+      .summary-chart-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-width: 920px;
+        max-width: 920px;
+      }
+      .summary-desc-area {
+        min-width: 260px;
+        max-width: 320px;
+        background: none;
+        padding: 32px 0 24px 0px;
+        color: #fff;
+        font-size: 17px;
+        line-height: 1.7;
+        box-shadow: none;
+        margin-top: 32px;
+        margin-left: 0;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        position: relative;
+        text-align: left;
+      }
+      .summary-desc-text {
+        color: #fff;
+        font-size: 17px;
+        font-weight: 500;
+        letter-spacing: 0.1px;
+        line-height: 1.7;
+        word-break: break-word;
+        margin-bottom: 18px;
+        text-align: left;
+        transition: opacity 0.7s, transform 0.7s;
+        will-change: opacity, transform;
+      }
+      .chartjs-render-monitor text {
+        letter-spacing: 2px !important;
+      }
   `;
   document.head.appendChild(style);
 })();
