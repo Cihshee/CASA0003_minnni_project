@@ -131,7 +131,7 @@ renderLineChart(euChartSvgContainer, euData, 'EU Countries', '#ff6347');
 // 渲染非EU折线图
 renderLineChart(nonEuChartSvgContainer, nonEuData, 'Non-EU Countries', '#2166ac');
 
-// 创建空白间隔元素，确保折线图和热力图之间有足够距离
+// 创建空白间隔元素，确保折线图和间隔元素之间有足够距离
 const spacer = document.createElement('div');
 spacer.style.height = '500px';
 spacer.style.width = '100%';
@@ -903,8 +903,18 @@ function renderHeatmap(data, regions, countries, year) {
     .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
+  // 定义EU和非EU国家，使用和折线图相同的顺序
+  const euCountries = ["Belgium", "France", "Germany", "Ireland", "Italy", "Netherlands", "Poland", "Spain", "Sweden", "Rest of EU"];
+  const nonEuCountries = ["Australia", "Canada", "China", "India", "Japan", "Norway", "Singapore", "Switzerland", "United States", "Rest of world"];
+  
+  // 组合国家列表，EU国家在前，非EU国家在后
+  const orderedCountries = [...euCountries, ...nonEuCountries];
+  
+  // 只使用实际存在于数据中的国家
+  const filteredOrderedCountries = orderedCountries.filter(country => countries.includes(country));
+
   const xScale = d3.scaleBand()
-    .domain(countries)
+    .domain(filteredOrderedCountries)
     .range([0, width])
     .padding(0.1);
   const yScale = d3.scaleBand()
@@ -923,7 +933,7 @@ function renderHeatmap(data, regions, countries, year) {
   }
 
   regions.forEach(region => {
-    countries.forEach(country => {
+    filteredOrderedCountries.forEach(country => {
       const stat = lookup[`${region}-${country}`] || { balance: 0, imports: 0, exports: 0 };
       svg.append('rect')
         .attr('x', xScale(country))
@@ -958,8 +968,9 @@ function renderHeatmap(data, regions, countries, year) {
     .selectAll('text')
       .attr('transform', 'rotate(-65)')
       .style('text-anchor', 'end')
-      .style('font-size', `${fontSize}px`);
-      
+      .style('font-size', `${fontSize}px`)
+      .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8'); // 更新非EU国家的颜色
+
   svg.append('g')
     .call(d3.axisLeft(yScale))
     .selectAll('text')
@@ -1004,6 +1015,20 @@ function renderHeatmap(data, regions, countries, year) {
       return `${heatmapBounds[i]} to ${heatmapBounds[i + 1]}`;
     });
     
+  // 修改说明文字的位置
+  svg.append('text')
+    .attr('class', 'axis-note')
+    .attr('x', width / 2)
+    .attr('y', height + margin.bottom + 5) 
+    .attr('text-anchor', 'middle')
+    .style('font-size', `${fontSize}px`)
+    .style('fill', '#fff')
+    .html('Country names are colored by ' + 
+          `<tspan style="fill: #c1e7ff">EU</tspan>` + 
+          ' and ' + 
+          `<tspan style="fill: #ffb7a8">non-EU</tspan>` + 
+          ' grouping.');
+
   // 添加窗口大小变化时的自适应调整
   window.addEventListener('resize', () => {
     renderHeatmap(allData, allRegions, allCountries, currentYear);
