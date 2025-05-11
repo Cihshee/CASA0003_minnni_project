@@ -20,7 +20,8 @@ console.log('GoodsType.js loaded');
     '5 Chemicals & related products',
     '6 Manufactured goods classified chiefly by material',
     '7 Machinery & transport equipment',
-    '8 Miscellaneous manufactured articles'
+    '8 Miscellaneous manufactured articles',
+    "9 Commodities/transactions not class'd elsewhere in SITC"
   ];
   const sitcDescriptions = [
     'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals, and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
@@ -31,7 +32,8 @@ console.log('GoodsType.js loaded');
     'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
     'Manufactured goods classified chiefly by material include metals, building materials, and more. Brexit has brought changes in tariffs and standards.',
     'Machinery and transport equipment are a pillar of UK exports. Brexit has affected supply chains and export markets.',
-    'Miscellaneous manufactured articles include toys, furniture, clothing, and more. Market access and certification processes have changed post-Brexit.'
+    'Miscellaneous manufactured articles include toys, furniture, clothing, and more. Market access and certification processes have changed post-Brexit.',
+    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions."
   ];
   
   // Global state object
@@ -394,12 +396,19 @@ console.log('GoodsType.js loaded');
     { label: '5 Chemicals & related products, nes', color: '#428bca' },
     { label: '6 Manufactured goods classified chiefly by material', color: '#6f42c1' },
     { label: '7 Machinery & transport equipment', color: '#ab47bc' },
-    { label: '8 Miscellaneous manufactured articles', color: '#ffd600' }
+    { label: '8 Miscellaneous manufactured articles', color: '#ffd600' },
+    { label: "9 Commodities/transactions not class'd elsewhere in SITC", color: '#b0b0b0' }
   ];
   function renderLegend() {
     const legend = document.getElementById('goods-summary-legend');
-    legend.innerHTML = legendItems.map(item =>
-      `<span class="goods-summary-legend-item"><span class="goods-summary-legend-color" style="background:${item.color}"></span>${item.label}</span>`
+    legend.innerHTML = legendItems.map((item, idx) =>
+      idx === 9
+        ? `<span class="goods-summary-legend-item">
+             <svg width="28" height="10" style="vertical-align:middle;margin-right:7px;">
+               <line x1="2" y1="5" x2="26" y2="5" stroke="${item.color}" stroke-width="4" stroke-dasharray="5,6"/>
+             </svg>${item.label}
+           </span>`
+        : `<span class="goods-summary-legend-item"><span class="goods-summary-legend-color" style="background:${item.color}"></span>${item.label}</span>`
     ).join('');
   }
   renderLegend();
@@ -499,6 +508,34 @@ console.log('GoodsType.js loaded');
       .attr('class', 'd3-summary-svg')
       .style('display', 'block');
 
+    // 鼠标高亮点元素
+    let hoverDot = d3.select(svgDiv).select('.d3-hover-dot');
+    if (hoverDot.empty()) {
+      hoverDot = svg.append('circle')
+        .attr('class', 'd3-hover-dot')
+        .attr('r', 0)
+        .style('pointer-events', 'none');
+    }
+    // 添加自定义tooltip元素
+    let tooltipDiv = d3.select(svgDiv).select('.d3-tooltip');
+    if (tooltipDiv.empty()) {
+      tooltipDiv = d3.select(svgDiv)
+        .append('div')
+        .attr('class', 'd3-tooltip')
+        .style('position', 'absolute')
+        .style('pointer-events', 'none')
+        .style('background', 'rgba(30,30,30,0.97)')
+        .style('color', '#fff')
+        .style('padding', '7px 12px 6px 12px')
+        .style('border-radius', '8px')
+        .style('font-size', '13px')
+        .style('font-family', 'Montserrat,Arial,sans-serif')
+        .style('box-shadow', '0 2px 8px #0005')
+        .style('line-height', '1.5')
+        .style('z-index', 10)
+        .style('display', 'none');
+    }
+
     // 年份、flowType、配色等参数
     const years = Array.from({length: 2024-2016+1}, (_,i)=>2016+i);
     const flowTypes = [
@@ -512,13 +549,13 @@ console.log('GoodsType.js loaded');
 
     // 颜色方案
     const lineColors = [
-      '#d9534f', '#f0ad4e', '#bada55', '#5cb85c', '#5bc0de', '#428bca', '#6f42c1', '#ab47bc', '#ffd600'
+      '#d9534f', '#f0ad4e', '#bada55', '#5cb85c', '#5bc0de', '#428bca', '#6f42c1', '#ab47bc', '#ffd600', '#b0b0b0'
     ];
 
     function getLineData(flowType) {
-      return data.map((row, idx) => {
+      return data.slice(0, 10).map((row, idx) => {
         return {
-          name: row['SitcCommodityHierarchy - SITC1'],
+          name: row['SitcCommodityHierarchy - SITC1'] || `SITC ${idx}`,
           color: lineColors[idx % lineColors.length],
           values: years.map(year => ({
             year,
@@ -530,6 +567,7 @@ console.log('GoodsType.js loaded');
 
     function drawD3Chart(flowType) {
       svg.selectAll('*').remove();
+      tooltipDiv.style('display', 'none');
       const lineData = getLineData(flowType);
       const x = d3.scalePoint()
         .domain(years)
@@ -600,7 +638,8 @@ console.log('GoodsType.js loaded');
             .attr('d', lineGen(pts))
             .attr('stroke', line.color)
             .attr('stroke-width', 2.5)
-            .attr('fill', 'none');
+            .attr('fill', 'none')
+            .attr('stroke-dasharray', idx === 9 ? '5,6' : null);
           const [dotX, dotY] = pts[pts.length-1];
           svg.append('circle')
             .attr('class', 'd3-dot')
@@ -716,7 +755,7 @@ console.log('GoodsType.js loaded');
               btnsDiv.insertBefore(promptDiv, btnsDiv.firstChild);
             }
             promptDiv.style.display = 'block';
-            setTimeout(() => {
+          setTimeout(() => {
               promptDiv.style.opacity = '1';
               promptDiv.style.transform = 'translateY(0)';
             }, 80);
@@ -748,6 +787,77 @@ console.log('GoodsType.js loaded');
         </filter>
       `);
       animate();
+
+      // 鼠标悬浮交互
+      svg.on('mousemove', function(event) {
+        const [mx, my] = d3.pointer(event, this);
+        const hoverDot = svg.select('.d3-hover-dot');
+        // 只在主图区域内响应
+        if (mx < margin.left || mx > margin.left + width || my < margin.top || my > margin.top + height) {
+          tooltipDiv.style('display', 'none');
+          hoverDot.attr('r', 0);
+          return;
+        }
+        // 找到最近的年份
+        const xVals = years.map(y => x(y));
+        let minDist = Infinity, nearestYearIdx = 0;
+        xVals.forEach((px, i) => {
+          const dist = Math.abs(mx - px);
+          if (dist < minDist) {
+            minDist = dist;
+            nearestYearIdx = i;
+          }
+        });
+        const year = years[nearestYearIdx];
+        // 找到所有线在该年份的点
+        const lineDataAtYear = getLineData(flowType).map((d, idx) => ({
+          name: d.name,
+          color: d.color,
+          value: d.values[nearestYearIdx].value,
+          idx
+        }));
+        // 找到距离鼠标最近的那条线
+        let minYDist = Infinity, nearestLine = null;
+        lineDataAtYear.forEach(d => {
+          const py = y(d.value);
+          const dist = Math.abs(my - py);
+          if (dist < minYDist) {
+            minYDist = dist;
+            nearestLine = d;
+          }
+        });
+        if (!nearestLine) {
+          tooltipDiv.style('display', 'none');
+          hoverDot.attr('r', 0);
+          return;
+        }
+        // tooltip内容
+        tooltipDiv.html(
+          `<div style=\"font-size:14px;font-weight:700;color:#4fc3f7;margin-bottom:2px;\">${year}</div>`+
+          `<div style=\"margin-bottom:2px;\"><span style=\"color:${nearestLine.color};font-weight:700;\">${nearestLine.name}</span></div>`+
+          `<div>Value: <span style=\"color:${nearestLine.color};font-weight:700;\">£${formatToMillions(nearestLine.value)}</span></div>`
+        );
+        // 位置
+        const svgRect = svgDiv.getBoundingClientRect();
+        tooltipDiv.style('left', (mx + 40) + 'px')
+          .style('top', (my - 20) + 'px')
+          .style('display', 'block');
+        // 在对应线上画一个小点
+        const px = x(year);
+        const py = y(nearestLine.value);
+        hoverDot
+          .attr('cx', px)
+          .attr('cy', py)
+          .attr('r', 5)
+          .attr('fill', nearestLine.color)
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 2)
+          .attr('opacity', 0.95);
+      })
+      .on('mouseleave', function() {
+        tooltipDiv.style('display', 'none');
+        svg.select('.d3-hover-dot').attr('r', 0);
+      });
     }
 
     // 初始渲染
@@ -772,6 +882,25 @@ console.log('GoodsType.js loaded');
         }, 300);
       };
     });
+
+    // 只在用户滚动到summary区时才开始动画
+    let chartAnimated = false;
+    function triggerChartAnimation() {
+      if (!chartAnimated) {
+        drawD3Chart(currentFlow);
+        chartAnimated = true;
+      }
+    }
+    // IntersectionObserver 只触发一次
+    const chartObserver = new window.IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          triggerChartAnimation();
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.18 });
+    chartObserver.observe(svgDiv);
   }
 
   // 添加动画控制状态
@@ -1957,7 +2086,8 @@ console.log('GoodsType.js loaded');
         const csvText = await response.text();
         const {data} = parseCSV(csvText);
         state.allData = data;
-        
+        // 渲染intro页
+        renderGoodsTypeIntro();
         // 渲染summary部分
         renderLegend();
         renderSummaryCharts(data);
@@ -2313,4 +2443,198 @@ console.log('GoodsType.js loaded');
       }
   `;
   document.head.appendChild(style);
+
+  // 在goodstype最前面插入intro页
+  function renderGoodsTypeIntro() {
+    if (document.getElementById('goods-type-intro')) return;
+    const mainWrap = document.querySelector('.goods-type-section') || document.body;
+    // 创建intro外层
+    const introDiv = document.createElement('div');
+    introDiv.id = 'goods-type-intro';
+    introDiv.style.cssText = 'max-width:1200px;min-height:480px;margin:0 auto 96px auto;padding:0 0 18px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;';
+    // SITC1简介
+    const introText = document.createElement('div');
+    introText.className = 'goods-type-intro-text';
+    introText.innerHTML = `
+      <div class=\"goods-type-transition-text fadein-block\" style=\"font-size:1.1em !important;color:#fff;margin-bottom:64px;max-width:1000px;margin-left:auto;margin-right:auto;text-align:center;line-height:1.6;\">Beyond fluctuations in trade volumes with specific countries and regions, Brexit has had complex effects on particular types of goods. From the SITC 1 classification perspective...</div>
+      <div class=\"fadein-block\" style=\"width:100%;margin-bottom:54px;\">  
+        <h2 style=\"font-size:1.15em;font-weight:700;margin-bottom:14px;color:#fff;letter-spacing:1px;\">SITC1 Introduction</h2>
+        <div style=\"font-size:1.05em;max-width:1000px;margin:0 auto 20px auto;line-height:1.6;color:#fff;\">
+          The Standard International Trade Classification (SITC) is a United Nations system designed to classify traded products to enable international comparison of trade data. SITC1 is the first-level broader classification, dividing goods into 10 main categories based on material type, use, and processing stage.
+        </div>
+        <div style=\"max-width:1000px;margin:0 auto 0 auto;font-size:0.92em;font-style:italic;color:rgba(255,255,255,0.38);line-height:1.5;text-align:center;\">
+          Source: <a href=\"https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Standard_international_trade_classification_(SITC)\" target=\"_blank\" style=\"color:#4fc3f7;text-decoration:underline;\">Eurostat, 'Standard international trade classification (SITC)'</a>
+        </div>
+      </div>
+    `;
+    introDiv.appendChild(introText);
+    // 图片卡片区
+    const carousel = document.createElement('div');
+    carousel.className = 'goods-type-carousel fadein-block';
+    carousel.style.cssText = 'display:flex;gap:0;justify-content:center;align-items:flex-end;margin-bottom:38px;overflow-x:auto;max-width:100%;';
+    // 介绍区
+    const descDiv = document.createElement('div');
+    descDiv.className = 'goods-type-desc fadein-block';
+    descDiv.style.cssText = 'min-height:90px;text-align:center;max-width:700px;margin:0 auto 0 auto;font-size:1.05em;color:#fff;line-height:1.7;transition:all 0.5s;';
+    // 当前选中
+    let selected = 0;
+    function updateDesc(idx) {
+      descDiv.innerHTML = `<h4 style=\"font-size:1.05em;font-weight:700;margin-bottom:8px;letter-spacing:1px;color:#4fc3f7;\">${sitcLabels[idx]}</h4><div style=\"font-size:1.05em;font-weight:400;color:#fff;\">${sitcDescriptions[idx]}</div>`;
+      Array.from(carousel.children).forEach((el, i) => {
+        if (i === idx) {
+          el.classList.add('active');
+          el.classList.remove('dimmed');
+          el.style.width = '400px';
+          el.style.zIndex = 2;
+          el.querySelector('img').style.filter = 'none';
+          el.style.boxShadow = '0 8px 32px #4fc3f7aa';
+        } else {
+          el.classList.remove('active');
+          el.classList.add('dimmed');
+          el.style.width = '130px';
+          el.style.zIndex = 1;
+          el.querySelector('img').style.filter = 'grayscale(0.7) brightness(0.8)';
+          el.style.boxShadow = 'none';
+        }
+      });
+    }
+    // 生成10个卡片
+    for (let i = 0; i < 10; i++) {
+      const card = document.createElement('div');
+      card.className = 'goods-type-card';
+      card.style.cssText = `width:130px;height:350px;overflow:hidden;cursor:pointer;transition:width 0.55s cubic-bezier(.28,-0.03,0,.99),box-shadow 0.3s;display:flex;align-items:center;justify-content:center;background:#232b36;position:relative;border:none;`;
+      card.innerHTML = `<span class=\"goods-type-card-num\" style=\"font-size:1.05em;\">${i}</span><img src=\"/goods-icons/${i}-pic.jpg\" alt=\"type${i}\" style=\"width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(0.7) brightness(0.8);transition:filter 0.45s;\">`;
+      card.onmouseenter = () => { selected = i; updateDesc(i); };
+      card.onclick = () => { selected = i; updateDesc(i); };
+      carousel.appendChild(card);
+    }
+    introDiv.appendChild(carousel);
+    introDiv.appendChild(descDiv);
+    // 插入到goodstype最前面
+    mainWrap.parentNode.insertBefore(introDiv, mainWrap);
+    // 初始高亮和描述
+    updateDesc(0);
+    // intro样式
+    const style = document.createElement('style');
+    style.textContent = `
+      #goods-type-intro {box-sizing:border-box;}
+      .goods-type-intro-text {margin-top:48px;margin-bottom:18px;text-align:center;}
+      .goods-type-carousel::-webkit-scrollbar {display:none;}
+      .goods-type-card {margin:0;box-shadow:none;filter:none;width:130px !important;}
+      .goods-type-card img {filter:grayscale(0.7) brightness(0.8);}
+      .goods-type-card.active,
+      .goods-type-card:hover {z-index:2;}
+      .goods-type-card.active {width:600px !important;box-shadow:0 8px 32px #4fc3f7aa;}
+      .goods-type-card.active img {filter:none;}
+      .goods-type-card.dimmed img {filter:grayscale(0.7) brightness(0.8);}
+      .goods-type-card:not(.active):hover img {filter:grayscale(0.3) brightness(0.95);}
+      .goods-type-card:first-child {border-top-left-radius:38px;border-bottom-left-radius:38px;}
+      .goods-type-card:last-child {border-top-right-radius:38px;border-bottom-right-radius:38px;}
+      .goods-type-desc h4 {color:#4fc3f7;letter-spacing:1px;}
+      .goods-type-card-num {font-size:1.05em !important;}
+      @media (max-width: 900px) {
+        .goods-type-card {width:150px !important;height:70px;}
+        .goods-type-card.active {width:260px !important;}
+        .goods-type-intro-text h2 {font-size:1.3em;}
+        .goods-type-desc {font-size:16px;}
+      }
+      /* 动画样式 */
+      .fadein-block {opacity:0;transform:translateY(40px);transition:opacity 0.85s cubic-bezier(.4,0,.2,1),transform 0.85s cubic-bezier(.4,0,.2,1);}
+      .fadein-block.visible {opacity:1;transform:translateY(0);}
+    `;
+    document.head.appendChild(style);
+    // 数字标签样式
+    const numStyle = document.createElement('style');
+    numStyle.textContent = `
+      .goods-type-card-num {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        background: rgba(0,0,0,0.38);
+        color: #fff;
+        font-size: 1.05em;
+        font-weight: 400;
+        border-radius: 8px;
+        padding: 2px 8px;
+        z-index: 3;
+        pointer-events: none;
+        letter-spacing: 1px;
+      }
+    `;
+    document.head.appendChild(numStyle);
+    // 动画：滚动出现
+    setTimeout(()=>{
+      const fadeBlocks = introDiv.querySelectorAll('.fadein-block');
+      // fadeBlocks: [0]=过渡文字, [1]=标题+desc, [2]=carousel, [3]=descDiv
+      // 让carousel和descDiv同时出现
+      const stagger = 0.45;
+      const fastStagger = 0.28;
+      fadeBlocks.forEach((el, i) => {
+        if (i === 2 || i === 3) {
+          el.style.transitionDelay = (1*stagger + fastStagger) + 's';
+        } else {
+          el.style.transitionDelay = (i*stagger) + 's';
+        }
+      });
+      // IntersectionObserver
+      const observer = new window.IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.18});
+      fadeBlocks.forEach(el => observer.observe(el));
+    }, 200);
+  }
+
+  // 自动轮播功能
+  let autoScrollTimer = null;
+  let autoScrollPaused = false;
+  let autoScrollResumeTimer = null;
+  function scrollToCard(idx) {
+    const card = carousel.children[idx];
+    if (card && card.scrollIntoView) {
+      // 兼容性处理
+      try {
+        card.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+      } catch(e) {
+        card.scrollIntoView();
+      }
+    }
+  }
+  function startAutoScroll() {
+    if (autoScrollTimer) clearInterval(autoScrollTimer);
+    autoScrollTimer = setInterval(() => {
+      if (!autoScrollPaused) {
+        selected = (selected + 1) % 10;
+        updateDesc(selected);
+        scrollToCard(selected);
+      }
+    }, 3500);
+  }
+  function pauseAutoScroll(tempPause = true) {
+    autoScrollPaused = true;
+    if (autoScrollResumeTimer) clearTimeout(autoScrollResumeTimer);
+    if (tempPause) {
+      autoScrollResumeTimer = setTimeout(() => {
+        autoScrollPaused = false;
+      }, 10000); // 10秒后恢复
+    }
+  }
+  function stopAutoScroll() {
+    if (autoScrollTimer) clearInterval(autoScrollTimer);
+    autoScrollTimer = null;
+    autoScrollPaused = true;
+  }
+  // 用户交互时暂停自动轮播
+  carousel.addEventListener('mouseenter', () => pauseAutoScroll());
+  carousel.addEventListener('mouseleave', () => pauseAutoScroll(false));
+  Array.from(carousel.children).forEach((card, idx) => {
+    card.addEventListener('mouseenter', () => { pauseAutoScroll(); });
+    card.addEventListener('click', () => { pauseAutoScroll(); scrollToCard(idx); });
+  });
+  // 启动自动轮播
+  startAutoScroll();
 })();
