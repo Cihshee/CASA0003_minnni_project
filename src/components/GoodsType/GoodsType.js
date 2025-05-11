@@ -2503,7 +2503,7 @@ console.log('GoodsType.js loaded');
       const card = document.createElement('div');
       card.className = 'goods-type-card';
       card.style.cssText = `width:130px;height:350px;overflow:hidden;cursor:pointer;transition:width 0.55s cubic-bezier(.28,-0.03,0,.99),box-shadow 0.3s;display:flex;align-items:center;justify-content:center;background:#232b36;position:relative;border:none;`;
-      card.innerHTML = `<span class=\"goods-type-card-num\" style=\"font-size:1.05em;\">${i}</span><img src=\"/public/goods-icons/${i}-pic.jpg\" alt=\"type${i}\" style=\"width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(0.7) brightness(0.8);transition:filter 0.45s;\">`;
+      card.innerHTML = `<span class=\"goods-type-card-num\" style=\"font-size:1.05em;\">${i}</span><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/${i}-pic.jpg\" alt=\"type${i}\" style=\"width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(0.7) brightness(0.8);transition:filter 0.45s;\">`;
       card.onmouseenter = () => { selected = i; updateDesc(i); };
       card.onclick = () => { selected = i; updateDesc(i); };
       carousel.appendChild(card);
