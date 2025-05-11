@@ -631,7 +631,7 @@ console.log('GoodsType.js loaded');
             .text(formatToMillions(v));
 
           // --- Highlight 2022 high point for Mineral fuels (idx 3) ---
-          if (idx === 3) {
+          if (currentFlow === 'EU - Exports' && idx === 3) {
             // 2022 annotation
             const year2022Idx = years.indexOf(2022);
             const frame2022 = Math.round((year2022Idx / (years.length - 1)) * totalFrames);
@@ -666,7 +666,7 @@ console.log('GoodsType.js loaded');
             }
           }
           // --- Highlight 2020 low point for Machinery & transport equipment (idx 7) ---
-          if (idx === 7) {
+          if (currentFlow === 'EU - Exports' && idx === 7) {
             const year2020Idx = years.indexOf(2020);
             const frame2020 = Math.round((year2020Idx / (years.length - 1)) * totalFrames);
             if (frame >= frame2020) {
@@ -704,30 +704,33 @@ console.log('GoodsType.js loaded');
           frame++;
           requestAnimationFrame(animate);
         } else {
-          // 动画结束后弹出提示和按钮
-          // 1. 先弹出提示
-          let promptDiv = btnsDiv.querySelector('.summary-explore-prompt');
-          if (!promptDiv) {
-            promptDiv = document.createElement('div');
-            promptDiv.className = 'summary-explore-prompt';
-            promptDiv.textContent = 'Click the buttons below to explore more flow types.';
-            promptDiv.style.cssText = 'color:#fff;font-size:16px;font-weight:500;margin-bottom:12px;opacity:0;transform:translateY(18px);transition:opacity 0.7s,transform 0.7s;text-align:center;';
-            btnsDiv.insertBefore(promptDiv, btnsDiv.firstChild);
+          // 动画结束后弹出提示和按钮（只fade in一次，后续切换不再隐藏）
+          if (!btnsDiv.classList.contains('shown')) {
+            // 1. 先弹出提示
+            let promptDiv = btnsDiv.querySelector('.summary-explore-prompt');
+            if (!promptDiv) {
+              promptDiv = document.createElement('div');
+              promptDiv.className = 'summary-explore-prompt';
+              promptDiv.textContent = 'Click the buttons below to explore more flow types.';
+              promptDiv.style.cssText = 'color:#fff;font-size:16px;font-weight:500;margin-bottom:12px;opacity:0;transform:translateY(18px);transition:opacity 0.7s,transform 0.7s;text-align:center;';
+              btnsDiv.insertBefore(promptDiv, btnsDiv.firstChild);
+            }
+            promptDiv.style.display = 'block';
+            setTimeout(() => {
+              promptDiv.style.opacity = '1';
+              promptDiv.style.transform = 'translateY(0)';
+            }, 80);
+            // 2. 再弹出按钮
+            btnsDiv.style.display = 'flex';
+            btnsDiv.style.opacity = '0';
+            btnsDiv.style.transform = 'translateY(30px)';
+            setTimeout(() => {
+              btnsDiv.style.transition = 'opacity 0.7s, transform 0.7s';
+              btnsDiv.style.opacity = '1';
+              btnsDiv.style.transform = 'translateY(0)';
+            }, 500);
+            btnsDiv.classList.add('shown');
           }
-          promptDiv.style.display = 'block';
-          setTimeout(() => {
-            promptDiv.style.opacity = '1';
-            promptDiv.style.transform = 'translateY(0)';
-          }, 80);
-          // 2. 再弹出按钮
-          btnsDiv.style.display = 'flex';
-          btnsDiv.style.opacity = '0';
-          btnsDiv.style.transform = 'translateY(30px)';
-          setTimeout(() => {
-            btnsDiv.style.transition = 'opacity 0.7s, transform 0.7s';
-            btnsDiv.style.opacity = '1';
-            btnsDiv.style.transform = 'translateY(0)';
-          }, 500);
           // 3. 移除右侧描述栏内容
           if (descDiv) descDiv.innerHTML = '';
         }
@@ -751,12 +754,15 @@ console.log('GoodsType.js loaded');
     drawD3Chart(currentFlow);
 
     // 按钮/flowType切换逻辑
-    btnsDiv.querySelectorAll('.summary-explore-btn').forEach(btn => {
+    btnsDiv.querySelectorAll('.summary-explore-btn').forEach((btn, idx) => {
+      // 初始高亮第一个
+      if (idx === 0) btn.classList.add('active');
       btn.onclick = () => {
         currentFlow = btn.getAttribute('data-flow');
-        // 隐藏按钮和文字，重新动画
-        btnsDiv.style.opacity = '0';
-        btnsDiv.style.transform = 'translateY(30px)';
+        // 切换按钮高亮
+        btnsDiv.querySelectorAll('.summary-explore-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        // 只切换图表，不再隐藏按钮和提示
         descDiv.querySelectorAll('.summary-desc-text').forEach(el => {
           el.style.opacity = '0';
           el.style.transform = 'translateY(30px)';
