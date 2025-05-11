@@ -53,7 +53,7 @@ const container = document.querySelector('.region-chart-section');
 
 // 创建主标题 (h2)
 const mainTitle = document.createElement('h2');
-mainTitle.textContent = 'UK Trade Balance with EU and Non-EU Countries';
+mainTitle.textContent = 'UK Goods Trade Balance with EU and Non-EU Countries';
 mainTitle.style.textAlign = 'center';
 mainTitle.style.width = '100%';
 mainTitle.style.marginBottom = '100px';
@@ -72,13 +72,6 @@ lineChartsContainer.style.zIndex = '10'; // 确保折线图在上层
 const scrollContainer = container.querySelector('.scroll-container');
 container.insertBefore(mainTitle, scrollContainer); // 先插入标题
 container.insertBefore(lineChartsContainer, scrollContainer); // 再插入容器
-
-// 创建空白间隔元素，确保折线图和热力图之间有足够距离
-const spacer = document.createElement('div');
-spacer.style.height = '500px';
-spacer.style.width = '100%';
-spacer.style.clear = 'both';
-container.insertBefore(spacer, scrollContainer);
 
 // 创建EU和非EU国家列表
 const euCountries = ["Belgium", "France", "Germany", "Ireland", "Italy", "Netherlands", "Poland", "Spain", "Sweden", "Rest of EU"];
@@ -137,6 +130,36 @@ renderLineChart(euChartSvgContainer, euData, 'EU Countries', '#ff6347');
 
 // 渲染非EU折线图
 renderLineChart(nonEuChartSvgContainer, nonEuData, 'Non-EU Countries', '#2166ac');
+
+// 创建空白间隔元素，确保折线图和热力图之间有足够距离
+const spacer = document.createElement('div');
+spacer.style.height = '500px';
+spacer.style.width = '100%';
+spacer.style.clear = 'both';
+
+// 添加解释性文本段落 - 将它放在折线图和间隔元素之间
+const explanationContainer = document.createElement('div');
+explanationContainer.style.width = '100%';
+explanationContainer.style.maxWidth = '1200px';
+explanationContainer.style.margin = '40px auto 40px';
+explanationContainer.style.padding = '0 20px';
+explanationContainer.style.boxSizing = 'border-box';
+explanationContainer.style.display = 'block'; // 确保块级显示
+
+const explanationParagraph = document.createElement('div');
+explanationParagraph.className = 'explanation-text';
+// 不设置任何样式，完全使用默认CSS
+
+explanationParagraph.innerHTML = `
+  <p>Since Brexit, the UK has faced persistent structural trade imbalances with its major trading partners. Aside from Ireland, it has maintained consistent trade deficits with most EU countries. Although these deficits temporarily narrowed from 2020 to 2021 due to the COVID-19 pandemic and transitional Brexit arrangements, they have widened significantly since 2022, reflecting the structural disadvantages introduced by new trade barriers.</p>
+  <p>Meanwhile, the UK has actively pursued trade diversification beyond the EU. However, this "global re-engagement" has not resulted in a stable surplus structure. The UK continues to run trade deficits with many non-EU countries, suggesting that its global trade reset remains incomplete.</p>
+`;
+
+explanationContainer.appendChild(explanationParagraph);
+
+// 顺序很重要：先插入折线图，然后是说明文本，最后是间隔元素
+container.insertBefore(explanationContainer, scrollContainer);
+container.insertBefore(spacer, scrollContainer);
 }
 
 // 处理折线图数据
@@ -663,25 +686,41 @@ function scrollToYear(year) {
 }
 
 function updateTimelineSelection(svg, timeScale, years) {
-// 更新所有年份标记的样式
-svg.selectAll('.year-mark')
-  .selectAll('line')
-  .attr('stroke', d => d === currentYear ? '#ff6347' : '#888');
+  // 更新所有年份标记的样式
+  svg.selectAll('.year-mark')
+    .selectAll('line')
+    .attr('stroke', d => d === currentYear ? '#ff6347' : '#888');
 
-svg.selectAll('.year-mark')
-  .selectAll('text')
-  .style('fill', d => d === currentYear ? '#ff6347' : '#555')
-  .style('font-weight', d => d === currentYear ? 'bold' : 'normal');
+  svg.selectAll('.year-mark')
+    .selectAll('text')
+    .style('fill', d => d === currentYear ? '#ff6347' : '#555')
+    .style('font-weight', d => d === currentYear ? 'bold' : 'normal');
 
-// 平滑移动当前年份标记
-svg.select('.current-year-marker')
-  .transition()
-  .duration(300)
-  .attr('transform', `translate(${timeScale(currentYear)}, ${80/2 - 40})`);
+  // 重要：获取当前年份标记的实际X坐标，确保完全对齐
+  // 首先找到当前年份的标记
+  const currentYearMark = svg.selectAll('.year-mark')
+    .filter(d => d === currentYear)
+    .node();
+  
+  let xPosition;
+  if (currentYearMark) {
+    // 提取实际的transform值，确保使用相同的坐标
+    const transform = d3.select(currentYearMark).attr('transform');
+    const match = /translate\(([^,]+),/.exec(transform);
+    xPosition = match ? parseFloat(match[1]) : timeScale(currentYear);
+  } else {
+    xPosition = timeScale(currentYear);
+  }
 
-// 更新当前年份标记里的文本
-svg.select('.current-year-marker text')
-  .text(`'${String(currentYear).slice(-2)}`);
+  // 使用精确的X坐标更新小球位置
+  svg.select('.current-year-marker')
+    .transition()
+    .duration(300)
+    .attr('transform', `translate(${xPosition}, ${80/2 - 40})`);
+
+  // 更新当前年份标记里的文本
+  svg.select('.current-year-marker text')
+    .text(`'${String(currentYear).slice(-2)}`);
 }
 
 function setupScrollListener(years) {
