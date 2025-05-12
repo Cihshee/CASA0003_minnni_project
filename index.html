@@ -19,6 +19,9 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
   </head>
   <body>
+    <!-- Full-screen Background Animation -->
+    <div id="background-animation" style="position:fixed;top:0;left:5%;right:5%;width:90vw;height:100vh;z-index:0;pointer-events:none;opacity:0.25;background-size:cover;background-position:center;margin:0 auto;padding:0;"></div>
+    
     <!-- Side Navigation Dots -->
     <div class="side-nav" id="side-nav">
       <div class="side-nav-dot" data-target="section1"></div>
@@ -30,6 +33,47 @@
       <div class="side-nav-dot" data-target="section8"></div>
       <div class="side-nav-dot" data-target="section9"></div>
     </div>
+    
+    <!-- Load Lottie library and initialize animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script>
+      // Initialize background animation
+      document.addEventListener('DOMContentLoaded', function() {
+        // Background animation
+        const anim = lottie.loadAnimation({
+          container: document.getElementById('background-animation'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: '/Chevrons-moving-down.json',
+          rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice',
+            className: 'lottie-svg-fullscreen'
+          }
+        });
+        
+        // 在动画加载完成后减慢速度
+        anim.addEventListener('DOMLoaded', function() {
+          // 设置为0.3倍速，使动画更慢
+          anim.setSpeed(0.3);
+          console.log('Animation speed set to 0.3');
+        });
+        
+        // Ensure the animation container covers the desired viewport area
+        function resizeAnimation() {
+          const container = document.getElementById('background-animation');
+          container.style.width = (window.innerWidth * 0.9) + 'px';
+          container.style.height = window.innerHeight + 'px';
+          container.style.left = '5%';
+          container.style.right = '5%';
+        }
+        
+        // Call resize on load and on window resize
+        resizeAnimation();
+        window.addEventListener('resize', resizeAnimation);
+      });
+    </script>
+
     <script>
       // Side nav scroll and highlight logic
       const dots = Array.from(document.querySelectorAll('.side-nav-dot'));
@@ -73,7 +117,7 @@
 
     <!-- 主要内容区域 -->
     <main>
-      <section id="section1" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;min-height:100vh;background:#2a2a2a;">
+      <section id="section1" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;min-height:100vh;background:transparent;">
         <div class="hero-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;max-width:1200px;margin:2vh auto 0 auto;padding-left:0;">
           <div id="lottie-title" style="width:1800px;max-width:99vw;height:500px;min-height:200px;display:flex;align-items:center;justify-content:flex-start;pointer-events:none;margin-bottom:0;margin-left:-400px;">
             <div id="lottie-title-player" style="width:1800px;max-width:99vw;height:500px;"></div>
@@ -84,7 +128,7 @@
         </div>
       </section>
 
-      <section id="section1b" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;min-height:60vh;background:#2a2a2a;">
+      <section id="section1b" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;min-height:60vh;background:transparent;">
         <video autoplay muted loop playsinline id="bg-video"
           style="position:relative;width:50vw;height:auto;max-width:1200px;max-height:100vh;object-fit:cover;z-index:0;border-radius:1.5rem;box-shadow:0 4px 32px rgba(0,0,0,0.18);border:4px solid #444;margin-bottom:20vh;">
           <source src="public/cover.mp4" type="video/mp4">
@@ -92,14 +136,13 @@
         </video>
       </section>
 
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
       <script>
         lottie.loadAnimation({
           container: document.getElementById('lottie-title-player'),
           renderer: 'svg',
           loop: true,
           autoplay: true,
-          path: 'public/Bouncing-period-remix.json'
+          path: '/Bouncing-period-remix.json'
         });
       </script>
 
