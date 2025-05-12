@@ -795,16 +795,16 @@ function processScrollEntries(entries) {
   // 特别处理最后一个步骤（2024年）
   const lastStep = document.querySelector('.step[data-year="2024"]');
   if (lastStep) {
-    // 创建专门用于2024年的观察器，使用更低的阈值
+    // 创建专门用于2024年的观察器，使用更高的阈值
     const lastYearObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        // 即使只有一小部分进入视图也触发
-        if (entry.isIntersecting && entry.intersectionRatio > 0.1 && !scrolling) {
+        // 只有当元素大部分进入视图才触发
+        if (entry.isIntersecting && entry.intersectionRatio > 0.7 && !scrolling) {
           const year = +entry.target.getAttribute('data-year');
           if (year === 2024 && currentYear !== 2024) {
             currentYear = 2024;
             
-            // 更新时间轴
+            // 更新时间轴和热力图
             const timelineContainer = d3.select('#timeline-svg');
             if (!timelineContainer.empty()) {
               const width = timelineContainer.node().clientWidth;
@@ -814,32 +814,31 @@ function processScrollEntries(entries) {
               updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
             }
             
-            // 更新热力图
             renderHeatmap(allData, allRegions, allCountries, 2024);
-      }
-    }
-  });
+          }
+        }
+      });
     }, {
-      threshold: [0.1, 0.2, 0.3], // 使用多个低阈值
-      rootMargin: '0px 0px 150px 0px' // 扩大底部检测区域
+      threshold: [0.5, 0.7, 0.9], // 使用更高的阈值
+      rootMargin: '0px 0px 0px 0px' // 移除扩大的底部检测区域
     });
     
     lastYearObserver.observe(lastStep);
     
-    // 监听滚动容器的滚动事件，检测是否接近底部
+    // 修改滚动容器的滚动事件处理
     const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
     if (scrollContainer) {
       scrollContainer.addEventListener('scroll', () => {
         if (scrolling) return;
         
-        // 检测是否滚动到接近底部
+        // 检测是否滚动到更接近底部的位置
         const isNearBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= 
-                            scrollContainer.scrollHeight - 100; // 距离底部100px
+                            scrollContainer.scrollHeight - 50; // 更接近底部才触发
         
         if (isNearBottom && currentYear !== 2024) {
           currentYear = 2024;
           
-          // 更新时间轴
+          // 更新时间轴和热力图
           const timelineContainer = d3.select('#timeline-svg');
           if (!timelineContainer.empty()) {
             const width = timelineContainer.node().clientWidth;
@@ -849,7 +848,6 @@ function processScrollEntries(entries) {
             updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
           }
           
-          // 更新热力图
           renderHeatmap(allData, allRegions, allCountries, 2024);
         }
       });
@@ -1028,6 +1026,157 @@ function renderHeatmap(data, regions, countries, year) {
           ' and ' + 
           `<tspan style="fill: #ffb7a8">non-EU</tspan>` + 
           ' grouping.');
+
+  // 如果是2019年，为Scotland行添加高亮
+  if (year === 2019) {
+    // 找到Scotland在regions中的索引
+    const scotlandIndex = regions.indexOf('Scotland');
+    if (scotlandIndex !== -1) {
+      // 首先添加滤镜定义
+      const defs = svg.append("defs");
+      
+      // 创建发光滤镜
+      const filter = defs.append("filter")
+        .attr("id", "glow-effect")
+        .attr("x", "-20%")
+        .attr("y", "-20%")
+        .attr("width", "140%")
+        .attr("height", "140%");
+      
+      // 添加模糊效果
+      filter.append("feGaussianBlur")
+        .attr("stdDeviation", "4")
+        .attr("result", "blur");
+      
+      // 增加亮度
+      filter.append("feComponentTransfer")
+        .append("feFuncA")
+        .attr("type", "linear")
+        .attr("slope", "1.5");
+      
+      // 合并原始图形和发光效果
+      filter.append("feComposite")
+        .attr("in", "SourceGraphic")
+        .attr("in2", "blur")
+        .attr("operator", "over");
+      
+      // 添加白色虚线框高亮
+      svg.append('rect')
+        .attr('class', 'scotland-highlight')
+        .attr('x', -75) // 向左扩展
+        .attr('y', yScale('Scotland') - 5) // 增加上边距
+        .attr('width', width + 80) // 增加总宽度
+        .attr('height', yScale.bandwidth() + 10) // 增加总高度
+        .attr('fill', 'none')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 3) // 更粗的线条
+        .attr('stroke-dasharray', '8,8') // 更大的虚线间隔
+        .attr("filter", "url(#glow-effect)") // 应用发光滤镜
+        .attr('pointer-events', 'none'); // 确保框不会干扰鼠标事件
+    }
+  }
+
+  // 如果是2021年，为Northern Ireland行添加高亮
+  if (year === 2021) {
+    // 找到Northern Ireland在regions中的索引
+    const northernIrelandIndex = regions.indexOf('Northern Ireland');
+    if (northernIrelandIndex !== -1) {
+      // 首先添加滤镜定义（如果已经存在就不需要重复添加）
+      if (!svg.select("defs").select("#glow-effect").node()) {
+        const defs = svg.append("defs");
+        
+        // 创建发光滤镜
+        const filter = defs.append("filter")
+          .attr("id", "glow-effect")
+          .attr("x", "-20%")
+          .attr("y", "-20%")
+          .attr("width", "140%")
+          .attr("height", "140%");
+        
+        // 添加模糊效果
+        filter.append("feGaussianBlur")
+          .attr("stdDeviation", "4")
+          .attr("result", "blur");
+        
+        // 增加亮度
+        filter.append("feComponentTransfer")
+          .append("feFuncA")
+          .attr("type", "linear")
+          .attr("slope", "1.5");
+        
+        // 合并原始图形和发光效果
+        filter.append("feComposite")
+          .attr("in", "SourceGraphic")
+          .attr("in2", "blur")
+          .attr("operator", "over");
+      }
+      
+      // 添加白色虚线框高亮
+      svg.append('rect')
+        .attr('class', 'northern-ireland-highlight')
+        .attr('x', -115) // 向左扩展
+        .attr('y', yScale('Northern Ireland') - 5) // 增加上边距
+        .attr('width', width + 120) // 增加总宽度
+        .attr('height', yScale.bandwidth() + 10) // 增加总高度
+        .attr('fill', 'none')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 3) // 更粗的线条
+        .attr('stroke-dasharray', '8,8') // 更大的虚线间隔
+        .attr("filter", "url(#glow-effect)") // 应用发光滤镜
+        .attr('pointer-events', 'none'); // 确保框不会干扰鼠标事件
+    }
+  }
+
+  // 如果是2023年，为London行添加高亮
+  if (year === 2023) {
+    // 找到London在regions中的索引
+    const londonIndex = regions.indexOf('London');
+    if (londonIndex !== -1) {
+      // 首先添加滤镜定义（如果已经存在就不需要重复添加）
+      if (!svg.select("defs").select("#glow-effect").node()) {
+        const defs = svg.append("defs");
+        
+        // 创建发光滤镜
+        const filter = defs.append("filter")
+          .attr("id", "glow-effect")
+          .attr("x", "-20%")
+          .attr("y", "-20%")
+          .attr("width", "140%")
+          .attr("height", "140%");
+        
+        // 添加模糊效果
+        filter.append("feGaussianBlur")
+          .attr("stdDeviation", "4")
+          .attr("result", "blur");
+        
+        // 增加亮度
+        filter.append("feComponentTransfer")
+          .append("feFuncA")
+          .attr("type", "linear")
+          .attr("slope", "1.5");
+        
+        // 合并原始图形和发光效果
+        filter.append("feComposite")
+          .attr("in", "SourceGraphic")
+          .attr("in2", "blur")
+          .attr("operator", "over");
+      }
+      
+      // 添加白色虚线框高亮
+      svg.append('rect')
+        .attr('class', 'london-highlight')
+        .attr('x', -70) // 向左扩展
+        .attr('y', yScale('London') - 5) // 增加上边距
+        .attr('width', width + 75) // 增加总宽度
+        .attr('height', yScale.bandwidth() + 10) // 增加总高度
+        .attr('fill', 'none')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 3) // 更粗的线条
+        .attr('stroke-dasharray', '8,8') // 更大的虚线间隔
+        .attr("filter", "url(#glow-effect)") // 应用发光滤镜
+        .attr('pointer-events', 'none'); // 确保框不会干扰鼠标事件
+    }
+  }
 
   // 添加窗口大小变化时的自适应调整
   window.addEventListener('resize', () => {
