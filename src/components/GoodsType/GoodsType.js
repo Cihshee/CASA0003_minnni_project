@@ -1182,7 +1182,7 @@ console.log('GoodsType.js loaded');
           animateMapTo(state.currentMap, MAP_VIEWS.europe);
         }
         
-        updateVisualizations();
+        updateVisualizationsExceptTrend();
       };
     });
 
@@ -1443,9 +1443,9 @@ console.log('GoodsType.js loaded');
             
             // 确保在样式加载完成后再更新可视化
             if (state.currentMap.loaded() && state.currentMap.isStyleLoaded()) {
-                updateVisualizations();
+                updateVisualizationsExceptTrend();
             } else {
-                state.currentMap.once('load', updateVisualizations);
+                state.currentMap.once('load', updateVisualizationsExceptTrend);
             }
         });
 
@@ -2689,7 +2689,7 @@ console.log('GoodsType.js loaded');
       .goods-type-card img {filter:grayscale(0.7) brightness(0.8);}
       .goods-type-card.active,
       .goods-type-card:hover {z-index:2;}
-      .goods-type-card.active {width:600px !important;box-shadow:0 8px 32px #4fc3f7aa;}
+      .goods-type-card.active {width:400px !important;box-shadow:0 8px 32px #4fc3f7aa;}
       .goods-type-card.active img {filter:none;}
       .goods-type-card.dimmed img {filter:grayscale(0.7) brightness(0.8);}
       .goods-type-card:not(.active):hover img {filter:grayscale(0.3) brightness(0.95);}
@@ -2743,8 +2743,8 @@ console.log('GoodsType.js loaded');
       });
       // IntersectionObserver
       const observer = new window.IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
             entry.target.classList.add('visible');
             obs.unobserve(entry.target);
           }
@@ -2759,6 +2759,10 @@ console.log('GoodsType.js loaded');
   let autoScrollPaused = false;
   let autoScrollResumeTimer = null;
   function scrollToCard(idx) {
+    // 找到当前页面上的carousel
+    const carousel = document.querySelector('.goods-type-carousel');
+    if (!carousel) return;
+    
     const card = carousel.children[idx];
     if (card && card.scrollIntoView) {
       // 兼容性处理
@@ -2770,15 +2774,48 @@ console.log('GoodsType.js loaded');
     }
   }
   function startAutoScroll() {
+    // 确保页面上已有carousel
+    const carousel = document.querySelector('.goods-type-carousel');
+    if (!carousel) return;
+    
+    let selected = 0; // 默认值
     if (autoScrollTimer) clearInterval(autoScrollTimer);
     autoScrollTimer = setInterval(() => {
       if (!autoScrollPaused) {
         selected = (selected + 1) % 10;
-        updateDesc(selected);
+        // 使用函数内定义的selected变量
+        updateDescFromOutside(selected);
         scrollToCard(selected);
       }
     }, 3500);
   }
+  
+  // 外部使用的更新描述函数
+  function updateDescFromOutside(idx) {
+    const carousel = document.querySelector('.goods-type-carousel');
+    const descDiv = document.querySelector('.goods-type-desc');
+    if (!carousel || !descDiv) return;
+    
+    descDiv.innerHTML = `<h4 style=\"font-size:1.05em;font-weight:700;margin-bottom:8px;letter-spacing:1px;color:#4fc3f7;\">${sitcLabels[idx]}</h4><div style=\"font-size:1.05em;font-weight:400;color:#fff;\">${sitcDescriptions[idx]}</div>`;
+    Array.from(carousel.children).forEach((el, i) => {
+      if (i === idx) {
+        el.classList.add('active');
+        el.classList.remove('dimmed');
+        el.style.width = '400px';
+        el.style.zIndex = 2;
+        el.querySelector('img').style.filter = 'none';
+        el.style.boxShadow = '0 8px 32px #4fc3f7aa';
+      } else {
+        el.classList.remove('active');
+        el.classList.add('dimmed');
+        el.style.width = '130px';
+        el.style.zIndex = 1;
+        el.querySelector('img').style.filter = 'grayscale(0.7) brightness(0.8)';
+        el.style.boxShadow = 'none';
+      }
+    });
+  }
+  
   function pauseAutoScroll(tempPause = true) {
     autoScrollPaused = true;
     if (autoScrollResumeTimer) clearTimeout(autoScrollResumeTimer);
@@ -2802,4 +2839,27 @@ console.log('GoodsType.js loaded');
   });
   // 启动自动轮播
   startAutoScroll();
+
+  // 添加一个DOMContentLoaded事件监听器，确保在DOM完全加载后再附加事件监听器
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      // 查找carousel和cards
+      const carousel = document.querySelector('.goods-type-carousel');
+      if (carousel) {
+        // 用户交互时暂停自动轮播
+        carousel.addEventListener('mouseenter', () => pauseAutoScroll());
+        carousel.addEventListener('mouseleave', () => pauseAutoScroll(false));
+        Array.from(carousel.children).forEach((card, idx) => {
+          card.addEventListener('mouseenter', () => { pauseAutoScroll(); });
+          card.addEventListener('click', () => { 
+            pauseAutoScroll(); 
+            scrollToCard(idx); 
+          });
+        });
+        
+        // 启动自动轮播
+        startAutoScroll();
+      }
+    }, 1000); // 给DOM一点时间加载
+  });
 })();
