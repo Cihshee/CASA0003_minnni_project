@@ -2622,6 +2622,20 @@ console.log('GoodsType.js loaded');
     introText.className = 'goods-type-intro-text';
     introText.innerHTML = `
       <div class=\"goods-type-transition-text fadein-block\" style=\"font-size:1.1em !important;color:#fff;margin-bottom:64px;max-width:1000px;margin-left:auto;margin-right:auto;text-align:center;line-height:1.6;\">Beyond fluctuations in trade volumes with specific countries and regions, Brexit has had complex effects on particular types of goods. From the SITC 1 classification perspective...</div>
+      
+      <!-- SITC图标行 -->
+      <div class=\"sitc-icons-row fadein-block\" style=\"margin:30px auto 50px auto;\">
+        <button class=\"sitc-icon-btn\" data-sitc=\"0\" title=\"Food & live animals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/0-Food-and-live-animals.png\" alt=\"Food & live animals\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"1\" title=\"Beverages & tobacco\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/1-Beverages-and-tobacco.png\" alt=\"Beverages & tobacco\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"2\" title=\"Crude materials\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/2-Crude-materials.png\" alt=\"Crude materials\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"3\" title=\"Mineral fuels\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png\" alt=\"Mineral fuels\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"4\" title=\"Animal & vegetable oils\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png\" alt=\"Animal & vegetable oils\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"5\" title=\"Chemicals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/5-Chemicals-and-related-products.png\" alt=\"Chemicals\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"6\" title=\"Manufactured goods\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png\" alt=\"Manufactured goods\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"7\" title=\"Machinery & transport\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/7-Machinery-and-transport-equipment.png\" alt=\"Machinery & transport\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"8\" title=\"Miscellaneous articles\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/8-Miscellaneous-manufactured-articles.png\" alt=\"Miscellaneous manufactured articles\"></button>
+      </div>
+      
       <div class=\"fadein-block\" style=\"width:100%;margin-bottom:54px;\">  
         <h2 style=\"font-size:1.15em;font-weight:700;margin-bottom:14px;color:#fff;letter-spacing:1px;\">SITC1 Introduction</h2>
         <div style=\"font-size:1.05em;max-width:1000px;margin:0 auto 20px auto;line-height:1.6;color:#fff;\">
@@ -2697,14 +2711,109 @@ console.log('GoodsType.js loaded');
       .goods-type-card:last-child {border-top-right-radius:38px;border-bottom-right-radius:38px;}
       .goods-type-desc h4 {color:#4fc3f7;letter-spacing:1px;}
       .goods-type-card-num {font-size:1.05em !important;}
-      @media (max-width: 900px) {
+      
+      /* SITC Icons Row in intro page */
+      #goods-type-intro .sitc-icons-row {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 2rem auto;
+        max-width: 900px;
+      }
+      
+      #goods-type-intro .sitc-icon-btn {
+        background-color: transparent;
+        border: none;
+        transition: all 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        outline: none;
+        position: relative;
+        animation: float 2.5s ease-in-out infinite;
+      }
+      
+      /* Create floating animation with random delay for each icon */
+      #goods-type-intro .sitc-icon-btn:nth-child(1) { animation-delay: 0s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(2) { animation-delay: 0.28s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(3) { animation-delay: 0.56s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(4) { animation-delay: 0.84s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(5) { animation-delay: 1.12s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(6) { animation-delay: 1.4s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(7) { animation-delay: 1.68s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(8) { animation-delay: 1.96s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(9) { animation-delay: 2.24s; }
+      
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+          filter: drop-shadow(0 5px 15px rgba(33, 150, 243, 0.2));
+        }
+        50% {
+          transform: translateY(-6px);
+          filter: drop-shadow(0 15px 15px rgba(33, 150, 243, 0.3));
+        }
+        100% {
+          transform: translateY(0);
+          filter: drop-shadow(0 5px 15px rgba(33, 150, 243, 0.2));
+        }
+      }
+      
+      #goods-type-intro .sitc-icon-btn:hover {
+        transform: translateY(-5px) scale(1.15);
+        filter: drop-shadow(0 15px 15px rgba(33, 150, 243, 0.5));
+        animation-play-state: paused;
+      }
+      
+      #goods-type-intro .sitc-icon-btn:hover::after {
+        content: attr(title);
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 100;
+      }
+      
+      #goods-type-intro .sitc-icon-btn img {
+        width: 55px;
+        height: 55px;
+        object-fit: contain;
+        transition: all 0.3s ease;
+        filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+      }
+      
+      #goods-type-intro .sitc-icon-btn:hover img {
+        filter: drop-shadow(0 5px 10px rgba(33, 150, 243, 0.7));
+      }
+      
+      /* Media query for mobile devices */
+      @media (max-width: 768px) {
+        #goods-type-intro .sitc-icons-row {
+          gap: 15px;
+        }
+        
+        #goods-type-intro .sitc-icon-btn img {
+          width: 40px;
+          height: 40px;
+        }
+        
         .goods-type-card {width:150px !important;height:70px;}
         .goods-type-card.active {width:260px !important;}
         .goods-type-intro-text h2 {font-size:1.3em;}
         .goods-type-desc {font-size:16px;}
       }
+      
       /* 动画样式 */
-      .fadein-block {opacity:0;transform:translateY(40px);transition:opacity 0.85s cubic-bezier(.4,0,.2,1),transform 0.85s cubic-bezier(.4,0,.2,1);}
+      .fadein-block {opacity:0;transform:translateY(40px);transition:opacity 0.6s cubic-bezier(.4,0,.2,1),transform 0.6s cubic-bezier(.4,0,.2,1);}
       .fadein-block.visible {opacity:1;transform:translateY(0);}
     `;
     document.head.appendChild(style);
@@ -2730,13 +2839,13 @@ console.log('GoodsType.js loaded');
     // 动画：滚动出现
     setTimeout(()=>{
       const fadeBlocks = introDiv.querySelectorAll('.fadein-block');
-      // fadeBlocks: [0]=过渡文字, [1]=标题+desc, [2]=carousel, [3]=descDiv
+      // fadeBlocks: [0]=过渡文字, [1]=图标行, [2]=标题+desc, [3]=carousel, [4]=descDiv
       // 让carousel和descDiv同时出现
-      const stagger = 0.45;
-      const fastStagger = 0.28;
+      const stagger = 0.28;
+      const fastStagger = 0.18;
       fadeBlocks.forEach((el, i) => {
-        if (i === 2 || i === 3) {
-          el.style.transitionDelay = (1*stagger + fastStagger) + 's';
+        if (i === 3 || i === 4) {
+          el.style.transitionDelay = (2*stagger + fastStagger) + 's';
         } else {
           el.style.transitionDelay = (i*stagger) + 's';
         }
@@ -2749,9 +2858,22 @@ console.log('GoodsType.js loaded');
             obs.unobserve(entry.target);
           }
         });
-      }, {threshold: 0.18});
+      }, {threshold: 0.12});
       fadeBlocks.forEach(el => observer.observe(el));
-    }, 200);
+      
+      // 添加SITC图标点击事件
+      const sitcIcons = introDiv.querySelectorAll('.sitc-icon-btn');
+      sitcIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+          // 获取SITC索引
+          const sitcIndex = parseInt(this.getAttribute('data-sitc'));
+          // 更新卡片选择和描述
+          updateDesc(sitcIndex);
+          // 滚动到相应的卡片
+          scrollToCard(sitcIndex);
+        });
+      });
+    }, 100);
   }
 
   // 自动轮播功能
@@ -2787,7 +2909,7 @@ console.log('GoodsType.js loaded');
         updateDescFromOutside(selected);
         scrollToCard(selected);
       }
-    }, 3500);
+    }, 2800);
   }
   
   // 外部使用的更新描述函数

@@ -32,6 +32,13 @@ body {
     pointer-events: none;
     opacity: 0.25;
     margin: 0 auto;
+    background-image: linear-gradient(180deg, 
+        rgba(50, 50, 50, 0.1) 20%, 
+        rgba(30, 30, 30, 0.1) 40%, 
+        rgba(50, 50, 50, 0.1) 60%, 
+        rgba(30, 30, 30, 0.1) 80%);
+    background-size: 100% 400%;
+    animation: gradientMove 3s ease infinite;
 }
 
 .lottie-svg-fullscreen {
@@ -268,5 +275,147 @@ p {
     .timeline-item:nth-child(even) {
         margin-left: 60px;
         margin-right: 0;
+    }
+}
+
+/* 自定义向下箭头动画 */
+.chevron-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+}
+
+.chevron {
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    opacity: 0.5;
+    animation: fall 3s infinite linear;
+}
+
+.chevron:before,
+.chevron:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    background: #ffffff;
+}
+
+.chevron:before {
+    left: 0;
+    transform: skewY(30deg);
+}
+
+.chevron:after {
+    right: 0;
+    transform: skewY(-30deg);
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px);
+    }
+    100% {
+        transform: translateY(1000px);
+    }
+}
+
+/* SITC Icons Row */
+.sitc-icons-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 2rem auto;
+    max-width: 900px;
+}
+
+.sitc-icon-btn {
+    background-color: transparent;
+    border: none;
+    transition: all 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Create floating animation with random delay for each icon */
+.sitc-icon-btn:nth-child(1) { animation-delay: 0s; }
+.sitc-icon-btn:nth-child(2) { animation-delay: 0.3s; }
+.sitc-icon-btn:nth-child(3) { animation-delay: 0.6s; }
+.sitc-icon-btn:nth-child(4) { animation-delay: 0.9s; }
+.sitc-icon-btn:nth-child(5) { animation-delay: 1.2s; }
+.sitc-icon-btn:nth-child(6) { animation-delay: 1.5s; }
+.sitc-icon-btn:nth-child(7) { animation-delay: 1.8s; }
+.sitc-icon-btn:nth-child(8) { animation-delay: 2.1s; }
+.sitc-icon-btn:nth-child(9) { animation-delay: 2.4s; }
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+        filter: drop-shadow(0 5px 15px rgba(33, 150, 243, 0.2));
+    }
+    50% {
+        transform: translateY(-10px);
+        filter: drop-shadow(0 15px 15px rgba(33, 150, 243, 0.3));
+    }
+    100% {
+        transform: translateY(0);
+        filter: drop-shadow(0 5px 15px rgba(33, 150, 243, 0.2));
+    }
+}
+
+.sitc-icon-btn:hover {
+    transform: translateY(-5px) scale(1.15);
+    filter: drop-shadow(0 15px 15px rgba(33, 150, 243, 0.5));
+    animation-play-state: paused;
+}
+
+.sitc-icon-btn:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 100;
+}
+
+.sitc-icon-btn img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+}
+
+.sitc-icon-btn:hover img {
+    filter: drop-shadow(0 5px 10px rgba(33, 150, 243, 0.7));
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .sitc-icons-row {
+        gap: 20px;
+    }
+    
+    .sitc-icon-btn img {
+        width: 50px;
+        height: 50px;
     }
 } 
