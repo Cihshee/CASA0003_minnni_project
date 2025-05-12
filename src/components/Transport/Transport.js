@@ -181,6 +181,7 @@ function initTransport() {
                 
                 // 清除地图
                 clearMapContainer();
+                initPortImageScroll(); // 初始化图片滚动功能
             } else if (type === 'airport') {
                 console.log('显示机场信息...');
                 // 隐藏港口内容
@@ -191,7 +192,7 @@ function initTransport() {
                 // 显示地图容器并准备显示柱状图
                 mapContainer.style.display = 'block';
                 mapContainer.innerHTML = `
-                    <div id="airport-content" class="airport-content">
+                    <div id="airport-content" class="airport-content" style="margin-top: 30px;">
                         <div class="chart-controls">
                             <div class="airport-selector">
                                 <div class="airport-grid">
@@ -199,7 +200,7 @@ function initTransport() {
                                 </div>
                             </div>
                         </div>
-                        <div class="chart-container" style="margin-top: -3px;">
+                        <div class="chart-container" style="margin-top: 0px;">
                             <canvas id="airportChart"></canvas>
                         </div>
                     </div>
@@ -232,10 +233,23 @@ function initTransport() {
     if (portButton) {
         console.log('找到port按钮，触发点击');
         portButton.classList.add('active');
-        portButton.click();
         
-        // 初始化视频处理
-        initPortVideo();
+        // 先显示港口内容，再初始化视频和导航
+        if (portContent) {
+            portContent.style.display = 'flex';
+            
+            // 确保DOM更新后再绑定事件
+            setTimeout(function() {
+                // 尝试初始化港口图片滚动功能
+                initPortImageScroll();
+                
+                // 初始化视频处理（如果有视频元素）
+                const videoElement = document.getElementById('port-video');
+                if (videoElement) {
+                    initPortVideo();
+                }
+            }, 100);
+        }
     } else {
         console.error('找不到port按钮');
     }
@@ -568,5 +582,164 @@ function createAirportChart(data, selectedAirport) {
             }
         });
     }
+}
+
+// 港口图片滚动功能
+function initPortImageScroll() {
+    console.log('开始初始化港口图片滚动功能...');
+    
+    const slides = document.querySelectorAll('.port-image-slide');
+    const dots = document.querySelectorAll('.indicator-dot');
+    const prevButton = document.getElementById('prev-port-image'); // 通过ID获取按钮
+    const nextButton = document.getElementById('next-port-image'); // 通过ID获取按钮
+    const textContents = document.querySelectorAll('.port-text-content'); // 获取所有文字内容区域
+    const exploreMapBtns = document.querySelectorAll('.explore-map-btn'); // 获取所有地图按钮
+    
+    console.log('找到幻灯片数量:', slides.length);
+    console.log('找到指示点数量:', dots.length);
+    console.log('找到文字内容数量:', textContents.length);
+    console.log('上一张按钮:', prevButton);
+    console.log('下一张按钮:', nextButton);
+    
+    let currentIndex = 0;
+    
+    // 如果元素不存在，直接返回
+    if (!slides.length || !dots.length) {
+        console.error('图片或指示点元素未找到');
+        return;
+    }
+    
+    // 为所有地图按钮添加点击事件
+    exploreMapBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            console.log('点击了地图按钮');
+            
+            // 隐藏port内容
+            const portContent = document.getElementById('port-content');
+            if (portContent) {
+                portContent.style.display = 'none';
+            }
+            
+            // 显示地图
+            const mapElement = document.getElementById('map');
+            if (mapElement) {
+                mapElement.style.display = 'block';
+                
+                // 创建地图
+                createMap();
+                
+                // 保存当前位置到会话存储，方便返回时恢复
+                if (map) {
+                    const position = {
+                        center: map.getCenter(),
+                        zoom: map.getZoom()
+                    };
+                    sessionStorage.setItem('mapPosition', JSON.stringify(position));
+                }
+                
+                // 跳转到地图页面
+                window.location.href = './src/components/Transport/uk-port.html';
+            }
+        });
+    });
+    
+    // 检查按钮元素并绑定事件
+    if (!prevButton || !nextButton) {
+        console.error('导航按钮未找到，尝试重新获取...');
+        // 尝试通过类名获取
+        const prevBtnClass = document.querySelector('.prev-button');
+        const nextBtnClass = document.querySelector('.next-button');
+        
+        if (prevBtnClass && nextBtnClass) {
+            console.log('通过类名找到按钮，设置事件...');
+            setupButtonEvents(prevBtnClass, nextBtnClass);
+        } else {
+            console.error('无法找到导航按钮，请检查HTML结构');
+        }
+    } else {
+        // 直接使用DOM绑定事件，避免事件委托问题
+        console.log('通过ID找到按钮，直接绑定事件...');
+        
+        prevButton.onclick = function(e) {
+            console.log('点击了上一张按钮（直接事件）');
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlides();
+        };
+        
+        nextButton.onclick = function(e) {
+            console.log('点击了下一张按钮（直接事件）');
+            e.stopPropagation();
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlides();
+        };
+    }
+    
+    // 设置按钮事件
+    function setupButtonEvents(prev, next) {
+        console.log('设置导航按钮事件...');
+        
+        // 使用onclick代替addEventListener
+        prev.onclick = function(e) {
+            console.log('点击了上一张按钮');
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlides();
+        };
+        
+        next.onclick = function(e) {
+            console.log('点击了下一张按钮');
+            e.stopPropagation();
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlides();
+        };
+    }
+    
+    // 点击指示点切换图片
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+            console.log('点击了指示点:', index);
+            currentIndex = index;
+            updateSlides();
+        });
+    });
+    
+    // 更新幻灯片和文字内容
+    function updateSlides() {
+        console.log('更新幻灯片到索引:', currentIndex);
+        
+        // 更新幻灯片和指示点
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        slides[currentIndex].classList.add('active');
+        dots[currentIndex].classList.add('active');
+        
+        // 更新文字内容
+        textContents.forEach(content => {
+            content.classList.remove('active');
+            // 为了制造更明显的动画效果，先让所有内容重置
+            content.style.opacity = '0';
+            content.style.transform = 'translateY(20px)';
+        });
+        
+        // 获取对应的文字内容
+        const textId = slides[currentIndex].getAttribute('data-text-id');
+        const textContent = document.getElementById(textId);
+        
+        if (textContent) {
+            // 先添加active类
+            textContent.classList.add('active');
+            
+            // 使用setTimeout确保CSS过渡效果能够正常触发
+            setTimeout(() => {
+                textContent.style.opacity = '1';
+                textContent.style.transform = 'translateY(0)';
+            }, 50);
+        }
+    }
+    
+    // 初始化显示第一张
+    updateSlides();
 }
 

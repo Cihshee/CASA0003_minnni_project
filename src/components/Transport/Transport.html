@@ -1,14 +1,25 @@
 <div class="transport-container">
+    <!-- 添加章节标题 -->
+    <div class="transport-title-section" style="margin-top: 100px; margin-bottom: 30px;">
+        <h2 style="text-align: center;"><span style="color: #58aff7;">Transportation Modes</span> for Goods Imports and Exports</h2>
+    </div>
+    
+    <!-- 添加衔接段落 -->
+    <div class="transport-intro-section" style="margin-bottom: 40px; text-align: center;">
+        <p> Brexit has not only influenced UK trade relationships but also challenged the logistics of moving goods across borders. </p>
+        <p> Let's see how different transportation methods show the changes in trade networks and key transport hubs... </p>
+    </div>
+    
     <div class="button-container">
-        <button class="transport-button" data-type="port">
+        <button class="transport-button" data-type="port" title="Port">
             <img src="public/img/port_1.svg" alt="Port">
         </button>
-        <button class="transport-button" data-type="airport">
+        <button class="transport-button" data-type="airport" title="Airport">
             <img src="public/img/airport_1.svg" alt="Airport">
         </button>
-        <button class="transport-button" data-type="road">
+        <!-- <button class="transport-button" data-type="road" title="Rail & Road">
             <img src="public/img/road_1.svg" alt="Road">
-        </button>
+        </button> -->
     </div>
     
     <!-- 地图区域，默认隐藏 -->
@@ -16,17 +27,54 @@
     
     <!-- 点击port按钮后显示的内容，上下结构 -->
     <div id="port-content" class="port-content">
-        <!-- 视频部分 - 放在上方 -->
+        <!-- 图片部分 - 左侧 -->
         <div class="port-video-section">
-            <!-- 添加uk-port.MP4视频 - 移除控件，用户不能操控 -->
-            <video id="port-video" autoplay muted loop playsinline>
-                <source src="public/uk-port.mp4" type="video/mp4">
-            </video>
+            <!-- 替换为带导航箭头的图片区域 -->
+            <div class="port-image-container">
+                <!-- 左右箭头 - 添加内联样式确保可见和可点击 -->
+                <button class="image-nav-button prev-button" id="prev-port-image" style="cursor:pointer; z-index:999;">&lt;</button>
+                <button class="image-nav-button next-button" id="next-port-image" style="cursor:pointer; z-index:999;">&gt;</button>
+                
+                <div class="port-image-slide active" id="port-image-1" data-text-id="port-text-1">
+                    <img src="public/img/port_main.png" alt="UK Port Overview">
+                </div>
+                <div class="port-image-slide" id="port-image-2" data-text-id="port-text-2">
+                    <img src="public/img/port_felixstowe.png" alt="Felixstowe Port">
+                </div>
+                <div class="port-image-slide" id="port-image-3" data-text-id="port-text-3">
+                    <img src="public/img/port_dover.png" alt="Dover Port">
+                </div>
+                
+                <!-- 指示点 -->
+                <div class="image-indicator">
+                    <span class="indicator-dot active" data-index="1"></span>
+                    <span class="indicator-dot" data-index="2"></span>
+                    <span class="indicator-dot" data-index="3"></span>
+                </div>
+            </div>
         </div>
-        <!-- 文字部分 - 放在下方 -->
+        
+        <!-- 文字部分 - 右侧 -->
         <div class="port-text-section">
-            <p>Port transport is essential for the UK economy, handling over 95% of its international trade by volume, facilitating the import and export of goods through 120 commercial ports.</p>
-            <button id="explore-map-btn" class="explore-map-btn">Explore this map</button>
+            <!-- 对应第一张图片的文本 -->
+            <div class="port-text-content active" id="port-text-1">
+                <p>Port transport is essential for the UK economy, handling over 95% of its international trade by volume, facilitating the import and export of goods through 120 commercial ports.</p>
+                <button id="explore-map-btn" class="explore-map-btn">Try interactive map</button>
+            </div>
+            
+            <!-- 对应第二张图片的文本 - Felixstowe -->
+            <div class="port-text-content" id="port-text-2">
+                <h3 class="text-title">Felixstowe Port</h3>
+                <p>Felixstowe is the UK's largest container port, handling over 40% of all containerized trade. </p>
+                <p>After Brexit, the cargo transportation between the port and other regions showed a dynamic trend. Its cargo exports to the EU dropped significantly, while imports first increased and then decreased.</p>
+            </div>
+            
+            <!-- 对应第三张图片的文本 - Dover -->
+            <div class="port-text-content" id="port-text-3">
+                <h3 class="text-title">Dover Port</h3>
+                <p>Dover is close to the mainland Europe and handles 17% of the UK's cargo trade, mainly serving cross-channel transport. </p>
+                <p>Brexit has had a significant impact on its cargo volumes and operations, with new customs procedures and documentation requirements.</p>
+            </div>
         </div>
     </div>
 </div>
