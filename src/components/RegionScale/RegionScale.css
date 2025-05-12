@@ -124,3 +124,16 @@
     z-index: 0;
   }
 
+  /* 调整垂直线样式，确保与CountryScale完全一致 */
+  .region-chart-section .timeline-vertical-line {
+    position: absolute;
+    left: -50px; /* 调整位置，向左移动 */
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: rgba(255,255,255,0.4);
+    z-index: 0;
+  }
+
+  /* 不需要修改scroll-text的padding，保持原样 */
+
