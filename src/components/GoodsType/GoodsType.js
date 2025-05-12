@@ -160,7 +160,7 @@ console.log('GoodsType.js loaded');
       return;
     }
 
-    const totalDuration = 5000; // 动画持续时间改为5秒
+    const totalDuration = 3500; // 动画持续时间改为3.5秒
     const delayBetweenPoints = totalDuration / interpolatedYears.length;
     
     const animation = {
@@ -381,7 +381,7 @@ console.log('GoodsType.js loaded');
 
     // 动画结束后回调
     if (onAnimEnd) {
-      setTimeout(onAnimEnd, 3000);
+      setTimeout(onAnimEnd, 2000);
     }
     return chart;
   }
@@ -609,7 +609,7 @@ console.log('GoodsType.js loaded');
           .attr('opacity', 0.18);
       });
 
-      const totalFrames = 1100;
+      const totalFrames = 300;
       let frame = 0;
       function animate() {
         svg.selectAll('.d3-line').remove();
@@ -1044,7 +1044,7 @@ console.log('GoodsType.js loaded');
         });
         setTimeout(() => {
           drawD3Chart(currentFlow);
-        }, 300);
+        }, 150);
       };
     });
 
