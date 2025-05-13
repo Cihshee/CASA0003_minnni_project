@@ -856,25 +856,22 @@ console.log('GoodsType.js loaded');
                 .style('transition', 'opacity 0.7s, transform 0.7s')
                 .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2018:</b> Global trade war uncertainties reshape global commerce.</div>`);
             }
-          }
-          // 'Non EU - Imports'/2020/09  
-          if (currentFlow === 'Non EU - Imports' && idx === 9) {
-            const year2020Idx = years.indexOf(2020);
-            const frame2020 = Math.round((year2020Idx / (years.length - 1)) * totalFrames);
-            if (frame >= frame2020) {
-              const pt2020 = line.values[year2020Idx];
-              const cx = x(pt2020.year);
-              const cy = y(pt2020.value);
+          }   
+          // 'Non EU - Imports'/2022/03  
+          if (currentFlow === 'Non EU - Imports' && idx === 3) {
+            const year2022Idx = years.indexOf(2022);
+            const frame2022 = Math.round((year2022Idx / (years.length - 1)) * totalFrames);
+            if (frame >= frame2022) {
+              const pt2022 = line.values[year2022Idx];
+              const cx = x(pt2022.year);
+              const cy = y(pt2022.value);
               
-              // Unique identifier to prevent duplicate rendering
-              const uniqueId = 'import-2020-highlight';
-              
-              // Remove any existing elements with this unique ID
+              const uniqueId = 'import-2022-highlight';
               svg.selectAll(`.${uniqueId}`).remove();
               
               // Highlight circle
               svg.append('circle')
-                .attr('class', `d3-highlight-2020 ${uniqueId}`)
+                .attr('class', `d3-highlight-2022 ${uniqueId}`)
                 .attr('cx', cx)
                 .attr('cy', cy)
                 .attr('r', 18)
@@ -884,23 +881,22 @@ console.log('GoodsType.js loaded');
                 .attr('stroke-dasharray', '6,6')
                 .attr('filter', 'url(#d3-glow)');
               
-              // 2020 annotation fade/scale
-              const annProgress = Math.max(0, Math.min(1, (frame - frame2020) / 60));
+              const annProgress = Math.max(0, Math.min(1, (frame - frame2022) / 60));
               const annOpacity = annProgress;
               const annScale = 0.92 + 0.08 * annProgress;
               
               svg.append('foreignObject')
-                .attr('class', `d3-annotation-2020 ${uniqueId}`)
+                .attr('class', `d3-annotation-2022 ${uniqueId}`)
                 .attr('x', cx + 20)
-                .attr('y', cy - 48)
+                .attr('y', cy - 14)
                 .attr('width', 340)
-                .attr('height', 70)
+                .attr('height', 90)
                 .style('opacity', annOpacity)
                 .style('transform', `scale(${annScale})`)
                 .style('transition', 'opacity 0.7s, transform 0.7s')
-                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2020:</b> Pandemic-induced global trade disruption and economic shock.</div>`);
+                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2022:</b> Due to the Russia-Ukraine conflict, energy imports underwent rapid restructuring amid geopolitical tensions.</div>`);
             }
-          }    
+          }
         });
 
         if (frame < totalFrames) {
