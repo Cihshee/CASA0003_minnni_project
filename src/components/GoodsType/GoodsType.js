@@ -28,7 +28,7 @@ console.log('GoodsType.js loaded');
     'Beverages and tobacco include alcoholic drinks, soft drinks and tobacco products. Despite pandemic and politic impacts stabilising most countries\' trade slightly, Russia saw significant fluctuations in 2020-2021 due to political factors.',
     'Crude materials include wood, rubber, fibres and more. Brexit coupled with global disruptions from the COVID-19 also geopolitical tensions, reflected in changing export markets and volumes after 2020.',
     'Brexit, geopolitical tensions and the global energy transition have fundamentally reshaped the UK\'s import-export dynamics, driving a strategic recalibration of international energy partnerships.',
-    'Animal and vegetable oils, fats, and waxes are widely used in food and industry. Trade barriers have increased post-Brexit.',
+    'Post-Brexit trade barriers have compelled the UK to dynamically restructure its international trade strategies, leading to fluctuating import-export patterns and a more diverse, yet complex global trading landscape.',
     'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
     'Manufactured goods classified chiefly by material include metals, building materials, and more. Brexit has brought changes in tariffs and standards.',
     'Machinery and transport equipment are a pillar of UK exports. Brexit has affected supply chains and export markets.',
