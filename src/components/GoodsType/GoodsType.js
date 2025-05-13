@@ -29,8 +29,8 @@ console.log('GoodsType.js loaded');
     'Crude materials include wood, rubber, fibres and more. Brexit coupled with global disruptions from the COVID-19 also geopolitical tensions, reflected in changing export markets and volumes after 2020.',
     'Brexit, geopolitical tensions and the global energy transition have fundamentally reshaped the UK\'s import-export dynamics, driving a strategic recalibration of international energy partnerships.',
     'Post-Brexit trade barriers have compelled the UK to dynamically restructure its international trade strategies, leading to fluctuating import-export patterns and a more diverse, yet complex global trading landscape.',
-    'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
-    'Manufactured goods classified chiefly by material include metals, building materials, and more. Brexit has brought changes in tariffs and standards.',
+    'Chemicals and related products, including pharmaceuticals and chemical raw materials, have experienced subtle oscillations influenced by multiple factors.',
+    'Brexit reshaped Manufactured goods trade, with Free Trade Agreements offering new opportunities with non-EU partners like Canada and India, reducing barriers and diversifying global market access.',
     'Machinery and transport equipment are a pillar of UK exports. Brexit has affected supply chains and export markets.',
     'Miscellaneous manufactured articles include toys, furniture, clothing, and more. Market access and certification processes have changed post-Brexit.',
     "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions."
