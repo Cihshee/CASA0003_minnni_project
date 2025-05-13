@@ -1533,8 +1533,66 @@ console.log('GoodsType.js loaded');
 
         state.currentMap = window.currentMapInstance;
         
+        // 添加加载提示和动画样式
+        const loadingStyles = document.createElement('style');
+        loadingStyles.textContent = `
+            .mapboxgl-missing-css {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 4px;
+                z-index: 1000;
+                animation: fadeOutMessage 0.5s ease-out 2s forwards;
+                pointer-events: none;
+            }
+            
+            @keyframes fadeOutMessage {
+                from {
+                    opacity: 1;
+                    transform: translate(-50%, -50%);
+                }
+                to {
+                    opacity: 0;
+                    transform: translate(-50%, -60%);
+                }
+            }
+
+            .mapboxgl-map .mapboxgl-canvas-container {
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+            .mapboxgl-map .mapboxgl-canvas-container.loaded {
+                opacity: 1;
+            }
+            
+            /* 隐藏其他mapbox控件 */
+            .mapboxgl-map .mapboxgl-ctrl-group button,
+            .mapboxgl-map .mapboxgl-ctrl-attrib {
+                display: none !important;
+            }
+            
+            #goods-map {
+                position: relative;
+                overflow: hidden;
+            }
+        `;
+        document.head.appendChild(loadingStyles);
+        
         // 等待样式加载完成
         state.currentMap.on('style.load', () => {
+            // 样式加载完成后触发淡出动画
+            const errorMessages = document.querySelectorAll('.mapboxgl-missing-css');
+            errorMessages.forEach(msg => {
+                msg.style.animation = 'fadeOutMessage 0.5s ease-out forwards';
+                msg.addEventListener('animationend', () => {
+                    msg.remove();
+                });
+            });
+
             // Initial animation from world to Europe
             setTimeout(() => {
                 animateMapTo(state.currentMap, MAP_VIEWS.europe);
@@ -1546,25 +1604,61 @@ console.log('GoodsType.js loaded');
             } else {
                 state.currentMap.once('load', updateVisualizationsExceptTrend);
             }
-            
-            // 不再触发第二阶段动画
-            /*
-            // 检查是否需要触发第二阶段动画
-            console.log('Map style loaded, checking for animation flags:', {
-                sitcIconsMovedToSummary: window.sitcIconsMovedToSummary,
-                sitcSecondPhaseStarted: window.sitcSecondPhaseStarted
-            });
-            
-            // 如果第一阶段动画已完成但第二阶段尚未开始，设置第二阶段动画
-            if (window.sitcIconsMovedToSummary && !window.sitcSecondPhaseStarted) {
-                console.log('First phase completed, setting up second phase animation');
-                const flyingContainer = document.querySelector('.flying-sitc-icons-container');
-                if (flyingContainer) {
-                    setupSecondPhaseAnimation(flyingContainer);
-                }
-            }
-            */
         });
+
+        // 在地图完全加载后添加loaded类
+        state.currentMap.once('load', () => {
+            const container = document.querySelector('.mapboxgl-canvas-container');
+            if (container) {
+                container.classList.add('loaded');
+            }
+            
+            // 设置定时器移除错误提示
+            setTimeout(() => {
+                const errorMessages = document.querySelectorAll('.mapboxgl-missing-css');
+                errorMessages.forEach(msg => {
+                    msg.addEventListener('animationend', () => {
+                        msg.remove();
+                    });
+                });
+            }, 2500); // 2.5秒后开始淡出动画
+        });
+
+        // 添加CSS来隐藏加载提示
+        const style = document.createElement('style');
+        style.textContent = `
+            .mapboxgl-missing-css {
+                display: none !important;
+            }
+            .mapboxgl-map .mapboxgl-canvas-container {
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+            .mapboxgl-map .mapboxgl-canvas-container.loaded {
+                opacity: 1;
+            }
+            /* 隐藏样式未加载提示 */
+            .mapboxgl-map .mapboxgl-missing-css,
+            .mapboxgl-map [class*='mapboxgl-style-not-loaded'] {
+                display: none !important;
+            }
+            /* 确保地图容器不显示错误提示 */
+            #goods-map {
+                position: relative;
+                overflow: hidden;
+            }
+            #goods-map::before {
+                content: none !important;
+            }
+            /* 移除所有mapbox错误提示 */
+            .mapboxgl-map .mapboxgl-ctrl-group button {
+                display: none !important;
+            }
+            .mapboxgl-map .mapboxgl-ctrl-attrib {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
 
         // 添加SVG容器
         const svgContainer = document.createElement('div');
@@ -1579,43 +1673,94 @@ console.log('GoodsType.js loaded');
         `;
         svgContainer.innerHTML = `
             <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
-                <path id="curve-path" fill="none" stroke="none"/>
-                <circle id="moving-dot" r="4" fill="none"/>
+                <defs>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+                <path id="curve-path" fill="none"/>
+                <circle id="moving-dot" r="3"/>
             </svg>
         `;
         mapDiv.appendChild(svgContainer);
 
         // 修改地图事件处理
         state.currentMap.on('mousemove', 'country-fills', (e) => {
-            if (e.features.length > 0) {
-                const feature = e.features[0];
-                
-                // 更新已有的悬停状态代码
-                if (state.hoveredFeatureId !== null) {
+            if (!e.features.length) return;
+            
+            const feature = e.features[0];
+            if (!feature || !feature.geometry) return;
+
+            // 更新悬停状态
+            if (state.hoveredFeatureId !== null) {
+                try {
                     state.currentMap.setFeatureState(
                         { source: 'countries', id: state.hoveredFeatureId },
                         { hover: false }
                     );
+                } catch (err) {
+                    console.warn('Error clearing hover state:', err);
                 }
-                state.hoveredFeatureId = feature.id;
+            }
+
+            state.hoveredFeatureId = feature.id;
+            try {
                 state.currentMap.setFeatureState(
                     { source: 'countries', id: state.hoveredFeatureId },
                     { hover: true }
                 );
+            } catch (err) {
+                console.warn('Error setting hover state:', err);
+            }
 
-                // 添加抛物线动画
-                const svg = svgContainer.querySelector('svg');
-                const path = svg.querySelector('#curve-path');
-                const dot = svg.querySelector('#moving-dot');
-                
-                // 获取国家中心点
+            // 获取国家中心点
+            try {
                 const bounds = new mapboxgl.LngLatBounds();
-                feature.geometry.coordinates[0].forEach(coord => bounds.extend(coord));
-                const center = bounds.getCenter();
+                if (feature.geometry.type === 'Polygon') {
+                    feature.geometry.coordinates[0].forEach(coord => bounds.extend(coord));
+                } else if (feature.geometry.type === 'MultiPolygon') {
+                    feature.geometry.coordinates.forEach(polygon => {
+                        polygon[0].forEach(coord => bounds.extend(coord));
+                    });
+                }
                 
+                const center = bounds.getCenter();
+                if (!center) return;
+
+                // 确保坐标有效
+                if (isNaN(center.lng) || isNaN(center.lat)) return;
+
                 // 将两个地理坐标点转换为屏幕坐标
                 const countryPoint = state.currentMap.project(center);
                 const ukPoint = state.currentMap.project(UK_COORDINATES);
+
+                // 获取或创建SVG容器
+                let svgContainer = document.querySelector('.curve-animation-container');
+                if (!svgContainer) {
+                    svgContainer = document.createElement('div');
+                    svgContainer.className = 'curve-animation-container';
+                    svgContainer.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;';
+                    svgContainer.innerHTML = `
+                        <svg width="100%" height="100%" style="position:absolute;top:0;left:0;">
+                            <defs>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <path id="curve-path" fill="none"/>
+                            <circle id="moving-dot" r="3"/>
+                        </svg>
+                    `;
+                    document.getElementById('goods-map').appendChild(svgContainer);
+                }
 
                 // 创建抛物线路径
                 const curve = createParabolicCurve(
@@ -1623,7 +1768,12 @@ console.log('GoodsType.js loaded');
                     ukPoint.x, ukPoint.y
                 );
 
-                // 设置路径样式和动画
+                // 获取SVG元素
+                const svg = svgContainer.querySelector('svg');
+                const path = svg.querySelector('#curve-path');
+                const dot = svg.querySelector('#moving-dot');
+
+                // 设置路径和动画
                 path.setAttribute('d', curve);
                 path.setAttribute('stroke', 'rgba(255, 255, 255, 0.6)');
                 path.setAttribute('stroke-width', '1.5');
@@ -1633,11 +1783,14 @@ console.log('GoodsType.js loaded');
                 // 设置移动点的样式和动画
                 dot.setAttribute('fill', 'rgba(255, 255, 255, 0.8)');
                 dot.setAttribute('r', '3');
+                dot.setAttribute('filter', 'url(#glow)');
+                dot.style.offsetPath = `path("${curve}")`;
+                dot.style.offsetRotate = '0deg';
                 dot.style.animation = 'moveAlongPath 2s linear infinite';
 
                 // 添加动画样式
-                const style = document.createElement('style');
-                style.textContent = `
+                const animStyle = document.createElement('style');
+                animStyle.textContent = `
                     @keyframes dash {
                         to {
                             stroke-dashoffset: -12;
@@ -1645,36 +1798,84 @@ console.log('GoodsType.js loaded');
                     }
                     @keyframes moveAlongPath {
                         from {
+                            motion-offset: 0%;
                             offset-distance: 0%;
                         }
                         to {
+                            motion-offset: 100%;
                             offset-distance: 100%;
                         }
                     }
+                    #moving-dot {
+                        offset-path: path("${curve}");
+                        animation: moveAlongPath 2s linear infinite;
+                    }
+                    .curve-animation-container {
+                        pointer-events: none;
+                        z-index: 10;
+                    }
+                    .map-popup {
+                        z-index: 11;
+                    }
                 `;
-                svg.appendChild(style);
+                document.head.appendChild(animStyle);
 
-                // 设置点的运动路径
-                dot.style.offsetPath = `path("${curve}")`;
+                // 显示弹出框
+                if (!state.popup) {
+                    state.popup = new mapboxgl.Popup({
+                        closeButton: false,
+                        closeOnClick: false,
+                        className: 'map-popup'
+                    });
+                }
+
+                const value = feature.properties.value;
+                try {
+                    state.popup
+                        .setLngLat(e.lngLat)
+                        .setHTML(`
+                            <div class="map-popup-content">
+                                <h4>${feature.properties.name}</h4>
+                                <p>£${formatToMillions(value)}</p>
+                            </div>
+                        `)
+                        .addTo(state.currentMap);
+                } catch (err) {
+                    console.warn('Error showing popup:', err);
+                }
+            } catch (err) {
+                console.warn('Error creating curve animation:', err);
             }
         });
 
         state.currentMap.on('mouseleave', 'country-fills', () => {
-            // 清除已有的悬停状态代码
+            // 清除悬停状态
             if (state.hoveredFeatureId !== null) {
-                state.currentMap.setFeatureState(
-                    { source: 'countries', id: state.hoveredFeatureId },
-                    { hover: false }
-                );
+                try {
+                    state.currentMap.setFeatureState(
+                        { source: 'countries', id: state.hoveredFeatureId },
+                        { hover: false }
+                    );
+                } catch (err) {
+                    console.warn('Error clearing hover state:', err);
+                }
             }
             state.hoveredFeatureId = null;
 
-            // 清除抛物线动画
-            const svg = svgContainer.querySelector('svg');
-            const path = svg.querySelector('#curve-path');
-            const dot = svg.querySelector('#moving-dot');
-            path.setAttribute('stroke', 'none');
-            dot.setAttribute('fill', 'none');
+            // 移除抛物线动画
+            const path = document.querySelector('#curve-path');
+            const dot = document.querySelector('#moving-dot');
+            if (path) path.setAttribute('stroke', 'none');
+            if (dot) dot.setAttribute('fill', 'none');
+
+            // 移除弹出框
+            if (state.popup) {
+                try {
+                    state.popup.remove();
+                } catch (err) {
+                    console.warn('Error removing popup:', err);
+                }
+            }
         });
 
         state.currentMap.on('load', () => {
@@ -1701,6 +1902,113 @@ console.log('GoodsType.js loaded');
                 });
             }
             */
+        });
+
+        // 添加鼠标事件处理
+        state.currentMap.on('mousemove', 'country-fills', (e) => {
+            if (e.features.length > 0) {
+                const feature = e.features[0];
+                
+                if (state.hoveredFeatureId !== null) {
+                    try {
+                        state.currentMap.setFeatureState(
+                            { source: 'countries', id: state.hoveredFeatureId },
+                            { hover: false }
+                        );
+                    } catch (err) {
+                        console.warn('Error clearing hover state:', err);
+                    }
+                }
+                
+                state.hoveredFeatureId = feature.id;
+                try {
+                    state.currentMap.setFeatureState(
+                        { source: 'countries', id: state.hoveredFeatureId },
+                        { hover: true }
+                    );
+                } catch (err) {
+                    console.warn('Error setting hover state:', err);
+                }
+
+                // 确保popup存在
+                if (!state.popup) {
+                    state.popup = new mapboxgl.Popup({
+                        closeButton: false,
+                        closeOnClick: false,
+                        className: 'map-popup'
+                    });
+                }
+
+                // 显示弹出框
+                const value = feature.properties.value;
+                try {
+                    state.popup
+                        .setLngLat(e.lngLat)
+                        .setHTML(`
+                            <div class="map-popup-content">
+                                <h4>${feature.properties.name}</h4>
+                                <p>£${formatToMillions(value)}</p>
+                            </div>
+                        `)
+                        .addTo(state.currentMap);
+                } catch (err) {
+                    console.warn('Error showing popup:', err);
+                }
+            }
+        });
+
+        state.currentMap.on('mouseleave', 'country-fills', () => {
+            if (state.hoveredFeatureId !== null) {
+                try {
+                    state.currentMap.setFeatureState(
+                        { source: 'countries', id: state.hoveredFeatureId },
+                        { hover: false }
+                    );
+                } catch (err) {
+                    console.warn('Error clearing hover state:', err);
+                }
+            }
+            state.hoveredFeatureId = null;
+            
+            // 安全地移除popup
+            if (state.popup) {
+                try {
+                    state.popup.remove();
+                } catch (err) {
+                    console.warn('Error removing popup:', err);
+                }
+            }
+        });
+
+        // 修改点击事件处理
+        state.currentMap.on('click', 'country-fills', (e) => {
+            if (e.features.length > 0) {
+                const feature = e.features[0];
+                state.selectedCountry = feature.properties.name;
+                
+                if (state.selectedFeatureId !== null) {
+                    try {
+                        state.currentMap.setFeatureState(
+                            { source: 'countries', id: state.selectedFeatureId },
+                            { selected: false }
+                        );
+                    } catch (err) {
+                        console.warn('Error clearing selected state:', err);
+                    }
+                }
+                
+                state.selectedFeatureId = feature.id;
+                try {
+                    state.currentMap.setFeatureState(
+                        { source: 'countries', id: state.selectedFeatureId },
+                        { selected: true }
+                    );
+                } catch (err) {
+                    console.warn('Error setting selected state:', err);
+                }
+                
+                updateTrendChart(state.currentSitcData);
+            }
         });
 
     } catch (err) {
