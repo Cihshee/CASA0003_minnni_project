@@ -3,7 +3,7 @@
 console.log('GoodsType.js loaded');
 
 (function() {
-  const csvPath = 'public/data/Goodstype_full_summary_data_merged.csv';
+  const csvPath = 'data/Goodstype_full_summary_data_merged.csv'; // 删除public前缀
   const flowTypes = [
     'EU - Exports',
     'EU - Imports',
@@ -388,28 +388,128 @@ console.log('GoodsType.js loaded');
 
   // Legend items and colors (should match chart datasets)
   const legendItems = [
-    { label: '0 Food & live animals', color: '#d9534f' },
-    { label: '1 Beverages & tobacco', color: '#f0ad4e' },
-    { label: '2 Crude materials, inedible, except fuels', color: '#bada55' },
-    { label: '3 Mineral fuels, lubricants & related materials', color: '#5cb85c' },
-    { label: '4 Animal & vegetable oils, fats & waxes', color: '#5bc0de' },
-    { label: '5 Chemicals & related products, nes', color: '#428bca' },
-    { label: '6 Manufactured goods classified chiefly by material', color: '#6f42c1' },
-    { label: '7 Machinery & transport equipment', color: '#ab47bc' },
-    { label: '8 Miscellaneous manufactured articles', color: '#ffd600' },
-    { label: "9 Commodities/transactions not class'd elsewhere in SITC", color: '#b0b0b0' }
+    { label: '0 Food & live animals', color: '#d9534f', icon: '0-Food-and-live-animals.png' },
+    { label: '1 Beverages & tobacco', color: '#f0ad4e', icon: '1-Beverages-and-tobacco.png' },
+    { label: '2 Crude materials, inedible, except fuels', color: '#bada55', icon: '2-Crude-materials.png' },
+    { label: '3 Mineral fuels, lubricants & related materials', color: '#5cb85c', icon: '3-Mineral-fuels-lubricants-and-related-materials.png' },
+    { label: '4 Animal & vegetable oils, fats & waxes', color: '#5bc0de', icon: '4-Animal-and-vegetable-oils-fats-and-waxes.png' },
+    { label: '5 Chemicals & related products, nes', color: '#428bca', icon: '5-Chemicals-and-related-products.png' },
+    { label: '6 Manufactured goods classified chiefly by material', color: '#6f42c1', icon: '6-Manufactured-goods-classified-chiefly-by-material.png' },
+    { label: '7 Machinery & transport equipment', color: '#ab47bc', icon: '7-Machinery-and-transport-equipment.png' },
+    { label: '8 Miscellaneous manufactured articles', color: '#ffd600', icon: '8-Miscellaneous-manufactured-articles.png' },
+    { label: "9 Commodities/transactions not class'd elsewhere in SITC", color: '#b0b0b0', icon: '' }
   ];
   function renderLegend() {
     const legend = document.getElementById('goods-summary-legend');
-    legend.innerHTML = legendItems.map((item, idx) =>
-      idx === 9
-        ? `<span class="goods-summary-legend-item">
-             <svg width="28" height="10" style="vertical-align:middle;margin-right:7px;">
-               <line x1="2" y1="5" x2="26" y2="5" stroke="${item.color}" stroke-width="4" stroke-dasharray="5,6"/>
-             </svg>${item.label}
-           </span>`
-        : `<span class="goods-summary-legend-item"><span class="goods-summary-legend-color" style="background:${item.color}"></span>${item.label}</span>`
-    ).join('');
+    
+    // 创建一个整齐的网格布局容器
+    legend.innerHTML = '<div class="goods-summary-legend-grid"></div>';
+    const grid = legend.querySelector('.goods-summary-legend-grid');
+    
+    // 添加网格样式 - 进一步减小行距和内边距，让图例更紧凑
+    grid.style.cssText = `
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 24px; /* 进一步减小行距，从8px改为6px */
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6px; /* 减小内边距，从8px改为6px */
+      margin-top: -30px; /* 使图例更靠近图表，从-20px改为-30px */
+    `;
+    
+    // 为每个图例项创建HTML
+    legendItems.forEach((item, idx) => {
+      const legendItem = document.createElement('div');
+      legendItem.className = 'goods-summary-legend-item';
+      legendItem.setAttribute('data-sitc', idx);
+      
+      // 设置图例项样式 - 进一步减小内边距使其更紧凑
+      legendItem.style.cssText = `
+        display: flex;
+        align-items: center;
+        padding: 2px 5px; /* 进一步减小内边距，从3px 6px改为2px 5px */
+        border-radius: 6px;
+        transition: background-color 0.3s;
+        cursor: pointer;
+      `;
+      
+      // 鼠标悬停效果
+      legendItem.addEventListener('mouseenter', () => {
+        legendItem.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+      });
+      legendItem.addEventListener('mouseleave', () => {
+        legendItem.style.backgroundColor = 'transparent';
+      });
+      
+      // 图标容器 - 减小尺寸
+      const iconContainer = document.createElement('div');
+      iconContainer.className = 'summary-sitc-icon-container';
+      iconContainer.style.cssText = `
+        width: 28px; /* 进一步减小，从30px减小到28px */
+        height: 28px; /* 进一步减小，从30px减小到28px */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 6px; /* 进一步减小，从8px减小到6px */
+        position: relative;
+      `;
+      
+      // 添加图标（只有前9个有图标）
+      if (idx < 9 && item.icon) {
+        const icon = document.createElement('img');
+        icon.src = `/goods-icons/${item.icon}`;
+        icon.alt = `SITC ${idx}`;
+        icon.className = 'summary-sitc-icon';
+        icon.style.cssText = `
+          width: 24px; /* 进一步减小，从28px减小到24px */
+          height: 24px; /* 进一步减小，从28px减小到24px */
+          object-fit: contain;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        `;
+        iconContainer.appendChild(icon);
+      }
+      
+      // 颜色指示器
+      const colorIndicator = document.createElement('span');
+      if (idx === 9) {
+        // 最后一个使用虚线
+        colorIndicator.innerHTML = `
+          <svg width="22" height="8" style="vertical-align:middle;margin-right:4px;">
+            <line x1="2" y1="4" x2="20" y2="4" stroke="${item.color}" stroke-width="3" stroke-dasharray="3,4"/>
+          </svg>
+        `;
+      } else {
+        colorIndicator.className = 'goods-summary-legend-color';
+        colorIndicator.style.cssText = `
+          display: inline-block;
+          width: 10px; /* 进一步减小，从12px减小到10px */
+          height: 10px; /* 进一步减小，从12px减小到10px */
+          border-radius: 50%;
+          background: ${item.color};
+          margin-right: 5px; /* 进一步减小，从6px减小到5px */
+        `;
+      }
+      
+      // 文本标签
+      const label = document.createElement('span');
+      label.textContent = item.label;
+      label.style.cssText = `
+        font-size: 12px; /* 进一步减小，从13px减小到12px */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      `;
+      
+      // 组装图例项
+      if (idx < 9) {
+        legendItem.appendChild(iconContainer);
+      }
+      legendItem.appendChild(colorIndicator);
+      legendItem.appendChild(label);
+      
+      // 添加到网格
+      grid.appendChild(legendItem);
+    });
   }
   renderLegend();
 
@@ -487,11 +587,11 @@ console.log('GoodsType.js loaded');
     btnsDiv.style.display = 'flex';
     btnsDiv.style.flexDirection = 'column';
     btnsDiv.style.alignItems = 'center';
-    btnsDiv.style.marginTop = '32px';
+    btnsDiv.style.marginTop = '15px'; // 减小与图表的距离，从32px改为15px
     btnsDiv.style.opacity = '0';
     btnsDiv.style.transform = 'translateY(30px)';
     btnsDiv.innerHTML = `
-      <div class="summary-btn-row" style="display:flex; gap:16px; margin-bottom:8px;">
+      <div class="summary-btn-row" style="display:flex; gap:16px; margin-bottom:6px;">
         <button class="summary-explore-btn" data-flow="EU - Exports" data-idx="0">UK Export <span class="arrow">⟶</span><br>EU</button>
         <button class="summary-explore-btn" data-flow="EU - Imports" data-idx="1">UK Import <span class="arrow">⟵</span><br>EU</button>
         <button class="summary-explore-btn" data-flow="Non EU - Exports" data-idx="2">UK Export <span class="arrow">⟶</span><br>Non-EU</button>
@@ -771,28 +871,28 @@ console.log('GoodsType.js loaded');
                 .attr('x', cx + 20)
                 .attr('y', cy - 48)
                 .attr('width', 340)
-                .attr('height', 70)
+                .attr('height', 99)
                 .style('opacity', annOpacity)
                 .style('transform', `scale(${annScale})`)
                 .style('transition', 'opacity 0.7s, transform 0.7s')
-                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2021:</b> Continued supply chain challenges affecting imports.</div>`);
+                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2021:</b> Global supply chain disruptions, the electric vehicle transition and Brexit are intertwined with political situation.</div>`);
             }
           }
-          // 'Non EU - Exports'/2022/09  
+           // 'Non EU - Exports'/2020/09  
           if (currentFlow === 'Non EU - Exports' && idx === 9) {
-            const year2022Idx = years.indexOf(2022);
-            const frame2022 = Math.round((year2022Idx / (years.length - 1)) * totalFrames);
-            if (frame >= frame2022) {
-              const pt2022 = line.values[year2022Idx];
-              const cx = x(pt2022.year);
-              const cy = y(pt2022.value);
+            const year2020Idx = years.indexOf(2020);
+            const frame2020 = Math.round((year2020Idx / (years.length - 1)) * totalFrames);
+            if (frame >= frame2020) {
+              const pt2020 = line.values[year2020Idx];
+              const cx = x(pt2020.year);
+              const cy = y(pt2020.value);
               
-              const uniqueId = 'export-2022-highlight';
+              const uniqueId = 'export-2020-highlight';
               
               svg.selectAll(`.${uniqueId}`).remove();
               
               svg.append('circle')
-                .attr('class', `d3-highlight-2022 ${uniqueId}`)
+                .attr('class', `d3-highlight-2020 ${uniqueId}`)
                 .attr('cx', cx)
                 .attr('cy', cy)
                 .attr('r', 18)
@@ -802,20 +902,20 @@ console.log('GoodsType.js loaded');
                 .attr('stroke-dasharray', '6,6')
                 .attr('filter', 'url(#d3-glow)');
               
-              const annProgress = Math.max(0, Math.min(1, (frame - frame2022) / 60));
+              const annProgress = Math.max(0, Math.min(1, (frame - frame2020) / 60));
               const annOpacity = annProgress;
               const annScale = 0.92 + 0.08 * annProgress;
               
               svg.append('foreignObject')
-                .attr('class', `d3-annotation-2022 ${uniqueId}`)
+                .attr('class', `d3-annotation-2020 ${uniqueId}`)
                 .attr('x', cx + 20)
                 .attr('y', cy - 48)
                 .attr('width', 340)
-                .attr('height', 70)
+                .attr('height', 95)
                 .style('opacity', annOpacity)
                 .style('transform', `scale(${annScale})`)
                 .style('transition', 'opacity 0.7s, transform 0.7s')
-                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2022:</b> Geopolitical tensions and inflation reshape global trade dynamics.</div>`);
+                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2020:</b> Brexit and COVID-19 disruptions triggered a surge in unclassified trade commodities.</div>`);
             }
           } 
           // 'Non EU - Imports'/2018/09  
@@ -856,25 +956,22 @@ console.log('GoodsType.js loaded');
                 .style('transition', 'opacity 0.7s, transform 0.7s')
                 .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2018:</b> Global trade war uncertainties reshape global commerce.</div>`);
             }
-          }
-          // 'Non EU - Imports'/2020/09  
-          if (currentFlow === 'Non EU - Imports' && idx === 9) {
-            const year2020Idx = years.indexOf(2020);
-            const frame2020 = Math.round((year2020Idx / (years.length - 1)) * totalFrames);
-            if (frame >= frame2020) {
-              const pt2020 = line.values[year2020Idx];
-              const cx = x(pt2020.year);
-              const cy = y(pt2020.value);
+          }   
+          // 'Non EU - Imports'/2022/03  
+          if (currentFlow === 'Non EU - Imports' && idx === 3) {
+            const year2022Idx = years.indexOf(2022);
+            const frame2022 = Math.round((year2022Idx / (years.length - 1)) * totalFrames);
+            if (frame >= frame2022) {
+              const pt2022 = line.values[year2022Idx];
+              const cx = x(pt2022.year);
+              const cy = y(pt2022.value);
               
-              // Unique identifier to prevent duplicate rendering
-              const uniqueId = 'import-2020-highlight';
-              
-              // Remove any existing elements with this unique ID
+              const uniqueId = 'import-2022-highlight';
               svg.selectAll(`.${uniqueId}`).remove();
               
               // Highlight circle
               svg.append('circle')
-                .attr('class', `d3-highlight-2020 ${uniqueId}`)
+                .attr('class', `d3-highlight-2022 ${uniqueId}`)
                 .attr('cx', cx)
                 .attr('cy', cy)
                 .attr('r', 18)
@@ -884,23 +981,22 @@ console.log('GoodsType.js loaded');
                 .attr('stroke-dasharray', '6,6')
                 .attr('filter', 'url(#d3-glow)');
               
-              // 2020 annotation fade/scale
-              const annProgress = Math.max(0, Math.min(1, (frame - frame2020) / 60));
+              const annProgress = Math.max(0, Math.min(1, (frame - frame2022) / 60));
               const annOpacity = annProgress;
               const annScale = 0.92 + 0.08 * annProgress;
               
               svg.append('foreignObject')
-                .attr('class', `d3-annotation-2020 ${uniqueId}`)
+                .attr('class', `d3-annotation-2022 ${uniqueId}`)
                 .attr('x', cx + 20)
-                .attr('y', cy - 48)
+                .attr('y', cy - 14)
                 .attr('width', 340)
-                .attr('height', 70)
+                .attr('height', 90)
                 .style('opacity', annOpacity)
                 .style('transform', `scale(${annScale})`)
                 .style('transition', 'opacity 0.7s, transform 0.7s')
-                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2020:</b> Pandemic-induced global trade disruption and economic shock.</div>`);
+                .html(`<div style=\"background:rgba(30,30,30,0.92);color:#fff;padding:14px 20px 10px 20px;border-radius:12px;font-size:15px;font-family:Montserrat,Arial,sans-serif;box-shadow:0 2px 12px #0006;line-height:1.6;max-width:320px;word-break:break-word;\"><b>2022:</b> Due to the Russia-Ukraine conflict, energy imports underwent rapid restructuring amid geopolitical tensions.</div>`);
             }
-          }    
+          }
         });
 
         if (frame < totalFrames) {
@@ -922,7 +1018,7 @@ console.log('GoodsType.js loaded');
           setTimeout(() => {
               promptDiv.style.opacity = '1';
               promptDiv.style.transform = 'translateY(0)';
-            }, 80);
+            }, 800);
             // 2. 再弹出按钮
             btnsDiv.style.display = 'flex';
             btnsDiv.style.opacity = '0';
@@ -1421,6 +1517,9 @@ console.log('GoodsType.js loaded');
         // Clear the map container
         mapDiv.innerHTML = '';
         
+        // 创建SITC图标栏
+        createSitcIconBar();
+        
         window.currentMapInstance = new mapboxgl.Map({
             container: 'goods-map',
             style: MAPBOX_STYLE,
@@ -1447,6 +1546,24 @@ console.log('GoodsType.js loaded');
             } else {
                 state.currentMap.once('load', updateVisualizationsExceptTrend);
             }
+            
+            // 不再触发第二阶段动画
+            /*
+            // 检查是否需要触发第二阶段动画
+            console.log('Map style loaded, checking for animation flags:', {
+                sitcIconsMovedToSummary: window.sitcIconsMovedToSummary,
+                sitcSecondPhaseStarted: window.sitcSecondPhaseStarted
+            });
+            
+            // 如果第一阶段动画已完成但第二阶段尚未开始，设置第二阶段动画
+            if (window.sitcIconsMovedToSummary && !window.sitcSecondPhaseStarted) {
+                console.log('First phase completed, setting up second phase animation');
+                const flyingContainer = document.querySelector('.flying-sitc-icons-container');
+                if (flyingContainer) {
+                    setupSecondPhaseAnimation(flyingContainer);
+                }
+            }
+            */
         });
 
         // 添加SVG容器
@@ -1558,6 +1675,32 @@ console.log('GoodsType.js loaded');
             const dot = svg.querySelector('#moving-dot');
             path.setAttribute('stroke', 'none');
             dot.setAttribute('fill', 'none');
+        });
+
+        state.currentMap.on('load', () => {
+            console.log('Map fully loaded, checking animation state');
+            
+            // 不再触发第二阶段动画
+            /*
+            // 检查是否需要触发第二阶段动画
+            if (window.sitcIconsMovedToSummary && !window.sitcSecondPhaseStarted) {
+                console.log('First phase already completed, trying to start second phase');
+                
+                // 查找飞行图标容器
+                const flyingContainer = document.querySelector('.flying-sitc-icons-container');
+                if (flyingContainer) {
+                    console.log('Found flying container, setting up second phase animation');
+                    setupSecondPhaseAnimation(flyingContainer);
+                } else {
+                    console.warn('No flying container found for second phase animation');
+                }
+            } else {
+                console.log('Animation state not ready for second phase:', {
+                    sitcIconsMovedToSummary: window.sitcIconsMovedToSummary,
+                    sitcSecondPhaseStarted: window.sitcSecondPhaseStarted
+                });
+            }
+            */
         });
 
     } catch (err) {
@@ -2192,7 +2335,7 @@ console.log('GoodsType.js loaded');
           // 保存当前数据到state中
           state.currentSitcData = sitcData;
           
-          // 更新所有可视化
+          // 同时更新地图和图表
           await Promise.all([
             updateMapData(sitcData),
             updateCountriesChart(sitcData)
@@ -2290,10 +2433,35 @@ console.log('GoodsType.js loaded');
     }
   }
   
-  // 新增：设置滚动观察器
+  // 修改：设置滚动观察器，进一步延迟动画触发时机
   function setupScrollObserver() {
+    // 确保全局动画标志被正确初始化
+    window.sitcAnimationTriggered = window.sitcAnimationTriggered || false;
+    window.sitcIconsMovedToSummary = window.sitcIconsMovedToSummary || false;
+    
+    // 创建观察器来检测SITC介绍图片的可见性，调整阈值使其滚动更多才触发
+    const introObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // 当SITC介绍图片完全滚过视窗，设置更高阈值
+            if (entry.isIntersecting && !window.sitcAnimationTriggered && entry.intersectionRatio > 0.8) {
+                // 进一步延迟触发动画，让用户看到更完整的滚动过程
+                setTimeout(() => {
+                    console.log('Triggering first phase animation: intro to summary');
+                    window.sitcAnimationTriggered = true;  // 标记动画已触发，防止重复触发
+                    triggerSITCIconsAnimation();
+                }, 800); // 延长延迟时间，从500ms改为800ms
+            }
+        });
+    }, { threshold: [0.2, 0.4, 0.6, 0.8, 0.9] });  // 增加更多阈值，更精确控制触发时机
+    
+    // 开始观察SITC图标行
+    const sitcIconsRow = document.querySelector('#goods-type-intro .sitc-icons-row');
+    if (sitcIconsRow) {
+        introObserver.observe(sitcIconsRow);
+    }
+    
     // 创建观察器来检测商品类型部分的可见性
-    const observer = new IntersectionObserver((entries) => {
+    const detailObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             // 当商品类型部分进入视窗
             if (entry.isIntersecting && !state.dataLoaded) {
@@ -2302,16 +2470,25 @@ console.log('GoodsType.js loaded');
                 // 加载并显示第一个物品数据
                 loadInitialData();
                 
+                // 如果动画还没触发，延迟触发动画（备用方案）
+                if (!window.sitcAnimationTriggered) {
+                    setTimeout(() => {
+                        console.log('Triggering first phase animation (backup): intro to summary');
+                        window.sitcAnimationTriggered = true;
+                        triggerSITCIconsAnimation();
+                    }, 1200); // 更长的延迟，从800ms改为1200ms
+                }
+                
                 // 完成后取消观察
-                observer.disconnect();
+                detailObserver.disconnect();
             }
         });
-    }, { threshold: 0.2 });  // 当20%的元素可见时触发
+    }, { threshold: 0.4 });  // 增加阈值，从0.3改为0.4
     
     // 开始观察商品类型详情容器
     const detailContainer = document.getElementById('goods-type-detail-container');
     if (detailContainer) {
-        observer.observe(detailContainer);
+        detailObserver.observe(detailContainer);
     }
   }
   
@@ -2623,27 +2800,28 @@ console.log('GoodsType.js loaded');
     introText.innerHTML = `
       <div class=\"goods-type-transition-text fadein-block\" style=\"font-size:1.1em !important;color:#fff;margin-bottom:64px;max-width:1000px;margin-left:auto;margin-right:auto;text-align:center;line-height:1.6;\">Beyond fluctuations in trade volumes with specific countries and regions, Brexit has had complex effects on particular types of goods. From the SITC 1 classification perspective...</div>
       
-      <!-- SITC图标行 -->
-      <div class=\"sitc-icons-row fadein-block\" style=\"margin:30px auto 50px auto;\">
-        <button class=\"sitc-icon-btn\" data-sitc=\"0\" title=\"Food & live animals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/0-Food-and-live-animals.png\" alt=\"Food & live animals\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"1\" title=\"Beverages & tobacco\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/1-Beverages-and-tobacco.png\" alt=\"Beverages & tobacco\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"2\" title=\"Crude materials\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/2-Crude-materials.png\" alt=\"Crude materials\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"3\" title=\"Mineral fuels\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png\" alt=\"Mineral fuels\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"4\" title=\"Animal & vegetable oils\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png\" alt=\"Animal & vegetable oils\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"5\" title=\"Chemicals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/5-Chemicals-and-related-products.png\" alt=\"Chemicals\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"6\" title=\"Manufactured goods\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png\" alt=\"Manufactured goods\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"7\" title=\"Machinery & transport\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/7-Machinery-and-transport-equipment.png\" alt=\"Machinery & transport\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"8\" title=\"Miscellaneous articles\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/8-Miscellaneous-manufactured-articles.png\" alt=\"Miscellaneous manufactured articles\"></button>
-      </div>
-      
-      <div class=\"fadein-block\" style=\"width:100%;margin-bottom:54px;\">  
-        <h2 style=\"font-size:1.15em;font-weight:700;margin-bottom:14px;color:#fff;letter-spacing:1px;\">SITC1 Introduction</h2>
+      <div class=\"fadein-block\" style=\"width:100%;margin-bottom:24px;\">  
+        <h1 style=\"font-size:1.8em;font-weight:700;margin-bottom:40px;color:#fff;letter-spacing:1.2px;text-align:center;text-transform:uppercase;padding:10px 0;line-height:1.4;text-shadow:0 2px 10px rgba(33,150,243,0.3);\">Brexit's Impact on Trade by <span style=\"color:rgba(79, 195, 247, 0.75);\">SITC Product Categories</span></h1>
+        <h2 style=\"font-size:1.2em;font-weight:600;margin-bottom:18px;color:rgba(79, 195, 247, 0.75);letter-spacing:1px;text-align:center;border-bottom:1px solid rgba(79, 195, 247, 0.25);padding-bottom:10px;display:inline-block;margin-left:auto;margin-right:auto;\">SITC1 Introduction</h2>
         <div style=\"font-size:1.05em;max-width:1000px;margin:0 auto 20px auto;line-height:1.6;color:#fff;\">
           The Standard International Trade Classification (SITC) is a United Nations system designed to classify traded products to enable international comparison of trade data. SITC1 is the first-level broader classification, dividing goods into 10 main categories based on material type, use, and processing stage.
         </div>
         <div style=\"max-width:1000px;margin:0 auto 0 auto;font-size:0.92em;font-style:italic;color:rgba(255,255,255,0.38);line-height:1.5;text-align:center;\">
           Source: <a href=\"https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Standard_international_trade_classification_(SITC)\" target=\"_blank\" style=\"color:#4fc3f7;text-decoration:underline;\">Eurostat, 'Standard international trade classification (SITC)'</a>
         </div>
+      </div>
+      
+      <!-- SITC图标行 -->
+      <div class=\"sitc-icons-row fadein-block\" style=\"margin:50px auto 40px auto;\">
+        <button class=\"sitc-icon-btn\" data-sitc=\"0\" title=\"Food & live animals\"><img src=\"/goods-icons/0-Food-and-live-animals.png\" alt=\"Food & live animals\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"1\" title=\"Beverages & tobacco\"><img src=\"/goods-icons/1-Beverages-and-tobacco.png\" alt=\"Beverages & tobacco\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"2\" title=\"Crude materials\"><img src=\"/goods-icons/2-Crude-materials.png\" alt=\"Crude materials\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"3\" title=\"Mineral fuels\"><img src=\"/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png\" alt=\"Mineral fuels\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"4\" title=\"Animal & vegetable oils\"><img src=\"/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png\" alt=\"Animal & vegetable oils\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"5\" title=\"Chemicals\"><img src=\"/goods-icons/5-Chemicals-and-related-products.png\" alt=\"Chemicals\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"6\" title=\"Manufactured goods\"><img src=\"/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png\" alt=\"Manufactured goods\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"7\" title=\"Machinery & transport\"><img src=\"/goods-icons/7-Machinery-and-transport-equipment.png\" alt=\"Machinery & transport\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"8\" title=\"Miscellaneous articles\"><img src=\"/goods-icons/8-Miscellaneous-manufactured-articles.png\" alt=\"Miscellaneous manufactured articles\"></button>
       </div>
     `;
     introDiv.appendChild(introText);
@@ -2839,7 +3017,7 @@ console.log('GoodsType.js loaded');
     // 动画：滚动出现
     setTimeout(()=>{
       const fadeBlocks = introDiv.querySelectorAll('.fadein-block');
-      // fadeBlocks: [0]=过渡文字, [1]=图标行, [2]=标题+desc, [3]=carousel, [4]=descDiv
+      // fadeBlocks: [0]=过渡文字, [1]=SITC介绍段落, [2]=图标行, [3]=carousel, [4]=descDiv
       // 让carousel和descDiv同时出现
       const stagger = 0.28;
       const fastStagger = 0.18;
@@ -2984,4 +3162,671 @@ console.log('GoodsType.js loaded');
       }
     }, 1000); // 给DOM一点时间加载
   });
+
+  // 新增：SITC图标飞行动画函数
+  function triggerSITCIconsAnimation() {
+    // 获取intro页面的SITC图标
+    const introIcons = document.querySelectorAll('#goods-type-intro .sitc-icon-btn');
+    if (!introIcons || introIcons.length === 0) return;
+    
+    // 删除提示框代码，不再显示"Moving icons to summary"提示
+    /*
+    // 在屏幕中央显示阶段提示
+    const phaseIndicator = document.createElement('div');
+    phaseIndicator.className = 'animation-phase-indicator';
+    phaseIndicator.textContent = 'Moving icons to summary';
+    phaseIndicator.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(33, 150, 243, 0.4); 
+      color: #ffffff;
+      padding: 15px 25px; 
+      border-radius: 20px;
+      font-size: 16px;
+      z-index: 10000;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    `;
+    document.body.appendChild(phaseIndicator);
+    
+    // 显示提示
+    setTimeout(() => {
+      phaseIndicator.style.opacity = '1';
+      
+      // 隐藏提示
+      setTimeout(() => {
+        phaseIndicator.style.opacity = '0';
+        setTimeout(() => phaseIndicator.remove(), 500);
+      }, 1500);
+    }, 10);
+    */
+    
+    // 创建固定在视窗中的图标容器 - 修改为fixed定位，跟随视口
+    const flyingIconsContainer = document.createElement('div');
+    flyingIconsContainer.className = 'flying-sitc-icons-container';
+    flyingIconsContainer.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    `;
+    document.body.appendChild(flyingIconsContainer);
+    
+    // 创建一个标志来记录图标是否已经移动到summary页
+    window.sitcIconsMovedToSummary = false;
+    
+    // 创建向下流动的路径点
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    // 获取summary页面的图例位置
+    const summaryLegendIcons = document.querySelectorAll('.goods-summary-legend-item');
+    
+    // 检查summary图例是否存在
+    if (!summaryLegendIcons || summaryLegendIcons.length === 0) {
+      console.warn('Summary legend items not found, using default animation');
+      // 使用默认的动画路径
+      performDefaultAnimation();
+      return;
+    }
+    
+    // 存储各个图标的引用以便后续更新位置
+    const flyingIcons = [];
+    const iconTargets = [];
+    
+    // 添加滚动事件监听器来更新图标位置
+    const updateIconPositions = () => {
+      // 对每个飞行中的图标进行位置更新
+      flyingIcons.forEach((icon, idx) => {
+        // 如果该图标还没有完成动画（透明度不为0）
+        if (icon.style.opacity !== '0') {
+          const target = iconTargets[idx];
+          if (target && target.summaryTarget) {
+            // 获取最新的目标位置
+            const summaryTarget = target.summaryTarget;
+            const summaryIconContainer = summaryTarget.querySelector('.summary-sitc-icon-container');
+            const summaryIcon = summaryTarget.querySelector('.summary-sitc-icon');
+            
+            // 获取更新后的rect
+            let updatedRect;
+            if (summaryIcon) {
+              updatedRect = summaryIcon.getBoundingClientRect();
+            } else if (summaryIconContainer) {
+              updatedRect = summaryIconContainer.getBoundingClientRect();
+            } else {
+              updatedRect = summaryTarget.getBoundingClientRect();
+            }
+            
+            // 如果图标已经很接近目标或者处于动画最后阶段
+            if (icon.classList.contains('near-target')) {
+              // 设置图标大小为目标图标大小
+              const iconSize = Math.min(updatedRect.width, updatedRect.height);
+              // 精确定位到图标中心
+              icon.style.top = `${updatedRect.top + (updatedRect.height - iconSize) / 2}px`;
+              icon.style.left = `${updatedRect.left + (updatedRect.width - iconSize) / 2}px`;
+            }
+          }
+        }
+      });
+    };
+    
+    // 添加滚动监听器
+    window.addEventListener('scroll', debounce(updateIconPositions, 10), { passive: true });
+    
+    // 执行第一阶段动画：移动到summary页图例
+    introIcons.forEach((icon, index) => {
+      if (index >= 9) return; // 只处理前9个图标
+      
+      // 获取原始图标的位置
+      const iconRect = icon.getBoundingClientRect();
+      const img = icon.querySelector('img');
+      if (!img) return;
+      
+      // 创建飞行图标
+      const flyingIcon = document.createElement('div');
+      flyingIcon.className = 'flying-sitc-icon';
+      flyingIcon.setAttribute('data-sitc-index', index);
+      flyingIcon.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+      flyingIcon.style.cssText = `
+        position: absolute;
+        top: ${iconRect.top}px;
+        left: ${iconRect.left}px;
+        width: ${iconRect.width}px;
+        height: ${iconRect.height}px;
+        z-index: 10000;
+        pointer-events: none;
+        transition: all 0s;
+        opacity: 0;
+        filter: drop-shadow(0 0 5px rgba(33, 150, 243, 0.3));
+      `;
+      flyingIconsContainer.appendChild(flyingIcon);
+      flyingIcons.push(flyingIcon);
+      
+      // 找到对应的summary图例项
+      const summaryTarget = summaryLegendIcons[index];
+      iconTargets.push({ 
+        summaryTarget,
+        originalIconRect: iconRect 
+      });
+      
+      // 每个图标的延迟时间 - 更加有序的顺序延迟，增加间隔时间
+      const startDelay = index * 100; // 降低延迟从400ms到300ms
+      
+      // 第一阶段：移动到summary页的图例
+      setTimeout(() => {
+        // 显示图标
+        flyingIcon.style.opacity = '1';
+        
+        if (!summaryTarget) return;
+        
+        const summaryIconContainer = summaryTarget.querySelector('.summary-sitc-icon-container');
+        const summaryIcon = summaryTarget.querySelector('.summary-sitc-icon');
+        // 获取更精确的目标位置 - 优先使用icon图片的位置
+        let targetRect;
+        if (summaryIcon) {
+          targetRect = summaryIcon.getBoundingClientRect();
+        } else if (summaryIconContainer) {
+          targetRect = summaryIconContainer.getBoundingClientRect();
+        } else {
+          targetRect = summaryTarget.getBoundingClientRect();
+        }
+        
+        // 创建中间点 - 直接下落到图例（去除可能导致超过的随机偏移）
+        const midPoint1X = iconRect.left + (targetRect.left - iconRect.left) * 0.4;
+        // 确保中间点Y坐标直接朝向目标，不会超过
+        const midPoint1Y = iconRect.top + (targetRect.top - iconRect.top) * 0.4;
+        
+        const midPoint2X = iconRect.left + (targetRect.left - iconRect.left) * 0.7;
+        // 确保第二个中间点也直接朝向目标
+        const midPoint2Y = iconRect.top + (targetRect.top - iconRect.top) * 0.7;
+        
+        // 减小图标大小到原来的80%-95%，减少缩放幅度让运动更平滑
+        const scale = 0.8 + Math.random() * 0.15;
+        
+        // 第一段动画
+        setTimeout(() => {
+          flyingIcon.style.transition = `all 0.7s cubic-bezier(0.2, 0.1, 0.2, 0.3)`; // 进一步降低到0.7s，加快动画速度
+          flyingIcon.style.top = `${midPoint1Y}px`;
+          flyingIcon.style.left = `${midPoint1X}px`;
+          flyingIcon.style.transform = `scale(${scale}) rotate(${Math.random() * 4 - 2}deg)`; // 减小旋转角度
+          
+          // 第二段动画
+          setTimeout(() => {
+            flyingIcon.style.transition = `all 0.7s cubic-bezier(0.4, 0.1, 0.4, 0.5)`; // 进一步降低到0.7s，加快动画速度
+            flyingIcon.style.top = `${midPoint2Y}px`;
+            flyingIcon.style.left = `${midPoint2X}px`;
+            flyingIcon.style.transform = `scale(${scale}) rotate(${Math.random() * 2 - 1}deg)`; // 进一步减小旋转角度
+            
+            // 延长每段动画之间的间隔
+            setTimeout(() => {
+              // 添加标记，表示图标已接近目标
+              flyingIcon.classList.add('near-target');
+              
+              flyingIcon.style.transition = `all 0.7s cubic-bezier(0.2, 0.8, 0.2, 0.5)`; // 进一步降低到0.7s，加快动画速度
+              // 获取最新的位置（防止因滚动导致位置变化）
+              const updatedRect = summaryIcon ? 
+                summaryIcon.getBoundingClientRect() : 
+                (summaryIconContainer ? 
+                  summaryIconContainer.getBoundingClientRect() : 
+                  summaryTarget.getBoundingClientRect());
+              
+              // 设置图标大小为目标图标大小
+              const iconSize = Math.min(updatedRect.width, updatedRect.height);
+              flyingIcon.style.width = `${iconSize}px`;
+              flyingIcon.style.height = `${iconSize}px`;
+              
+              // 精确定位到图标中心
+              flyingIcon.style.top = `${updatedRect.top + (updatedRect.height - iconSize) / 2}px`;
+              flyingIcon.style.left = `${updatedRect.left + (updatedRect.width - iconSize) / 2}px`;
+              flyingIcon.style.transform = 'scale(1) rotate(0deg)';
+              
+              // 延长到达后的延迟
+              setTimeout(() => {
+                // 高亮summary图例图标，创建一个更柔和的效果
+                const summaryIcon = summaryTarget.querySelector('.summary-sitc-icon');
+                if (summaryIcon) {
+                  summaryIcon.style.filter = 'drop-shadow(0 0 8px rgba(33, 150, 243, 0.7))';
+                  summaryIcon.style.transform = 'scale(1.08)';
+                  summaryIcon.style.transition = 'all 0.4s ease-out';
+                  
+                  // 恢复正常
+                  setTimeout(() => {
+                    summaryIcon.style.filter = '';
+                    summaryIcon.style.transform = '';
+                  }, 800); // 从500增加到800
+                }
+                
+                // 隐藏飞行图标
+                flyingIcon.style.opacity = '0';
+                
+                // 如果是最后一个图标，设置标志但不启动第二阶段动画
+                if (index === 8) {
+                  // 确保所有图标完成移动到summary后再设置标志，并延迟一点时间
+                  setTimeout(() => {
+                    console.log('First phase animation completed, icons moved to summary');
+                    window.sitcIconsMovedToSummary = true;
+                    
+                    // 动画完成后移除滚动监听器
+                    window.removeEventListener('scroll', updateIconPositions);
+                    
+                    // 清空引用数组
+                    flyingIcons.length = 0;
+                    iconTargets.length = 0;
+                    
+                    // 延迟移除容器
+                    setTimeout(() => {
+                      if (flyingIconsContainer && flyingIconsContainer.parentNode) {
+                        flyingIconsContainer.parentNode.removeChild(flyingIconsContainer);
+                      }
+                    }, 1000);
+                  }, 500); // 从300增加到500
+                }
+              }, 1000); // 从1400降低到1000，加快动画速度
+            }, 700); // 从1000降低到700，加快动画速度
+          }, 700); // 从1000降低到700，加快动画速度
+        }, 200); // 保持不变
+      }, startDelay);
+    });
+    
+    // 设置第二阶段动画
+    // function setupSecondPhaseAnimation(container) { ... }
+    
+    // 删除第二阶段动画执行函数
+    // function performSecondPhaseAnimation(container) { ... }
+    
+    // 备用：默认动画，直接移动到地图页图标
+    function performDefaultAnimation() {
+      // 获取目标区域（地图区域）的大致位置
+      const mapArea = document.getElementById('goods-type-detail-container');
+      const mapAreaRect = mapArea ? mapArea.getBoundingClientRect() : { top: windowHeight * 0.7, left: 0, right: windowWidth };
+      
+      // 创建向下流动的路径点
+      const pathPoints = [];
+      
+      // 第一行：靠近顶部
+      pathPoints.push({ x: windowWidth * 0.2, y: windowHeight * 0.1 + Math.random() * 50 });
+      pathPoints.push({ x: windowWidth * 0.5, y: windowHeight * 0.13 + Math.random() * 50 });
+      pathPoints.push({ x: windowWidth * 0.8, y: windowHeight * 0.15 + Math.random() * 50 });
+      
+      // 第二行：中间区域
+      pathPoints.push({ x: windowWidth * 0.3, y: windowHeight * 0.3 + Math.random() * 50 });
+      pathPoints.push({ x: windowWidth * 0.6, y: windowHeight * 0.33 + Math.random() * 50 });
+      pathPoints.push({ x: windowWidth * 0.9, y: windowHeight * 0.35 + Math.random() * 50 });
+      
+      // 第三行：地图上方
+      pathPoints.push({ x: windowWidth * 0.2, y: mapAreaRect.top - 100 + Math.random() * 50 });
+      pathPoints.push({ x: windowWidth * 0.5, y: mapAreaRect.top - 80 + Math.random() * 50 });
+      pathPoints.push({ x: windowWidth * 0.8, y: mapAreaRect.top - 60 + Math.random() * 50 });
+      
+      // 第四行：地图区域
+      pathPoints.push({ x: windowWidth * 0.3, y: mapAreaRect.top + 50 + Math.random() * 50 });
+      pathPoints.push({ x: windowWidth * 0.6, y: mapAreaRect.top + 70 + Math.random() * 50 });
+      pathPoints.push({ x: windowWidth * 0.2, y: mapAreaRect.top + 100 + Math.random() * 50 });
+      
+      // 为每个图标创建一个克隆，用于动画
+      introIcons.forEach((icon, index) => {
+        if (index >= 9) return; // 只处理前9个图标
+        
+        // 获取原始图标的位置
+        const iconRect = icon.getBoundingClientRect();
+        const img = icon.querySelector('img');
+        if (!img) return;
+        
+        // 创建飞行图标
+        const flyingIcon = document.createElement('div');
+        flyingIcon.className = 'flying-sitc-icon';
+        flyingIcon.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+        flyingIcon.style.cssText = `
+          position: absolute;
+          top: ${iconRect.top}px;
+          left: ${iconRect.left}px;
+          width: ${iconRect.width}px;
+          height: ${iconRect.height}px;
+          z-index: 10000;
+          pointer-events: none;
+          transition: all 0s;
+          opacity: 0;
+          filter: drop-shadow(0 0 5px rgba(33, 150, 243, 0.3));
+        `;
+        flyingIconsContainer.appendChild(flyingIcon);
+        
+        // 延迟启动动画
+        const baseDelay = index * 180;
+        const randomDelay = Math.random() * 200;
+        const startDelay = baseDelay + randomDelay;
+        
+        setTimeout(() => {
+          // 先显示出来
+          flyingIcon.style.opacity = '1';
+          
+          // 每个图标选择3个路径点，确保是从上到下的顺序
+          const firstSegmentIdx = Math.floor(Math.random() * 3); // 0-2
+          const secondSegmentIdx = 3 + Math.floor(Math.random() * 3); // 3-5
+          const thirdSegmentIdx = 6 + Math.floor(Math.random() * 6); // 6-11
+          
+          const pathIndexes = [firstSegmentIdx, secondSegmentIdx, thirdSegmentIdx];
+          
+          // 动画总时长
+          const totalAnimationTime = 2500 + Math.random() * 800;
+          const segmentTime = totalAnimationTime / 3;
+          
+          // 第一段动画
+          setTimeout(() => {
+            const pathPoint = pathPoints[pathIndexes[0]];
+            const offsetX = (Math.random() - 0.5) * 100;
+            const offsetY = (Math.random() - 0.5) * 40;
+            
+            // 减小图标大小
+            const scale = 0.6 + Math.random() * 0.2;
+            
+            flyingIcon.style.transition = `all ${segmentTime/1000}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
+            flyingIcon.style.top = `${pathPoint.y + offsetY}px`;
+            flyingIcon.style.left = `${pathPoint.x + offsetX}px`;
+            flyingIcon.style.transform = `scale(${scale}) rotate(${Math.random() * 20 - 10}deg)`;
+            
+            // 第二段动画
+            setTimeout(() => {
+              const nextPoint = pathPoints[pathIndexes[1]];
+              const nextOffsetX = (Math.random() - 0.5) * 80;
+              const nextOffsetY = (Math.random() - 0.5) * 30;
+              
+              flyingIcon.style.transition = `all ${segmentTime/1000}s cubic-bezier(0.4, 0.1, 0.4, 1)`;
+              flyingIcon.style.top = `${nextPoint.y + nextOffsetY}px`;
+              flyingIcon.style.left = `${nextPoint.x + nextOffsetX}px`;
+              
+              // 第三段动画
+              setTimeout(() => {
+                const lastPoint = pathPoints[pathIndexes[2]];
+                const lastOffsetX = (Math.random() - 0.5) * 50;
+                const lastOffsetY = (Math.random() - 0.5) * 20;
+                
+                flyingIcon.style.transition = `all ${segmentTime/1000}s cubic-bezier(0.4, 0.2, 0.4, 1)`;
+                flyingIcon.style.top = `${lastPoint.y + lastOffsetY}px`;
+                flyingIcon.style.left = `${lastPoint.x + lastOffsetX}px`;
+                
+                // 飞向目标图标
+                setTimeout(() => {
+                  const targetIconSelector = `.goods-type-icon-btn[data-type="${index}"]`;
+                  const targetIcons = document.querySelectorAll(targetIconSelector);
+                  
+                  let targetIcon = null;
+                  for (let i = 0; i < targetIcons.length; i++) {
+                    const rect = targetIcons[i].getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0 && !targetIcons[i].closest('#goods-type-intro')) {
+                      targetIcon = targetIcons[i];
+                      break;
+                    }
+                  }
+                  
+                  if (targetIcon) {
+                    const targetRect = targetIcon.getBoundingClientRect();
+                    
+                    flyingIcon.style.transition = 'all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                    flyingIcon.style.top = `${targetRect.top}px`;
+                    flyingIcon.style.left = `${targetRect.left}px`;
+                    flyingIcon.style.width = `${targetRect.width}px`;
+                    flyingIcon.style.height = `${targetRect.height}px`;
+                    flyingIcon.style.transform = 'scale(1) rotate(0deg)';
+                    
+                    setTimeout(() => {
+                      // 创建闪光效果
+                      const glowEffect = document.createElement('div');
+                      glowEffect.className = 'sitc-icon-glow-effect';
+                      glowEffect.style.cssText = `
+                        position: absolute;
+                        top: ${targetRect.top - 3}px;
+                        left: ${targetRect.left - 3}px;
+                        width: ${targetRect.width + 6}px;
+                        height: ${targetRect.height + 6}px;
+                        border-radius: 8px;
+                        background: radial-gradient(circle, rgba(33, 150, 243, 0.6) 0%, rgba(33, 150, 243, 0) 70%);
+                        z-index: 9990;
+                        pointer-events: none;
+                        opacity: 0;
+                        transform: scale(0.5);
+                        transition: all 0.3s ease-out;
+                      `;
+                      document.body.appendChild(glowEffect);
+                      
+                      setTimeout(() => {
+                        glowEffect.style.opacity = '1';
+                        glowEffect.style.transform = 'scale(1.3)';
+                        
+                        setTimeout(() => {
+                          glowEffect.style.opacity = '0';
+                          setTimeout(() => glowEffect.remove(), 300);
+                        }, 300);
+                      }, 50);
+                      
+                      targetIcon.style.animation = 'sitcIconPulse 0.6s ease-in-out';
+                      
+                      setTimeout(() => {
+                        flyingIcon.style.opacity = '0';
+                        setTimeout(() => {
+                          flyingIcon.remove();
+                          if (flyingIconsContainer.children.length === 0) {
+                            flyingIconsContainer.remove();
+                          }
+                        }, 200);
+                      }, 600);
+                    }, 800);
+                  } else {
+                    flyingIcon.style.opacity = '0';
+                    setTimeout(() => flyingIcon.remove(), 500);
+                  }
+                }, segmentTime);
+              }, segmentTime);
+            }, segmentTime);
+          }, 100);
+        }, startDelay);
+      });
+    }
+    
+    // 添加CSS动画样式
+    const style = document.createElement('style');
+    style.textContent = `
+      .flying-sitc-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transform-origin: center center;
+      }
+      
+      @keyframes sitcIconPulse {
+        0% { transform: scale(1); filter: brightness(1); }
+        50% { transform: scale(1.15); filter: brightness(1.3); }
+        100% { transform: scale(1); filter: brightness(1); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // 新增：创建地图左侧的SITC图标栏
+  function createSitcIconBar() {
+    // 检查是否已经存在
+    if (document.querySelector('.goods-type-icons-row')) return;
+    
+    // 创建图标容器
+    const iconBar = document.createElement('div');
+    iconBar.className = 'goods-type-icons-row';
+    iconBar.style.cssText = `
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+    `;
+    
+    // SITC图标文件名
+    const iconFiles = [
+      '0-Food-and-live-animals.png',
+      '1-Beverages-and-tobacco.png',
+      '2-Crude-materials.png',
+      '3-Mineral-fuels-lubricants-and-related-materials.png',
+      '4-Animal-and-vegetable-oils-fats-and-waxes.png',
+      '5-Chemicals-and-related-products.png',
+      '6-Manufactured-goods-classified-chiefly-by-material.png',
+      '7-Machinery-and-transport-equipment.png',
+      '8-Miscellaneous-manufactured-articles.png'
+    ];
+    
+    // 创建9个SITC图标
+    for (let i = 0; i < 9; i++) {
+      const iconBtn = document.createElement('button');
+      iconBtn.className = 'goods-type-icon-btn';
+      iconBtn.setAttribute('data-type', i);
+      iconBtn.setAttribute('data-selected', i === state.currentType ? 'true' : 'false');
+      iconBtn.setAttribute('title', sitcLabels[i]);
+      iconBtn.innerHTML = `<img src="/goods-icons/${iconFiles[i]}" alt="${sitcLabels[i]}">`;
+      
+      // 样式
+      iconBtn.style.cssText = `
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background-color: ${i === state.currentType ? 'rgb(33, 150, 243)' : '#1e2832'};
+        border: 2px solid ${i === state.currentType ? 'rgb(33, 150, 243)' : 'rgba(255, 255, 255, 0.2)'};
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateX(-20px);
+      `;
+      
+      // 添加点击事件处理
+      const typeIndex = i; // 捕获当前循环的索引
+      iconBtn.addEventListener('click', async () => {
+        if (state.currentType === typeIndex) return;
+        
+        const oldType = state.currentType;
+        state.currentType = typeIndex;
+        
+        // 更新所有图标状态
+        document.querySelectorAll('.goods-type-icon-btn').forEach(icon => {
+          const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
+          const isSelected = iconTypeIndex === typeIndex;
+          icon.setAttribute('data-selected', isSelected ? 'true' : 'false');
+          icon.style.backgroundColor = isSelected ? 'rgb(33, 150, 243)' : '#1e2832';
+          icon.style.borderColor = isSelected ? 'rgb(33, 150, 243)' : 'rgba(255, 255, 255, 0.2)';
+          
+          // 添加选中图标的缩放动画
+          if (isSelected) {
+            icon.style.animation = 'sitcIconSelect 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28)';
+            // 动画结束后清除
+            setTimeout(() => {
+              icon.style.animation = '';
+            }, 500);
+          }
+        });
+        
+        try {
+          // 更新SITC描述文本
+          const descElement = document.getElementById('goods-type-detail-desc');
+          if (descElement) {
+            descElement.textContent = sitcDescriptions[typeIndex];
+            // 为描述文本添加淡入效果
+            descElement.style.animation = 'fadeInDescription 0.5s ease-out';
+            setTimeout(() => {
+              descElement.style.animation = '';
+            }, 500);
+          }
+          
+          // 暂存当前动画状态
+          const wasPlaying = animationState.isPlaying;
+          if (wasPlaying) {
+            stopTimelineAnimation();
+          }
+          
+          // 加载新的SITC数据
+          const sitcData = await loadSitcData(typeIndex);
+          if (!sitcData) throw new Error(`Failed to load SITC ${typeIndex} data`);
+          
+          // 更新state
+          state.currentSitcData = sitcData;
+          
+          // 同时更新地图和图表
+          await Promise.all([
+            updateMapData(sitcData),
+            updateCountriesChart(sitcData)
+          ]);
+          
+          // 如果已选择国家，更新趋势图
+          if (state.selectedCountry) {
+            const canvas = document.getElementById('country-trend-chart');
+            if (canvas) {
+              canvas.style.display = 'block';
+              updateTrendChart(sitcData);
+            }
+          }
+          
+          // 恢复动画状态
+          if (wasPlaying) {
+            setTimeout(() => {
+              startTimelineAnimation();
+            }, 500);
+          }
+          
+          // 预加载下一个类型的数据
+          preloadNextSitcData();
+          
+        } catch (error) {
+          console.error('Failed to update visualizations:', error);
+          // 恢复到之前的状态
+          state.currentType = oldType;
+          document.querySelectorAll('.goods-type-icon-btn').forEach(icon => {
+            const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
+            const isSelected = iconTypeIndex === oldType;
+            icon.setAttribute('data-selected', isSelected ? 'true' : 'false');
+            icon.style.backgroundColor = isSelected ? 'rgb(33, 150, 243)' : '#1e2832';
+            icon.style.borderColor = isSelected ? 'rgb(33, 150, 243)' : 'rgba(255, 255, 255, 0.2)';
+          });
+        }
+      });
+      
+      // 添加到容器
+      iconBar.appendChild(iconBtn);
+      
+      // 动画延迟显示
+      setTimeout(() => {
+        iconBtn.style.opacity = '1';
+        iconBtn.style.transform = 'translateX(0)';
+      }, i * 100);
+    }
+    
+    // 添加到地图容器
+    const mapContainer = document.getElementById('goods-map');
+    if (mapContainer) {
+      mapContainer.style.position = 'relative';
+      mapContainer.appendChild(iconBar);
+    }
+    
+    // 添加CSS动画
+    const animStyle = document.createElement('style');
+    animStyle.textContent = `
+      @keyframes sitcIconSelect {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
+      
+      @keyframes fadeInDescription {
+        0% { opacity: 0.5; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(animStyle);
+  }
 })();
