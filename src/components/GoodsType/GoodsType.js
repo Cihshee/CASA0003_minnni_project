@@ -1721,22 +1721,51 @@ console.log('GoodsType.js loaded');
             try {
                 const bounds = new mapboxgl.LngLatBounds();
                 if (feature.geometry.type === 'Polygon') {
-                    feature.geometry.coordinates[0].forEach(coord => bounds.extend(coord));
+                    // 对于单个多边形，计算所有点的边界
+                    feature.geometry.coordinates[0].forEach(coord => {
+                        bounds.extend(coord);
+                    });
                 } else if (feature.geometry.type === 'MultiPolygon') {
+                    // 对于多个多边形（如法国包含海外领地），只使用主要部分
+                    // 找到最大的多边形（通常是主要领土）
+                    let maxArea = 0;
+                    let mainPolygon = feature.geometry.coordinates[0];
+                    
                     feature.geometry.coordinates.forEach(polygon => {
-                        polygon[0].forEach(coord => bounds.extend(coord));
+                        // 计算多边形的近似面积
+                        let area = 0;
+                        polygon[0].forEach((coord, i) => {
+                            const j = (i + 1) % polygon[0].length;
+                            area += coord[0] * polygon[0][j][1] - polygon[0][j][0] * coord[1];
+                        });
+                        area = Math.abs(area / 2);
+                        
+                        if (area > maxArea) {
+                            maxArea = area;
+                            mainPolygon = polygon;
+                        }
+                    });
+                    
+                    // 只使用主要多边形的坐标
+                    mainPolygon[0].forEach(coord => {
+                        bounds.extend(coord);
                     });
                 }
-                
-                const center = bounds.getCenter();
-                if (!center) return;
 
-                // 确保坐标有效
-                if (isNaN(center.lng) || isNaN(center.lat)) return;
+                const center = bounds.getCenter();
+                if (!center || isNaN(center.lng) || isNaN(center.lat)) return;
+
+                // 确保中心点在合理范围内
+                if (center.lng < -180 || center.lng > 180 || center.lat < -90 || center.lat > 90) return;
 
                 // 将两个地理坐标点转换为屏幕坐标
                 const countryPoint = state.currentMap.project(center);
                 const ukPoint = state.currentMap.project(UK_COORDINATES);
+
+                // 验证屏幕坐标的有效性
+                if (!countryPoint || !ukPoint || 
+                    isNaN(countryPoint.x) || isNaN(countryPoint.y) ||
+                    isNaN(ukPoint.x) || isNaN(ukPoint.y)) return;
 
                 // 获取或创建SVG容器
                 let svgContainer = document.querySelector('.curve-animation-container');
