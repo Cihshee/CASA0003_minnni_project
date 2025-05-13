@@ -2219,6 +2219,9 @@ console.log('GoodsType.js loaded');
         if (name.includes('\u9983') || name.includes('\u657b') || name.includes('\u9e7f')) {
             return 'Confidential Country';
         }
+        if (name === 'United States of America') {
+            return 'United States';
+        }
         return name;
     };
 
@@ -2294,6 +2297,9 @@ console.log('GoodsType.js loaded');
         const cleanCountryName = (name) => {
             if (name.includes('\u9983') || name.includes('\u657b') || name.includes('\u9e7f')) {
                 return 'Confidential Country';
+            }
+            if (name === 'United States of America') {
+                return 'United States';
             }
             return name;
         };
@@ -2580,6 +2586,9 @@ console.log('GoodsType.js loaded');
     const cleanCountryName = (name) => {
         if (name.includes('\u9983') || name.includes('\u657b') || name.includes('\u9e7f')) {
             return 'Confidential Country';
+        }
+        if (name === 'United States of America') {
+            return 'United States';
         }
         return name;
     };
