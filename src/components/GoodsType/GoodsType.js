@@ -3,7 +3,7 @@
 console.log('GoodsType.js loaded');
 
 (function() {
-  const csvPath = 'data/Goodstype_full_summary_data_merged.csv'; // 删除public前缀
+  const csvPath = 'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/Goodstype_full_summary_data_merged.csv'; // 改为GitHub在线链接
   const flowTypes = [
     'EU - Exports',
     'EU - Imports',
@@ -2813,15 +2813,15 @@ console.log('GoodsType.js loaded');
       
       <!-- SITC图标行 -->
       <div class=\"sitc-icons-row fadein-block\" style=\"margin:50px auto 40px auto;\">
-        <button class=\"sitc-icon-btn\" data-sitc=\"0\" title=\"Food & live animals\"><img src=\"/goods-icons/0-Food-and-live-animals.png\" alt=\"Food & live animals\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"1\" title=\"Beverages & tobacco\"><img src=\"/goods-icons/1-Beverages-and-tobacco.png\" alt=\"Beverages & tobacco\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"2\" title=\"Crude materials\"><img src=\"/goods-icons/2-Crude-materials.png\" alt=\"Crude materials\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"3\" title=\"Mineral fuels\"><img src=\"/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png\" alt=\"Mineral fuels\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"4\" title=\"Animal & vegetable oils\"><img src=\"/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png\" alt=\"Animal & vegetable oils\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"5\" title=\"Chemicals\"><img src=\"/goods-icons/5-Chemicals-and-related-products.png\" alt=\"Chemicals\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"6\" title=\"Manufactured goods\"><img src=\"/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png\" alt=\"Manufactured goods\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"7\" title=\"Machinery & transport\"><img src=\"/goods-icons/7-Machinery-and-transport-equipment.png\" alt=\"Machinery & transport\"></button>
-        <button class=\"sitc-icon-btn\" data-sitc=\"8\" title=\"Miscellaneous articles\"><img src=\"/goods-icons/8-Miscellaneous-manufactured-articles.png\" alt=\"Miscellaneous manufactured articles\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"0\" title=\"Food & live animals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/0-Food-and-live-animals.png\" alt=\"Food & live animals\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"1\" title=\"Beverages & tobacco\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/1-Beverages-and-tobacco.png\" alt=\"Beverages & tobacco\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"2\" title=\"Crude materials\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/2-Crude-materials.png\" alt=\"Crude materials\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"3\" title=\"Mineral fuels\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png\" alt=\"Mineral fuels\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"4\" title=\"Animal & vegetable oils\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png\" alt=\"Animal & vegetable oils\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"5\" title=\"Chemicals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/5-Chemicals-and-related-products.png\" alt=\"Chemicals\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"6\" title=\"Manufactured goods\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png\" alt=\"Manufactured goods\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"7\" title=\"Machinery & transport\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/7-Machinery-and-transport-equipment.png\" alt=\"Machinery & transport\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"8\" title=\"Miscellaneous articles\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/8-Miscellaneous-manufactured-articles.png\" alt=\"Miscellaneous manufactured articles\"></button>
       </div>
     `;
     introDiv.appendChild(introText);
@@ -3687,7 +3687,7 @@ console.log('GoodsType.js loaded');
       iconBtn.setAttribute('data-type', i);
       iconBtn.setAttribute('data-selected', i === state.currentType ? 'true' : 'false');
       iconBtn.setAttribute('title', sitcLabels[i]);
-      iconBtn.innerHTML = `<img src="/goods-icons/${iconFiles[i]}" alt="${sitcLabels[i]}">`;
+      iconBtn.innerHTML = `<img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/${iconFiles[i]}" alt="${sitcLabels[i]}">`;
       
       // 样式
       iconBtn.style.cssText = `
