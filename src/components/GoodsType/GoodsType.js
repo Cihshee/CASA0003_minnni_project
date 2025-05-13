@@ -27,13 +27,13 @@ console.log('GoodsType.js loaded');
     'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
     'Beverages and tobacco include alcoholic drinks, soft drinks and tobacco products. Despite pandemic and politic impacts stabilising most countries\' trade slightly, Russia saw significant fluctuations in 2020-2021 due to political factors.',
     'Crude materials include wood, rubber, fibres and more. Brexit coupled with global disruptions from the COVID-19 also geopolitical tensions, reflected in changing export markets and volumes after 2020.',
-    'Mineral fuels, lubricants, and related materials are key to the UK\'s energy imports and exports. Brexit has affected energy market flows.',
-    'Animal and vegetable oils, fats, and waxes are widely used in food and industry. Trade barriers have increased post-Brexit.',
-    'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
-    'Manufactured goods classified chiefly by material include metals, building materials, and more. Brexit has brought changes in tariffs and standards.',
-    'Machinery and transport equipment are a pillar of UK exports. Brexit has affected supply chains and export markets.',
-    'Miscellaneous manufactured articles include toys, furniture, clothing, and more. Market access and certification processes have changed post-Brexit.',
-    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions."
+    'Brexit, geopolitical tensions and the global energy transition have fundamentally reshaped the UK\'s import-export dynamics, driving a strategic recalibration of international energy partnerships.',
+    'Post-Brexit trade barriers have compelled the UK to dynamically restructure its international trade strategies, leading to fluctuating import-export patterns and a more diverse, yet complex global trading landscape.',
+    'Chemicals and related products, including pharmaceuticals and chemical raw materials, have experienced subtle oscillations influenced by multiple factors.',
+    'Brexit reshaped Manufactured goods trade, with Free Trade Agreements offering new opportunities with non-EU partners like Canada and India, reducing barriers and diversifying global market access.',
+    'Machinery and transport equipment remain a resilient pillar of UK. While Brexit introduced potential disruptions to supply chains and export markets, strategic adaptation and diversified trade agreements have largely mitigated significant negative consequences.',
+    'Miscellaneous manufactured articles like toys, furniture and clothing undertook minimal Brexit impact, as key import markets remain predominantly outside the EU, preserving trade stability and market dynamics.',
+    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions. Despite being affected by global events, it has generally maintained strong resilience and stability."
   ];
   
   // Global state object
