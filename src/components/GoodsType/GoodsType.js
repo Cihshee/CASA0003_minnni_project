@@ -2010,8 +2010,9 @@ console.log('GoodsType.js loaded');
         };
 
         // 更新地图特征
-        const updatedFeatures = geoData.features.map(feature => ({
+        const updatedFeatures = geoData.features.map((feature, index) => ({
             ...feature,
+            id: index,  // 使用索引作为ID
             properties: {
                 ...feature.properties,
                 value: countryValues[feature.properties.name] || 0,
@@ -2033,10 +2034,18 @@ console.log('GoodsType.js loaded');
             // 初始化地图图层
             state.currentMap.addSource('countries', {
                 type: 'geojson',
+                generateId: true,
                 data: {
                     type: 'FeatureCollection',
                     features: updatedFeatures
                 }
+            });
+
+            // 创建弹出框
+            state.popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false,
+                className: 'map-popup'
             });
 
             // 修改填充图层
@@ -2046,12 +2055,13 @@ console.log('GoodsType.js loaded');
                 source: 'countries',
                 paint: {
                     'fill-color': ['get', 'color'],
-                    'fill-opacity': ['case',
+                    'fill-opacity': [
+                        'case',
                         ['boolean', ['feature-state', 'hover'], false],
-                        0.9,  // 提高悬停时的不透明度
+                        0.9,
                         ['boolean', ['feature-state', 'selected'], false],
-                        0.95,  // 提高选中时的不透明度
-                        0.85   // 提高默认的不透明度
+                        0.95,
+                        0.85
                     ]
                 }
             });
@@ -2063,96 +2073,123 @@ console.log('GoodsType.js loaded');
                 source: 'countries',
                 paint: {
                     'line-color': '#ffffff',
-                    'line-width': ['case',
+                    'line-width': [
+                        'case',
                         ['boolean', ['feature-state', 'selected'], false],
-                        2.5,  // 增加选中边框宽度
+                        2.5,
                         ['boolean', ['feature-state', 'hover'], false],
-                        1.5,  // 增加悬停边框宽度
+                        1.5,
                         0.5
                     ],
                     'line-opacity': 0.8
                 }
             });
 
-            // 创建弹出框
-            state.popup = new mapboxgl.Popup({
-                closeButton: false,
-                closeOnClick: false,
-                className: 'map-popup'
-            });
-
-            // 添加点击事件处理
-            state.currentMap.on('click', 'country-fills', (e) => {
-                if (e.features.length > 0) {
-                    const feature = e.features[0];
-                    state.selectedCountry = feature.properties.name;
-                    
-                    // 更新选中状态样式
-                    if (state.selectedFeatureId) {
-                        state.currentMap.setFeatureState(
-                            { source: 'countries', id: state.selectedFeatureId },
-                            { selected: false }
-                        );
-                    }
-                    state.selectedFeatureId = feature.id;
-                    state.currentMap.setFeatureState(
-                        { source: 'countries', id: state.selectedFeatureId },
-                        { selected: true }
-                    );
-                    
-                    // 更新趋势图
-                    updateTrendChart(state.currentSitcData);
-                }
-            });
-
-            // 添加鼠标事件
-            state.currentMap.on('mouseenter', 'country-fills', () => {
-                state.currentMap.getCanvas().style.cursor = 'pointer';
-            });
-
-            state.currentMap.on('mouseleave', 'country-fills', () => {
-                state.currentMap.getCanvas().style.cursor = '';
-            });
-
-            // 添加悬停效果
+            // 添加鼠标事件处理
             state.currentMap.on('mousemove', 'country-fills', (e) => {
                 if (e.features.length > 0) {
+                    const feature = e.features[0];
+                    
                     if (state.hoveredFeatureId !== null) {
+                        try {
+                            state.currentMap.setFeatureState(
+                                { source: 'countries', id: state.hoveredFeatureId },
+                                { hover: false }
+                            );
+                        } catch (err) {
+                            console.warn('Error clearing hover state:', err);
+                        }
+                    }
+                    
+                    state.hoveredFeatureId = feature.id;
+                    try {
                         state.currentMap.setFeatureState(
                             { source: 'countries', id: state.hoveredFeatureId },
-                            { hover: false }
+                            { hover: true }
                         );
+                    } catch (err) {
+                        console.warn('Error setting hover state:', err);
                     }
-                    state.hoveredFeatureId = e.features[0].id;
-                    state.currentMap.setFeatureState(
-                        { source: 'countries', id: state.hoveredFeatureId },
-                        { hover: true }
-                    );
-                    
+
+                    // 确保popup存在
+                    if (!state.popup) {
+                        state.popup = new mapboxgl.Popup({
+                            closeButton: false,
+                            closeOnClick: false,
+                            className: 'map-popup'
+                        });
+                    }
+
                     // 显示弹出框
-                    const feature = e.features[0];
                     const value = feature.properties.value;
-                    
-                    state.popup.setLngLat(e.lngLat)
-                        .setHTML(`
-                            <div class="map-popup-content">
-                                <h4>${feature.properties.name}</h4>
-                                <p>£${formatToMillions(value)}</p>
-                            </div>
-                        `)
-                        .addTo(state.currentMap);
+                    try {
+                        state.popup
+                            .setLngLat(e.lngLat)
+                            .setHTML(`
+                                <div class="map-popup-content">
+                                    <h4>${feature.properties.name}</h4>
+                                    <p>£${formatToMillions(value)}</p>
+                                </div>
+                            `)
+                            .addTo(state.currentMap);
+                    } catch (err) {
+                        console.warn('Error showing popup:', err);
+                    }
                 }
             });
 
             state.currentMap.on('mouseleave', 'country-fills', () => {
                 if (state.hoveredFeatureId !== null) {
-                    state.currentMap.setFeatureState(
-                        { source: 'countries', id: state.hoveredFeatureId },
-                        { hover: false }
-                    );
+                    try {
+                        state.currentMap.setFeatureState(
+                            { source: 'countries', id: state.hoveredFeatureId },
+                            { hover: false }
+                        );
+                    } catch (err) {
+                        console.warn('Error clearing hover state:', err);
+                    }
                 }
                 state.hoveredFeatureId = null;
-                state.popup.remove();
+                
+                // 安全地移除popup
+                if (state.popup) {
+                    try {
+                        state.popup.remove();
+                    } catch (err) {
+                        console.warn('Error removing popup:', err);
+                    }
+                }
+            });
+
+            // 修改点击事件处理
+            state.currentMap.on('click', 'country-fills', (e) => {
+                if (e.features.length > 0) {
+                    const feature = e.features[0];
+                    state.selectedCountry = feature.properties.name;
+                    
+                    if (state.selectedFeatureId !== null) {
+                        try {
+                            state.currentMap.setFeatureState(
+                                { source: 'countries', id: state.selectedFeatureId },
+                                { selected: false }
+                            );
+                        } catch (err) {
+                            console.warn('Error clearing selected state:', err);
+                        }
+                    }
+                    
+                    state.selectedFeatureId = feature.id;
+                    try {
+                        state.currentMap.setFeatureState(
+                            { source: 'countries', id: state.selectedFeatureId },
+                            { selected: true }
+                        );
+                    } catch (err) {
+                        console.warn('Error setting selected state:', err);
+                    }
+                    
+                    updateTrendChart(state.currentSitcData);
+                }
             });
         }
         
@@ -3058,6 +3095,7 @@ console.log('GoodsType.js loaded');
   let autoScrollTimer = null;
   let autoScrollPaused = false;
   let autoScrollResumeTimer = null;
+  
   function scrollToCard(idx) {
     // 找到当前页面上的carousel
     const carousel = document.querySelector('.goods-type-carousel');
@@ -3073,6 +3111,7 @@ console.log('GoodsType.js loaded');
       }
     }
   }
+
   function startAutoScroll() {
     // 确保页面上已有carousel
     const carousel = document.querySelector('.goods-type-carousel');
@@ -3096,7 +3135,7 @@ console.log('GoodsType.js loaded');
     const descDiv = document.querySelector('.goods-type-desc');
     if (!carousel || !descDiv) return;
     
-    descDiv.innerHTML = `<h4 style=\"font-size:1.05em;font-weight:700;margin-bottom:8px;letter-spacing:1px;color:#4fc3f7;\">${sitcLabels[idx]}</h4><div style=\"font-size:1.05em;font-weight:400;color:#fff;\">${sitcDescriptions[idx]}</div>`;
+    descDiv.innerHTML = `<h4 style="font-size:1.05em;font-weight:700;margin-bottom:8px;letter-spacing:1px;color:#4fc3f7;">${sitcLabels[idx]}</h4><div style="font-size:1.05em;font-weight:400;color:#fff;">${sitcDescriptions[idx]}</div>`;
     Array.from(carousel.children).forEach((el, i) => {
       if (i === idx) {
         el.classList.add('active');
@@ -3125,20 +3164,12 @@ console.log('GoodsType.js loaded');
       }, 10000); // 10秒后恢复
     }
   }
+
   function stopAutoScroll() {
     if (autoScrollTimer) clearInterval(autoScrollTimer);
     autoScrollTimer = null;
     autoScrollPaused = true;
   }
-  // 用户交互时暂停自动轮播
-  carousel.addEventListener('mouseenter', () => pauseAutoScroll());
-  carousel.addEventListener('mouseleave', () => pauseAutoScroll(false));
-  Array.from(carousel.children).forEach((card, idx) => {
-    card.addEventListener('mouseenter', () => { pauseAutoScroll(); });
-    card.addEventListener('click', () => { pauseAutoScroll(); scrollToCard(idx); });
-  });
-  // 启动自动轮播
-  startAutoScroll();
 
   // 添加一个DOMContentLoaded事件监听器，确保在DOM完全加载后再附加事件监听器
   document.addEventListener('DOMContentLoaded', function() {
