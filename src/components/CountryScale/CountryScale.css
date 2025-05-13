@@ -64,8 +64,9 @@
 .scroll-text {
     position: relative;
     width: 30%; 
-    padding-left: 1rem;
-    border-left: 1px solid rgba(255,255,255,0.2);
+    padding-left: 0;
+    margin-left: 100px;
+    border-left: none;
 }
 
 #scroll-chart {
@@ -78,10 +79,12 @@
 }
 
 .step {
-    min-height: 50vh;
-    margin-bottom: 5rem;
+    position: relative;
+    min-height: 200px;
+    margin-bottom: 150px;
     opacity: 0.5;
-    transition: opacity 0.2s, transform 0.2s; 
+    transition: opacity 0.3s;
+    padding-top: 30px;
 }
 
 .step.is-active {
@@ -89,17 +92,22 @@
 }
 
 .timeline-marker {
-    transition: opacity 0.3s ease;
+    position: absolute;
+    left: -70px;
+    width: 70px;
+    height: 20px;
+    z-index: 2;
 }
 
 .step-content {
-    background-color: rgba(42, 42, 42, 0.8);
-    padding: 1.2rem;
-    line-height: 1.5;
+    background-color: transparent;
+    padding: 0;
 }
 
 .step-content p {
-    color: #ffffff;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 0;
 }
 
 .chart-section h2 {
@@ -147,4 +155,221 @@
 
 .text-link:hover {
     color: #ff9466;
+}
+
+.chart-summary.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.chart-summary {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* 时间轴容器 */
+.timeline-container {
+    position: absolute;
+    left: -70px;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    height: 100%;
+}
+
+/* 时间轴垂直线 */
+.timeline-line {
+    position: absolute;
+    left: 25px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: rgba(255,255,255,0.4);
+    z-index: 0;
+}
+
+/* 时间轴圆点 */
+.timeline-dot {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}
+
+/* 时间轴水平线 */
+.timeline-connector {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    width: 70px;
+    height: 1px;
+    background-color: rgba(255,255,255,0.4);
+    z-index: 2;
+}
+/* 步骤容器 */
+.step-container {
+    position: relative;
+    padding-left: 30px;
+}
+
+/* 日期标题样式 */
+.step-date {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 15px;
+    position: relative;
+    left: 0;
+}
+
+/* 只针对CountryScale的时间轴容器 */
+.country-chart-section .scroll-text .timeline-container {
+    position: absolute;
+    left: -70px;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    height: 100%;
+}
+
+/* 只针对CountryScale的时间轴垂直线 */
+.country-chart-section .scroll-text .timeline-line {
+    position: absolute;
+    left: 25px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: rgba(255,255,255,0.4);
+    z-index: 0;
+}
+
+/* 只针对CountryScale的时间轴标记容器 */
+.country-chart-section .scroll-text .timeline-marker {
+    position: absolute;
+    left: -70px;
+    width: 70px;
+    height: 20px;
+    z-index: 2;
+}
+
+/* 只针对CountryScale的时间轴圆点 */
+.country-chart-section .scroll-text .timeline-dot {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}
+
+/* 只针对CountryScale的时间轴水平线 */
+.country-chart-section .scroll-text .timeline-connector {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    width: 65px;
+    height: 1px;
+    background-color: rgba(255,255,255,0.4);
+    z-index: 2;
+}
+
+/* 只针对CountryScale的步骤容器 */
+.country-chart-section .scroll-text .step-container {
+    position: relative;
+    padding-left: 30px;
+}
+
+/* 只针对CountryScale的日期标题 */
+.country-chart-section .scroll-text .step-date {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 15px;
+    position: relative;
+    left: 0;
+}
+
+/* 创建一个全新的CSS文件，专门用于CountryScale的时间轴样式 */
+
+/* 定义CountryScale特有的时间轴样式，避免影响RegionScale */
+.country-timeline-container {
+    position: absolute;
+    left: -70px;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    height: 100%;
+}
+
+.country-timeline-line {
+    position: absolute;
+    left: 25px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: rgba(255,255,255,0.4);
+    z-index: 0;
+}
+
+.country-timeline-marker {
+    position: absolute;
+    left: -70px;
+    width: 70px;
+    height: 20px;
+    z-index: 2;
+}
+
+.country-timeline-dot {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+}
+
+.country-timeline-connector {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    width: 65px;
+    height: 1px;
+    background-color: rgba(255,255,255,0.4);
+    z-index: 2;
+}
+
+/* 调整CountryScale的滚动文本区域 */
+.country-chart-section .scroll-text {
+    position: relative;
+    width: 30%; 
+    padding-left: 0;
+    margin-left: 100px;
+    border-left: none;
+}
+
+/* 调整CountryScale的步骤容器 */
+.country-step-container {
+    position: relative;
+    padding-left: 30px;
+}
+
+/* 调整CountryScale的日期标题 */
+.country-step-date {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 15px;
+    position: relative;
+    left: 0;
 }

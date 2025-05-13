@@ -131,34 +131,29 @@ renderLineChart(euChartSvgContainer, euData, 'EU Countries', '#ff6347');
 // 渲染非EU折线图
 renderLineChart(nonEuChartSvgContainer, nonEuData, 'Non-EU Countries', '#2166ac');
 
+// After rendering EU line chart, add the EU paragraph 
+const euExplanation = document.createElement('p');
+euExplanation.className = 'explanation-text';
+euExplanation.style.margin = '20px 10px';
+euExplanation.style.textAlign = 'left';
+euExplanation.innerHTML = 'Aside from Ireland, the UK has maintained trade deficits with most EU countries. Although these deficits temporarily narrowed from 2020 to 2021 due to the COVID-19 and transitional Brexit arrangements, they have widened since 2022, reflecting the structural disadvantages introduced by new trade barriers.';
+euChartDiv.appendChild(euExplanation);
+
+// After rendering non-EU line chart, add the non-EU paragraph
+const nonEuExplanation = document.createElement('p');
+nonEuExplanation.className = 'explanation-text';
+nonEuExplanation.style.margin = '20px 10px';
+nonEuExplanation.style.textAlign = 'left';
+nonEuExplanation.innerHTML = 'Meanwhile, the UK has actively pursued trade diversification beyond the EU. However, this "global re-engagement" has not resulted in a stable surplus structure. The UK continues to run trade deficits with many non-EU countries, suggesting that its global trade reset remains incomplete.';
+nonEuChartDiv.appendChild(nonEuExplanation);
+
 // 创建空白间隔元素，确保折线图和间隔元素之间有足够距离
 const spacer = document.createElement('div');
 spacer.style.height = '500px';
 spacer.style.width = '100%';
 spacer.style.clear = 'both';
 
-// 添加解释性文本段落 - 将它放在折线图和间隔元素之间
-const explanationContainer = document.createElement('div');
-explanationContainer.style.width = '100%';
-explanationContainer.style.maxWidth = '1200px';
-explanationContainer.style.margin = '40px auto 40px';
-explanationContainer.style.padding = '0 20px';
-explanationContainer.style.boxSizing = 'border-box';
-explanationContainer.style.display = 'block'; // 确保块级显示
-
-const explanationParagraph = document.createElement('div');
-explanationParagraph.className = 'explanation-text';
-// 不设置任何样式，完全使用默认CSS
-
-explanationParagraph.innerHTML = `
-  <p>Since Brexit, the UK has faced persistent structural trade imbalances with its major trading partners. Aside from Ireland, it has maintained consistent trade deficits with most EU countries. Although these deficits temporarily narrowed from 2020 to 2021 due to the COVID-19 pandemic and transitional Brexit arrangements, they have widened significantly since 2022, reflecting the structural disadvantages introduced by new trade barriers.</p>
-  <p>Meanwhile, the UK has actively pursued trade diversification beyond the EU. However, this "global re-engagement" has not resulted in a stable surplus structure. The UK continues to run trade deficits with many non-EU countries, suggesting that its global trade reset remains incomplete.</p>
-`;
-
-explanationContainer.appendChild(explanationParagraph);
-
 // 顺序很重要：先插入折线图，然后是说明文本，最后是间隔元素
-container.insertBefore(explanationContainer, scrollContainer);
 container.insertBefore(spacer, scrollContainer);
 }
 
@@ -208,6 +203,7 @@ const x = d3.scaleLinear()
   .domain(d3.extent(data, d => d.year))
   .range([0, width]);
 
+// 设置Y轴比例尺 - 为EU图表设置自定义tick间隔
 const y = d3.scaleLinear()
   .domain([
     d3.min(data, d => d3.min(Object.entries(d)
@@ -224,8 +220,27 @@ const xAxis = d3.axisBottom(x)
   .tickFormat(d3.format('d')) // 显示完整年份
   .ticks(data.length);
 
-const yAxis = d3.axisLeft(y)
-  .tickFormat(d => `£${d3.format(",")(d)}m`);
+// 为EU图表设置固定10000间隔的刻度
+let yAxis;
+if (title === 'EU Countries') {
+  // 计算适合的tick值，以10000为间隔
+  const yMin = Math.floor(y.domain()[0] / 10000) * 10000;
+  const yMax = Math.ceil(y.domain()[1] / 10000) * 10000;
+  const tickValues = [];
+  
+  // 从-40000开始而不是最低值，跳过-50000
+  for (let i = Math.max(-40000, yMin); i <= yMax; i += 10000) {
+    tickValues.push(i);
+  }
+  
+  yAxis = d3.axisLeft(y)
+    .tickValues(tickValues)
+    .tickFormat(d => `£${d3.format(",")(d)}m`);
+} else {
+  // 非EU图表使用默认刻度计算
+  yAxis = d3.axisLeft(y)
+    .tickFormat(d => `£${d3.format(",")(d)}m`);
+}
 
 // 添加X轴 - 增大文字
 svg.append('g')
@@ -308,18 +323,6 @@ countries.forEach((country, i) => {
     .attr('stroke', countryColor)
     .attr('stroke-width', 2.2);
   
-  // 添加数据点
-  svg.selectAll(`.dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
-    .data(countryData)
-    .enter()
-    .append('circle')
-    .attr('class', `dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
-    .attr('cx', d => x(d.year))
-    .attr('cy', d => y(d.value))
-    .attr('r', 4)
-    .attr('fill', countryColor)
-    .attr('stroke', '#333')
-    .attr('stroke-width', 1);
 });
 
 // 添加图例 - 改为单列垂直排布
@@ -414,23 +417,29 @@ svg.append('rect')
     // 更新提示框内容
     let tooltipContent = `<strong>Year: ${d.year}</strong><br>`;
     
+    // 清除之前创建的所有点
+    svg.selectAll('.hover-dot').remove();
+    
+    // 为当前年份的每个国家创建点
     countries.forEach(country => {
-      // 使用与国家线条相同的颜色作为文字颜色
       const countryColor = betterColors[countries.indexOf(country) % betterColors.length];
       tooltipContent += `<span style="color:${countryColor}">●</span> ${country}: £${d3.format(",")(d[country])} million<br>`;
+      
+      // 创建当前年份的点
+      svg.append('circle')
+        .attr('class', 'hover-dot')
+        .attr('cx', x(d.year))
+        .attr('cy', y(d[country]))
+        .attr('r', 4)
+        .attr('fill', countryColor)
+        .attr('stroke', '#333')
+        .attr('stroke-width', 2);
     });
     
     tooltipDiv.html(tooltipContent)
       .style('left', `${event.pageX + 10}px`)
       .style('top', `${event.pageY - 28}px`)
       .style('opacity', 0.9);
-      
-    // 让对应年份的点稍微增大
-    countries.forEach((country, i) => {
-      svg.selectAll(`.dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
-        .attr('r', dot => dot.year === d.year ? 6 : 4)
-        .attr('stroke-width', dot => dot.year === d.year ? 2 : 1);
-    });
   })
   .on('mouseout', function() {
     // 隐藏提示框
@@ -440,12 +449,8 @@ svg.append('rect')
     guideline.style('opacity', 0);
     yearLabel.style('opacity', 0);
     
-    // 将所有点恢复正常大小
-    countries.forEach(country => {
-      svg.selectAll(`.dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
-        .attr('r', 4)
-        .attr('stroke-width', 1);
-    });
+    // 移除所有悬停时创建的点
+    svg.selectAll('.hover-dot').remove();
   });
 }
 

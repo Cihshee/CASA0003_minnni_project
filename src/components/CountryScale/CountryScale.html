@@ -7,49 +7,99 @@
         <div class="chart-container">
           <svg id="scroll-chart"></svg>
         </div>
-        <!-- 添加文字说明 -->
-        <div style="padding: 10px 0; margin-top: 10px; text-align: left; width: 100%;">
+        <!-- 添加文字说明，但添加一个特定的类名以便控制显示/隐藏 -->
+        <div id="chart-summary" class="chart-summary hidden" style="padding: 10px 0; margin-top: 10px; text-align: left; width: 100%;">
           <p>UK goods trade with the EU has seen notable changes in recent years. Exports briefly dropped in 2020 due to the COVID-19 pandemic, and fell again as new Brexit trade rules took effect. While imports remained relatively stable, exports have struggled to recover, resulting in a sustained and widening trade deficit.</p>
         </div>
       </div>
       
       <!-- Right side: Scrolling text -->
       <div class="scroll-text">
-        <div class="step" data-step="1" data-date="2016-06">
-          <div class="step-content">
-            <p>June 2016: The UK held a nationwide referendum in which a majority voted to leave the European Union.</p>
-            <img src="public/img/2016.jpg" alt="Brexit Referendum 2016" class="step-image">
+        <!-- 添加时间轴容器 - 使用新的类名 -->
+        <div class="country-timeline-container">
+          <div class="country-timeline-line"></div>
+        </div>
+
+        <!-- 步骤1 - 2016年 -->
+        <div class="step" data-step="1" data-date="2016-06" data-year="2016">
+          <div class="country-timeline-marker">
+            <div class="country-timeline-dot"></div>
+            <div class="country-timeline-connector"></div>
+          </div>
+          
+          <div class="country-step-container">
+            <div class="country-step-date">June 2016</div>
+            <div class="step-content">
+              <p>The UK held a nationwide referendum in which a majority voted to leave the European Union.</p>
+              <img src="public/img/2016.jpg" alt="Brexit Referendum 2016" class="step-image">
+            </div>
           </div>
         </div>
         
-        <div class="step" data-step="2" data-date="2017-03">
-          <div class="step-content">
-            <p>March 2017: UK Prime Minister Theresa May triggers <a href="https://ec.europa.eu/commission/presscorner/detail/en/memo_17_648" target="_blank" class="text-link">Article 50</a>, the legal mechanism for a Member State to leave the EU.</p>
+        <!-- 步骤2 - 2017年 -->
+        <div class="step" data-step="2" data-date="2017-03" data-year="2017">
+          <div class="country-timeline-marker">
+            <div class="country-timeline-dot"></div>
+            <div class="country-timeline-connector"></div>
+          </div>
+          
+          <div class="country-step-container">
+            <div class="country-step-date">March 2017</div>
+            <div class="step-content">
+              <p>UK Prime Minister Theresa May triggers <a href="https://ec.europa.eu/commission/presscorner/detail/en/memo_17_648" target="_blank" class="text-link">Article 50</a>, the legal mechanism for a Member State to leave the EU.</p>
+            </div>
           </div>
         </div>
         
-        <div class="step" data-step="3" data-date="2019-10">
-          <div class="step-content">
-            <p>October 2019: The UK and EU reached a revised withdrawal agreement. The new deal made changes to trade and customs arrangements, clearing the way for the UK's departure.</p>
-            <img src="public/img/2019.jpg" alt="Withdrawal Agreement 2019" class="step-image">
+        <!-- 步骤3 - 2019年 -->
+        <div class="step" data-step="3" data-date="2019-10" data-year="2019">
+          <div class="country-timeline-marker">
+            <div class="country-timeline-dot"></div>
+            <div class="country-timeline-connector"></div>
+          </div>
+          
+          <div class="country-step-container">
+            <div class="country-step-date">October 2019</div>
+            <div class="step-content">
+              <p>The UK and EU reached a revised withdrawal agreement. The new deal made changes to trade and customs arrangements, clearing the way for the UK's departure.</p>
+              <img src="public/img/2019.jpg" alt="Withdrawal Agreement 2019" class="step-image">
+            </div>
           </div>
         </div>
         
-        <div class="step" data-step="4" data-date="2020-01">
-          <div class="step-content">
-            <p>January 2020: After multiple extensions, the UK officially left the EU, ending its membership. A transition period began, during which EU rules continued to apply temporarily.</p>
-            <img src="public/img/2020.jpg" alt="UK Leaves EU 2020" class="step-image">
+        <!-- 步骤4 - 2020年 -->
+        <div class="step" data-step="4" data-date="2020-01" data-year="2020">
+          <div class="country-timeline-marker">
+            <div class="country-timeline-dot"></div>
+            <div class="country-timeline-connector"></div>
+          </div>
+          
+          <div class="country-step-container">
+            <div class="country-step-date">January 2020</div>
+            <div class="step-content">
+              <p>After multiple extensions, the UK officially left the EU, ending its membership. A transition period began, during which EU rules continued to apply temporarily.</p>
+              <img src="public/img/2020.jpg" alt="UK Leaves EU 2020" class="step-image">
+            </div>
           </div>
         </div>
-  
-        <div class="step" data-step="5" data-date="2021-01">
-          <div class="step-content">
-            <p>January 2021: The transition period ended and the EU-UK Trade and Cooperation Agreement provisionally came into effect, establishing a new framework for trade and cooperation between the two sides.</p>
+
+        <!-- 步骤5 - 2021年 -->
+        <div class="step" data-step="5" data-date="2021-01" data-year="2021" data-summary="true">
+          <div class="country-timeline-marker">
+            <div class="country-timeline-dot"></div>
+            <div class="country-timeline-connector"></div>
+          </div>
+          
+          <div class="country-step-container">
+            <div class="country-step-date">January 2021</div>
+            <div class="step-content">
+              <p>The transition period ended and the EU-UK Trade and Cooperation Agreement provisionally came into effect, establishing a new framework for trade and cooperation between the two sides.</p>
+            </div>
           </div>
         </div>
         
-        <!-- 添加额外的空白步骤，确保有足够滚动空间 -->
-        <div class="step" data-step="6" style="height: 30vh; opacity: 0;">
+        <!-- 最后一个空白步骤保持不变 -->
+        <div class="step" data-step="6" data-date="2021-01" data-summary="true" style="height: 30vh; opacity: 0;">
           <div class="step-content">
             <p></p>
           </div>

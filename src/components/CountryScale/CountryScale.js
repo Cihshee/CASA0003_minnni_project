@@ -263,6 +263,17 @@ g.append("text")
       if (currentDate && timelineMarkers[currentDate]) {
         timelineMarkers[currentDate].attr("opacity", 1);
       }
+      
+      d3.selectAll('.timeline-dot, .timeline-connector').style('opacity', 0.4);
+      d3.select(response.element).select('.timeline-dot').style('opacity', 1);
+      d3.select(response.element).select('.timeline-connector').style('opacity', 1);
+      
+      const isSummaryStep = d3.select(response.element).attr("data-summary") === "true";
+      if (isSummaryStep) {
+        d3.select("#chart-summary").classed("hidden", false);
+      } else {
+        d3.select("#chart-summary").classed("hidden", true);
+      }
     })
     .onStepExit(response => {
       if (response.direction === "up") {
@@ -287,4 +298,51 @@ g.append("text")
   window.addEventListener('orientationchange', handleResize);
 
   handleResize();
+});
+
+// 在文档加载完成后执行
+document.addEventListener('DOMContentLoaded', function() {
+  // 获取所有CountryScale步骤
+  const countrySteps = document.querySelectorAll('.country-chart-section .step');
+  
+  // 为每个步骤设置正确的时间轴标记位置
+  countrySteps.forEach(step => {
+    const marker = step.querySelector('.country-timeline-marker');
+    const dateElement = step.querySelector('.country-step-date');
+    
+    if (marker && dateElement) {
+      // 获取日期元素的位置
+      const dateRect = dateElement.getBoundingClientRect();
+      
+      // 计算日期元素中心点相对于步骤顶部的位置
+      const dateTop = dateElement.offsetTop;
+      const dateHeight = dateElement.offsetHeight;
+      const dateCenter = dateTop + (dateHeight / 2);
+      
+      // 设置标记位置，与日期中心点对齐
+      marker.style.top = dateCenter + 'px';
+    }
+  });
+});
+
+// 当窗口大小改变时，重新计算位置
+window.addEventListener('resize', function() {
+  // 获取所有CountryScale步骤
+  const countrySteps = document.querySelectorAll('.country-chart-section .step');
+  
+  // 为每个步骤重新设置正确的时间轴标记位置
+  countrySteps.forEach(step => {
+    const marker = step.querySelector('.country-timeline-marker');
+    const dateElement = step.querySelector('.country-step-date');
+    
+    if (marker && dateElement) {
+      // 计算日期元素中心点相对于步骤顶部的位置
+      const dateTop = dateElement.offsetTop;
+      const dateHeight = dateElement.offsetHeight;
+      const dateCenter = dateTop + (dateHeight / 2);
+      
+      // 设置标记位置，与日期中心点对齐
+      marker.style.top = dateCenter + 'px';
+    }
+  });
 });
