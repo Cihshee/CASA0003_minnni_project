@@ -457,7 +457,7 @@ console.log('GoodsType.js loaded');
       // 添加图标（只有前9个有图标）
       if (idx < 9 && item.icon) {
         const icon = document.createElement('img');
-        icon.src = `/goods-icons/${item.icon}`;
+        icon.src = `https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/${item.icon}`;
         icon.alt = `SITC ${idx}`;
         icon.className = 'summary-sitc-icon';
         icon.style.cssText = `
