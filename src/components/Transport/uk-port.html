@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cargo Transport of UK Ports</title>
+    <title>Cargo Transport of Top30 UK Ports</title>
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
     <style>
@@ -325,31 +325,6 @@
             background-color: rgba(255, 255, 255, 0.2);
             margin: 0 8px;
         }
-
-        /* 返回按钮样式 - 更明显 */
-        .go-back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 11;
-            background: rgb(79, 176, 255);
-            border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .go-back-btn:hover {
-            background: rgba(70, 130, 180, 1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-            transform: translateY(-2px);
-        }
     </style>
 </head>
 <body>
@@ -357,12 +332,10 @@
         <!-- 地图页面 -->
         <div class="map-container">
             <div id="map"></div>
-            <!-- 将返回按钮移到左侧面板上方 -->
-            <button id="go-back-btn" class="go-back-btn">Go back</button>
             <div class="map-overlay top">
                 <!-- 地图控件内容 -->
                 <div class='map-overlay-inner'>
-                    <h2>UK Ports Flow</h2>
+                    <h2>Cargo Transport of Top30 UK Ports</h2>
                     <p>Choose a port to view freight flows and cargo tonnage.</p>
                     
                     <div class="port-control">
@@ -463,20 +436,16 @@
             </div>
         </div>
 
-        <!-- 修改悬浮卡片容器内容 -->
         <div id="popup-chart" class="popup-chart">
-            <h4></h4>
+            <h4>Port Information</h4>
             <div class="trade-flows">
                 <div class="trade-flow">
-                    <div class="flow-title">Outward</div>
-                    <div class="flow-percentage">44.00%</div>
-                    <div class="flow-value">of all ports</div>
+                    <span class="flow-label">Outward:</span>
+                    <span class="flow-percentage">0%</span>
                 </div>
-                <div class="divider"></div>
                 <div class="trade-flow">
-                    <div class="flow-title">Inward</div>
-                    <div class="flow-percentage">3.30%</div>
-                    <div class="flow-value">of all ports</div>
+                    <span class="flow-label">Inward:</span>
+                    <span class="flow-percentage">0%</span>
                 </div>
             </div>
         </div>
@@ -552,11 +521,63 @@
         // 加载数据
         async function loadData() {
             try {
-                // 加载两个数据文件
+                // 尝试首先从本地加载数据
+                const localDataPath = '../../../public/data/';
+                const backupLocalPath = './public/data/';
+                const githubDataPath = 'https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/';
+                
+                // 数据文件名
+                const dataFileName = 'port0499-2016-2023-EU-top30-latlon.json';
+                
+                // 尝试从本地路径加载
+                try {
+                    console.log('尝试从本地路径加载数据...');
+                    const [flowResponse, portResponse] = await Promise.all([
+                        fetch(`${localDataPath}${dataFileName}`),
+                        fetch(`${localDataPath}${dataFileName}`)
+                    ]);
+                    
+                    if (flowResponse.ok && portResponse.ok) {
+                        console.log('成功从本地路径加载数据');
+                        flowData = await flowResponse.json();
+                        portData = await portResponse.json();
+                        checkInitialization();
+                        return;
+                    }
+                } catch (localError) {
+                    console.warn('从第一个本地路径加载数据失败，尝试备用本地路径...', localError);
+                }
+                
+                // 尝试从备用本地路径加载
+                try {
+                    console.log('尝试从备用本地路径加载数据...');
+                    const [flowResponse, portResponse] = await Promise.all([
+                        fetch(`${backupLocalPath}${dataFileName}`),
+                        fetch(`${backupLocalPath}${dataFileName}`)
+                    ]);
+                    
+                    if (flowResponse.ok && portResponse.ok) {
+                        console.log('成功从备用本地路径加载数据');
+                        flowData = await flowResponse.json();
+                        portData = await portResponse.json();
+                        checkInitialization();
+                        return;
+                    }
+                } catch (backupError) {
+                    console.warn('从备用本地路径加载数据失败，尝试从GitHub加载...', backupError);
+                }
+                
+                // 如果本地加载都失败，尝试从GitHub加载
+                console.log('尝试从GitHub加载数据...');
                 const [flowResponse, portResponse] = await Promise.all([
-                    fetch('https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/port0499-2016-2023-EU-top30-latlon.json'),
-                    fetch('https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/port0499-2016-2023-EU-top30-latlon.json')
+                    fetch(`${githubDataPath}${dataFileName}`),
+                    fetch(`${githubDataPath}${dataFileName}`)
                 ]);
+                
+                if (!flowResponse.ok || !portResponse.ok) {
+                    throw new Error('网络请求失败，状态码: ' + 
+                        (flowResponse.status || portResponse.status));
+                }
                 
                 flowData = await flowResponse.json();
                 portData = await portResponse.json();
@@ -564,6 +585,19 @@
                 checkInitialization();
             } catch (error) {
                 console.error('Error loading data:', error);
+                
+                // 显示错误消息在地图上
+                const mapContainer = document.getElementById('map');
+                if (mapContainer) {
+                    mapContainer.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column; color: white; background-color: rgba(0,0,0,0.7); padding: 20px; text-align: center;">
+                            <h3>数据加载失败</h3>
+                            <p>无法加载所需的数据文件。请检查网络连接或数据文件位置。</p>
+                            <p>错误详情: ${error.message}</p>
+                            <button onclick="window.close()" style="margin-top: 20px; padding: 10px 20px; background-color: #2196F3; border: none; color: white; cursor: pointer; border-radius: 4px;">关闭窗口</button>
+                        </div>
+                    `;
+                }
             }
         }
 
@@ -742,8 +776,8 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 1.6],  // 从1.8降低到1.2
-                        1, ['*', ['get', 'weight'], 0.8]   // 从0.9降低到0.6
+                        0, ['*', ['get', 'weight'], 1.8],  // 从1.8降低到1.2
+                        1, ['*', ['get', 'weight'], 0.9]   // 从0.9降低到0.6
                     ],
                     'line-opacity': 0.35,  // 从0.4降低到0.35
                     'line-blur': 1.2  // 从2降低到1.2，减少模糊程度
@@ -811,8 +845,8 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 0.6],  // 从0.7降低到0.5
-                        1, ['*', ['get', 'weight'], 0.2]  // 从0.2降低到0.15
+                        0, ['*', ['get', 'weight'], 0.8],  // 从0.7降低到0.5
+                        1, ['*', ['get', 'weight'], 0.25]  // 从0.2降低到0.15
                     ],
                     'line-opacity': 1.0,  // 完全不透明
                     'line-blur': 0  // 无模糊，保持锐利
@@ -1395,23 +1429,6 @@
             // 显示悬浮卡片
             document.getElementById('popup-chart').style.display = 'block';
         }
-
-        // 添加返回按钮逻辑
-        document.getElementById('go-back-btn').addEventListener('click', function() {
-            console.log('点击了返回按钮');
-            
-            // 从会话存储获取原页面地图位置信息
-            const savedPosition = sessionStorage.getItem('mapPosition');
-            
-            // 返回上一页，同时传递位置数据
-            if (savedPosition) {
-                sessionStorage.setItem('returnedFromPortPage', 'true');
-                window.history.back();
-            } else {
-                // 如果没有保存的位置信息，直接返回
-                window.history.back();
-            }
-        });
 
         // 开始加载数据
         loadData();

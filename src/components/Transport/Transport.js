@@ -47,30 +47,6 @@ function initTransport() {
     let map = null;
     let currentMapType = '';
     
-    // 检查是否从港口页面返回
-    function checkReturnFromPortPage() {
-        const returnedFromPortPage = sessionStorage.getItem('returnedFromPortPage');
-        if (returnedFromPortPage === 'true') {
-            // 清除返回标记
-            sessionStorage.removeItem('returnedFromPortPage');
-            
-            // 获取存储的位置
-            const savedPosition = sessionStorage.getItem('mapPosition');
-            if (savedPosition) {
-                try {
-                    const position = JSON.parse(savedPosition);
-                    if (map && position.center && position.zoom) {
-                        // 恢复地图位置
-                        map.setCenter(position.center);
-                        map.setZoom(position.zoom);
-                    }
-                } catch (error) {
-                    console.error('解析存储的位置数据时出错:', error);
-                }
-            }
-        }
-    }
-    
     // 创建地图的函数
     function createMap() {
         if (map) return; // 如果地图已经创建，则不重复创建
@@ -93,9 +69,6 @@ function initTransport() {
             // 监听地图加载事件
             map.on('load', () => {
                 console.log('地图加载成功');
-                
-                // 在地图加载完成后检查是否从港口页面返回
-                checkReturnFromPortPage();
             });
             
             map.on('error', (error) => {
@@ -117,36 +90,6 @@ function initTransport() {
             map.remove();
             map = null;
         }
-    }
-    
-    // 为探索地图按钮添加点击事件
-    if (exploreMapBtn) {
-        exploreMapBtn.addEventListener('click', function() {
-            console.log('点击了探索地图按钮');
-            
-            // 隐藏port内容
-            if (portContent) {
-                portContent.style.display = 'none';
-            }
-            
-            // 显示地图
-            mapContainer.style.display = 'block';
-            
-            // 创建地图
-            createMap();
-            
-            // 保存当前位置到会话存储，方便返回时恢复
-            if (map) {
-                const position = {
-                    center: map.getCenter(),
-                    zoom: map.getZoom()
-                };
-                sessionStorage.setItem('mapPosition', JSON.stringify(position));
-            }
-            
-            // 根据当前地图类型跳转到相应页面
-            window.location.href = './src/components/Transport/uk-port.html';
-        });
     }
     
     // 为按钮添加点击事件
@@ -177,6 +120,11 @@ function initTransport() {
                 // 显示港口内容
                 if (portContent) {
                     portContent.style.display = 'flex';
+                    
+                    // 延迟一点添加active类触发动画
+                    setTimeout(() => {
+                        portContent.classList.add('active');
+                    }, 10);
                 }
                 
                 // 清除地图
@@ -187,6 +135,7 @@ function initTransport() {
                 // 隐藏港口内容
                 if (portContent) {
                     portContent.style.display = 'none';
+                    portContent.classList.remove('active'); // 移除active类
                 }
                 
                 // 显示地图容器并准备显示柱状图
@@ -200,11 +149,33 @@ function initTransport() {
                                 </div>
                             </div>
                         </div>
-                        <div class="chart-container" style="margin-top: 0px;">
+                        <div class="airport-chart-container">
                             <canvas id="airportChart"></canvas>
+                        </div>
+                        <div id="airport-summary" class="airport-summary-section">
+                            <p> Despite air freight accounting for only 1% of UK goods transport, the impact of Brexit </p>
+                            <p> and the COVID-19 on airports has been significant, particularly for those with a primary focus on EU trade.</p>
+                            <p> Airports such as <span style="color:rgb(249, 167, 132);">East Midlands, Belfast, Edinburgh, and Aberdeen</span> experienced sharp declines in cargo volumes to and from EU,</p>
+                            <p> with noticeable fluctuations observed across other airports. </p>
                         </div>
                     </div>
                 `;
+                
+                // 延迟一点添加active类触发动画
+                setTimeout(() => {
+                    const airportContent = document.getElementById('airport-content');
+                    if (airportContent) {
+                        airportContent.classList.add('active');
+                    }
+                    
+                    // 为总结部分添加延迟动画效果
+                    setTimeout(() => {
+                        const airportSummary = document.getElementById('airport-summary');
+                        if (airportSummary) {
+                            airportSummary.classList.add('active');
+                        }
+                    }, 300); // 延迟300毫秒激活总结部分的动画
+                }, 10);
                 
                 // 加载机场数据并显示柱状图
                 loadAirportData();
@@ -216,11 +187,38 @@ function initTransport() {
                 // 隐藏港口内容
                 if (portContent) {
                     portContent.style.display = 'none';
+                    portContent.classList.remove('active'); // 移除active类
                 }
                 
                 // 显示提示信息
                 mapContainer.style.display = 'block';
-                mapContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: white;">Road transport in the UK moves approximately 86 million tonnes of freight annually, providing an efficient and eco-friendly option for domestic goods movement over longer distances.</div>';
+                mapContainer.innerHTML = `
+                    <div id="road-content" class="airport-content" style="margin-top: 30px;">
+                        <div style="padding: 20px; text-align: center; color: white;">
+                            Road transport in the UK moves approximately 86 million tonnes of freight annually, providing an efficient and eco-friendly option for domestic goods movement over longer distances.
+                        </div>
+                        <div id="road-summary" class="airport-summary-section">
+                            <p>Road freight is the backbone of UK's domestic logistics, connecting production centers with distribution hubs across the country.</p>
+                            <p>Brexit has significantly impacted cross-border road transport with new documentation and customs requirements at UK-EU borders.</p>
+                        </div>
+                    </div>
+                `;
+                
+                // 延迟一点添加active类触发动画
+                setTimeout(() => {
+                    const roadContent = document.getElementById('road-content');
+                    if (roadContent) {
+                        roadContent.classList.add('active');
+                    }
+                    
+                    // 为总结部分添加延迟动画效果
+                    setTimeout(() => {
+                        const roadSummary = document.getElementById('road-summary');
+                        if (roadSummary) {
+                            roadSummary.classList.add('active');
+                        }
+                    }, 300); // 延迟300毫秒激活总结部分的动画
+                }, 10);
                 
                 // 清除地图
                 clearMapContainer();
@@ -237,6 +235,11 @@ function initTransport() {
         // 先显示港口内容，再初始化视频和导航
         if (portContent) {
             portContent.style.display = 'flex';
+            
+            // 延迟一点添加active类触发动画
+            setTimeout(() => {
+                portContent.classList.add('active');
+            }, 10);
             
             // 确保DOM更新后再绑定事件
             setTimeout(function() {
@@ -317,7 +320,7 @@ function loadAirportData() {
         })
         .catch(error => {
             console.error('加载机场数据时出错:', error);
-            const chartContainer = document.querySelector('.chart-container');
+            const chartContainer = document.querySelector('.airport-chart-container');
             if (chartContainer) {
                 chartContainer.innerHTML = `
                     <div class="error-message">
@@ -602,6 +605,8 @@ function initPortImageScroll() {
     console.log('下一张按钮:', nextButton);
     
     let currentIndex = 0;
+    let autoPlayTimer = null; // 自动播放定时器
+    const autoPlayInterval = 3000; // 自动播放间隔，3秒
     
     // 如果元素不存在，直接返回
     if (!slides.length || !dots.length) {
@@ -609,37 +614,34 @@ function initPortImageScroll() {
         return;
     }
     
+    // 开始自动播放功能
+    function startAutoPlay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+        }
+        autoPlayTimer = setInterval(() => {
+            console.log('自动播放切换到下一张');
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlides();
+        }, autoPlayInterval);
+    }
+    
+    // 停止自动播放
+    function stopAutoPlay() {
+        if (autoPlayTimer) {
+            clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+    }
+    
     // 为所有地图按钮添加点击事件
     exploreMapBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             console.log('点击了地图按钮');
+            stopAutoPlay(); // 停止自动播放
             
-            // 隐藏port内容
-            const portContent = document.getElementById('port-content');
-            if (portContent) {
-                portContent.style.display = 'none';
-            }
-            
-            // 显示地图
-            const mapElement = document.getElementById('map');
-            if (mapElement) {
-                mapElement.style.display = 'block';
-                
-                // 创建地图
-                createMap();
-                
-                // 保存当前位置到会话存储，方便返回时恢复
-                if (map) {
-                    const position = {
-                        center: map.getCenter(),
-                        zoom: map.getZoom()
-                    };
-                    sessionStorage.setItem('mapPosition', JSON.stringify(position));
-                }
-                
-                // 跳转到地图页面
-                window.location.href = './src/components/Transport/uk-port.html';
-            }
+            // 在新窗口打开地图页面
+            window.open('./src/components/Transport/uk-port.html', '_blank');
         });
     });
     
@@ -663,15 +665,19 @@ function initPortImageScroll() {
         prevButton.onclick = function(e) {
             console.log('点击了上一张按钮（直接事件）');
             e.stopPropagation();
+            stopAutoPlay(); // 停止自动播放
             currentIndex = (currentIndex - 1 + slides.length) % slides.length;
             updateSlides();
+            startAutoPlay(); // 重新开始自动播放
         };
         
         nextButton.onclick = function(e) {
             console.log('点击了下一张按钮（直接事件）');
             e.stopPropagation();
+            stopAutoPlay(); // 停止自动播放
             currentIndex = (currentIndex + 1) % slides.length;
             updateSlides();
+            startAutoPlay(); // 重新开始自动播放
         };
     }
     
@@ -683,15 +689,19 @@ function initPortImageScroll() {
         prev.onclick = function(e) {
             console.log('点击了上一张按钮');
             e.stopPropagation();
+            stopAutoPlay(); // 停止自动播放
             currentIndex = (currentIndex - 1 + slides.length) % slides.length;
             updateSlides();
+            startAutoPlay(); // 重新开始自动播放
         };
         
         next.onclick = function(e) {
             console.log('点击了下一张按钮');
             e.stopPropagation();
+            stopAutoPlay(); // 停止自动播放
             currentIndex = (currentIndex + 1) % slides.length;
             updateSlides();
+            startAutoPlay(); // 重新开始自动播放
         };
     }
     
@@ -699,10 +709,26 @@ function initPortImageScroll() {
     dots.forEach((dot, index) => {
         dot.addEventListener('click', function() {
             console.log('点击了指示点:', index);
+            stopAutoPlay(); // 停止自动播放
             currentIndex = index;
             updateSlides();
+            startAutoPlay(); // 重新开始自动播放
         });
     });
+    
+    // 鼠标悬停暂停自动播放
+    const imageContainer = document.querySelector('.port-image-container');
+    if (imageContainer) {
+        imageContainer.addEventListener('mouseenter', function() {
+            console.log('鼠标进入，暂停自动播放');
+            stopAutoPlay();
+        });
+        
+        imageContainer.addEventListener('mouseleave', function() {
+            console.log('鼠标离开，恢复自动播放');
+            startAutoPlay();
+        });
+    }
     
     // 更新幻灯片和文字内容
     function updateSlides() {
@@ -741,5 +767,9 @@ function initPortImageScroll() {
     
     // 初始化显示第一张
     updateSlides();
+    
+    // 启动自动播放
+    startAutoPlay();
 }
+
 
