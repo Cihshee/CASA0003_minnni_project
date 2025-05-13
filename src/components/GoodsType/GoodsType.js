@@ -24,9 +24,9 @@ console.log('GoodsType.js loaded');
     "9 Commodities/transactions not class'd elsewhere in SITC"
   ];
   const sitcDescriptions = [
-    'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals, and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
-    'Beverages and tobacco include alcoholic drinks, soft drinks, and tobacco products. The UK exports a large share of beverages to the EU, and Brexit has affected export procedures.',
-    'Crude materials include wood, rubber, fibers, and more. The UK plays an important role in global raw materials trade, and Brexit has led to supply chain adjustments.',
+    'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
+    'Beverages and tobacco include alcoholic drinks, soft drinks and tobacco products. Despite pandemic and politic impacts stabilising most countries\' trade slightly, Russia saw significant fluctuations in 2020-2021 due to political factors.',
+    'Crude materials include wood, rubber, fibres and more. Brexit coupled with global disruptions from the COVID-19 also geopolitical tensions, reflected in changing export markets and volumes after 2020.',
     'Mineral fuels, lubricants, and related materials are key to the UK\'s energy imports and exports. Brexit has affected energy market flows.',
     'Animal and vegetable oils, fats, and waxes are widely used in food and industry. Trade barriers have increased post-Brexit.',
     'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
