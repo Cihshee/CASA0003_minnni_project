@@ -27,7 +27,7 @@ console.log('GoodsType.js loaded');
     'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
     'Beverages and tobacco include alcoholic drinks, soft drinks and tobacco products. Despite pandemic and politic impacts stabilising most countries\' trade slightly, Russia saw significant fluctuations in 2020-2021 due to political factors.',
     'Crude materials include wood, rubber, fibres and more. Brexit coupled with global disruptions from the COVID-19 also geopolitical tensions, reflected in changing export markets and volumes after 2020.',
-    'Mineral fuels, lubricants, and related materials are key to the UK\'s energy imports and exports. Brexit has affected energy market flows.',
+    'Brexit, geopolitical tensions and the global energy transition have fundamentally reshaped the UK\'s import-export dynamics, driving a strategic recalibration of international energy partnerships.',
     'Animal and vegetable oils, fats, and waxes are widely used in food and industry. Trade barriers have increased post-Brexit.',
     'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
     'Manufactured goods classified chiefly by material include metals, building materials, and more. Brexit has brought changes in tariffs and standards.',
