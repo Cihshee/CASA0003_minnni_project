@@ -31,9 +31,9 @@ console.log('GoodsType.js loaded');
     'Post-Brexit trade barriers have compelled the UK to dynamically restructure its international trade strategies, leading to fluctuating import-export patterns and a more diverse, yet complex global trading landscape.',
     'Chemicals and related products, including pharmaceuticals and chemical raw materials, have experienced subtle oscillations influenced by multiple factors.',
     'Brexit reshaped Manufactured goods trade, with Free Trade Agreements offering new opportunities with non-EU partners like Canada and India, reducing barriers and diversifying global market access.',
-    'Machinery and transport equipment are a pillar of UK exports. Brexit has affected supply chains and export markets.',
-    'Miscellaneous manufactured articles include toys, furniture, clothing, and more. Market access and certification processes have changed post-Brexit.',
-    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions."
+    'Machinery and transport equipment remain a resilient pillar of UK. While Brexit introduced potential disruptions to supply chains and export markets, strategic adaptation and diversified trade agreements have largely mitigated significant negative consequences.',
+    'Miscellaneous manufactured articles like toys, furniture and clothing undertook minimal Brexit impact, as key import markets remain predominantly outside the EU, preserving trade stability and market dynamics.',
+    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions. Despite being affected by global events, it has generally maintained strong resilience and stability."
   ];
   
   // Global state object
