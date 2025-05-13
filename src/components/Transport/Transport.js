@@ -153,7 +153,7 @@ function initTransport() {
                             <canvas id="airportChart"></canvas>
                         </div>
                         <div id="airport-summary" class="airport-summary-section">
-                            <p> Despite air freight accounting for only 1% of UK goods transport, the impact of Brexit </p>
+                            <p> Despite air freight accounting for only <span style="color:rgb(249, 167, 132);">1%</span> of UK goods transport, the impact of Brexit </p>
                             <p> and the COVID-19 on airports has been significant, particularly for those with a primary focus on EU trade.</p>
                             <p> Airports such as <span style="color:rgb(249, 167, 132);">East Midlands, Belfast, Edinburgh, and Aberdeen</span> experienced sharp declines in cargo volumes to and from EU,</p>
                             <p> with noticeable fluctuations observed across other airports. </p>
