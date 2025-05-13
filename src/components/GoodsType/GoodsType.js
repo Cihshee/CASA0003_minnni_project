@@ -27,13 +27,13 @@ console.log('GoodsType.js loaded');
     'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
     'Beverages and tobacco include alcoholic drinks, soft drinks and tobacco products. Despite pandemic and politic impacts stabilising most countries\' trade slightly, Russia saw significant fluctuations in 2020-2021 due to political factors.',
     'Crude materials include wood, rubber, fibres and more. Brexit coupled with global disruptions from the COVID-19 also geopolitical tensions, reflected in changing export markets and volumes after 2020.',
-    'Brexit, geopolitical tensions and the global energy transition have fundamentally reshaped the UK\'s import-export dynamics, driving a strategic recalibration of international energy partnerships.',
-    'Post-Brexit trade barriers have compelled the UK to dynamically restructure its international trade strategies, leading to fluctuating import-export patterns and a more diverse, yet complex global trading landscape.',
-    'Chemicals and related products, including pharmaceuticals and chemical raw materials, have experienced subtle oscillations influenced by multiple factors.',
-    'Brexit reshaped Manufactured goods trade, with Free Trade Agreements offering new opportunities with non-EU partners like Canada and India, reducing barriers and diversifying global market access.',
-    'Machinery and transport equipment remain a resilient pillar of UK. While Brexit introduced potential disruptions to supply chains and export markets, strategic adaptation and diversified trade agreements have largely mitigated significant negative consequences.',
-    'Miscellaneous manufactured articles like toys, furniture and clothing undertook minimal Brexit impact, as key import markets remain predominantly outside the EU, preserving trade stability and market dynamics.',
-    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions. Despite being affected by global events, it has generally maintained strong resilience and stability."
+    'Mineral fuels, lubricants, and related materials are key to the UK\'s energy imports and exports. Brexit has affected energy market flows.',
+    'Animal and vegetable oils, fats, and waxes are widely used in food and industry. Trade barriers have increased post-Brexit.',
+    'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
+    'Manufactured goods classified chiefly by material include metals, building materials, and more. Brexit has brought changes in tariffs and standards.',
+    'Machinery and transport equipment are a pillar of UK exports. Brexit has affected supply chains and export markets.',
+    'Miscellaneous manufactured articles include toys, furniture, clothing, and more. Market access and certification processes have changed post-Brexit.',
+    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions."
   ];
   
   // Global state object
@@ -2630,8 +2630,7 @@ console.log('GoodsType.js loaded');
       'sitc_5.json', // 5 Chemicals & related products
       'sitc_6.json', // 6 Manufactured goods
       'sitc_7.json', // 7 Machinery & transport
-      'sitc_8.json', // 8 Miscellaneous manufactured articles
-      'sitc_9.json'  // 9 Commodities/transactions not class'd elsewhere
+      'sitc_8.json'  // 8 Miscellaneous manufactured articles
     ];
     
     const fileName = sitcFiles[sitcIndex];
@@ -3196,65 +3195,270 @@ console.log('GoodsType.js loaded');
   // 在goodstype最前面插入intro页
   function renderGoodsTypeIntro() {
     if (document.getElementById('goods-type-intro')) return;
-    
-    const introContainer = document.createElement('div');
-    introContainer.id = 'goods-type-intro';
-    introContainer.innerHTML = `
-      <div class="goods-type-intro-content">
-        <div class="intro-text">
+    const mainWrap = document.querySelector('.goods-type-section') || document.body;
+    // 创建intro外层
+    const introDiv = document.createElement('div');
+    introDiv.id = 'goods-type-intro';
+    introDiv.style.cssText = 'max-width:1200px;min-height:480px;margin:0 auto 96px auto;padding:0 0 18px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;';
+    // SITC1简介
+    const introText = document.createElement('div');
+    introText.className = 'goods-type-intro-text';
+    introText.innerHTML = `
+      <div class=\"goods-type-transition-text fadein-block\" style=\"font-size:1.1em !important;color:#fff;margin-bottom:64px;max-width:1000px;margin-left:auto;margin-right:auto;text-align:center;line-height:1.6;\">Beyond fluctuations in trade volumes with specific countries and regions, Brexit has had complex effects on particular types of goods. From the SITC 1 classification perspective...</div>
+      
+      <div class=\"fadein-block\" style=\"width:100%;margin-bottom:24px;\">  
+        <h1 style=\"font-size:1.8em;font-weight:700;margin-bottom:40px;color:#fff;letter-spacing:1.2px;text-align:center;text-transform:uppercase;padding:10px 0;line-height:1.4;text-shadow:0 2px 10px rgba(33,150,243,0.3);\">Brexit's Impact on Trade by <span style=\"color:rgba(79, 195, 247, 0.75);\">SITC Product Categories</span></h1>
+        <h2 style=\"font-size:1.2em;font-weight:600;margin-bottom:18px;color:rgba(79, 195, 247, 0.75);letter-spacing:1px;text-align:center;border-bottom:1px solid rgba(79, 195, 247, 0.25);padding-bottom:10px;display:inline-block;margin-left:auto;margin-right:auto;\">SITC1 Introduction</h2>
+        <div style=\"font-size:1.05em;max-width:1000px;margin:0 auto 20px auto;line-height:1.6;color:#fff;\">
           The Standard International Trade Classification (SITC) is a United Nations system designed to classify traded products to enable international comparison of trade data. SITC1 is the first-level broader classification, dividing goods into 10 main categories based on material type, use, and processing stage.
         </div>
-        <div style="max-width:1000px;margin:0 auto 0 auto;font-size:0.92em;font-style:italic;color:rgba(255,255,255,0.38);line-height:1.5;text-align:center;">
-          Source: <a href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Standard_international_trade_classification_(SITC)" target="_blank" style="color:#4fc3f7;text-decoration:underline;">Eurostat, 'Standard international trade classification (SITC)'</a>
+        <div style=\"max-width:1000px;margin:0 auto 0 auto;font-size:0.92em;font-style:italic;color:rgba(255,255,255,0.38);line-height:1.5;text-align:center;\">
+          Source: <a href=\"https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Standard_international_trade_classification_(SITC)\" target=\"_blank\" style=\"color:#4fc3f7;text-decoration:underline;\">Eurostat, 'Standard international trade classification (SITC)'</a>
         </div>
       </div>
       
       <!-- SITC图标行 -->
-      <div class="sitc-icons-row fadein-block" style="margin:50px auto 40px auto;">
-        <button class="sitc-icon-btn" data-sitc="0" title="Food & live animals">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/0-Food-and-live-animals.png" alt="Food & live animals">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="1" title="Beverages & tobacco">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/1-Beverages-and-tobacco.png" alt="Beverages & tobacco">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="2" title="Crude materials">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/2-Crude-materials.png" alt="Crude materials">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="3" title="Mineral fuels">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png" alt="Mineral fuels">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="4" title="Animal & vegetable oils">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png" alt="Animal & vegetable oils">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="5" title="Chemicals & related products">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/5-Chemicals-and-related-products.png" alt="Chemicals & related products">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="6" title="Manufactured goods">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png" alt="Manufactured goods">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="7" title="Machinery & transport">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/7-Machinery-and-transport-equipment.png" alt="Machinery & transport">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="8" title="Miscellaneous manufactured articles">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/8-Miscellaneous-manufactured-articles.png" alt="Miscellaneous manufactured articles">
-        </button>
-        <button class="sitc-icon-btn" data-sitc="9" title="Commodities/transactions not class'd elsewhere">
-          <img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/9-Commodities-and-transactions-not-classified-elsewhere.png" alt="Commodities/transactions not class'd elsewhere">
-        </button>
+      <div class=\"sitc-icons-row fadein-block\" style=\"margin:50px auto 40px auto;\">
+        <button class=\"sitc-icon-btn\" data-sitc=\"0\" title=\"Food & live animals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/0-Food-and-live-animals.png\" alt=\"Food & live animals\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"1\" title=\"Beverages & tobacco\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/1-Beverages-and-tobacco.png\" alt=\"Beverages & tobacco\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"2\" title=\"Crude materials\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/2-Crude-materials.png\" alt=\"Crude materials\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"3\" title=\"Mineral fuels\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png\" alt=\"Mineral fuels\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"4\" title=\"Animal & vegetable oils\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png\" alt=\"Animal & vegetable oils\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"5\" title=\"Chemicals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/5-Chemicals-and-related-products.png\" alt=\"Chemicals\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"6\" title=\"Manufactured goods\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png\" alt=\"Manufactured goods\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"7\" title=\"Machinery & transport\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/7-Machinery-and-transport-equipment.png\" alt=\"Machinery & transport\"></button>
+        <button class=\"sitc-icon-btn\" data-sitc=\"8\" title=\"Miscellaneous articles\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/8-Miscellaneous-manufactured-articles.png\" alt=\"Miscellaneous manufactured articles\"></button>
       </div>
     `;
-    
-    document.body.appendChild(introContainer);
-    
-    // 添加点击事件处理
-    const buttons = introContainer.querySelectorAll('.sitc-icon-btn');
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        const sitcIndex = parseInt(button.getAttribute('data-sitc'));
-        scrollToCard(sitcIndex);
+    introDiv.appendChild(introText);
+    // 图片卡片区
+    const carousel = document.createElement('div');
+    carousel.className = 'goods-type-carousel fadein-block';
+    carousel.style.cssText = 'display:flex;gap:0;justify-content:center;align-items:flex-end;margin-bottom:38px;overflow-x:auto;max-width:100%;';
+    // 介绍区
+    const descDiv = document.createElement('div');
+    descDiv.className = 'goods-type-desc fadein-block';
+    descDiv.style.cssText = 'min-height:90px;text-align:center;max-width:700px;margin:0 auto 0 auto;font-size:1.05em;color:#fff;line-height:1.7;transition:all 0.5s;';
+    // 当前选中
+    let selected = 0;
+    function updateDesc(idx) {
+      descDiv.innerHTML = `<h4 style=\"font-size:1.05em;font-weight:700;margin-bottom:8px;letter-spacing:1px;color:#4fc3f7;\">${sitcLabels[idx]}</h4><div style=\"font-size:1.05em;font-weight:400;color:#fff;\">${sitcDescriptions[idx]}</div>`;
+      Array.from(carousel.children).forEach((el, i) => {
+        if (i === idx) {
+          el.classList.add('active');
+          el.classList.remove('dimmed');
+          el.style.width = '400px';
+          el.style.zIndex = 2;
+          el.querySelector('img').style.filter = 'none';
+          el.style.boxShadow = '0 8px 32px #4fc3f7aa';
+        } else {
+          el.classList.remove('active');
+          el.classList.add('dimmed');
+          el.style.width = '130px';
+          el.style.zIndex = 1;
+          el.querySelector('img').style.filter = 'grayscale(0.7) brightness(0.8)';
+          el.style.boxShadow = 'none';
+        }
       });
-    });
-}
+    }
+    // 生成10个卡片
+    for (let i = 0; i < 10; i++) {
+      const card = document.createElement('div');
+      card.className = 'goods-type-card';
+      card.style.cssText = `width:130px;height:350px;overflow:hidden;cursor:pointer;transition:width 0.55s cubic-bezier(.28,-0.03,0,.99),box-shadow 0.3s;display:flex;align-items:center;justify-content:center;background:#232b36;position:relative;border:none;`;
+      card.innerHTML = `<span class=\"goods-type-card-num\" style=\"font-size:1.05em;\">${i}</span><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/${i}-pic.jpg\" alt=\"type${i}\" style=\"width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(0.7) brightness(0.8);transition:filter 0.45s;\">`;
+      card.onmouseenter = () => { selected = i; updateDesc(i); };
+      card.onclick = () => { selected = i; updateDesc(i); };
+      carousel.appendChild(card);
+    }
+    introDiv.appendChild(carousel);
+    introDiv.appendChild(descDiv);
+    // 插入到goodstype最前面
+    mainWrap.parentNode.insertBefore(introDiv, mainWrap);
+    // 初始高亮和描述
+    updateDesc(0);
+    // intro样式
+    const style = document.createElement('style');
+    style.textContent = `
+      #goods-type-intro {box-sizing:border-box;}
+      .goods-type-intro-text {margin-top:48px;margin-bottom:18px;text-align:center;}
+      .goods-type-carousel::-webkit-scrollbar {display:none;}
+      .goods-type-card {margin:0;box-shadow:none;filter:none;width:130px !important;}
+      .goods-type-card img {filter:grayscale(0.7) brightness(0.8);}
+      .goods-type-card.active,
+      .goods-type-card:hover {z-index:2;}
+      .goods-type-card.active {width:400px !important;box-shadow:0 8px 32px #4fc3f7aa;}
+      .goods-type-card.active img {filter:none;}
+      .goods-type-card.dimmed img {filter:grayscale(0.7) brightness(0.8);}
+      .goods-type-card:not(.active):hover img {filter:grayscale(0.3) brightness(0.95);}
+      .goods-type-card:first-child {border-top-left-radius:38px;border-bottom-left-radius:38px;}
+      .goods-type-card:last-child {border-top-right-radius:38px;border-bottom-right-radius:38px;}
+      .goods-type-desc h4 {color:#4fc3f7;letter-spacing:1px;}
+      .goods-type-card-num {font-size:1.05em !important;}
+      
+      /* SITC Icons Row in intro page */
+      #goods-type-intro .sitc-icons-row {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 2rem auto;
+        max-width: 900px;
+      }
+      
+      #goods-type-intro .sitc-icon-btn {
+        background-color: transparent;
+        border: none;
+        transition: all 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        outline: none;
+        position: relative;
+        animation: float 2.5s ease-in-out infinite;
+      }
+      
+      /* Create floating animation with random delay for each icon */
+      #goods-type-intro .sitc-icon-btn:nth-child(1) { animation-delay: 0s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(2) { animation-delay: 0.28s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(3) { animation-delay: 0.56s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(4) { animation-delay: 0.84s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(5) { animation-delay: 1.12s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(6) { animation-delay: 1.4s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(7) { animation-delay: 1.68s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(8) { animation-delay: 1.96s; }
+      #goods-type-intro .sitc-icon-btn:nth-child(9) { animation-delay: 2.24s; }
+      
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+          filter: drop-shadow(0 5px 15px rgba(33, 150, 243, 0.2));
+        }
+        50% {
+          transform: translateY(-6px);
+          filter: drop-shadow(0 15px 15px rgba(33, 150, 243, 0.3));
+        }
+        100% {
+          transform: translateY(0);
+          filter: drop-shadow(0 5px 15px rgba(33, 150, 243, 0.2));
+        }
+      }
+      
+      #goods-type-intro .sitc-icon-btn:hover {
+        transform: translateY(-5px) scale(1.15);
+        filter: drop-shadow(0 15px 15px rgba(33, 150, 243, 0.5));
+        animation-play-state: paused;
+      }
+      
+      #goods-type-intro .sitc-icon-btn:hover::after {
+        content: attr(title);
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 100;
+      }
+      
+      #goods-type-intro .sitc-icon-btn img {
+        width: 55px;
+        height: 55px;
+        object-fit: contain;
+        transition: all 0.3s ease;
+        filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+      }
+      
+      #goods-type-intro .sitc-icon-btn:hover img {
+        filter: drop-shadow(0 5px 10px rgba(33, 150, 243, 0.7));
+      }
+      
+      /* Media query for mobile devices */
+      @media (max-width: 768px) {
+        #goods-type-intro .sitc-icons-row {
+          gap: 15px;
+        }
+        
+        #goods-type-intro .sitc-icon-btn img {
+          width: 40px;
+          height: 40px;
+        }
+        
+        .goods-type-card {width:150px !important;height:70px;}
+        .goods-type-card.active {width:260px !important;}
+        .goods-type-intro-text h2 {font-size:1.3em;}
+        .goods-type-desc {font-size:16px;}
+      }
+      
+      /* 动画样式 */
+      .fadein-block {opacity:0;transform:translateY(40px);transition:opacity 0.6s cubic-bezier(.4,0,.2,1),transform 0.6s cubic-bezier(.4,0,.2,1);}
+      .fadein-block.visible {opacity:1;transform:translateY(0);}
+    `;
+    document.head.appendChild(style);
+    // 数字标签样式
+    const numStyle = document.createElement('style');
+    numStyle.textContent = `
+      .goods-type-card-num {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        background: rgba(0,0,0,0.38);
+        color: #fff;
+        font-size: 1.05em;
+        font-weight: 400;
+        border-radius: 8px;
+        padding: 2px 8px;
+        z-index: 3;
+        pointer-events: none;
+        letter-spacing: 1px;
+      }
+    `;
+    document.head.appendChild(numStyle);
+    // 动画：滚动出现
+    setTimeout(()=>{
+      const fadeBlocks = introDiv.querySelectorAll('.fadein-block');
+      // fadeBlocks: [0]=过渡文字, [1]=SITC介绍段落, [2]=图标行, [3]=carousel, [4]=descDiv
+      // 让carousel和descDiv同时出现
+      const stagger = 0.28;
+      const fastStagger = 0.18;
+      fadeBlocks.forEach((el, i) => {
+        if (i === 3 || i === 4) {
+          el.style.transitionDelay = (2*stagger + fastStagger) + 's';
+        } else {
+          el.style.transitionDelay = (i*stagger) + 's';
+        }
+      });
+      // IntersectionObserver
+      const observer = new window.IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.12});
+      fadeBlocks.forEach(el => observer.observe(el));
+      
+      // 添加SITC图标点击事件
+      const sitcIcons = introDiv.querySelectorAll('.sitc-icon-btn');
+      sitcIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+          // 获取SITC索引
+          const sitcIndex = parseInt(this.getAttribute('data-sitc'));
+          // 更新卡片选择和描述
+          updateDesc(sitcIndex);
+          // 滚动到相应的卡片
+          scrollToCard(sitcIndex);
+        });
+      });
+    }, 100);
+  }
 
   // 自动轮播功能
   let autoScrollTimer = null;
@@ -3863,28 +4067,27 @@ console.log('GoodsType.js loaded');
       z-index: 10;
     `;
     
-    // SITC图标文件名和URL
-    const iconUrls = [
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/0-Food-and-live-animals.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/1-Beverages-and-tobacco.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/2-Crude-materials.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/3-Mineral-fuels-lubricants-and-related-materials.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/4-Animal-and-vegetable-oils-fats-and-waxes.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/5-Chemicals-and-related-products.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/6-Manufactured-goods-classified-chiefly-by-material.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/7-Machinery-and-transport-equipment.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/8-Miscellaneous-manufactured-articles.png',
-      'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/9-Commodities-and-transactions-not-classified-elsewhere.png'
+    // SITC图标文件名
+    const iconFiles = [
+      '0-Food-and-live-animals.png',
+      '1-Beverages-and-tobacco.png',
+      '2-Crude-materials.png',
+      '3-Mineral-fuels-lubricants-and-related-materials.png',
+      '4-Animal-and-vegetable-oils-fats-and-waxes.png',
+      '5-Chemicals-and-related-products.png',
+      '6-Manufactured-goods-classified-chiefly-by-material.png',
+      '7-Machinery-and-transport-equipment.png',
+      '8-Miscellaneous-manufactured-articles.png'
     ];
     
-    // 创建10个SITC图标
-    for (let i = 0; i < 10; i++) {
+    // 创建9个SITC图标
+    for (let i = 0; i < 9; i++) {
       const iconBtn = document.createElement('button');
       iconBtn.className = 'goods-type-icon-btn';
       iconBtn.setAttribute('data-type', i);
       iconBtn.setAttribute('data-selected', i === state.currentType ? 'true' : 'false');
       iconBtn.setAttribute('title', sitcLabels[i]);
-      iconBtn.innerHTML = `<img src="${iconUrls[i]}" alt="${sitcLabels[i]}">`;
+      iconBtn.innerHTML = `<img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/${iconFiles[i]}" alt="${sitcLabels[i]}">`;
       
       // 样式
       iconBtn.style.cssText = `
@@ -3904,27 +4107,37 @@ console.log('GoodsType.js loaded');
       `;
       
       // 添加点击事件处理
+      const typeIndex = i; // 捕获当前循环的索引
       iconBtn.addEventListener('click', async () => {
-        if (state.currentType === i) return;
+        if (state.currentType === typeIndex) return;
         
-        // 更新选中状态
-        document.querySelectorAll('.goods-type-icon-btn').forEach(btn => {
-          btn.style.backgroundColor = '#1e2832';
-          btn.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-          btn.setAttribute('data-selected', 'false');
+        const oldType = state.currentType;
+        state.currentType = typeIndex;
+        
+        // 更新所有图标状态
+        document.querySelectorAll('.goods-type-icon-btn').forEach(icon => {
+          const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
+          const isSelected = iconTypeIndex === typeIndex;
+          icon.setAttribute('data-selected', isSelected ? 'true' : 'false');
+          icon.style.backgroundColor = isSelected ? 'rgb(33, 150, 243)' : '#1e2832';
+          icon.style.borderColor = isSelected ? 'rgb(33, 150, 243)' : 'rgba(255, 255, 255, 0.2)';
+          
+          // 添加选中图标的缩放动画
+          if (isSelected) {
+            icon.style.animation = 'sitcIconSelect 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28)';
+            // 动画结束后清除
+            setTimeout(() => {
+              icon.style.animation = '';
+            }, 500);
+          }
         });
-        
-        iconBtn.style.backgroundColor = 'rgb(33, 150, 243)';
-        iconBtn.style.borderColor = 'rgb(33, 150, 243)';
-        iconBtn.setAttribute('data-selected', 'true');
-        
-        state.currentType = i;
         
         try {
           // 更新SITC描述文本
           const descElement = document.getElementById('goods-type-detail-desc');
           if (descElement) {
-            descElement.textContent = sitcDescriptions[i];
+            descElement.textContent = sitcDescriptions[typeIndex];
+            // 为描述文本添加淡入效果
             descElement.style.animation = 'fadeInDescription 0.5s ease-out';
             setTimeout(() => {
               descElement.style.animation = '';
@@ -3938,8 +4151,8 @@ console.log('GoodsType.js loaded');
           }
           
           // 加载新的SITC数据
-          const sitcData = await loadSitcData(i);
-          if (!sitcData) throw new Error(`Failed to load SITC ${i} data`);
+          const sitcData = await loadSitcData(typeIndex);
+          if (!sitcData) throw new Error(`Failed to load SITC ${typeIndex} data`);
           
           // 更新state
           state.currentSitcData = sitcData;
@@ -3970,23 +4183,50 @@ console.log('GoodsType.js loaded');
           preloadNextSitcData();
           
         } catch (error) {
-          console.error('Error updating SITC type:', error);
+          console.error('Failed to update visualizations:', error);
+          // 恢复到之前的状态
+          state.currentType = oldType;
+          document.querySelectorAll('.goods-type-icon-btn').forEach(icon => {
+            const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
+            const isSelected = iconTypeIndex === oldType;
+            icon.setAttribute('data-selected', isSelected ? 'true' : 'false');
+            icon.style.backgroundColor = isSelected ? 'rgb(33, 150, 243)' : '#1e2832';
+            icon.style.borderColor = isSelected ? 'rgb(33, 150, 243)' : 'rgba(255, 255, 255, 0.2)';
+          });
         }
       });
       
+      // 添加到容器
       iconBar.appendChild(iconBtn);
       
-      // 添加动画延迟
+      // 动画延迟显示
       setTimeout(() => {
         iconBtn.style.opacity = '1';
         iconBtn.style.transform = 'translateX(0)';
       }, i * 100);
     }
     
-    // 将图标栏添加到地图容器
-    const mapContainer = document.querySelector('.goods-type-detail-map');
+    // 添加到地图容器
+    const mapContainer = document.getElementById('goods-map');
     if (mapContainer) {
+      mapContainer.style.position = 'relative';
       mapContainer.appendChild(iconBar);
     }
-}
+    
+    // 添加CSS动画
+    const animStyle = document.createElement('style');
+    animStyle.textContent = `
+      @keyframes sitcIconSelect {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
+      
+      @keyframes fadeInDescription {
+        0% { opacity: 0.5; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(animStyle);
+  }
 })();

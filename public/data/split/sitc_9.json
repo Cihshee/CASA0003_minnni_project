@@ -6,66 +6,6 @@
       "flow_type": "EU - Exports",
       "countries": [
         {
-          "Country": "Belgium",
-          "Value (￡)": 273724008
-        },
-        {
-          "Country": "France",
-          "Value (￡)": 1365389360
-        },
-        {
-          "Country": "Germany",
-          "Value (￡)": 2379298288
-        },
-        {
-          "Country": "Ireland",
-          "Value (￡)": 1241811888
-        },
-        {
-          "Country": "Netherlands",
-          "Value (￡)": 745153438
-        },
-        {
-          "Country": "Spain",
-          "Value (￡)": 116866643
-        }
-      ]
-    },
-    {
-      "year": 2016,
-      "flow_type": "EU - Imports",
-      "countries": [
-        {
-          "Country": "Belgium",
-          "Value (￡)": 1307060220
-        },
-        {
-          "Country": "France",
-          "Value (￡)": 2795391590
-        },
-        {
-          "Country": "Germany",
-          "Value (￡)": 4507419861
-        },
-        {
-          "Country": "Ireland",
-          "Value (￡)": 494826991
-        },
-        {
-          "Country": "Netherlands",
-          "Value (￡)": 2778450079
-        },
-        {
-          "Country": "Spain",
-          "Value (￡)": 438191127
-        }
-      ]
-    },
-    {
-      "year": 2016,
-      "flow_type": "EU - Exports",
-      "countries": [
-        {
           "Country": "France",
           "Value (\uffe1)": 101908256
         },
