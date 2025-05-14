@@ -1385,16 +1385,76 @@ function renderHeatmap(data, regions, countries, year) {
       .attr('class', 'tooltip');
   }
 
+  // 确定当前需要高亮的区域
+  let highlightedRegion = null;
+  if (year === 2019) {
+    highlightedRegion = 'Scotland';
+  } else if (year === 2021) {
+    highlightedRegion = 'Northern Ireland';
+  } else if (year === 2023) {
+    highlightedRegion = 'London';
+  }
+
+  // 创建一个底层容器来放置所有热图单元格
+  const heatmapCellsGroup = svg.append('g')
+    .attr('class', 'heatmap-cells');
+
+  // 创建悬停高亮遮罩的容器
+  const hoverMaskGroup = svg.append('g')
+    .attr('class', 'hover-masks')
+    .style('opacity', 0); // 初始化为隐藏状态
+
+  // 创建暗化遮罩容器（用于悬停效果）
+  const hoverDimmingGroup = svg.append('g')
+    .attr('class', 'hover-dimming')
+    .style('opacity', 0); // 初始化为隐藏状态
+    
+  // 为主题高亮创建暗化遮罩容器（基于年份的高亮）
+  const dimMaskGroup = svg.append('g')
+    .attr('class', 'year-dimming-masks')
+    .style('opacity', 0); // 初始化为隐藏状态
+
+  // 先创建所有坐标轴，这样可以对它们设置ID，方便后续操作
+  // 创建X轴（底部国家标签）
+  const xAxisGroup = svg.append('g')
+    .attr('class', 'x-axis')
+    .attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(xScale));
+
+  // 为每个国家标签添加唯一ID
+  xAxisGroup.selectAll('.tick text')
+    .attr('id', d => `country-label-${d.replace(/\s+/g, '-').toLowerCase()}`);
+
+  // 创建Y轴（左侧区域标签）
+  const yAxisGroup = svg.append('g')
+    .attr('class', 'y-axis')
+    .call(d3.axisLeft(yScale));
+    
+  // 为每个区域标签添加唯一ID
+  yAxisGroup.selectAll('.tick text')
+    .attr('id', d => `region-label-${d.replace(/\s+/g, '-').toLowerCase()}`);
+
+  // 首先绘制所有单元格
   regions.forEach(region => {
     filteredOrderedCountries.forEach(country => {
       const stat = lookup[`${region}-${country}`] || { balance: 0, imports: 0, exports: 0 };
-      svg.append('rect')
+      
+      // 为每个单元格创建唯一ID
+      const cellId = `cell-${region.replace(/\s+/g, '-').toLowerCase()}-${country.replace(/\s+/g, '-').toLowerCase()}`;
+      
+      // 绘制热图单元格
+      heatmapCellsGroup.append('rect')
+        .attr('id', cellId)
+        .attr('class', `heatmap-cell ${region === highlightedRegion ? 'highlighted' : ''}`)
         .attr('x', xScale(country))
         .attr('y', yScale(region))
         .attr('width', xScale.bandwidth())
         .attr('height', yScale.bandwidth())
         .attr('fill', colorScale(stat.balance))
-        .on('mouseover', (event) => {
+        .attr('data-region', region)
+        .attr('data-country', country)
+        .on('mouseover', function(event) {
+          // 显示提示框
           tooltip
             .style('opacity', 0.9)
             .html(`
@@ -1405,29 +1465,55 @@ function renderHeatmap(data, regions, countries, year) {
             `)
             .style('left', `${event.pageX + 10}px`)
             .style('top', `${event.pageY - 28}px`);
+          
+          // 高亮相关的行和列
+          highlightRowAndColumn(region, country);
         })
-        .on('mouseout', () => {
+        .on('mouseout', function() {
+          // 隐藏提示框
           tooltip.style('opacity', 0);
+          
+          // 取消高亮
+          unhighlightRowAndColumn();
         });
     });
   });
 
-  // 自适应坐标轴
-  const fontSize = Math.max(12, Math.min(14, width / 60));
+  // 如果有高亮区域，应用特殊效果
+  if (highlightedRegion) {
+    // 为非高亮区域添加半透明暗色遮罩
+    regions.forEach(region => {
+      if (region !== highlightedRegion) { // 只对非高亮区域应用遮罩
+        dimMaskGroup.append('rect')
+          .attr('class', 'dimming-mask')
+          .attr('x', 0)
+          .attr('y', yScale(region))
+          .attr('width', width)
+          .attr('height', yScale.bandwidth())
+          .attr('fill', 'rgba(0, 0, 0, 0.6)') // 半透明黑色遮罩
+          .attr('pointer-events', 'none'); // 确保不会干扰鼠标事件
+      }
+    });
+    
+    // 显示年份相关的暗化效果，并添加动画
+    dimMaskGroup.transition()
+      .duration(800)
+      .style('opacity', 1);
+  }
 
-  svg.append('g')
-    .attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(xScale))
-    .selectAll('text')
-      .attr('transform', 'rotate(-65)')
-      .style('text-anchor', 'end')
-      .style('font-size', `${fontSize}px`)
-      .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8'); // 更新非EU国家的颜色
+  // 美化坐标轴文字
+  xAxisGroup.selectAll('text')
+    .attr('transform', 'rotate(-65)')
+    .style('text-anchor', 'end')
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
+    .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8')
+    .style('font-weight', '600'); // 让文字更清晰
 
-  svg.append('g')
-    .call(d3.axisLeft(yScale))
-    .selectAll('text')
-      .style('font-size', `${fontSize}px`);
+  // 美化Y轴文字
+  yAxisGroup.selectAll('text')
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
+    .style('font-weight', '600') // 让文字更清晰
+    .style('fill', region => region === highlightedRegion ? '#ffffff' : '#cccccc'); // 高亮区域文字更亮
 
   // 自适应图例
   const legendX = width + 10;
@@ -1440,7 +1526,7 @@ function renderHeatmap(data, regions, countries, year) {
   legend.append('text')
     .attr('x', 0)
     .attr('y', 0)
-    .style('font-size', `${fontSize + 1}px`)
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60)) + 1}px`)
     .style('font-weight', 'bold')
     .text('£ Million');
 
@@ -1463,7 +1549,8 @@ function renderHeatmap(data, regions, countries, year) {
   legendItems.append('text')
     .attr('x', rectSize + 6)
     .attr('y', rectSize * 0.75)
-    .style('font-size', `${fontSize}px`)
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
+    .style('font-weight', '600') // 让图例文字更清晰
     .text((d, i) => {
       return `${heatmapBounds[i]} to ${heatmapBounds[i + 1]}`;
     });
@@ -1474,163 +1561,75 @@ function renderHeatmap(data, regions, countries, year) {
     .attr('x', width / 2)
     .attr('y', height + margin.bottom + 5) 
     .attr('text-anchor', 'middle')
-    .style('font-size', `${fontSize}px`)
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
     .style('fill', '#fff')
+    .style('font-weight', '600') // 让文字更清晰
     .html('Country names are colored by ' + 
           `<tspan style="fill: #c1e7ff">EU</tspan>` + 
           ' and ' + 
           `<tspan style="fill: #ffb7a8">non-EU</tspan>` + 
           ' grouping.');
 
-  // 如果是2019年，为Scotland行添加高亮
-  if (year === 2019) {
-    // 找到Scotland在regions中的索引
-    const scotlandIndex = regions.indexOf('Scotland');
-    if (scotlandIndex !== -1) {
-      // 首先添加滤镜定义
-      const defs = svg.append("defs");
+  // 函数：高亮特定的行和列
+  function highlightRowAndColumn(region, country) {
+    // 取消基于年份的暗化效果
+    dimMaskGroup.transition().duration(300).style('opacity', 0);
+    
+    // 清除之前的悬停遮罩
+    hoverDimmingGroup.selectAll('*').remove();
+    
+    // 为所有区域创建暗化遮罩（鼠标悬停效果）
+    regions.forEach(r => {
+      filteredOrderedCountries.forEach(c => {
+        // 如果不是当前行或当前列，则添加暗化遮罩
+        if (r !== region && c !== country) {
+          hoverDimmingGroup.append('rect')
+            .attr('x', xScale(c))
+            .attr('y', yScale(r))
+            .attr('width', xScale.bandwidth())
+            .attr('height', yScale.bandwidth())
+            .attr('fill', 'rgba(0, 0, 0, 0.6)')
+            .attr('pointer-events', 'none');
+        }
+      });
+    });
+    
+    // 显示悬停暗化效果
+    hoverDimmingGroup.transition().duration(300).style('opacity', 1);
+    
+    // 高亮当前行和列的标签
+    xAxisGroup.selectAll('.tick text')
+      .transition().duration(300)
+      .style('fill', d => d === country ? '#ffffff' : 'rgba(255, 255, 255, 0.3)')
+      .style('font-weight', d => d === country ? '800' : '400');
       
-      // 创建发光滤镜
-      const filter = defs.append("filter")
-        .attr("id", "glow-effect")
-        .attr("x", "-20%")
-        .attr("y", "-20%")
-        .attr("width", "140%")
-        .attr("height", "140%");
-      
-      // 添加模糊效果
-      filter.append("feGaussianBlur")
-        .attr("stdDeviation", "4")
-        .attr("result", "blur");
-      
-      // 增加亮度
-      filter.append("feComponentTransfer")
-        .append("feFuncA")
-        .attr("type", "linear")
-        .attr("slope", "1.5");
-      
-      // 合并原始图形和发光效果
-      filter.append("feComposite")
-        .attr("in", "SourceGraphic")
-        .attr("in2", "blur")
-        .attr("operator", "over");
-      
-      // 添加白色虚线框高亮
-      svg.append('rect')
-        .attr('class', 'scotland-highlight')
-        .attr('x', -75) // 向左扩展
-        .attr('y', yScale('Scotland') - 5) // 增加上边距
-        .attr('width', width + 80) // 增加总宽度
-        .attr('height', yScale.bandwidth() + 10) // 增加总高度
-        .attr('fill', 'none')
-        .attr('stroke', 'white')
-        .attr('stroke-width', 3) // 更粗的线条
-        .attr('stroke-dasharray', '8,8') // 更大的虚线间隔
-        .attr("filter", "url(#glow-effect)") // 应用发光滤镜
-        .attr('pointer-events', 'none'); // 确保框不会干扰鼠标事件
-    }
+    yAxisGroup.selectAll('.tick text')
+      .transition().duration(300)
+      .style('fill', d => d === region ? '#ffffff' : 'rgba(255, 255, 255, 0.3)')
+      .style('font-weight', d => d === region ? '800' : '400');
   }
-
-  // 如果是2021年，为Northern Ireland行添加高亮
-  if (year === 2021) {
-    // 找到Northern Ireland在regions中的索引
-    const northernIrelandIndex = regions.indexOf('Northern Ireland');
-    if (northernIrelandIndex !== -1) {
-      // 首先添加滤镜定义（如果已经存在就不需要重复添加）
-      if (!svg.select("defs").select("#glow-effect").node()) {
-        const defs = svg.append("defs");
-        
-        // 创建发光滤镜
-        const filter = defs.append("filter")
-          .attr("id", "glow-effect")
-          .attr("x", "-20%")
-          .attr("y", "-20%")
-          .attr("width", "140%")
-          .attr("height", "140%");
-        
-        // 添加模糊效果
-        filter.append("feGaussianBlur")
-          .attr("stdDeviation", "4")
-          .attr("result", "blur");
-        
-        // 增加亮度
-        filter.append("feComponentTransfer")
-          .append("feFuncA")
-          .attr("type", "linear")
-          .attr("slope", "1.5");
-        
-        // 合并原始图形和发光效果
-        filter.append("feComposite")
-          .attr("in", "SourceGraphic")
-          .attr("in2", "blur")
-          .attr("operator", "over");
-      }
-      
-      // 添加白色虚线框高亮
-      svg.append('rect')
-        .attr('class', 'northern-ireland-highlight')
-        .attr('x', -115) // 向左扩展
-        .attr('y', yScale('Northern Ireland') - 5) // 增加上边距
-        .attr('width', width + 120) // 增加总宽度
-        .attr('height', yScale.bandwidth() + 10) // 增加总高度
-        .attr('fill', 'none')
-        .attr('stroke', 'white')
-        .attr('stroke-width', 3) // 更粗的线条
-        .attr('stroke-dasharray', '8,8') // 更大的虚线间隔
-        .attr("filter", "url(#glow-effect)") // 应用发光滤镜
-        .attr('pointer-events', 'none'); // 确保框不会干扰鼠标事件
+  
+  // 函数：取消高亮
+  function unhighlightRowAndColumn() {
+    // 隐藏悬停暗化效果
+    hoverDimmingGroup.transition().duration(300).style('opacity', 0);
+    
+    // 恢复基于年份的暗化效果（如果有）
+    if (highlightedRegion) {
+      dimMaskGroup.transition().duration(300).style('opacity', 1);
     }
-  }
-
-  // 如果是2023年，为London行添加高亮
-  if (year === 2023) {
-    // 找到London在regions中的索引
-    const londonIndex = regions.indexOf('London');
-    if (londonIndex !== -1) {
-      // 首先添加滤镜定义（如果已经存在就不需要重复添加）
-      if (!svg.select("defs").select("#glow-effect").node()) {
-        const defs = svg.append("defs");
-        
-        // 创建发光滤镜
-        const filter = defs.append("filter")
-          .attr("id", "glow-effect")
-          .attr("x", "-20%")
-          .attr("y", "-20%")
-          .attr("width", "140%")
-          .attr("height", "140%");
-        
-        // 添加模糊效果
-        filter.append("feGaussianBlur")
-          .attr("stdDeviation", "4")
-          .attr("result", "blur");
-        
-        // 增加亮度
-        filter.append("feComponentTransfer")
-          .append("feFuncA")
-          .attr("type", "linear")
-          .attr("slope", "1.5");
-        
-        // 合并原始图形和发光效果
-        filter.append("feComposite")
-          .attr("in", "SourceGraphic")
-          .attr("in2", "blur")
-          .attr("operator", "over");
-      }
+    
+    // 恢复X轴标签样式
+    xAxisGroup.selectAll('.tick text')
+      .transition().duration(300)
+      .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8')
+      .style('font-weight', '600');
       
-      // 添加白色虚线框高亮
-      svg.append('rect')
-        .attr('class', 'london-highlight')
-        .attr('x', -70) // 向左扩展
-        .attr('y', yScale('London') - 5) // 增加上边距
-        .attr('width', width + 75) // 增加总宽度
-        .attr('height', yScale.bandwidth() + 10) // 增加总高度
-        .attr('fill', 'none')
-        .attr('stroke', 'white')
-        .attr('stroke-width', 3) // 更粗的线条
-        .attr('stroke-dasharray', '8,8') // 更大的虚线间隔
-        .attr("filter", "url(#glow-effect)") // 应用发光滤镜
-        .attr('pointer-events', 'none'); // 确保框不会干扰鼠标事件
-    }
+    // 恢复Y轴标签样式
+    yAxisGroup.selectAll('.tick text')
+      .transition().duration(300)
+      .style('fill', region => region === highlightedRegion ? '#ffffff' : '#cccccc')
+      .style('font-weight', '600');
   }
 
   // 添加窗口大小变化时的自适应调整
