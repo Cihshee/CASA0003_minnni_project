@@ -470,6 +470,8 @@
         let outwardChart = null; // 用于存储出口图表实例
         let yearPlayInterval = null; // 用于存储年份播放的interval ID
         let hoverChart = null;  // 用于存储悬浮卡片图表实例
+        let flowDotsAnimationId = null;
+        let flowDots = []; // 用于存储所有流动点的数据
 
         // 在全局变量部分添加颜色映射 - 调整为更亮的颜色
         const regionColors = {
@@ -852,6 +854,32 @@
                     'line-blur': 0  // 无模糊，保持锐利
                 }
             }, 'flow-lines-glow');
+            
+            // 添加流动点图层的数据源
+            map.addSource('flow-dots', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: []
+                }
+            });
+            
+            // 添加流动线段 - 使用纯色，而不是渐变（因为MapBox的line-gradient在小线段上不工作）
+            map.addLayer({
+                id: 'flow-dots',
+                type: 'line',
+                source: 'flow-dots',
+                layout: {
+                    'line-cap': 'round',
+                    'line-join': 'round'
+                },
+                paint: {
+                    'line-color': '#ffffff',
+                    'line-width': ['*', ['get', 'size'], 1],  // 更细的线
+                    'line-opacity': ['get', 'opacity'],  // 使用属性控制透明度
+                    'line-blur': 0.1    // 轻微的模糊效果
+                }
+            });
         }
 
         // 更新可视化
@@ -871,6 +899,15 @@
                     type: 'FeatureCollection',
                     features: []
                 });
+                map.getSource('flow-dots').setData({
+                    type: 'FeatureCollection',
+                    features: []
+                });
+                // 清除之前的动画
+                if (flowDotsAnimationId) {
+                    cancelAnimationFrame(flowDotsAnimationId);
+                    flowDotsAnimationId = null;
+                }
                 return;
             }
 
@@ -908,9 +945,192 @@
                     type: 'FeatureCollection',
                     features: flowFeatures
                 });
+                
+                // 开始动画流动点
+                startFlowDotsAnimation(flowFeatures);
+                
             } catch (error) {
                 console.error('Error updating flows:', error);
             }
+        }
+
+        // 改进版的流动点动画 - 确保每条线有连续的流动效果和渐变特效
+        function startFlowDotsAnimation(flowFeatures) {
+            // 如果之前有动画，取消它
+            if (flowDotsAnimationId) {
+                cancelAnimationFrame(flowDotsAnimationId);
+                flowDotsAnimationId = null;
+            }
+            
+            // 如果没有数据，不执行动画
+            if (!flowFeatures || flowFeatures.length === 0) return;
+            
+            // 初始化流动点
+            flowDots = [];
+            
+            // 对每条线生成1个流动线段，确保流畅移动
+            flowFeatures.forEach((feature) => {
+                const weight = feature.properties.weight;
+                const coords = feature.geometry.coordinates;
+                
+                // 为每条线生成一个点
+                flowDots.push({
+                    progress: 0, // 从起点开始
+                    speed: 0.0006, // 显著降低速度
+                    coordinates: coords,
+                    properties: {
+                        size: Math.min(weight * 0.6 + 0.3, 1.0) // 适当降低粗细
+                    },
+                    lineLength: 0.06 + (weight * 0.008), // 适当缩短线段长度
+                    totalTime: 0 // 记录运行时间
+                });
+            });
+            
+            // 对每条线生成1个流动线段，确保流畅移动
+            flowFeatures.forEach((feature) => {
+                const weight = feature.properties.weight;
+                const coords = feature.geometry.coordinates;
+                
+                // 为每条线生成一个点
+                flowDots.push({
+                    progress: Math.random(), // 随机初始位置，避免所有点同步
+                    speed: 0.0003, // 进一步降低速度，使动画更缓慢
+                    coordinates: coords,
+                    properties: {
+                        size: Math.min(weight * 0.6 + 0.3, 0.9) // 适当降低粗细
+                    },
+                    lineLength: 0.05 + (weight * 0.006), // 更短的线段
+                    totalTime: 0 // 记录运行时间
+                });
+            });
+            
+            // 开始动画循环
+            animate();
+            
+            function animate() {
+                // 更新每个流动线段的位置
+                for (let dot of flowDots) {
+                    dot.progress += dot.speed;
+                    dot.totalTime += 1/60; // 假设60fps
+                    
+                    // 当线段到达终点时，回到起点
+                    if (dot.progress >= 1) {
+                        dot.progress = 0;
+                    }
+                }
+                
+                // 创建具有渐变效果的线段
+                const dotFeatures = flowDots.map(dot => {
+                    // 计算线段的起点和终点
+                    const startProgress = dot.progress;
+                    const endProgress = Math.min(startProgress + dot.lineLength, 1);
+                    
+                    const startPos = interpolatePosition(dot.coordinates, startProgress);
+                    let endPos;
+                    
+                    // 如果线段跨越了终点，需要特殊处理
+                    if (endProgress >= 1) {
+                        endPos = interpolatePosition(dot.coordinates, endProgress % 1);
+                    } else {
+                        endPos = interpolatePosition(dot.coordinates, endProgress);
+                    }
+                    
+                    // 生成中间点来创建渐变效果 - 更平滑的过渡
+                    const numPoints = 4; // 减少点数以缩短线段
+                    const points = [];
+                    
+                    for (let i = 0; i < numPoints; i++) {
+                        const t = i / (numPoints - 1);
+                        const segmentProgress = startProgress + (endProgress - startProgress) * t;
+                        const actualProgress = segmentProgress >= 1 ? segmentProgress % 1 : segmentProgress;
+                        points.push(interpolatePosition(dot.coordinates, actualProgress));
+                    }
+                    
+                    // 为每个中间线段创建更自然的渐变过渡
+                    const segmentFeatures = [];
+                    for (let i = 0; i < points.length - 1; i++) {
+                        // 使用指数函数创建更自然的亮度衰减
+                        const t = i / (points.length - 1); // 0到1之间的值
+                        const headOpacity = 1.0; // 头部最明亮
+                        const tailOpacity = 0.15; // 尾部更暗
+                        
+                        // 使用指数函数创建更陡峭的头部渐变，尾部更快消失
+                        const opacity = headOpacity * Math.exp(-2.2 * t);
+                        
+                        segmentFeatures.push({
+                            type: 'Feature',
+                            properties: {
+                                size: dot.properties.size * (1 - Math.pow(t, 1.2) * 0.5), // 头尾过渡更自然
+                                opacity: opacity
+                            },
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [points[i], points[i+1]]
+                            }
+                        });
+                    }
+                    
+                    return segmentFeatures;
+                }).flat();
+                
+                // 更新地图上的流动线段
+                if (map.getSource('flow-dots')) {
+                    map.getSource('flow-dots').setData({
+                        type: 'FeatureCollection',
+                        features: dotFeatures
+                    });
+                }
+                
+                // 继续动画循环
+                flowDotsAnimationId = requestAnimationFrame(animate);
+            }
+        }
+
+        // 插值计算点在路径上的位置
+        function interpolatePosition(coordinates, progress) {
+            if (!coordinates || coordinates.length < 2) {
+                return [0, 0];
+            }
+            
+            // 计算路径的总长度
+            let totalDistance = 0;
+            const distances = [];
+            
+            for (let i = 1; i < coordinates.length; i++) {
+                const d = distance(coordinates[i-1], coordinates[i]);
+                totalDistance += d;
+                distances.push(d);
+            }
+            
+            if (totalDistance === 0) return coordinates[0];
+            
+            // 目标距离
+            const targetDistance = progress * totalDistance;
+            
+            // 查找对应的线段
+            let currentDistance = 0;
+            for (let i = 0; i < distances.length; i++) {
+                if (currentDistance + distances[i] >= targetDistance) {
+                    // 在此线段内插值
+                    const segmentProgress = (targetDistance - currentDistance) / distances[i];
+                    return [
+                        coordinates[i][0] + (coordinates[i+1][0] - coordinates[i][0]) * segmentProgress,
+                        coordinates[i][1] + (coordinates[i+1][1] - coordinates[i][1]) * segmentProgress
+                    ];
+                }
+                currentDistance += distances[i];
+            }
+            
+            // 如果达到最后，返回最后一个点
+            return coordinates[coordinates.length - 1];
+        }
+
+        // 计算两点之间的距离
+        function distance(point1, point2) {
+            return Math.sqrt(
+                Math.pow(point2[0] - point1[0], 2) + 
+                Math.pow(point2[1] - point1[1], 2)
+            );
         }
 
         // 更新年份和图表
