@@ -24,16 +24,16 @@ console.log('GoodsType.js loaded');
     "9 Commodities/transactions not class'd elsewhere in SITC"
   ];
   const sitcDescriptions = [
-    'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
-    'Beverages and tobacco include alcoholic drinks, soft drinks and tobacco products. Despite pandemic and politic impacts stabilising most countries\' trade slightly, Russia saw significant fluctuations in 2020-2021 due to political factors.',
-    'Crude materials include wood, rubber, fibres and more. Brexit coupled with global disruptions from the COVID-19 also geopolitical tensions, reflected in changing export markets and volumes after 2020.',
-    'Mineral fuels, lubricants, and related materials are key to the UK\'s energy imports and exports. Brexit has affected energy market flows.',
-    'Animal and vegetable oils, fats, and waxes are widely used in food and industry. Trade barriers have increased post-Brexit.',
-    'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
-    'Manufactured goods classified chiefly by material include metals, building materials, and more. Brexit has brought changes in tariffs and standards.',
-    'Machinery and transport equipment are a pillar of UK exports. Brexit has affected supply chains and export markets.',
-    'Miscellaneous manufactured articles include toys, furniture, clothing, and more. Market access and certification processes have changed post-Brexit.',
-    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions."
+    'The impact of Brexit on trade in food and live animals has been relatively limited. Post-Brexit, despite significant changes in related trade policies and tariffs, the overall trade volume has remained relatively stable, with imports slightly higher than exports.',
+    'Influenced by the pandemic and political factors, trade in beverages and tobacco between the UK and the EU (such as France, Ireland, and Italy) has shown significant characteristics: import volumes continue to rise, while export volumes have notably decreased, reflecting the structural challenges faced by domestic industries and external competitive pressures.',
+    'Since 2018, profound impacts from the global trade war and supply chain disruptions have led to significant fluctuations in the export market and trade volume of crude materials, inedible, except fuels. Particularly in the EU market, the trade experienced considerable volatility from 2018 to 2020, reflecting a deep adjustment in international trade patterns.',
+    'The war in Ukraine in 2022 led to significant fluctuations in UK-Russia trade, culminating in a trade suspension in 2023. The energy market has rapidly restructured amid geopolitical tensions, with Brexit further influencing trade flows and market dynamics. Both EU and Non-EU trade have been significantly affected, but are stabilising, highlighting the political sensitivity of the energy sector.',
+    'Trade in animal and vegetable oils, fats, and waxes is relatively small in scale and shows moderate fluctuations. The impact of global supply chains has been limited; however, the increase in trade barriers post-Brexit has made trading processes more complex.',
+    'Trade in chemicals and related products, not elsewhere classified, has remained relatively stable, exhibiting basic stability in both EU and Non-EU markets.',
+    'Between 2020 and 2022, the manufacturing supply chain underwent deep restructuring due to the dual impacts of Brexit and the COVID-19 pandemic. Trade with the EU experienced significant fluctuations, while free trade agreements have opened new market opportunities with Non-EU partners such as Canada and India.',
+    'As the area most severely impacted post-Brexit, machinery and transport equipment has faced dual challenges from the pandemic and supply chain bottlenecks. From 2019 to 2022, both import and export volumes with EU and Non-EU countries exhibited sharp fluctuations. However, since 2023, trade with Non-EU regions has begun to recover slowly, demonstrating the resilience of the industry.',
+    'Trade in miscellaneous manufactured articles has been relatively stable. The primary impact of Brexit has been on market access and certification processes. Although this has increased operational difficulties for businesses, overall fluctuations remain small, reflecting the adaptability of the consumer goods sector.',
+    "Since commodities not classified elsewhere cover a wide variety of types, this category has experienced the greatest trade fluctuations. It reflects the increasing complexity of global trade and the deep-seated uncertainties brought about by Brexit."
   ];
   
   // Global state object
