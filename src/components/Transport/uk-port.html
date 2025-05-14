@@ -399,6 +399,46 @@
         .tonnage-info-detailed strong {
             color: #64b5f6;
         }
+
+        /* 新增视图控制按钮样式 */
+        .view-controls {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .next-button {
+            background: rgba(33, 33, 33, 0.9);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .next-button:hover {
+            background: rgba(33, 33, 33, 0.95);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .next-button-icon {
+            margin-left: 8px;
+            width: 16px;
+            height: 16px;
+        }
     </style>
 </head>
 <body>
@@ -493,6 +533,16 @@
                     </p>
                 </div>
             </div>
+            
+            <!-- 保留视图控制按钮 -->
+            <div class="view-controls">
+                <button id="next-view-button" class="next-button" onclick="toggleView()">
+                    Next View
+                    <svg class="next-button-icon" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- 修改图表容器结构 -->
@@ -583,8 +633,43 @@
             2023: { Inwards: 254612.8163, Outwards: 126671.6067 }
         };
 
+        // 将Next按钮代码移至mapboxgl.accessToken下，确保在全局范围内定义变量和函数
         mapboxgl.accessToken = 'pk.eyJ1IjoieWl5YW9jdWlpaSIsImEiOiJjbTY4MnFqZTgwYjEwMm5xejZraTBoMzJjIn0.32mcU30CT9cEByX-ZHvgzw';
-        
+
+        // 设置全局变量，用于跟踪当前视图
+        var isGlobalView = true;
+
+        // 视图切换函数
+        function toggleView() {
+            console.log("按钮被点击，开始切换视图，当前视图是：", isGlobalView ? "全球视角" : "英国视角");
+            
+            if (isGlobalView) {
+                // 切换到英国斜视角
+                console.log("切换到英国斜视角");
+                map.flyTo({
+                    center: [-4, 55],
+                    zoom: 5.5,
+                    pitch: 45,
+                    bearing: 15,
+                    duration: 2000
+                });
+            } else {
+                // 切换到全球视角
+                console.log("切换到全球视角");
+                map.flyTo({
+                    center: [-2, 45],  // 减小缩放级别，显示更广阔的范围
+                    zoom: 2,
+                    pitch: 0,
+                    bearing: 0,
+                    duration: 2000
+                });
+            }
+            
+            // 更新状态值
+            isGlobalView = !isGlobalView;
+            console.log("视图状态已更新，当前视图是：", isGlobalView ? "全球视角" : "英国视角");
+        }
+
         // 初始化地图
         const map = new mapboxgl.Map({
             container: 'map',
@@ -698,6 +783,18 @@
                 updateVisualization();
                 setupEventListeners();
                 setupHoverEvents();
+                
+                // 设置初始视图为更远的宏观视角
+                console.log('Setting initial more distant global view');
+                setTimeout(() => {
+                    map.flyTo({
+                        center: [-2, 45],  // 调整中心点位置，更好地展示全球范围
+                        zoom: 2,  // 减小缩放级别，显示更广阔的范围
+                        pitch: 0,
+                        bearing: 0,
+                        duration: 1000
+                    });
+                }, 1000);
             } catch (error) {
                 console.error('Error in initialization:', error);
             }
@@ -742,6 +839,17 @@
         map.on('load', () => {
             mapLoaded = true;
             checkInitialization();
+            
+            // 确保初始视图为更远的宏观视角
+            setTimeout(() => {
+                map.flyTo({
+                    center: [-2, 45],  // 调整中心点位置，更好地展示全球范围
+                    zoom: 2,  // 减小缩放级别，显示更广阔的范围
+                    pitch: 0,
+                    bearing: 0,
+                    duration: 1000
+                });
+            }, 1500);
         });
 
         // 等待地图样式加载完成
