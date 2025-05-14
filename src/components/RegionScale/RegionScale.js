@@ -92,15 +92,15 @@ return new Promise((resolve, reject) => {
 
 // 初始化折线图
 function initializeLineCharts() {
-  if (!ukTotalData) return;
+if (!ukTotalData) return;
 
-  // 创建EU和非EU国家列表
-  const euCountries = ["Belgium", "France", "Germany", "Ireland", "Italy", "Netherlands", "Poland", "Spain", "Sweden", "Rest of EU"];
-  const nonEuCountries = ["Australia", "Canada", "China", "India", "Japan", "Norway", "Singapore", "Switzerland", "United States", "Rest of world"];
+// 创建EU和非EU国家列表
+const euCountries = ["Belgium", "France", "Germany", "Ireland", "Italy", "Netherlands", "Poland", "Spain", "Sweden", "Rest of EU"];
+const nonEuCountries = ["Australia", "Canada", "China", "India", "Japan", "Norway", "Singapore", "Switzerland", "United States", "Rest of world"];
 
-  // 处理数据为按年份分组的格式
-  const euData = processLineChartData(ukTotalData, euCountries);
-  const nonEuData = processLineChartData(ukTotalData, nonEuCountries);
+// 处理数据为按年份分组的格式
+const euData = processLineChartData(ukTotalData, euCountries);
+const nonEuData = processLineChartData(ukTotalData, nonEuCountries);
 
   // 只为地图侧边栏创建折线图和说明文本，不再添加其他元素
   initMapSidebarCharts(euData, nonEuData);
@@ -224,7 +224,7 @@ function renderSidebarChart(container, data, title, mainColor) {
     .style('fill', '#fff')
     .style('font-size', '10px');
 
-  // 添加标题
+// 添加标题
   svg.append('text')
     .attr('x', width / 2)
     .attr('y', -20)
@@ -591,78 +591,78 @@ function renderLineChart(container, data, title, mainColor, isSidebar = false) {
     { top: 10, right: 30, bottom: 30, left: 40 } : 
     { top: 20, right: 120, bottom: 30, left: 80 };
 
-  const width = container.clientWidth - margin.left - margin.right;
-  const height = container.clientHeight - margin.top - margin.bottom;
+const width = container.clientWidth - margin.left - margin.right;
+const height = container.clientHeight - margin.top - margin.bottom;
 
-  // 创建SVG
-  const svg = d3.select(container).append('svg')
-    .attr('width', '100%')
-    .attr('height', '100%')
-    .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
+// 创建SVG
+const svg = d3.select(container).append('svg')
+  .attr('width', '100%')
+  .attr('height', '100%')
+  .append('g')
+  .attr('transform', `translate(${margin.left},${margin.top})`);
 
-  // 创建比例尺
-  const x = d3.scaleLinear()
-    .domain(d3.extent(data, d => d.year))
-    .range([0, width]);
+// 创建比例尺
+const x = d3.scaleLinear()
+  .domain(d3.extent(data, d => d.year))
+  .range([0, width]);
 
-  // 设置Y轴比例尺 - 为EU图表设置自定义tick间隔
-  const y = d3.scaleLinear()
-    .domain([
-      d3.min(data, d => d3.min(Object.entries(d)
-        .filter(([key]) => key !== 'year' && key !== 'total')
-        .map(([_, value]) => value))) * 1.1,
-      d3.max(data, d => d3.max(Object.entries(d)
-        .filter(([key]) => key !== 'year' && key !== 'total')
-        .map(([_, value]) => value))) * 1.1
-    ])
-    .range([height, 0]);
+// 设置Y轴比例尺 - 为EU图表设置自定义tick间隔
+const y = d3.scaleLinear()
+  .domain([
+    d3.min(data, d => d3.min(Object.entries(d)
+      .filter(([key]) => key !== 'year' && key !== 'total')
+      .map(([_, value]) => value))) * 1.1,
+    d3.max(data, d => d3.max(Object.entries(d)
+      .filter(([key]) => key !== 'year' && key !== 'total')
+      .map(([_, value]) => value))) * 1.1
+  ])
+  .range([height, 0]);
 
-  // 创建坐标轴
-  const xAxis = d3.axisBottom(x)
-    .tickFormat(d3.format('d')) // 显示完整年份
+// 创建坐标轴
+const xAxis = d3.axisBottom(x)
+  .tickFormat(d3.format('d')) // 显示完整年份
     .ticks(isSidebar ? 5 : data.length); // 侧边栏减少刻度数量
 
-  // 为EU图表设置固定10000间隔的刻度
-  let yAxis;
-  if (title === 'EU Countries') {
-    // 计算适合的tick值，以10000为间隔
-    const yMin = Math.floor(y.domain()[0] / 10000) * 10000;
-    const yMax = Math.ceil(y.domain()[1] / 10000) * 10000;
+// 为EU图表设置固定10000间隔的刻度
+let yAxis;
+if (title === 'EU Countries') {
+  // 计算适合的tick值，以10000为间隔
+  const yMin = Math.floor(y.domain()[0] / 10000) * 10000;
+  const yMax = Math.ceil(y.domain()[1] / 10000) * 10000;
     
     // 侧边栏中使用较少的刻度
     const step = isSidebar ? 20000 : 10000;
-    const tickValues = [];
-    
-    // 从-40000开始而不是最低值，跳过-50000
+  const tickValues = [];
+  
+  // 从-40000开始而不是最低值，跳过-50000
     for (let i = Math.max(-40000, yMin); i <= yMax; i += step) {
-      tickValues.push(i);
-    }
-    
-    yAxis = d3.axisLeft(y)
-      .tickValues(tickValues)
-      .tickFormat(d => isSidebar ? `£${d/1000}k` : `£${d3.format(",")(d)}m`); // 侧边栏简化显示
-  } else {
-    // 非EU图表使用默认刻度计算
-    yAxis = d3.axisLeft(y)
-      .tickFormat(d => isSidebar ? `£${d/1000}k` : `£${d3.format(",")(d)}m`); // 侧边栏简化显示
+    tickValues.push(i);
   }
+  
+  yAxis = d3.axisLeft(y)
+    .tickValues(tickValues)
+      .tickFormat(d => isSidebar ? `£${d/1000}k` : `£${d3.format(",")(d)}m`); // 侧边栏简化显示
+} else {
+  // 非EU图表使用默认刻度计算
+  yAxis = d3.axisLeft(y)
+      .tickFormat(d => isSidebar ? `£${d/1000}k` : `£${d3.format(",")(d)}m`); // 侧边栏简化显示
+}
 
-  // 添加X轴 - 增大文字
-  svg.append('g')
-    .attr('class', 'x-axis')
-    .attr('transform', `translate(0,${height})`)
-    .call(xAxis)
-    .selectAll('text')
-    .style('fill', '#fff')
+// 添加X轴 - 增大文字
+svg.append('g')
+  .attr('class', 'x-axis')
+  .attr('transform', `translate(0,${height})`)
+  .call(xAxis)
+  .selectAll('text')
+  .style('fill', '#fff')
     .style('font-size', isSidebar ? '10px' : '13px'); // 侧边栏缩小文字
 
-  // 添加Y轴 - 增大文字
-  svg.append('g')
-    .attr('class', 'y-axis')
-    .call(yAxis)
-    .selectAll('text')
-    .style('fill', '#fff')
+// 添加Y轴 - 增大文字
+svg.append('g')
+  .attr('class', 'y-axis')
+  .call(yAxis)
+  .selectAll('text')
+  .style('fill', '#fff')
     .style('font-size', isSidebar ? '10px' : '13px'); // 侧边栏缩小文字
 
   // 为侧边栏图表添加标题
@@ -679,96 +679,96 @@ function renderLineChart(container, data, title, mainColor, isSidebar = false) {
 
   // 添加网格线 - 侧边栏中减少网格线
   if (!isSidebar) {
-    svg.append('g')
-      .attr('class', 'grid')
-      .selectAll('line')
-      .data(y.ticks())
-      .enter()
-      .append('line')
-      .attr('x1', 0)
-      .attr('x2', width)
-      .attr('y1', d => y(d))
-      .attr('y2', d => y(d))
-      .attr('stroke', '#555')
-      .attr('stroke-dasharray', '3,3')
-      .attr('stroke-width', 0.5);
+svg.append('g')
+  .attr('class', 'grid')
+  .selectAll('line')
+  .data(y.ticks())
+  .enter()
+  .append('line')
+  .attr('x1', 0)
+  .attr('x2', width)
+  .attr('y1', d => y(d))
+  .attr('y2', d => y(d))
+  .attr('stroke', '#555')
+  .attr('stroke-dasharray', '3,3')
+  .attr('stroke-width', 0.5);
   }
 
-  // 添加0m特殊线
-  svg.append('line')
-    .attr('class', 'zero-line')
-    .attr('x1', 0)
-    .attr('x2', width)
-    .attr('y1', y(0))
-    .attr('y2', y(0))
-    .attr('stroke', '#ffffff')  // 白色，使其更突出
+// 添加0m特殊线
+svg.append('line')
+  .attr('class', 'zero-line')
+  .attr('x1', 0)
+  .attr('x2', width)
+  .attr('y1', y(0))
+  .attr('y2', y(0))
+  .attr('stroke', '#ffffff')  // 白色，使其更突出
     .attr('stroke-width', isSidebar ? 1 : 1.5)  // 侧边栏减小线宽
-    .attr('stroke-dasharray', '2,2');  // 虚线样式
+  .attr('stroke-dasharray', '2,2');  // 虚线样式
 
-  // 创建线条生成器
-  const line = d3.line()
-    .x(d => x(d.year))
-    .y(d => y(d.value))
-    .curve(d3.curveMonotoneX);
+// 创建线条生成器
+const line = d3.line()
+  .x(d => x(d.year))
+  .y(d => y(d.value))
+  .curve(d3.curveMonotoneX);
 
-  // 获取国家列表(排除year和total)
-  const countries = Object.keys(data[0])
-    .filter(key => key !== 'year' && key !== 'total');
+// 获取国家列表(排除year和total)
+const countries = Object.keys(data[0])
+  .filter(key => key !== 'year' && key !== 'total');
 
-  // 优化颜色方案，确保所有颜色有高区分度
-  const betterColors = [
-    "#e06c75", // 粉红色
-    "#61afef", // 蓝色
-    "#c678dd", // 紫色
-    "#d4d4d8", // 偏白色
-    "#56b6c2", // 青色
-    "#a39fea", // 淡紫色
-    "#ff9e4a", // 橙色
-    "#e5c07b", // 淡黄色
-    "#7590db", // 淡蓝色
-    "#ff5277"  // 鲜红色
-  ];
+// 优化颜色方案，确保所有颜色有高区分度
+const betterColors = [
+  "#e06c75", // 粉红色
+  "#61afef", // 蓝色
+  "#c678dd", // 紫色
+  "#d4d4d8", // 偏白色
+  "#56b6c2", // 青色
+  "#a39fea", // 淡紫色
+  "#ff9e4a", // 橙色
+  "#e5c07b", // 淡黄色
+  "#7590db", // 淡蓝色
+  "#ff5277"  // 鲜红色
+];
 
-  // 为每个国家创建一条线
-  countries.forEach((country, i) => {
-    const countryData = data.map(d => ({ year: d.year, value: d[country] }));
-    const countryColor = betterColors[i % betterColors.length];
-    
-    // 绘制线条
-    svg.append('path')
-      .datum(countryData)
-      .attr('class', `line-${country.replace(/\s+/g, '-').toLowerCase()}`)
-      .attr('d', line)
-      .attr('fill', 'none')
-      .attr('stroke', countryColor)
+// 为每个国家创建一条线
+countries.forEach((country, i) => {
+  const countryData = data.map(d => ({ year: d.year, value: d[country] }));
+  const countryColor = betterColors[i % betterColors.length];
+  
+  // 绘制线条
+  svg.append('path')
+    .datum(countryData)
+    .attr('class', `line-${country.replace(/\s+/g, '-').toLowerCase()}`)
+    .attr('d', line)
+    .attr('fill', 'none')
+    .attr('stroke', countryColor)
       .attr('stroke-width', isSidebar ? 1.5 : 2.2); // 侧边栏减小线宽
-  });
+});
 
   // 添加图例 - 侧边栏不显示图例或使用简化版本
   if (!isSidebar) {
-    const legend = svg.append('g')
-      .attr('class', 'legend')
-      .attr('transform', `translate(${width + 10}, 0)`);
+const legend = svg.append('g')
+  .attr('class', 'legend')
+  .attr('transform', `translate(${width + 10}, 0)`);
 
-    // 添加国家图例 - 单列垂直排布
-    countries.forEach((country, i) => {
-      const countryColor = betterColors[i % betterColors.length];
-      
-      legend.append('line')
-        .attr('x1', 0)
-        .attr('x2', 20)
-        .attr('y1', 5 + i * 24)
-        .attr('y2', 5 + i * 24)
-        .attr('stroke', countryColor)
-        .attr('stroke-width', 2.2);
-      
-      legend.append('text')
-        .attr('x', 25)
-        .attr('y', 5 + i * 24 + 4)
-        .text(country)
-        .style('font-size', '13px')
-        .style('fill', '#fff');
-    });
+// 添加国家图例 - 单列垂直排布
+countries.forEach((country, i) => {
+  const countryColor = betterColors[i % betterColors.length];
+  
+  legend.append('line')
+    .attr('x1', 0)
+    .attr('x2', 20)
+    .attr('y1', 5 + i * 24)
+    .attr('y2', 5 + i * 24)
+    .attr('stroke', countryColor)
+    .attr('stroke-width', 2.2);
+  
+  legend.append('text')
+    .attr('x', 25)
+    .attr('y', 5 + i * 24 + 4)
+    .text(country)
+    .style('font-size', '13px')
+    .style('fill', '#fff');
+});
   } else {
     // 侧边栏使用简化的图例 - 水平布局，只显示前5个国家
     const topCountries = countries.slice(0, 5);
@@ -799,108 +799,108 @@ function renderLineChart(container, data, title, mainColor, isSidebar = false) {
 
   // 仅为非侧边栏图表创建交互提示
   if (!isSidebar) {
-    // 创建提示框
-    const tooltip = d3.select('body').select('.tooltip');
-    let tooltipDiv;
+// 创建提示框
+const tooltip = d3.select('body').select('.tooltip');
+let tooltipDiv;
 
-    if (tooltip.empty()) {
-      tooltipDiv = d3.select('body')
-        .append('div')
-        .attr('class', 'tooltip')
-        .style('opacity', 0);
-    } else {
-      tooltipDiv = tooltip;
-    }
+if (tooltip.empty()) {
+  tooltipDiv = d3.select('body')
+    .append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0);
+} else {
+  tooltipDiv = tooltip;
+}
 
-    // 添加垂直引导线，初始时隐藏
-    const guideline = svg.append('line')
-      .attr('class', 'guideline')
-      .attr('x1', 0)
-      .attr('y1', 0)
-      .attr('x2', 0)
-      .attr('y2', height)
-      .attr('stroke', '#fff')
-      .attr('stroke-width', 1)
-      .attr('stroke-dasharray', '5,5')
-      .style('opacity', 0);
+// 添加垂直引导线，初始时隐藏
+const guideline = svg.append('line')
+  .attr('class', 'guideline')
+  .attr('x1', 0)
+  .attr('y1', 0)
+  .attr('x2', 0)
+  .attr('y2', height)
+  .attr('stroke', '#fff')
+  .attr('stroke-width', 1)
+  .attr('stroke-dasharray', '5,5')
+  .style('opacity', 0);
 
-    // 添加年份标签，初始时隐藏
-    const yearLabel = svg.append('text')
-      .attr('class', 'year-label')
-      .attr('x', 0)
-      .attr('y', -8)
-      .attr('text-anchor', 'middle')
-      .style('font-size', '12px')
-      .style('font-weight', 'bold')
-      .style('fill', '#fff')
-      .style('opacity', 0);
+// 添加年份标签，初始时隐藏
+const yearLabel = svg.append('text')
+  .attr('class', 'year-label')
+  .attr('x', 0)
+  .attr('y', -8)
+  .attr('text-anchor', 'middle')
+  .style('font-size', '12px')
+  .style('font-weight', 'bold')
+  .style('fill', '#fff')
+  .style('opacity', 0);
 
-    // 添加透明的交互层，用于显示提示信息
-    const bisect = d3.bisector(d => d.year).left;
+// 添加透明的交互层，用于显示提示信息
+const bisect = d3.bisector(d => d.year).left;
 
-    svg.append('rect')
-      .attr('width', width)
-      .attr('height', height)
-      .style('fill', 'none')
-      .style('pointer-events', 'all')
-      .on('mousemove', function(event) {
-        const mouseX = d3.pointer(event)[0];
-        const x0 = x.invert(mouseX);
-        const i = bisect(data, x0, 1);
-        const d0 = data[i - 1];
-        const d1 = data[i] || d0;
-        const d = x0 - d0.year > d1.year - x0 ? d1 : d0;
-        
-        // 更新时间轴虚线位置
-        guideline
-          .attr('x1', x(d.year))
-          .attr('x2', x(d.year))
-          .style('opacity', 1);
-          
-        // 更新年份标签
-        yearLabel
-          .attr('x', x(d.year))
-          .text(d.year)
-          .style('opacity', 1);
-        
-        // 更新提示框内容
-        let tooltipContent = `<strong>Year: ${d.year}</strong><br>`;
-        
-        // 清除之前创建的所有点
-        svg.selectAll('.hover-dot').remove();
-        
-        // 为当前年份的每个国家创建点
-        countries.forEach(country => {
-          const countryColor = betterColors[countries.indexOf(country) % betterColors.length];
-          tooltipContent += `<span style="color:${countryColor}">●</span> ${country}: £${d3.format(",")(d[country])} million<br>`;
-          
-          // 创建当前年份的点
-          svg.append('circle')
-            .attr('class', 'hover-dot')
-            .attr('cx', x(d.year))
-            .attr('cy', y(d[country]))
-            .attr('r', 4)
-            .attr('fill', countryColor)
-            .attr('stroke', '#333')
-            .attr('stroke-width', 2);
-        });
-        
-        tooltipDiv.html(tooltipContent)
-          .style('left', `${event.pageX + 10}px`)
-          .style('top', `${event.pageY - 28}px`)
-          .style('opacity', 0.9);
-      })
-      .on('mouseout', function() {
-        // 隐藏提示框
-        tooltipDiv.style('opacity', 0);
-        
-        // 隐藏虚线和年份标签
-        guideline.style('opacity', 0);
-        yearLabel.style('opacity', 0);
-        
-        // 移除所有悬停时创建的点
-        svg.selectAll('.hover-dot').remove();
-      });
+svg.append('rect')
+  .attr('width', width)
+  .attr('height', height)
+  .style('fill', 'none')
+  .style('pointer-events', 'all')
+  .on('mousemove', function(event) {
+    const mouseX = d3.pointer(event)[0];
+    const x0 = x.invert(mouseX);
+    const i = bisect(data, x0, 1);
+    const d0 = data[i - 1];
+    const d1 = data[i] || d0;
+    const d = x0 - d0.year > d1.year - x0 ? d1 : d0;
+    
+    // 更新时间轴虚线位置
+    guideline
+      .attr('x1', x(d.year))
+      .attr('x2', x(d.year))
+      .style('opacity', 1);
+      
+    // 更新年份标签
+    yearLabel
+      .attr('x', x(d.year))
+      .text(d.year)
+      .style('opacity', 1);
+    
+    // 更新提示框内容
+    let tooltipContent = `<strong>Year: ${d.year}</strong><br>`;
+    
+    // 清除之前创建的所有点
+    svg.selectAll('.hover-dot').remove();
+    
+    // 为当前年份的每个国家创建点
+    countries.forEach(country => {
+      const countryColor = betterColors[countries.indexOf(country) % betterColors.length];
+      tooltipContent += `<span style="color:${countryColor}">●</span> ${country}: £${d3.format(",")(d[country])} million<br>`;
+      
+      // 创建当前年份的点
+      svg.append('circle')
+        .attr('class', 'hover-dot')
+        .attr('cx', x(d.year))
+        .attr('cy', y(d[country]))
+        .attr('r', 4)
+        .attr('fill', countryColor)
+        .attr('stroke', '#333')
+        .attr('stroke-width', 2);
+    });
+    
+    tooltipDiv.html(tooltipContent)
+      .style('left', `${event.pageX + 10}px`)
+      .style('top', `${event.pageY - 28}px`)
+      .style('opacity', 0.9);
+  })
+  .on('mouseout', function() {
+    // 隐藏提示框
+    tooltipDiv.style('opacity', 0);
+    
+    // 隐藏虚线和年份标签
+    guideline.style('opacity', 0);
+    yearLabel.style('opacity', 0);
+    
+    // 移除所有悬停时创建的点
+    svg.selectAll('.hover-dot').remove();
+  });
   }
 }
 
@@ -1179,51 +1179,25 @@ function updateTimelineSelection(svg, timeScale, years) {
 }
 
 function setupScrollListener(years) {
-// 使用节流函数减少更新频率
-let lastScrollTime = 0;
-const scrollThrottle = 300; // 300ms内只处理一次滚动
-let pendingScroll = false;
+// 当前高亮的年份和区域
+let currentHighlightYear = currentYear;
+let isEffectActive = false;
+let effectTimeout = null;
 
 // 创建观察器来检测哪个步骤在视图中
 const observer = new IntersectionObserver((entries) => {
-  if (scrolling) return; // 如果是按钮触发的滚动，忽略
-  
-  const now = Date.now();
-  if (now - lastScrollTime < scrollThrottle) {
-    if (!pendingScroll) {
-      pendingScroll = true;
-      setTimeout(() => {
-        processScrollEntries(entries);
-        pendingScroll = false;
-        lastScrollTime = Date.now();
-      }, scrollThrottle);
-    }
-    return;
-  }
-  
-  lastScrollTime = now;
-  processScrollEntries(entries);
-}, {
-  threshold: 0.5, // 使用单一阈值
-  rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
-});
-
-function processScrollEntries(entries) {
-  // 找到当前最高交叉比例的步骤
-  let bestEntry = null;
-  let maxRatio = 0;
-  
   entries.forEach(entry => {
-    if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
-      maxRatio = entry.intersectionRatio;
-      bestEntry = entry;
-    }
-  });
-  
-  // 如果找到了最佳步骤，更新年份
-  if (bestEntry) {
-    const year = +bestEntry.target.getAttribute('data-year');
-    if (year && year !== currentYear) {
+    if (!entry.isIntersecting) return;
+    
+    const year = +entry.target.getAttribute('data-year');
+    if (year && year !== currentHighlightYear) {
+      // 清除之前的定时器（如果存在）
+      if (effectTimeout) {
+        clearTimeout(effectTimeout);
+      }
+      
+      // 保存当前高亮年份
+      currentHighlightYear = year;
       currentYear = year;
       
       // 更新时间轴选择
@@ -1236,30 +1210,74 @@ function processScrollEntries(entries) {
         updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
       }
       
+      // 渲染热力图
       renderHeatmap(allData, allRegions, allCountries, year);
+      
+      // 设置效果活跃标志
+      isEffectActive = true;
+      
+      // 设置较长的延迟后恢复
+      effectTimeout = setTimeout(() => {
+        isEffectActive = false;
+      }, 5000); // 保持效果活跃5秒
     }
-  }
-}
-
+  });
+}, {
+  threshold: [0.1, 0.2, 0.3, 0.4, 0.5], // 使用多个低阈值，更容易触发
+  rootMargin: '-5% 0px -5% 0px' 
+});
 
   // 监测所有步骤
   document.querySelectorAll('.step[data-year]').forEach(step => {
     observer.observe(step);
   });
   
-  // 特别处理最后一个步骤（2024年）
-  const lastStep = document.querySelector('.step[data-year="2024"]');
-  if (lastStep) {
-    // 创建专门用于2024年的观察器，使用更高的阈值
-    const lastYearObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // 只有当元素大部分进入视图才触发
-        if (entry.isIntersecting && entry.intersectionRatio > 0.7 && !scrolling) {
-          const year = +entry.target.getAttribute('data-year');
-          if (year === 2024 && currentYear !== 2024) {
-            currentYear = 2024;
-            
-            // 更新时间轴和热力图
+// 获取滚动容器
+const scrollContainer = document.querySelector('.scroll-text');
+if (scrollContainer) {
+  let lastScrollPos = scrollContainer.scrollTop;
+  let scrollDirection = 'down'; // 默认向下滚动
+  
+  // 添加滚动事件监听器
+  scrollContainer.addEventListener('scroll', () => {
+    // 确定滚动方向
+    const currentScrollPos = scrollContainer.scrollTop;
+    scrollDirection = currentScrollPos > lastScrollPos ? 'down' : 'up';
+    lastScrollPos = currentScrollPos;
+    
+    // 查找当前视图中哪个年份步骤最接近中心
+    const containerHeight = scrollContainer.clientHeight;
+    const viewportCenter = currentScrollPos + containerHeight / 2;
+    
+    // 查找当前最佳匹配的年份
+    const steps = document.querySelectorAll('.step[data-year]');
+    let bestMatchYear = null;
+    let minDistance = Infinity;
+    
+    steps.forEach(step => {
+      const stepTop = step.offsetTop;
+      const stepHeight = step.offsetHeight;
+      const stepCenter = stepTop + stepHeight / 2;
+      const distance = Math.abs(viewportCenter - stepCenter);
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        bestMatchYear = +step.getAttribute('data-year');
+      }
+    });
+    
+    // 如果找到了匹配的年份，并且与当前高亮年份不同
+    if (bestMatchYear && bestMatchYear !== currentHighlightYear) {
+      // 清除之前的定时器（如果存在）
+      if (effectTimeout) {
+        clearTimeout(effectTimeout);
+      }
+      
+      // 更新高亮年份
+      currentHighlightYear = bestMatchYear;
+      currentYear = bestMatchYear;
+      
+      // 更新时间轴
             const timelineContainer = d3.select('#timeline-svg');
             if (!timelineContainer.empty()) {
               const width = timelineContainer.node().clientWidth;
@@ -1269,31 +1287,39 @@ function processScrollEntries(entries) {
               updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
             }
             
-            renderHeatmap(allData, allRegions, allCountries, 2024);
+      // 渲染热力图
+      renderHeatmap(allData, allRegions, allCountries, bestMatchYear);
+      
+      // 设置效果活跃标志
+      isEffectActive = true;
+      
+      // 设置较长的延迟后恢复
+      effectTimeout = setTimeout(() => {
+        isEffectActive = false;
+      }, 5000); // 保持效果活跃5秒
+    }
+  });
+}
+
+// 特别处理最后一个步骤（2024年）
+const lastStep = document.querySelector('.step[data-year="2024"]');
+if (lastStep) {
+  // 创建专门用于2024年的观察器
+  const lastYearObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.2) {
+        const year = +entry.target.getAttribute('data-year');
+        if (year === 2024 && currentHighlightYear !== 2024) {
+          // 清除之前的定时器（如果存在）
+          if (effectTimeout) {
+            clearTimeout(effectTimeout);
           }
-        }
-      });
-    }, {
-      threshold: [0.5, 0.7, 0.9], // 使用更高的阈值
-      rootMargin: '0px 0px 0px 0px' // 移除扩大的底部检测区域
-    });
-    
-    lastYearObserver.observe(lastStep);
-    
-    // 修改滚动容器的滚动事件处理
-    const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', () => {
-        if (scrolling) return;
-        
-        // 检测是否滚动到更接近底部的位置
-        const isNearBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= 
-                            scrollContainer.scrollHeight - 50; // 更接近底部才触发
-        
-        if (isNearBottom && currentYear !== 2024) {
+          
+          // 更新高亮年份
+          currentHighlightYear = 2024;
           currentYear = 2024;
           
-          // 更新时间轴和热力图
+          // 更新时间轴
           const timelineContainer = d3.select('#timeline-svg');
           if (!timelineContainer.empty()) {
             const width = timelineContainer.node().clientWidth;
@@ -1303,10 +1329,25 @@ function processScrollEntries(entries) {
             updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
           }
           
+          // 渲染热力图
           renderHeatmap(allData, allRegions, allCountries, 2024);
+          
+          // 设置效果活跃标志
+          isEffectActive = true;
+          
+          // 设置较长的延迟后恢复
+          effectTimeout = setTimeout(() => {
+            isEffectActive = false;
+          }, 5000); // 保持效果活跃5秒
         }
-      });
-    }
+      }
+    });
+  }, {
+    threshold: [0.1, 0.2, 0.3, 0.4, 0.5],
+    rootMargin: '0px 0px -15% 0px'
+  });
+  
+  lastYearObserver.observe(lastStep);
   }
 }
 
@@ -1497,14 +1538,14 @@ function renderHeatmap(data, regions, countries, year) {
     
     // 显示年份相关的暗化效果，并添加动画
     dimMaskGroup.transition()
-      .duration(800)
+      .duration(300) // 减少动画时间到300ms，让变暗效果更快完成
       .style('opacity', 1);
   }
 
   // 美化坐标轴文字
   xAxisGroup.selectAll('text')
-    .attr('transform', 'rotate(-65)')
-    .style('text-anchor', 'end')
+      .attr('transform', 'rotate(-65)')
+      .style('text-anchor', 'end')
     .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
     .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8')
     .style('font-weight', '600'); // 让文字更清晰

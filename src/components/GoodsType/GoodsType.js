@@ -1517,6 +1517,14 @@ console.log('GoodsType.js loaded');
         // Clear the map container
         mapDiv.innerHTML = '';
         
+        // 确保地图容器是可见的
+        mapDiv.style.display = 'block';
+        mapDiv.style.height = '100%';
+        mapDiv.style.width = '100%';
+        mapDiv.style.minHeight = '400px'; // 添加最小高度
+        mapDiv.style.position = 'relative';
+        mapDiv.style.overflow = 'hidden';
+        
         // 创建SITC图标栏
         createSitcIconBar();
         
@@ -1562,11 +1570,7 @@ console.log('GoodsType.js loaded');
             }
 
             .mapboxgl-map .mapboxgl-canvas-container {
-                opacity: 0;
-                transition: opacity 0.3s ease-in-out;
-            }
-            .mapboxgl-map .mapboxgl-canvas-container.loaded {
-                opacity: 1;
+                opacity: 1; /* 确保立即可见 */
             }
             
             /* 隐藏其他mapbox控件 */
@@ -1578,6 +1582,23 @@ console.log('GoodsType.js loaded');
             #goods-map {
                 position: relative;
                 overflow: hidden;
+                display: block !important;
+                height: 100% !important;
+                width: 100% !important;
+            }
+            
+            /* 确保SVG元素正确渲染 */
+            #goods-map svg path, #goods-map svg circle {
+                stroke-width: 2px;
+                vector-effect: non-scaling-stroke;
+            }
+            
+            /* 修复负值宽高问题 */
+            #goods-map svg rect {
+                width: 100% !important; 
+                height: 100% !important;
+                x: 0 !important;
+                y: 0 !important;
             }
         `;
         document.head.appendChild(loadingStyles);
@@ -1601,64 +1622,55 @@ console.log('GoodsType.js loaded');
             // 确保在样式加载完成后再更新可视化
             if (state.currentMap.loaded() && state.currentMap.isStyleLoaded()) {
                 updateVisualizationsExceptTrend();
+                
+                // 手动触发地图重绘
+                state.currentMap.resize();
+                console.log("Map style loaded and visualization updated");
             } else {
-                state.currentMap.once('load', updateVisualizationsExceptTrend);
+                state.currentMap.once('load', () => {
+                    updateVisualizationsExceptTrend();
+                    
+                    // 手动触发地图重绘
+                    state.currentMap.resize();
+                    console.log("Map loaded and visualization updated");
+                });
             }
         });
 
-        // 在地图完全加载后添加loaded类
+        // 确保地图容器可见
         state.currentMap.once('load', () => {
-            const container = document.querySelector('.mapboxgl-canvas-container');
-            if (container) {
-                container.classList.add('loaded');
+            console.log("Mapbox map loaded successfully");
+            
+            // 手动移除display:none样式
+            const mapCanvas = document.querySelector('.mapboxgl-canvas');
+            if (mapCanvas) {
+                mapCanvas.style.display = 'block';
             }
             
-            // 设置定时器移除错误提示
+            // 手动触发resize事件
             setTimeout(() => {
-                const errorMessages = document.querySelectorAll('.mapboxgl-missing-css');
-                errorMessages.forEach(msg => {
-                    msg.addEventListener('animationend', () => {
-                        msg.remove();
-                    });
-                });
-            }, 2500); // 2.5秒后开始淡出动画
+                state.currentMap.resize();
+            }, 100);
         });
-
-        // 添加CSS来隐藏加载提示
-        const style = document.createElement('style');
-        style.textContent = `
-            .mapboxgl-missing-css {
-                display: none !important;
-            }
-            .mapboxgl-map .mapboxgl-canvas-container {
-                opacity: 0;
-                transition: opacity 0.3s ease-in-out;
-            }
-            .mapboxgl-map .mapboxgl-canvas-container.loaded {
-                opacity: 1;
-            }
-            /* 隐藏样式未加载提示 */
-            .mapboxgl-map .mapboxgl-missing-css,
-            .mapboxgl-map [class*='mapboxgl-style-not-loaded'] {
-                display: none !important;
-            }
-            /* 确保地图容器不显示错误提示 */
-            #goods-map {
-                position: relative;
-                overflow: hidden;
-            }
-            #goods-map::before {
-                content: none !important;
-            }
-            /* 移除所有mapbox错误提示 */
-            .mapboxgl-map .mapboxgl-ctrl-group button {
-                display: none !important;
-            }
-            .mapboxgl-map .mapboxgl-ctrl-attrib {
-                display: none !important;
-            }
-        `;
-        document.head.appendChild(style);
+        
+        // 修复SVG元素中的负值错误
+        setTimeout(() => {
+            const svgRects = document.querySelectorAll('#goods-map svg rect');
+            svgRects.forEach(rect => {
+                if (rect.getAttribute('width') && parseFloat(rect.getAttribute('width')) < 0) {
+                    rect.setAttribute('width', '100%');
+                }
+                if (rect.getAttribute('height') && parseFloat(rect.getAttribute('height')) < 0) {
+                    rect.setAttribute('height', '100%');
+                }
+                if (rect.getAttribute('x') && parseFloat(rect.getAttribute('x')) < 0) {
+                    rect.setAttribute('x', '0');
+                }
+                if (rect.getAttribute('y') && parseFloat(rect.getAttribute('y')) < 0) {
+                    rect.setAttribute('y', '0');
+                }
+            });
+        }, 500);
 
         // 添加SVG容器
         const svgContainer = document.createElement('div');
