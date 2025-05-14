@@ -1,0 +1,469 @@
+year,port,direction,cargo_tonnage
+2016,Aberdeen,Inwards,1728.3599000000002
+2016,Aberdeen,Outwards,2041.9224
+2016,Belfast,Inwards,10825.8799
+2016,Belfast,Outwards,6727.224000000001
+2016,Bristol,Inwards,6707.9788
+2016,Bristol,Outwards,1823.4011
+2016,Cairnryan,Inwards,1289.665
+2016,Cairnryan,Outwards,1450.456
+2016,Clyde,Inwards,6272.5794000000005
+2016,Clyde,Outwards,2469.184
+2016,Dover,Inwards,16296.3039
+2016,Dover,Outwards,11029.875999999998
+2016,Felixstowe,Inwards,16990.7148
+2016,Felixstowe,Outwards,11211.680699999999
+2016,Forth,Inwards,4079.9497
+2016,Forth,Outwards,23311.493
+2016,Glensanda,Outwards,5486.7609
+2016,Grimsby & Immingham,Inwards,38875.6401
+2016,Grimsby & Immingham,Outwards,15527.819599999999
+2016,Harwich,Inwards,3087.792
+2016,Harwich,Outwards,1477.5922
+2016,Heysham,Inwards,2288.997
+2016,Heysham,Outwards,2300.659
+2016,Holyhead,Inwards,2445.946
+2016,Holyhead,Outwards,2496.823
+2016,Hull,Inwards,7470.3306
+2016,Hull,Outwards,2696.727
+2016,Larne,Inwards,1471.5369
+2016,Larne,Outwards,1298.0919999999999
+2016,Liverpool,Inwards,23792.5708
+2016,Liverpool,Outwards,8108.3375
+2016,London,Inwards,43152.7788
+2016,London,Outwards,7224.407999999999
+2016,Manchester,Inwards,2523.7599
+2016,Manchester,Outwards,3610.1249000000003
+2016,Medway,Inwards,8086.9648
+2016,Medway,Outwards,1083.3369
+2016,Milford Haven,Inwards,23388.7149
+2016,Milford Haven,Outwards,11379.1763
+2016,Newport,Inwards,1761.6352000000002
+2016,Newport,Outwards,989.7788
+2016,Orkney,Inwards,203.889
+2016,Orkney,Outwards,4411.4259999999995
+2016,Port Talbot,Inwards,7460.9409
+2016,Port Talbot,Outwards,337.925
+2016,Portsmouth,Inwards,2634.471
+2016,Portsmouth,Outwards,1255.7048
+2016,Rivers Hull & Humber,Inwards,9986.7453
+2016,Rivers Hull & Humber,Outwards,168.4409
+2016,Southampton,Inwards,21625.005400000002
+2016,Southampton,Outwards,14420.5627
+2016,Sullom Voe,Outwards,6183.135
+2016,Tees & Hartlepool,Inwards,9392.4296
+2016,Tees & Hartlepool,Outwards,17480.4201
+2016,Tyne,Inwards,2325.2619
+2016,Tyne,Outwards,1329.8868
+2016,Warrenpoint,Inwards,1580.4901
+2016,Warrenpoint,Outwards,1588.046
+2017,Aberdeen,Inwards,1947.683
+2017,Aberdeen,Outwards,2110.738
+2017,Belfast,Inwards,11171.862
+2017,Belfast,Outwards,7052.488
+2017,Bristol,Inwards,7205.277
+2017,Bristol,Outwards,1535.4103
+2017,Cairnryan,Inwards,1399.104
+2017,Cairnryan,Outwards,1448.364
+2017,Clyde,Inwards,6499.5797
+2017,Clyde,Outwards,2365.5380999999998
+2017,Dover,Inwards,15533.029100000002
+2017,Dover,Outwards,10689.676
+2017,Felixstowe,Inwards,17954.4135
+2017,Felixstowe,Outwards,11073.3632
+2017,Forth,Inwards,4285.9705
+2017,Forth,Outwards,23257.6884
+2017,Glensanda,Outwards,6138.072999999999
+2017,Grimsby & Immingham,Inwards,37599.3424
+2017,Grimsby & Immingham,Outwards,16434.4848
+2017,Harwich,Inwards,3056.233
+2017,Harwich,Outwards,1698.5868999999998
+2017,Heysham,Inwards,2302.792
+2017,Heysham,Outwards,2327.578
+2017,Holyhead,Inwards,2587.6749
+2017,Holyhead,Outwards,2649.639
+2017,Hull,Inwards,7113.5442
+2017,Hull,Outwards,2709.9672
+2017,Larne,Inwards,1462.0391000000002
+2017,Larne,Outwards,1410.029
+2017,Liverpool,Inwards,24056.9772
+2017,Liverpool,Outwards,8484.2374
+2017,London,Inwards,42256.0077
+2017,London,Outwards,7612.3898
+2017,Manchester,Inwards,2765.2538
+2017,Manchester,Outwards,4020.2144
+2017,Medway,Inwards,7841.5943
+2017,Medway,Outwards,839.2516
+2017,Milford Haven,Inwards,20246.0759
+2017,Milford Haven,Outwards,11743.5635
+2017,Newport,Inwards,2011.3391000000001
+2017,Newport,Outwards,1438.3861
+2017,Orkney,Inwards,209.50900000000001
+2017,Orkney,Outwards,4642.5611
+2017,Port Talbot,Inwards,7343.4809000000005
+2017,Port Talbot,Outwards,245.294
+2017,Portsmouth,Inwards,2579.3659
+2017,Portsmouth,Outwards,1286.415
+2017,Rivers Hull & Humber,Inwards,9784.839
+2017,Rivers Hull & Humber,Outwards,159.9331
+2017,Southampton,Inwards,21500.3413
+2017,Southampton,Outwards,12970.6981
+2017,Sullom Voe,Inwards,0.2
+2017,Sullom Voe,Outwards,5178.651
+2017,Tees & Hartlepool,Inwards,11042.893
+2017,Tees & Hartlepool,Outwards,17404.5215
+2017,Tyne,Inwards,1954.8273
+2017,Tyne,Outwards,1298.5493999999999
+2017,Warrenpoint,Inwards,1649.0138
+2017,Warrenpoint,Outwards,1609.5919999999999
+2018,Aberdeen,Inwards,2021.4662
+2018,Aberdeen,Outwards,2116.253
+2018,Belfast,Inwards,11565.052
+2018,Belfast,Outwards,7373.553999999999
+2018,Bristol,Inwards,7104.4721
+2018,Bristol,Outwards,1341.6959
+2018,Cairnryan,Inwards,1323.257
+2018,Cairnryan,Outwards,1533.61
+2018,Clyde,Inwards,6824.9905
+2018,Clyde,Outwards,2260.1589
+2018,Dover,Inwards,14745.0361
+2018,Dover,Outwards,9987.213000000002
+2018,Felixstowe,Inwards,16740.3606
+2018,Felixstowe,Outwards,11527.1916
+2018,Forth,Inwards,4621.1217
+2018,Forth,Outwards,21966.0888
+2018,Glensanda,Outwards,5942.577
+2018,Grimsby & Immingham,Inwards,41665.8816
+2018,Grimsby & Immingham,Outwards,13942.5742
+2018,Harwich,Inwards,2833.9719
+2018,Harwich,Outwards,1362.1228999999998
+2018,Heysham,Inwards,2331.545
+2018,Heysham,Outwards,2371.466
+2018,Holyhead,Inwards,2556.0879999999997
+2018,Holyhead,Outwards,2665.863
+2018,Hull,Inwards,7131.563999999999
+2018,Hull,Outwards,2620.5067
+2018,Larne,Inwards,1559.69
+2018,Larne,Outwards,1342.5230000000001
+2018,Liverpool,Inwards,24123.4542
+2018,Liverpool,Outwards,8489.1999
+2018,London,Inwards,44770.6362
+2018,London,Outwards,8425.4095
+2018,Manchester,Inwards,3147.5481
+2018,Manchester,Outwards,3641.9321
+2018,Medway,Inwards,9602.0563
+2018,Medway,Outwards,602.4847
+2018,Milford Haven,Inwards,19227.621
+2018,Milford Haven,Outwards,11707.8518
+2018,Newport,Inwards,1789.3467
+2018,Newport,Outwards,1029.9161
+2018,Orkney,Inwards,209.76500000000001
+2018,Orkney,Outwards,3260.187
+2018,Port Talbot,Inwards,6412.3922
+2018,Port Talbot,Outwards,222.262
+2018,Portsmouth,Inwards,2306.5189
+2018,Portsmouth,Outwards,1181.7878999999998
+2018,Rivers Hull & Humber,Inwards,9879.461800000001
+2018,Rivers Hull & Humber,Outwards,189.257
+2018,Southampton,Inwards,22136.7386
+2018,Southampton,Outwards,12331.6106
+2018,Sullom Voe,Outwards,5328.9309
+2018,Tees & Hartlepool,Inwards,12033.852
+2018,Tees & Hartlepool,Outwards,16802.0744
+2018,Tyne,Inwards,3218.8559
+2018,Tyne,Outwards,1185.0064
+2018,Warrenpoint,Inwards,1828.7592999999997
+2018,Warrenpoint,Outwards,1617.4221
+2019,Aberdeen,Inwards,2059.4651
+2019,Aberdeen,Outwards,2135.0401
+2019,Belfast,Inwards,11045.876
+2019,Belfast,Outwards,7471.630800000001
+2019,Bristol,Inwards,6644.3485
+2019,Bristol,Outwards,1543.5987
+2019,Cairnryan,Inwards,1223.628
+2019,Cairnryan,Outwards,1481.211
+2019,Clyde,Inwards,6699.8911
+2019,Clyde,Outwards,2100.8821
+2019,Dover,Inwards,14107.919200000002
+2019,Dover,Outwards,9233.3291
+2019,Felixstowe,Inwards,16423.6083
+2019,Felixstowe,Outwards,8920.096
+2019,Forth,Inwards,5008.2668
+2019,Forth,Outwards,20211.035200000002
+2019,Glensanda,Outwards,6646.028
+2019,Grimsby & Immingham,Inwards,37889.7909
+2019,Grimsby & Immingham,Outwards,13336.1355
+2019,Harwich,Inwards,2941.2711
+2019,Harwich,Outwards,1331.7729
+2019,Heysham,Inwards,2269.49
+2019,Heysham,Outwards,2266.947
+2019,Holyhead,Inwards,2612.455
+2019,Holyhead,Outwards,2713.649
+2019,Hull,Inwards,6728.7067
+2019,Hull,Outwards,2467.1251
+2019,Larne,Inwards,1496.732
+2019,Larne,Outwards,1268.0469
+2019,Liverpool,Inwards,26019.4723
+2019,Liverpool,Outwards,8295.1839
+2019,London,Inwards,44452.3203
+2019,London,Outwards,9582.4121
+2019,Manchester,Inwards,3008.8113
+2019,Manchester,Outwards,4298.378000000001
+2019,Medway,Inwards,12476.0877
+2019,Medway,Outwards,664.6698
+2019,Milford Haven,Inwards,23991.5209
+2019,Milford Haven,Outwards,10959.777
+2019,Newport,Inwards,1495.8166999999999
+2019,Newport,Outwards,1054.5101
+2019,Orkney,Inwards,204.611
+2019,Orkney,Outwards,2842.033
+2019,Port Talbot,Inwards,6320.4520999999995
+2019,Port Talbot,Outwards,392.737
+2019,Portsmouth,Inwards,2393.3731
+2019,Portsmouth,Outwards,1227.208
+2019,Rivers Hull & Humber,Inwards,10407.6905
+2019,Rivers Hull & Humber,Outwards,290.825
+2019,Southampton,Inwards,21230.317300000002
+2019,Southampton,Outwards,11920.4869
+2019,Sullom Voe,Outwards,7371.134800000001
+2019,Tees & Hartlepool,Inwards,11401.074
+2019,Tees & Hartlepool,Outwards,16755.22
+2019,Tyne,Inwards,3688.4763
+2019,Tyne,Outwards,992.4161
+2019,Warrenpoint,Inwards,1712.3681
+2019,Warrenpoint,Outwards,1608.1559000000002
+2020,Aberdeen,Inwards,1660.9211
+2020,Aberdeen,Outwards,1725.61
+2020,Belfast,Inwards,11009.5439
+2020,Belfast,Outwards,7568.7438999999995
+2020,Bristol,Inwards,5075.787
+2020,Bristol,Outwards,1403.0271
+2020,Cairnryan,Inwards,1208.87
+2020,Cairnryan,Outwards,1486.196
+2020,Clyde,Inwards,5116.4524
+2020,Clyde,Outwards,1814.0021
+2020,Dover,Inwards,13733.047199999999
+2020,Dover,Outwards,8155.847
+2020,Felixstowe,Inwards,15784.9559
+2020,Felixstowe,Outwards,7294.4312
+2020,Forth,Inwards,4262.117
+2020,Forth,Outwards,18765.5069
+2020,Glensanda,Outwards,5458.257
+2020,Grimsby & Immingham,Inwards,32032.6025
+2020,Grimsby & Immingham,Outwards,13578.5489
+2020,Harwich,Inwards,2761.5361
+2020,Harwich,Outwards,1326.0578999999998
+2020,Heysham,Inwards,2002.346
+2020,Heysham,Outwards,2064.878
+2020,Holyhead,Inwards,2911.1020000000003
+2020,Holyhead,Outwards,2947.307
+2020,Hull,Inwards,6759.9447
+2020,Hull,Outwards,2447.8968
+2020,Larne,Inwards,1502.979
+2020,Larne,Outwards,1224.473
+2020,Liverpool,Inwards,23112.37
+2020,Liverpool,Outwards,7946.9824
+2020,London,Inwards,38391.6702
+2020,London,Outwards,8964.9873
+2020,Manchester,Inwards,2900.2246999999998
+2020,Manchester,Outwards,4212.0319
+2020,Medway,Inwards,9101.9547
+2020,Medway,Outwards,591.6521
+2020,Milford Haven,Inwards,23738.5458
+2020,Milford Haven,Outwards,9844.7519
+2020,Newport,Inwards,1152.719
+2020,Newport,Outwards,1176.1019000000001
+2020,Orkney,Inwards,193.794
+2020,Orkney,Outwards,2475.7690000000002
+2020,Port Talbot,Inwards,6294.2312
+2020,Port Talbot,Outwards,381.361
+2020,Portsmouth,Inwards,1999.3348
+2020,Portsmouth,Outwards,1154.6689999999999
+2020,Rivers Hull & Humber,Inwards,10284.0979
+2020,Rivers Hull & Humber,Outwards,196.5801
+2020,Southampton,Inwards,17453.5557
+2020,Southampton,Outwards,10123.0874
+2020,Sullom Voe,Inwards,0.096
+2020,Sullom Voe,Outwards,6827.054
+2020,Tees & Hartlepool,Inwards,11005.3002
+2020,Tees & Hartlepool,Outwards,18251.0051
+2020,Tyne,Inwards,3102.3043
+2020,Tyne,Outwards,752.4521
+2020,Warrenpoint,Inwards,1625.3059
+2020,Warrenpoint,Outwards,1573.7949
+2021,Aberdeen,Inwards,1702.4960999999998
+2021,Aberdeen,Outwards,1860.6221
+2021,Belfast,Inwards,11555.4788
+2021,Belfast,Outwards,8311.046
+2021,Bristol,Inwards,5550.0321
+2021,Bristol,Outwards,1480.65
+2021,Cairnryan,Inwards,1474.096
+2021,Cairnryan,Outwards,1654.929
+2021,Clyde,Inwards,6587.2109
+2021,Clyde,Outwards,1814.657
+2021,Dover,Inwards,13041.054
+2021,Dover,Outwards,6832.794900000001
+2021,Felixstowe,Inwards,14788.7626
+2021,Felixstowe,Outwards,6676.436
+2021,Forth,Inwards,4468.4932
+2021,Forth,Outwards,15300.5993
+2021,Glensanda,Outwards,6122.737099999999
+2021,Grimsby & Immingham,Inwards,35869.7309
+2021,Grimsby & Immingham,Outwards,14157.2568
+2021,Harwich,Inwards,3272.7021
+2021,Harwich,Outwards,1299.2809000000002
+2021,Heysham,Inwards,2495.866
+2021,Heysham,Outwards,2413.262
+2021,Holyhead,Inwards,1897.246
+2021,Holyhead,Outwards,1860.201
+2021,Hull,Inwards,7041.2717
+2021,Hull,Outwards,2320.4869
+2021,Larne,Inwards,1675.554
+2021,Larne,Outwards,1516.5909000000001
+2021,Liverpool,Inwards,25811.6096
+2021,Liverpool,Outwards,8639.3063
+2021,London,Inwards,43038.0664
+2021,London,Outwards,8733.0266
+2021,Manchester,Inwards,2872.9302
+2021,Manchester,Outwards,4481.1349
+2021,Medway,Inwards,8886.266599999999
+2021,Medway,Outwards,992.9929
+2021,Milford Haven,Inwards,20650.4209
+2021,Milford Haven,Outwards,9671.452000000001
+2021,Newport,Inwards,1735.6189000000002
+2021,Newport,Outwards,1033.3278
+2021,Orkney,Inwards,249.828
+2021,Orkney,Outwards,2528.292
+2021,Port Talbot,Inwards,7076.902
+2021,Port Talbot,Outwards,328.82599999999996
+2021,Portsmouth,Inwards,2026.6929999999998
+2021,Portsmouth,Outwards,954.8230000000001
+2021,Rivers Hull & Humber,Inwards,9397.4399
+2021,Rivers Hull & Humber,Outwards,164.332
+2021,Southampton,Inwards,18325.968
+2021,Southampton,Outwards,9271.9726
+2021,Sullom Voe,Inwards,2.215
+2021,Sullom Voe,Outwards,6192.102
+2021,Tees & Hartlepool,Inwards,10072.9339
+2021,Tees & Hartlepool,Outwards,16757.1246
+2021,Tyne,Inwards,3240.7589
+2021,Tyne,Outwards,731.5447
+2021,Warrenpoint,Inwards,1754.4469000000001
+2021,Warrenpoint,Outwards,1858.4659
+2022,Aberdeen,Inwards,1630.5701
+2022,Aberdeen,Outwards,1773.3639
+2022,Belfast,Inwards,10812.2575
+2022,Belfast,Outwards,7559.7321999999995
+2022,Bristol,Inwards,6511.7344
+2022,Bristol,Outwards,2016.3647999999998
+2022,Cairnryan,Inwards,1701.427
+2022,Cairnryan,Outwards,1961.867
+2022,Clyde,Inwards,7685.4396
+2022,Clyde,Outwards,2119.1541
+2022,Dover,Inwards,11813.739
+2022,Dover,Outwards,6555.552999999999
+2022,Felixstowe,Inwards,14991.545900000001
+2022,Felixstowe,Outwards,7203.3462
+2022,Forth,Inwards,4226.7516
+2022,Forth,Outwards,16297.8248
+2022,Glensanda,Outwards,6041.046899999999
+2022,Grimsby & Immingham,Inwards,35312.3468
+2022,Grimsby & Immingham,Outwards,14853.5852
+2022,Harwich,Inwards,3062.4120000000003
+2022,Harwich,Outwards,1319.5679000000002
+2022,Heysham,Inwards,2642.886
+2022,Heysham,Outwards,2458.1409999999996
+2022,Holyhead,Inwards,2152.154
+2022,Holyhead,Outwards,1947.381
+2022,Hull,Inwards,6812.5223000000005
+2022,Hull,Outwards,1992.9080999999999
+2022,Larne,Inwards,1982.1480000000001
+2022,Larne,Outwards,1708.6429999999998
+2022,Liverpool,Inwards,25338.4976
+2022,Liverpool,Outwards,8282.4239
+2022,London,Inwards,45382.1594
+2022,London,Outwards,9496.7387
+2022,Manchester,Inwards,2911.9643
+2022,Manchester,Outwards,3303.0822000000003
+2022,Medway,Inwards,12466.1293
+2022,Medway,Outwards,906.5655
+2022,Milford Haven,Inwards,27609.7451
+2022,Milford Haven,Outwards,11201.7949
+2022,Newport,Inwards,1409.577
+2022,Newport,Outwards,1151.4431
+2022,Orkney,Inwards,217.11399999999998
+2022,Orkney,Outwards,2004.4697999999999
+2022,Port Talbot,Inwards,5688.5923
+2022,Port Talbot,Outwards,291.258
+2022,Portsmouth,Inwards,1881.5781
+2022,Portsmouth,Outwards,1032.1558
+2022,Rivers Hull & Humber,Inwards,10714.349100000001
+2022,Rivers Hull & Humber,Outwards,243.0111
+2022,Southampton,Inwards,21717.4463
+2022,Southampton,Outwards,9560.1255
+2022,Sullom Voe,Inwards,23.415
+2022,Sullom Voe,Outwards,5605.921899999999
+2022,Tees & Hartlepool,Inwards,9995.6442
+2022,Tees & Hartlepool,Outwards,15381.4762
+2022,Tyne,Inwards,2430.5751
+2022,Tyne,Outwards,701.488
+2022,Warrenpoint,Inwards,1531.598
+2022,Warrenpoint,Outwards,1708.3262
+2023,Aberdeen,Inwards,1731.154
+2023,Aberdeen,Outwards,1866.2149
+2023,Belfast,Inwards,10822.3764
+2023,Belfast,Outwards,7614.776
+2023,Bristol,Inwards,6742.7322
+2023,Bristol,Outwards,1794.719
+2023,Cairnryan,Inwards,1771.818
+2023,Cairnryan,Outwards,2062.022
+2023,Clyde,Inwards,7560.920300000001
+2023,Clyde,Outwards,1007.9539
+2023,Dover,Inwards,12798.387
+2023,Dover,Outwards,6427.025000000001
+2023,Felixstowe,Inwards,15386.784
+2023,Felixstowe,Outwards,7136.6029
+2023,Forth,Inwards,4062.1186000000002
+2023,Forth,Outwards,14458.3279
+2023,Glensanda,Outwards,5827.404
+2023,Grimsby & Immingham,Inwards,31707.6191
+2023,Grimsby & Immingham,Outwards,14263.1458
+2023,Harwich,Inwards,3008.2760000000003
+2023,Harwich,Outwards,1226.3141
+2023,Heysham,Inwards,2669.705
+2023,Heysham,Outwards,2613.237
+2023,Holyhead,Inwards,2519.863
+2023,Holyhead,Outwards,2261.4069999999997
+2023,Hull,Inwards,6327.8941
+2023,Hull,Outwards,1832.763
+2023,Larne,Inwards,2080.2180000000003
+2023,Larne,Outwards,1778.0230000000001
+2023,Liverpool,Inwards,21468.1421
+2023,Liverpool,Outwards,7082.6328
+2023,London,Inwards,42996.9936
+2023,London,Outwards,8592.688400000001
+2023,Manchester,Inwards,3120.618
+2023,Manchester,Outwards,2532.2425999999996
+2023,Medway,Inwards,12739.875100000001
+2023,Medway,Outwards,859.0927999999999
+2023,Milford Haven,Inwards,24213.7232
+2023,Milford Haven,Outwards,10467.5329
+2023,Newport,Inwards,1253.3581
+2023,Newport,Outwards,1020.9701
+2023,Orkney,Inwards,166.00600000000003
+2023,Orkney,Outwards,1522.9080000000001
+2023,Port Talbot,Inwards,6404.0738
+2023,Port Talbot,Outwards,314.09909999999996
+2023,Portsmouth,Inwards,1957.2907
+2023,Portsmouth,Outwards,912.4208
+2023,Rivers Hull & Humber,Inwards,10099.761
+2023,Rivers Hull & Humber,Outwards,303.712
+2023,Southampton,Inwards,21561.8151
+2023,Southampton,Outwards,9054.0083
+2023,Sullom Voe,Outwards,5354.5199
+2023,Tees & Hartlepool,Inwards,9204.6589
+2023,Tees & Hartlepool,Outwards,14808.9551
+2023,Tyne,Inwards,1930.5711000000001
+2023,Tyne,Outwards,667.5264999999999
+2023,Warrenpoint,Inwards,1525.2579
+2023,Warrenpoint,Outwards,1620.6341
