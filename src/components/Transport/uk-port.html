@@ -981,6 +981,9 @@
                 // 从全球视图切换到3D视图
                 console.log("切换到英国斜视角");
                 
+                // 先停止所有动画和定时器
+                stopAllAnimations();
+                
                 // 更新按钮文本
                 document.getElementById('view-button-text').textContent = 'Compare Ports';
                 
@@ -1148,6 +1151,9 @@
                 // 从3D视图切换到单港口视图
                 console.log("切换到单港口视图");
                 
+                // 先停止所有动画和定时器
+                stopAllAnimations();
+                
                 // 更新按钮文本
                 document.getElementById('view-button-text').textContent = 'Back to Overview';
                 
@@ -1194,6 +1200,9 @@
                 // 从单港口视图返回总览视图
                 console.log("返回总览视图");
                 
+                // 先停止所有动画和定时器
+                stopAllAnimations();
+                
                 // 更新按钮文本
                 document.getElementById('view-button-text').textContent = 'Switch to 3D';
                 
@@ -1236,6 +1245,24 @@
                 isGlobalView = !isGlobalView;
                 console.log("视图状态已更新，当前视图是：", isGlobalView ? "全球视角" : "英国视角");
             }
+        }
+        
+        // 新增函数：停止所有动画和定时器
+        function stopAllAnimations() {
+            // 停止年份播放
+            stopYearPlay();
+            
+            // 停止流动点动画
+            if (flowDotsAnimationId) {
+                cancelAnimationFrame(flowDotsAnimationId);
+                flowDotsAnimationId = null;
+            }
+            
+            // 清空流动点数组
+            flowDots = [];
+            
+            // 停止任何其他可能的定时器
+            // 如果有其他定时器，也应该在这里停止
         }
 
         // 创建一个六边形坐标数组
@@ -1366,12 +1393,25 @@
                 // 显示加载指示器
                 document.getElementById('loading-indicator').style.display = 'block';
                 
-                // 使用setTimeout让UI有时间刷新显示加载指示器
-                setTimeout(() => {
-                    map.getSource('ports-3d').setData(createPortsGeoJSON());
-                    // 隐藏加载指示器
+                try {
+                    // 使用setTimeout让UI有时间刷新显示加载指示器
+                    setTimeout(() => {
+                        try {
+                            map.getSource('ports-3d').setData(createPortsGeoJSON());
+                            console.log("3D数据更新完成");
+                        } catch (error) {
+                            console.error("更新3D数据时出错:", error);
+                        } finally {
+                            // 无论成功与否，都隐藏加载指示器
+                            document.getElementById('loading-indicator').style.display = 'none';
+                        }
+                    }, 100);
+                } catch (error) {
+                    console.error("准备更新3D数据时出错:", error);
                     document.getElementById('loading-indicator').style.display = 'none';
-                }, 100);
+                }
+            } else {
+                console.log("跳过3D数据更新 - 当前不是3D视图或数据源未创建");
             }
         }
 
@@ -1875,6 +1915,12 @@
         // 更新可视化
         function updateVisualization() {
             if (!flowData) return;
+
+            // 停止之前的流动点动画
+            if (flowDotsAnimationId) {
+                cancelAnimationFrame(flowDotsAnimationId);
+                flowDotsAnimationId = null;
+            }
 
             // 筛选当前年份和方向的数据
             let filteredData = flowData.filter(d => 
@@ -2579,6 +2625,7 @@
             if (yearPlayInterval) {
                 clearInterval(yearPlayInterval);
                 yearPlayInterval = null;
+                console.log('Year play animation stopped');
             }
         }
 
@@ -2587,7 +2634,7 @@
             // 年份滑块事件
             document.getElementById('slider').addEventListener('input', (e) => {
                 updateYear(2016 + parseInt(e.target.value));
-                stopYearPlay();
+                stopAllAnimations();
             });
 
             // 年份标记点击事件
@@ -2642,7 +2689,9 @@
             // 港口选择事件
             document.getElementById('port-select').addEventListener('change', (e) => {
                 currentPort = e.target.value;
-                stopYearPlay();
+                
+                // 停止所有动画和定时器
+                stopAllAnimations();
                 
                 // 当选择了特定港口，切换到视图步骤3
                 if (currentPort) {
@@ -2781,6 +2830,10 @@
                 step.addEventListener('click', function() {
                     const previousStep = currentViewStep;
                     currentViewStep = index + 1;
+                    
+                    // 停止所有动画和定时器
+                    stopAllAnimations();
+                    
                     updateViewStepIndicators();
                     
                     // 根据视图步骤更新按钮文本
@@ -3609,6 +3662,17 @@
             // 返回前N个港口
             return sortedPorts.slice(0, count);
         }
+
+        // 在页面卸载时清理资源
+        window.addEventListener('beforeunload', function() {
+            stopAllAnimations();
+            
+            // 清理其他资源
+            if (inwardChart) inwardChart.destroy();
+            if (outwardChart) outwardChart.destroy();
+            if (overviewChart) overviewChart.destroy();
+            if (hoverChart) hoverChart.destroy();
+        });
     </script>
 </body>
 </html>
