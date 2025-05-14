@@ -325,6 +325,80 @@
             background-color: rgba(255, 255, 255, 0.2);
             margin: 0 8px;
         }
+
+        .destination-popup {
+            max-width: 240px;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .destination-popup .mapboxgl-popup-content {
+            background-color: rgba(33, 33, 33, 0.9);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .destination-popup .mapboxgl-popup-tip {
+            border-top-color: rgba(33, 33, 33, 0.9);
+            border-bottom-color: rgba(33, 33, 33, 0.9);
+        }
+        .destination-info h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .tonnage-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        .tonnage-value {
+            font-weight: 600;
+        }
+        
+        /* 新增详细弹出框样式 */
+        .destination-popup-detailed {
+            max-width: 280px;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .destination-popup-detailed .mapboxgl-popup-content {
+            background-color: rgba(33, 33, 33, 0.95);
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .destination-popup-detailed .mapboxgl-popup-close-button {
+            color: #ffffff;
+            font-size: 16px;
+            padding: 5px 10px;
+        }
+        .destination-popup-detailed .mapboxgl-popup-close-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .destination-popup-detailed .mapboxgl-popup-tip {
+            border-top-color: rgba(33, 33, 33, 0.95);
+            border-bottom-color: rgba(33, 33, 33, 0.95);
+        }
+        .destination-info-detailed h3 {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+        }
+        .tonnage-info-detailed {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .tonnage-info-detailed p {
+            margin: 5px 0;
+        }
+        .tonnage-info-detailed strong {
+            color: #64b5f6;
+        }
     </style>
 </head>
 <body>
@@ -380,35 +454,35 @@
                         <label>Destination Regions:</label>
                         <div class="legend-items">
                             <div class="legend-item">
-                                <div class="legend-color" style="background: #8400ff;"></div>
+                                <div class="legend-color" style="background: #a54dff;"></div>
                                 <span>Africa</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background: #ff7700;"></div>
+                                <div class="legend-color" style="background: #ff9c33;"></div>
                                 <span>America</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background: #0cec00;"></div>
+                                <div class="legend-color" style="background: #4dff33;"></div>
                                 <span>Asia</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background: #ff2a00;"></div>
+                                <div class="legend-color" style="background: #ff5233;"></div>
                                 <span>Australasia</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background: #00e5ff;"></div>
+                                <div class="legend-color" style="background: #33eeff;"></div>
                                 <span>EU</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background: #ff00b3;"></div>
+                                <div class="legend-color" style="background: #ff33cc;"></div>
                                 <span>Other Europe</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background: #e1ff00;"></div>
+                                <div class="legend-color" style="background: #fdff33;"></div>
                                 <span>UK</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-color" style="background: #7f7f7f;"></div>
+                                <div class="legend-color" style="background: #b3b3b3;"></div>
                                 <span>Other Regions</span>
                             </div>
                         </div>
@@ -475,14 +549,14 @@
 
         // 在全局变量部分添加颜色映射 - 调整为更亮的颜色
         const regionColors = {
-            'Africa (excluding Mediterranean)': '#8400ff',
-            'America': '#ff7700',
-            'Asia (excluding Mediterranean)': '#0cec00',
-            'Australasia': '#ff2a00', 
-            'European Union (excluding United Kingdom)': '#00e5ff',
-            'Other Europe (excluding European Union) & Mediterranean': '#ff00b3',
-            'United Kingdom (inc CHI & IOM)': '#e1ff00', 
-            'Other': '#7f7f7f'
+            'Africa (excluding Mediterranean)': '#a54dff', // 改回更饱和度高的紫色
+            'America': '#ff9c33', // 改回更饱和度高的橙色
+            'Asia (excluding Mediterranean)': '#4dff33', // 改回更饱和度高的绿色
+            'Australasia': '#ff5233', // 改回更饱和度高的红色
+            'European Union (excluding United Kingdom)': '#33eeff', // 改回更饱和度高的青色
+            'Other Europe (excluding European Union) & Mediterranean': '#ff33cc', // 改回更饱和度高的粉色
+            'United Kingdom (inc CHI & IOM)': '#fdff33', // 改回更饱和度高的黄色
+            'Other': '#b3b3b3' // 改回更饱和度高的灰色
         };
 
         // 添加区域缩写映射
@@ -616,6 +690,11 @@
                 initializePortSelect();
                 addPortLayer();
                 addFlowLayer();
+                // 设置默认方向为Inwards
+                currentDirection = 'Inwards';
+                document.getElementById('direction').value = 'Inwards';
+                // 确保页面初始化时显示所有港口的流向
+                currentPort = '';
                 updateVisualization();
                 setupEventListeners();
                 setupHoverEvents();
@@ -752,7 +831,7 @@
             }
         }
 
-        // 修改流向线图层
+        // 添加流向线图层
         function addFlowLayer() {
             map.addSource('flows', {
                 type: 'geojson',
@@ -773,16 +852,16 @@
                     'line-cap': 'round'
                 },
                 paint: {
-                    'line-color': 'rgba(255, 255, 255, 0.7)',  // 降低一点透明度
+                    'line-color': 'rgba(255, 255, 255, 0.7)',
                     'line-width': [
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 1.8],  // 从1.8降低到1.2
-                        1, ['*', ['get', 'weight'], 0.9]   // 从0.9降低到0.6
+                        0, ['*', ['get', 'weight'], 1.1],  // 从1.3降低到1.1
+                        1, ['*', ['get', 'weight'], 0.5]   // 从0.7降低到0.5
                     ],
-                    'line-opacity': 0.35,  // 从0.4降低到0.35
-                    'line-blur': 1.2  // 从2降低到1.2，减少模糊程度
+                    'line-opacity': 0.3,  // 从0.35降低到0.3
+                    'line-blur': 1.0  // 从1.2降低到1.0
                 }
             });
             
@@ -801,15 +880,15 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 1.2],  // 从1.6降低到1.2
-                        1, ['*', ['get', 'weight'], 0.5]   // 从0.8降低到0.5
+                        0, ['*', ['get', 'weight'], 0.7],  // 从0.9降低到0.7
+                        1, ['*', ['get', 'weight'], 0.3]   // 从0.4降低到0.3
                     ],
-                    'line-opacity': 0.25,
-                    'line-blur': 4
+                    'line-opacity': 0.2,  // 从0.25降低到0.2
+                    'line-blur': 3
                 }
             }, 'flow-lines-white-outline');
             
-            // 添加线条发光效果图层 - 增强发光效果
+            // 添加线条发光效果图层
             map.addLayer({
                 id: 'flow-lines-glow',
                 type: 'line',
@@ -824,15 +903,15 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 1.0],  // 从1.5降低到1.0
-                        1, ['*', ['get', 'weight'], 0.5]   // 从0.8降低到0.5
+                        0, ['*', ['get', 'weight'], 0.6],
+                        1, ['*', ['get', 'weight'], 0.3]   // 从0.4降低到0.3
                     ],
-                    'line-opacity': 0.6,  // 增加不透明度，使发光更明显
-                    'line-blur': 3  // 适当减小模糊以使发光更集中
+                    'line-opacity': 0.5,  // 从0.6降低到0.5
+                    'line-blur': 2  // 从3降低到2
                 }
             }, 'flow-lines-outer-glow');
             
-            // 添加流向线图层 - 调整线条样式以适应暗色背景
+            // 添加流向线图层
             map.addLayer({
                 id: 'flow-lines',
                 type: 'line',
@@ -847,11 +926,11 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 0.8],  // 从0.7降低到0.5
-                        1, ['*', ['get', 'weight'], 0.25]  // 从0.2降低到0.15
+                        0, ['*', ['get', 'weight'], 0.4],  // 从0.6降低到0.4
+                        1, ['*', ['get', 'weight'], 0.15]  // 从0.2降低到0.15
                     ],
-                    'line-opacity': 1.0,  // 完全不透明
-                    'line-blur': 0  // 无模糊，保持锐利
+                    'line-opacity': 0.9,  // 降低不透明度，让整体看起来更轻盈
+                    'line-blur': 0
                 }
             }, 'flow-lines-glow');
             
@@ -864,7 +943,7 @@
                 }
             });
             
-            // 添加流动线段 - 使用纯色，而不是渐变（因为MapBox的line-gradient在小线段上不工作）
+            // 添加流动线段 - 改进白色点的可见性
             map.addLayer({
                 id: 'flow-dots',
                 type: 'line',
@@ -875,9 +954,108 @@
                 },
                 paint: {
                     'line-color': '#ffffff',
-                    'line-width': ['*', ['get', 'size'], 1],  // 更细的线
-                    'line-opacity': ['get', 'opacity'],  // 使用属性控制透明度
-                    'line-blur': 0.1    // 轻微的模糊效果
+                    'line-width': ['*', ['get', 'size'], 1.2],
+                    'line-opacity': ['get', 'opacity'],
+                    'line-blur': 0.12    // 增加一点模糊以使动画点看起来更柔和，从0.08到0.12
+                }
+            });
+            
+            // 添加目的地国家标记数据源
+            map.addSource('destinations', {
+                type: 'geojson',
+                data: {
+                    type: 'FeatureCollection',
+                    features: []
+                }
+            });
+            
+            // 删除旧的目的地圆圈标记，创建新的星形目的地标记
+            
+            // 1. 添加一个外部发光层作为背景效果
+            map.addLayer({
+                id: 'destination-glow',
+                type: 'circle',
+                source: 'destinations',
+                paint: {
+                    'circle-radius': ['*', ['get', 'weight'], 4.5], // 增加半径从3到4.5
+                    'circle-color': ['get', 'color'],
+                    'circle-opacity': 0.5, // 增加不透明度从0.4到0.5
+                    'circle-blur': 1.5 // 增加模糊从1到1.5
+                }
+            });
+            
+            // 2. 添加一个脉动星形图层
+            map.addLayer({
+                id: 'destination-stars',
+                type: 'symbol',
+                source: 'destinations',
+                layout: {
+                    'icon-image': 'marker-15', // Mapbox预设的marker图标
+                    'icon-size': ['*', ['get', 'weight'], 1.4], // 增大尺寸从1.2到1.4
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true
+                },
+                paint: {
+                    'icon-color': ['get', 'color'],
+                    'icon-opacity': [
+                        'interpolate',
+                        ['linear'],
+                        ['%', ['time'], 1000],
+                        0, 0.8,
+                        500, 1,
+                        1000, 0.8
+                    ],
+                    'icon-halo-color': '#ffffff',
+                    'icon-halo-width': 2.5, // 增加光晕宽度从2到2.5
+                    'icon-halo-blur': 0.5 // 增加光晕模糊从0.3到0.5
+                }
+            });
+            
+            // 3. 添加小菱形作为补充效果，增强视觉效果
+            map.addLayer({
+                id: 'destination-diamonds',
+                type: 'symbol',
+                source: 'destinations',
+                layout: {
+                    'icon-image': 'diamond-11', // Mapbox预设的菱形图标
+                    'icon-size': ['*', ['get', 'weight'], 1.0], // 增大尺寸从0.8到1.0
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true,
+                    'icon-rotate': [
+                        'interpolate',
+                        ['linear'],
+                        ['%', ['time'], 5000],
+                        0, 0,
+                        5000, 180
+                    ]
+                },
+                paint: {
+                    'icon-color': '#ffffff',
+                    'icon-opacity': 1.0 // 增加不透明度从0.9到1.0
+                }
+            });
+            
+            // 添加目的地国家名称标签 - 改进文本可见性
+            map.addLayer({
+                id: 'destination-labels',
+                type: 'symbol',
+                source: 'destinations',
+                layout: {
+                    'text-field': ['get', 'name'],
+                    'text-font': ['Open Sans Bold'],  // 使用粗体
+                    'text-size': 16,  // 保持大小不变
+                    'text-offset': [0, 2.8], // 增加偏移，从2.2到2.8，与更大的图标保持适当距离
+                    'text-anchor': 'top',
+                    'text-allow-overlap': true,  // 允许文本重叠，确保显示
+                    'text-ignore-placement': true,  // 忽略位置限制
+                    'visibility': 'visible',  // 确保始终可见
+                    'symbol-z-order': 'source'  // 确保标签根据数据源顺序绘制
+                },
+                paint: {
+                    'text-color': '#ffffff',  
+                    'text-halo-color': 'rgba(0, 0, 0, 0.9)',  // 加深光晕颜色
+                    'text-halo-width': 3.5,  // 增加光晕宽度，从3到3.5
+                    'text-opacity': 0.95  // 设置一个轻微的透明度
                 }
             });
         }
@@ -887,19 +1065,42 @@
             if (!flowData) return;
 
             // 筛选当前年份和方向的数据
-            filteredData = flowData.filter(d => 
+            let filteredData = flowData.filter(d => 
                 parseInt(d.year) === currentYear && 
-                d.direction === currentDirection &&
-                (!currentPort || d.port === currentPort)  // 添加港口筛选条件
+                d.direction === currentDirection
             );
-
-            // 如果没有选择特定港口，则不显示流向线
-            if (!currentPort) {
+            
+            // 如果选择了特定港口，则只显示该港口的流线
+            if (currentPort) {
+                filteredData = filteredData.filter(d => d.port === currentPort);
+            } else {
+                // 如果没有选择特定港口，则显示所有港口的主要流线
+                // 获取所有港口列表
+                const allPorts = [...new Set(filteredData.map(d => d.port))];
+                
+                // 为每个港口只保留几条主要流线以避免图形过于复杂
+                const limitedData = [];
+                allPorts.forEach(port => {
+                    const portFlows = filteredData.filter(d => d.port === port)
+                        .sort((a, b) => parseFloat(b.cargo_tonnage) - parseFloat(a.cargo_tonnage))
+                        .slice(0, 3);  // 每个港口只取前3条主要流线
+                    limitedData.push(...portFlows);
+                });
+                
+                filteredData = limitedData;
+            }
+            
+            // 如果筛选后没有数据，清空可视化
+            if (filteredData.length === 0) {
                 map.getSource('flows').setData({
                     type: 'FeatureCollection',
                     features: []
                 });
                 map.getSource('flow-dots').setData({
+                    type: 'FeatureCollection',
+                    features: []
+                });
+                map.getSource('destinations').setData({
                     type: 'FeatureCollection',
                     features: []
                 });
@@ -917,8 +1118,10 @@
                 const countryCoords = [parseFloat(d.country_lon), parseFloat(d.country_lat)];
                 
                 const tonnage = parseFloat(d.cargo_tonnage);
-                // 调整线条的基础宽度，使其整体变更细
-                const baseWeight = Math.max(0.5, Math.log(tonnage) / Math.log(10) * 0.8);
+                // 在初始全局视图下，线条更细，在选择特定港口时线条较粗
+                const baseWeight = currentPort 
+                    ? Math.max(0.5, Math.log(tonnage) / Math.log(10) * 0.8)
+                    : Math.max(0.3, Math.log(tonnage) / Math.log(10) * 0.5);  // 初始更细的线条
 
                 const midPoint = getMidPoint(portCoords, countryCoords);
                 const curvedPath = createCurvedPath(portCoords, countryCoords, midPoint);
@@ -938,6 +1141,9 @@
                     }
                 };
             });
+            
+            // 创建目的地国家标记
+            const destinationFeatures = createDestinationFeatures(filteredData);
 
             // 更新流向线数据
             try {
@@ -946,16 +1152,29 @@
                     features: flowFeatures
                 });
                 
-                // 开始动画流动点
-                startFlowDotsAnimation(flowFeatures);
+                // 更新目的地标记
+                map.getSource('destinations').setData({
+                    type: 'FeatureCollection',
+                    features: destinationFeatures
+                });
+                
+                // 如果选择了特定港口，显示完整的动画点效果
+                // 如果是全局视图，为了性能考虑，减少动画点的数量
+                if (currentPort) {
+                    // 完整的动画效果
+                    startFlowDotsAnimation(flowFeatures);
+                } else {
+                    // 全局视图下也有动画，但数量和效果会受限制
+                    startSimplifiedDotsAnimation(flowFeatures);
+                }
                 
             } catch (error) {
                 console.error('Error updating flows:', error);
             }
         }
 
-        // 改进版的流动点动画 - 确保每条线有连续的流动效果和渐变特效
-        function startFlowDotsAnimation(flowFeatures) {
+        // 为全局视图添加简化版的动画点效果
+        function startSimplifiedDotsAnimation(flowFeatures) {
             // 如果之前有动画，取消它
             if (flowDotsAnimationId) {
                 cancelAnimationFrame(flowDotsAnimationId);
@@ -968,39 +1187,22 @@
             // 初始化流动点
             flowDots = [];
             
-            // 对每条线生成1个流动线段，确保流畅移动
+            // 为每条线创建1-2个流动点，简化全局视图动画
             flowFeatures.forEach((feature) => {
                 const weight = feature.properties.weight;
                 const coords = feature.geometry.coordinates;
                 
-                // 为每条线生成一个点
+                // 每条线只添加1个点，确保起始位置都从港口开始
                 flowDots.push({
-                    progress: 0, // 从起点开始
-                    speed: 0.0006, // 显著降低速度
+                    progress: 0.02, // 所有点都从起点开始，略微偏移以避免完全重叠
+                    speed: 0.001, // 大幅增加速度，从0.0005到0.001
                     coordinates: coords,
                     properties: {
-                        size: Math.min(weight * 0.6 + 0.3, 1.0) // 适当降低粗细
+                        size: Math.min(weight * 0.8 + 0.6, 1.8) // 更大更明显的点
                     },
-                    lineLength: 0.06 + (weight * 0.008), // 适当缩短线段长度
-                    totalTime: 0 // 记录运行时间
-                });
-            });
-            
-            // 对每条线生成1个流动线段，确保流畅移动
-            flowFeatures.forEach((feature) => {
-                const weight = feature.properties.weight;
-                const coords = feature.geometry.coordinates;
-                
-                // 为每条线生成一个点
-                flowDots.push({
-                    progress: Math.random(), // 随机初始位置，避免所有点同步
-                    speed: 0.0003, // 进一步降低速度，使动画更缓慢
-                    coordinates: coords,
-                    properties: {
-                        size: Math.min(weight * 0.6 + 0.3, 0.9) // 适当降低粗细
-                    },
-                    lineLength: 0.05 + (weight * 0.006), // 更短的线段
-                    totalTime: 0 // 记录运行时间
+                    // 增加线段长度，使动画看起来更流畅
+                    lineLength: 0.05 + (weight * 0.008),
+                    totalTime: 0
                 });
             });
             
@@ -1025,42 +1227,82 @@
                     const startProgress = dot.progress;
                     const endProgress = Math.min(startProgress + dot.lineLength, 1);
                     
-                    const startPos = interpolatePosition(dot.coordinates, startProgress);
-                    let endPos;
-                    
-                    // 如果线段跨越了终点，需要特殊处理
-                    if (endProgress >= 1) {
-                        endPos = interpolatePosition(dot.coordinates, endProgress % 1);
-                    } else {
-                        endPos = interpolatePosition(dot.coordinates, endProgress);
+                    // 如果线段将跨越终点，提前停止
+                    if (endProgress >= 0.99) {
+                        // 如果快到终点了，缩短线段长度，避免跨越
+                        const adjustedEndProgress = 0.99;
+                        const startPos = interpolatePosition(dot.coordinates, startProgress);
+                        const endPos = interpolatePosition(dot.coordinates, adjustedEndProgress);
+                        
+                        // 增加中间点数量，使动画更流畅
+                        const numPoints = 4; 
+                        const points = [];
+                        
+                        // 重新计算点，确保不会超过终点
+                        const effectiveLength = adjustedEndProgress - startProgress;
+                        for (let i = 0; i < numPoints; i++) {
+                            const t = i / (numPoints - 1);
+                            const progress = startProgress + effectiveLength * t;
+                            if (progress < 1) { // 确保不超过1
+                                points.push(interpolatePosition(dot.coordinates, progress));
+                            }
+                        }
+                        
+                        // 如果没有足够的点，不创建任何线段
+                        if (points.length < 2) {
+                            return [];
+                        }
+                        
+                        // 为每个中间线段创建渐变过渡
+                        const segmentFeatures = [];
+                        for (let i = 0; i < points.length - 1; i++) {
+                            const t = i / (points.length - 1); // 0到1之间的值
+                            
+                            // 柔和渐变以使动画更自然
+                            const opacity = 0.95 * Math.pow(1 - t, 1.5); 
+                            
+                            segmentFeatures.push({
+                                type: 'Feature',
+                                properties: {
+                                    size: dot.properties.size * (1 - Math.pow(t, 0.6) * 0.5), // 更平滑的尾部变细
+                                    opacity: opacity
+                                },
+                                geometry: {
+                                    type: 'LineString',
+                                    coordinates: [points[i], points[i+1]]
+                                }
+                            });
+                        }
+                        
+                        return segmentFeatures;
                     }
                     
-                    // 生成中间点来创建渐变效果 - 更平滑的过渡
-                    const numPoints = 4; // 减少点数以缩短线段
+                    // 如果是正常位置（不靠近终点），常规处理
+                    const startPos = interpolatePosition(dot.coordinates, startProgress);
+                    const endPos = interpolatePosition(dot.coordinates, endProgress);
+                    
+                    // 生成中间点来创建渐变效果 - 增加点数使动画更流畅
+                    const numPoints = 4;
                     const points = [];
                     
                     for (let i = 0; i < numPoints; i++) {
                         const t = i / (numPoints - 1);
-                        const segmentProgress = startProgress + (endProgress - startProgress) * t;
-                        const actualProgress = segmentProgress >= 1 ? segmentProgress % 1 : segmentProgress;
-                        points.push(interpolatePosition(dot.coordinates, actualProgress));
+                        const progress = startProgress + (endProgress - startProgress) * t;
+                        points.push(interpolatePosition(dot.coordinates, progress));
                     }
                     
-                    // 为每个中间线段创建更自然的渐变过渡
+                    // 为每个中间线段创建渐变过渡
                     const segmentFeatures = [];
                     for (let i = 0; i < points.length - 1; i++) {
-                        // 使用指数函数创建更自然的亮度衰减
-                        const t = i / (points.length - 1); // 0到1之间的值
-                        const headOpacity = 1.0; // 头部最明亮
-                        const tailOpacity = 0.15; // 尾部更暗
+                        const t = i / (points.length - 1);
                         
-                        // 使用指数函数创建更陡峭的头部渐变，尾部更快消失
-                        const opacity = headOpacity * Math.exp(-2.2 * t);
+                        // 柔和渐变以使动画更自然
+                        const opacity = 0.95 * Math.pow(1 - t, 1.5);
                         
                         segmentFeatures.push({
                             type: 'Feature',
                             properties: {
-                                size: dot.properties.size * (1 - Math.pow(t, 1.2) * 0.5), // 头尾过渡更自然
+                                size: dot.properties.size * (1 - Math.pow(t, 0.6) * 0.5), // 更平滑的尾部变细
                                 opacity: opacity
                             },
                             geometry: {
@@ -1084,6 +1326,293 @@
                 // 继续动画循环
                 flowDotsAnimationId = requestAnimationFrame(animate);
             }
+        }
+
+        // 创建目的地国家标记特征 - 显示具体国家而非区域，并精确定位
+        function createDestinationFeatures(data) {
+            // 按目的地国家分组并合并，使用国家坐标和国家名称
+            const destinations = {};
+            
+            // 检查数据的第一个元素，了解可用字段
+            if (data.length > 0) {
+                console.log("数据示例:", data[0]);
+            }
+            
+            data.forEach(d => {
+                // 提取国家名称
+                let countryName = '';
+                // 尝试从数据中提取国家名
+                if (d.destination_country) {
+                    countryName = d.destination_country;
+                } else if (d.destination) {
+                    countryName = d.destination;
+                } else if (d.country) {
+                    countryName = d.country;
+                } else {
+                    // 从区域名称中提取可能的国家名称
+                    const region = d.destination_region || '';
+                    
+                    // 对已知区域进行特殊处理，转换为主要国家名
+                    if (region.includes('United Kingdom')) {
+                        countryName = 'UK';
+                    } else if (region.includes('European Union')) {
+                        // 根据坐标确定具体欧盟国家
+                        const lat = parseFloat(d.country_lat);
+                        const lon = parseFloat(d.country_lon);
+                        
+                        // 基于坐标粗略判断国家
+                        if (lon > 10 && lat > 45) countryName = 'Germany';
+                        else if (lon < 0 && lat > 43) countryName = 'France';
+                        else if (lon > 10 && lat < 45) countryName = 'Italy';
+                        else if (lon > 0 && lon < 10 && lat > 48) countryName = 'Belgium';
+                        else if (lon > 3 && lon < 8 && lat > 45 && lat < 48) countryName = 'Switzerland';
+                        else if (lon < 0 && lat < 43) countryName = 'Spain';
+                        else if (lon > 18 && lat > 45) countryName = 'Poland';
+                        else if (lon > 10 && lat > 55) countryName = 'Sweden';
+                        else if (lon > 12 && lat > 50) countryName = 'Czech Republic';
+                        else countryName = 'EU Country';
+                    } else if (region.includes('America')) {
+                        const lat = parseFloat(d.country_lat);
+                        const lon = parseFloat(d.country_lon);
+                        if (lat > 30) countryName = 'USA';
+                        else if (lat > 15) countryName = 'Mexico';
+                        else if (lat > 0) countryName = 'Central America';
+                        else if (lon < -65) countryName = 'Brazil';
+                        else countryName = 'South America';
+                    } else if (region.includes('Asia')) {
+                        const lon = parseFloat(d.country_lon);
+                        const lat = parseFloat(d.country_lat);
+                        if (lon > 100) {
+                            if (lat > 30) countryName = 'China';
+                            else countryName = 'Southeast Asia';
+                        }
+                        else if (lon > 60) countryName = 'India';
+                        else if (lon > 30) countryName = 'Middle East';
+                        else countryName = 'Asia';
+                    } else if (region.includes('Africa')) {
+                        const lat = parseFloat(d.country_lat);
+                        if (lat > 20) countryName = 'North Africa';
+                        else countryName = 'Africa';
+                    } else if (region.includes('Australasia')) {
+                        countryName = 'Australia';
+                    } else {
+                        countryName = region.split(' ')[0]; // 取第一个词作为国家名
+                    }
+                }
+                
+                const coords = [parseFloat(d.country_lon), parseFloat(d.country_lat)];
+                const tonnage = parseFloat(d.cargo_tonnage);
+                const region = d.destination_region; // 用于保留颜色分类
+                
+                // 使用坐标作为key，避免同一国家不同名称导致的重复
+                const coordKey = `${coords[0].toFixed(1)},${coords[1].toFixed(1)}`;
+                
+                if (!destinations[coordKey]) {
+                    destinations[coordKey] = {
+                        name: countryName,
+                        coordinates: coords,
+                        tonnage: tonnage,
+                        color: regionColors[region] || regionColors['Other']
+                    };
+                } else {
+                    destinations[coordKey].tonnage += tonnage;
+                }
+            });
+            
+            // 转换为GeoJSON特征
+            return Object.values(destinations).map(dest => ({
+                type: 'Feature',
+                properties: {
+                    name: dest.name,
+                    weight: Math.max(2.2, Math.log(dest.tonnage) / Math.log(10) * 1.6), // 增加基础权重和系数
+                    tonnage: dest.tonnage,
+                    color: dest.color
+                },
+                geometry: {
+                    type: 'Point',
+                    coordinates: dest.coordinates
+                }
+            }));
+        }
+
+        // 改进版的流动点动画 - 确保每条线有连续的流动效果和渐变特效
+        function startFlowDotsAnimation(flowFeatures) {
+            // 如果之前有动画，取消它
+            if (flowDotsAnimationId) {
+                cancelAnimationFrame(flowDotsAnimationId);
+                flowDotsAnimationId = null;
+            }
+            
+            // 如果没有数据，不执行动画
+            if (!flowFeatures || flowFeatures.length === 0) return;
+            
+            // 初始化流动点
+            flowDots = [];
+            
+            // 为每条线创建2-3个流动点，让动画效果更丰富
+            flowFeatures.forEach((feature) => {
+                const weight = feature.properties.weight;
+                const coords = feature.geometry.coordinates;
+                const totalLength = getTotalDistance(coords);
+                
+                // 根据线的长度决定点的数量：较长线3个点，中等长度2个点
+                let numDots;
+                if (totalLength > 1000) {
+                    numDots = 3;  // 长线3个点
+                } else if (totalLength > 400) {
+                    numDots = 2;  // 中等长度线2个点
+                } else {
+                    numDots = 2;  // 短线也至少2个点
+                }
+                
+                // 为每条线生成点，确保所有点从港口出发，均匀分布
+                for (let i = 0; i < numDots; i++) {
+                    // 让第一个点从起点出发，其他点延迟启动
+                    const initialProgress = (i === 0) ? 0.02 : (0.02 + (1 / numDots) * i * 0.7);
+                    
+                    flowDots.push({
+                        progress: initialProgress,
+                        speed: 0.001, // 大幅增加速度，从0.0006到0.001
+                        coordinates: coords,
+                        properties: {
+                            size: Math.min(weight * 0.9 + 0.6, 1.9) // 调整大小
+                        },
+                        lineLength: 0.06 + (weight * 0.008), // 增加线段长度
+                        totalTime: 0
+                    });
+                }
+            });
+            
+            // 开始动画循环
+            animate();
+            
+            function animate() {
+                // 更新每个流动线段的位置
+                for (let dot of flowDots) {
+                    dot.progress += dot.speed;
+                    dot.totalTime += 1/60; // 假设60fps
+                    
+                    // 当线段到达终点时，回到起点
+                    if (dot.progress >= 1) {
+                        dot.progress = 0;
+                    }
+                }
+                
+                // 创建具有渐变效果的线段 - 修复终点回到起点的直线bug
+                const dotFeatures = flowDots.map(dot => {
+                    // 计算线段的起点和终点
+                    const startProgress = dot.progress;
+                    const endProgress = Math.min(startProgress + dot.lineLength, 1);
+                    
+                    // 如果线段将跨越终点，提前停止
+                    if (endProgress >= 0.99) {
+                        // 如果快到终点了，缩短线段长度，避免跨越
+                        const adjustedEndProgress = 0.99;
+                        const startPos = interpolatePosition(dot.coordinates, startProgress);
+                        const endPos = interpolatePosition(dot.coordinates, adjustedEndProgress);
+                        
+                        // 生成中间点来创建渐变效果 - 更平滑的过渡
+                        const numPoints = 6; // 增加点数以改善渐变效果
+                        const points = [];
+                        
+                        
+                        // 重新计算点，确保不会超过终点
+                        const effectiveLength = adjustedEndProgress - startProgress;
+                        for (let i = 0; i < numPoints; i++) {
+                            const t = i / (numPoints - 1);
+                            const progress = startProgress + effectiveLength * t;
+                            if (progress < 1) { // 确保不超过1
+                                points.push(interpolatePosition(dot.coordinates, progress));
+                            }
+                        }
+                        
+                        // 如果没有足够的点，不创建任何线段
+                        if (points.length < 2) {
+                            return [];
+                        }
+                        
+                        // 为每个中间线段创建更自然的渐变过渡
+                        const segmentFeatures = [];
+                        for (let i = 0; i < points.length - 1; i++) {
+                            const t = i / (points.length - 1); // 0到1之间的值
+                            
+                            // 使用指数函数创建更陡峭的头部渐变，尾部更快消失
+                            const opacity = 1.0 * Math.exp(-1.5 * t); // 减小衰减速率，从1.8降到1.5
+                            
+                            segmentFeatures.push({
+                                type: 'Feature',
+                                properties: {
+                                    size: dot.properties.size * (1 - Math.pow(t, 0.7) * 0.3), // 减小尾部变细的程度
+                                    opacity: opacity
+                                },
+                                geometry: {
+                                    type: 'LineString',
+                                    coordinates: [points[i], points[i+1]]
+                                }
+                            });
+                        }
+                        
+                        return segmentFeatures;
+                    }
+                    
+                    // 如果是正常位置（不靠近终点），常规处理
+                    const startPos = interpolatePosition(dot.coordinates, startProgress);
+                    const endPos = interpolatePosition(dot.coordinates, endProgress);
+                    
+                    // 生成中间点来创建渐变效果
+                    const numPoints = 5; // 增加点数以改善渐变效果
+                    const points = [];
+                    
+                    for (let i = 0; i < numPoints; i++) {
+                        const t = i / (numPoints - 1);
+                        const progress = startProgress + (endProgress - startProgress) * t;
+                        points.push(interpolatePosition(dot.coordinates, progress));
+                    }
+                    
+                    // 为每个中间线段创建更自然的渐变过渡
+                    const segmentFeatures = [];
+                    for (let i = 0; i < points.length - 1; i++) {
+                        const t = i / (points.length - 1);
+                        
+                        // 使用指数函数创建更陡峭的头部渐变，尾部更快消失
+                        const opacity = 1.0 * Math.exp(-1.5 * t); // 减小衰减速率，从1.8降到1.5
+                        
+                        segmentFeatures.push({
+                            type: 'Feature',
+                            properties: {
+                                size: dot.properties.size * (1 - Math.pow(t, 0.7) * 0.3), // 减小尾部变细的程度
+                                opacity: opacity
+                            },
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [points[i], points[i+1]]
+                            }
+                        });
+                    }
+                    
+                    return segmentFeatures;
+                }).flat();
+                
+                // 更新地图上的流动线段
+                if (map.getSource('flow-dots')) {
+                    map.getSource('flow-dots').setData({
+                        type: 'FeatureCollection',
+                        features: dotFeatures
+                    });
+                }
+                
+                // 继续动画循环
+                flowDotsAnimationId = requestAnimationFrame(animate);
+            }
+        }
+
+        // 计算线条总长度
+        function getTotalDistance(coordinates) {
+            let totalDistance = 0;
+            for (let i = 1; i < coordinates.length; i++) {
+                totalDistance += distance(coordinates[i-1], coordinates[i]);
+            }
+            return totalDistance;
         }
 
         // 插值计算点在路径上的位置
@@ -1230,6 +1759,7 @@
                         'rgba(100, 181, 246, 0.2)'
                     ]);
                     
+                    
                     map.setPaintProperty('ports-halo', 'circle-radius', [
                         'case',
                         ['==', ['get', 'port'], currentPort],
@@ -1298,6 +1828,31 @@
                     const event = new Event('change');
                     portSelect.dispatchEvent(event);
                 }
+            });
+            
+            // 新增：添加点击目标国家的事件
+            map.on('click', 'destination-glow', (e) => {
+                const name = e.features[0].properties.name;
+                const tonnage = parseFloat(e.features[0].properties.tonnage).toLocaleString();
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                
+                // 创建一个持久性的弹出框，带有关闭按钮
+                new mapboxgl.Popup({
+                    closeButton: true,
+                    className: 'destination-popup-detailed'
+                })
+                .setLngLat(coordinates)
+                .setHTML(`
+                    <div class="destination-info-detailed">
+                        <h3>${name}</h3>
+                        <div class="tonnage-info-detailed">
+                            <p><strong>${currentDirection} Cargo:</strong> ${tonnage} tonnes</p>
+                            <p>Selected port: ${currentPort}</p>
+                            <p>Year: ${currentYear}</p>
+                        </div>
+                    </div>
+                `)
+                .addTo(map);
             });
             
             // 鼠标移到港口上时改变鼠标指针样式
@@ -1613,6 +2168,105 @@
                     hoverChart = null;
                 }
             });
+            
+            // 为目的地圆圈添加鼠标悬停事件
+            const destinationPopup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false,
+                className: 'destination-popup'
+            });
+            
+            // 添加鼠标悬停事件到发光层 - 面积最大，最容易触发
+            map.on('mouseenter', 'destination-glow', (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+                
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const name = e.features[0].properties.name;
+                const tonnage = parseFloat(e.features[0].properties.tonnage).toLocaleString();
+                
+                // 创建弹出框内容
+                const popupContent = `
+                    <div class="destination-info">
+                        <h4>${name}</h4>
+                        <div class="tonnage-info">
+                            <span>${currentDirection} Cargo:</span>
+                            <span class="tonnage-value">${tonnage} tonnes</span>
+                        </div>
+                    </div>
+                `;
+                
+                // 显示弹出框
+                destinationPopup
+                    .setLngLat(coordinates)
+                    .setHTML(popupContent)
+                    .addTo(map);
+            });
+            
+            map.on('mouseleave', 'destination-glow', () => {
+                map.getCanvas().style.cursor = '';
+                destinationPopup.remove();
+            });
+            
+            map.on('mouseenter', 'destination-stars', (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+                
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const name = e.features[0].properties.name;
+                const tonnage = parseFloat(e.features[0].properties.tonnage).toLocaleString();
+                
+                // 创建弹出框内容
+                const popupContent = `
+                    <div class="destination-info">
+                        <h4>${name}</h4>
+                        <div class="tonnage-info">
+                            <span>${currentDirection} Cargo:</span>
+                            <span class="tonnage-value">${tonnage} tonnes</span>
+                        </div>
+                    </div>
+                `;
+                
+                // 显示弹出框
+                destinationPopup
+                    .setLngLat(coordinates)
+                    .setHTML(popupContent)
+                    .addTo(map);
+            });
+            
+            map.on('mouseleave', 'destination-stars', () => {
+                map.getCanvas().style.cursor = '';
+                destinationPopup.remove();
+            });
+            
+            // 也应用到菱形图标上
+            map.on('mouseenter', 'destination-diamonds', (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+                
+                const coordinates = e.features[0].geometry.coordinates.slice();
+                const name = e.features[0].properties.name;
+                const tonnage = parseFloat(e.features[0].properties.tonnage).toLocaleString();
+                
+                // 创建弹出框内容
+                const popupContent = `
+                    <div class="destination-info">
+                        <h4>${name}</h4>
+                        <div class="tonnage-info">
+                            <span>${currentDirection} Cargo:</span>
+                            <span class="tonnage-value">${tonnage} tonnes</span>
+                        </div>
+                    </div>
+                `;
+                
+                // 显示弹出框
+                destinationPopup
+                    .setLngLat(coordinates)
+                    .setHTML(popupContent)
+                    .addTo(map);
+            });
+            
+            map.on('mouseleave', 'destination-diamonds', () => {
+                map.getCanvas().style.cursor = '';
+                destinationPopup.remove();
+            });
         }
 
         // 更新悬浮卡片中的内容
@@ -1652,6 +2306,27 @@
 
         // 开始加载数据
         loadData();
+
+        // 添加目的地国家名称标签 - 改进文本可见性
+        map.addLayer({
+            id: 'destination-labels',
+            type: 'symbol',
+            source: 'destinations',
+            layout: {
+                'text-field': ['get', 'name'],
+                'text-font': ['Open Sans Bold'],  // 使用粗体
+                'text-size': 16,  // 保持大小不变
+                'text-offset': [0, 2.8], // 增加偏移，从2.2到2.8，与更大的图标保持适当距离
+                'text-anchor': 'top',
+                'text-allow-overlap': true,  // 允许文本重叠，确保显示
+                'text-ignore-placement': true  // 忽略位置限制
+            },
+            paint: {
+                'text-color': '#ffffff',  
+                'text-halo-color': 'rgba(0, 0, 0, 0.9)',  // 加深光晕颜色
+                'text-halo-width': 3.5  // 增加光晕宽度，从3到3.5
+            }
+        });
     </script>
 </body>
 </html>
