@@ -1035,29 +1035,8 @@
                 }
             });
             
-            // 添加目的地国家名称标签 - 改进文本可见性
-            map.addLayer({
-                id: 'destination-labels',
-                type: 'symbol',
-                source: 'destinations',
-                layout: {
-                    'text-field': ['get', 'name'],
-                    'text-font': ['Open Sans Bold'],  // 使用粗体
-                    'text-size': 16,  // 保持大小不变
-                    'text-offset': [0, 2.8], // 增加偏移，从2.2到2.8，与更大的图标保持适当距离
-                    'text-anchor': 'top',
-                    'text-allow-overlap': true,  // 允许文本重叠，确保显示
-                    'text-ignore-placement': true,  // 忽略位置限制
-                    'visibility': 'visible',  // 确保始终可见
-                    'symbol-z-order': 'source'  // 确保标签根据数据源顺序绘制
-                },
-                paint: {
-                    'text-color': '#ffffff',  
-                    'text-halo-color': 'rgba(0, 0, 0, 0.9)',  // 加深光晕颜色
-                    'text-halo-width': 3.5,  // 增加光晕宽度，从3到3.5
-                    'text-opacity': 0.95  // 设置一个轻微的透明度
-                }
-            });
+            // 移除目的地国家名称标签图层
+            // 不再添加destination-labels图层，避免显示国家名称
         }
 
         // 更新可视化
