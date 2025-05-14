@@ -179,7 +179,13 @@
 
 /* 图标布局 */
 .goods-type-icons-row {
-    display: none !important;
+    position: absolute !important;
+    left: -88px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    animation: none !important;
 }
 
 #goods-detail-area .goods-type-icons-row {
