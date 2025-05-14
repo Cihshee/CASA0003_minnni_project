@@ -1179,25 +1179,51 @@ function updateTimelineSelection(svg, timeScale, years) {
 }
 
 function setupScrollListener(years) {
-// 当前高亮的年份和区域
-let currentHighlightYear = currentYear;
-let isEffectActive = false;
-let effectTimeout = null;
+// 使用节流函数减少更新频率
+let lastScrollTime = 0;
+const scrollThrottle = 300; // 300ms内只处理一次滚动
+let pendingScroll = false;
 
 // 创建观察器来检测哪个步骤在视图中
 const observer = new IntersectionObserver((entries) => {
+  if (scrolling) return; // 如果是按钮触发的滚动，忽略
+  
+  const now = Date.now();
+  if (now - lastScrollTime < scrollThrottle) {
+    if (!pendingScroll) {
+      pendingScroll = true;
+      setTimeout(() => {
+        processScrollEntries(entries);
+        pendingScroll = false;
+        lastScrollTime = Date.now();
+      }, scrollThrottle);
+    }
+    return;
+  }
+  
+  lastScrollTime = now;
+  processScrollEntries(entries);
+}, {
+  threshold: 0.5, // 使用单一阈值
+  rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
+});
+
+function processScrollEntries(entries) {
+  // 找到当前最高交叉比例的步骤
+  let bestEntry = null;
+  let maxRatio = 0;
+  
   entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    
-    const year = +entry.target.getAttribute('data-year');
-    if (year && year !== currentHighlightYear) {
-      // 清除之前的定时器（如果存在）
-      if (effectTimeout) {
-        clearTimeout(effectTimeout);
-      }
-      
-      // 保存当前高亮年份
-      currentHighlightYear = year;
+    if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+      maxRatio = entry.intersectionRatio;
+      bestEntry = entry;
+    }
+  });
+  
+  // 如果找到了最佳步骤，更新年份
+  if (bestEntry) {
+    const year = +bestEntry.target.getAttribute('data-year');
+    if (year && year !== currentYear) {
       currentYear = year;
       
       // 更新时间轴选择
@@ -1210,74 +1236,30 @@ const observer = new IntersectionObserver((entries) => {
         updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
       }
       
-      // 渲染热力图
       renderHeatmap(allData, allRegions, allCountries, year);
-      
-      // 设置效果活跃标志
-      isEffectActive = true;
-      
-      // 设置较长的延迟后恢复
-      effectTimeout = setTimeout(() => {
-        isEffectActive = false;
-      }, 5000); // 保持效果活跃5秒
     }
-  });
-}, {
-  threshold: [0.1, 0.2, 0.3, 0.4, 0.5], // 使用多个低阈值，更容易触发
-  rootMargin: '-5% 0px -5% 0px' 
-});
+  }
+}
+
 
   // 监测所有步骤
   document.querySelectorAll('.step[data-year]').forEach(step => {
     observer.observe(step);
   });
   
-// 获取滚动容器
-const scrollContainer = document.querySelector('.scroll-text');
-if (scrollContainer) {
-  let lastScrollPos = scrollContainer.scrollTop;
-  let scrollDirection = 'down'; // 默认向下滚动
-  
-  // 添加滚动事件监听器
-  scrollContainer.addEventListener('scroll', () => {
-    // 确定滚动方向
-    const currentScrollPos = scrollContainer.scrollTop;
-    scrollDirection = currentScrollPos > lastScrollPos ? 'down' : 'up';
-    lastScrollPos = currentScrollPos;
-    
-    // 查找当前视图中哪个年份步骤最接近中心
-    const containerHeight = scrollContainer.clientHeight;
-    const viewportCenter = currentScrollPos + containerHeight / 2;
-    
-    // 查找当前最佳匹配的年份
-    const steps = document.querySelectorAll('.step[data-year]');
-    let bestMatchYear = null;
-    let minDistance = Infinity;
-    
-    steps.forEach(step => {
-      const stepTop = step.offsetTop;
-      const stepHeight = step.offsetHeight;
-      const stepCenter = stepTop + stepHeight / 2;
-      const distance = Math.abs(viewportCenter - stepCenter);
-      
-      if (distance < minDistance) {
-        minDistance = distance;
-        bestMatchYear = +step.getAttribute('data-year');
-      }
-    });
-    
-    // 如果找到了匹配的年份，并且与当前高亮年份不同
-    if (bestMatchYear && bestMatchYear !== currentHighlightYear) {
-      // 清除之前的定时器（如果存在）
-      if (effectTimeout) {
-        clearTimeout(effectTimeout);
-      }
-      
-      // 更新高亮年份
-      currentHighlightYear = bestMatchYear;
-      currentYear = bestMatchYear;
-      
-      // 更新时间轴
+  // 特别处理最后一个步骤（2024年）
+  const lastStep = document.querySelector('.step[data-year="2024"]');
+  if (lastStep) {
+    // 创建专门用于2024年的观察器，使用更高的阈值
+    const lastYearObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // 只有当元素大部分进入视图才触发
+        if (entry.isIntersecting && entry.intersectionRatio > 0.7 && !scrolling) {
+          const year = +entry.target.getAttribute('data-year');
+          if (year === 2024 && currentYear !== 2024) {
+            currentYear = 2024;
+            
+            // 更新时间轴和热力图
             const timelineContainer = d3.select('#timeline-svg');
             if (!timelineContainer.empty()) {
               const width = timelineContainer.node().clientWidth;
@@ -1287,39 +1269,31 @@ if (scrollContainer) {
               updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
             }
             
-      // 渲染热力图
-      renderHeatmap(allData, allRegions, allCountries, bestMatchYear);
-      
-      // 设置效果活跃标志
-      isEffectActive = true;
-      
-      // 设置较长的延迟后恢复
-      effectTimeout = setTimeout(() => {
-        isEffectActive = false;
-      }, 5000); // 保持效果活跃5秒
-    }
-  });
-}
-
-// 特别处理最后一个步骤（2024年）
-const lastStep = document.querySelector('.step[data-year="2024"]');
-if (lastStep) {
-  // 创建专门用于2024年的观察器
-  const lastYearObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && entry.intersectionRatio > 0.2) {
-        const year = +entry.target.getAttribute('data-year');
-        if (year === 2024 && currentHighlightYear !== 2024) {
-          // 清除之前的定时器（如果存在）
-          if (effectTimeout) {
-            clearTimeout(effectTimeout);
+            renderHeatmap(allData, allRegions, allCountries, 2024);
           }
-          
-          // 更新高亮年份
-          currentHighlightYear = 2024;
+        }
+      });
+    }, {
+      threshold: [0.5, 0.7, 0.9], // 使用更高的阈值
+      rootMargin: '0px 0px 0px 0px' // 移除扩大的底部检测区域
+    });
+    
+    lastYearObserver.observe(lastStep);
+    
+    // 修改滚动容器的滚动事件处理
+    const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', () => {
+        if (scrolling) return;
+        
+        // 检测是否滚动到更接近底部的位置
+        const isNearBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= 
+                            scrollContainer.scrollHeight - 50; // 更接近底部才触发
+        
+        if (isNearBottom && currentYear !== 2024) {
           currentYear = 2024;
           
-          // 更新时间轴
+          // 更新时间轴和热力图
           const timelineContainer = d3.select('#timeline-svg');
           if (!timelineContainer.empty()) {
             const width = timelineContainer.node().clientWidth;
@@ -1329,25 +1303,10 @@ if (lastStep) {
             updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
           }
           
-          // 渲染热力图
           renderHeatmap(allData, allRegions, allCountries, 2024);
-          
-          // 设置效果活跃标志
-          isEffectActive = true;
-          
-          // 设置较长的延迟后恢复
-          effectTimeout = setTimeout(() => {
-            isEffectActive = false;
-          }, 5000); // 保持效果活跃5秒
         }
-      }
-    });
-  }, {
-    threshold: [0.1, 0.2, 0.3, 0.4, 0.5],
-    rootMargin: '0px 0px -15% 0px'
-  });
-  
-  lastYearObserver.observe(lastStep);
+      });
+    }
   }
 }
 
@@ -1538,7 +1497,7 @@ function renderHeatmap(data, regions, countries, year) {
     
     // 显示年份相关的暗化效果，并添加动画
     dimMaskGroup.transition()
-      .duration(300) // 减少动画时间到300ms，让变暗效果更快完成
+      .duration(800)
       .style('opacity', 1);
   }
 
