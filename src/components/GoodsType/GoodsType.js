@@ -2967,19 +2967,29 @@ console.log('GoodsType.js loaded');
           background-color: #1e2832 !important;
           border: 2px solid rgba(255, 255, 255, 0.2) !important;
           transition: all 0.3s ease !important;
-          position: relative !important;  /* 为tooltip定位添加 */
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          padding: 0;
+          outline: none;
+          margin-left: -10px !important;  /* 添加负的左边距使图标更靠左 */
       }
 
       /* 图标容器样式 */
       .goods-type-icons-row {
-          padding-left: 0 !important;  /* 移除左内边距 */
-          margin-left: -40px !important;  /* 整体向左移动 */
+          padding-left: 0 !important;
+          margin-left: -100px !important;  /* 从-80px改为-100px，使图标更靠左 */
+          z-index: 100;
       }
 
       /* 详情区域布局调整 */
       #goods-type-detail-container {
-          padding-left: 0 !important;  /* 移除左内边距 */
-          margin-left: -40px !important;  /* 整体向左移动 */
+          padding-left: 0 !important;
+          margin-left: -100px !important;  /* 相应调整详情区域 */
       }
 
       /* 图标tooltip样式 */
@@ -3024,7 +3034,9 @@ console.log('GoodsType.js loaded');
       .goods-type-detail-map {
           position: relative;
           z-index: 1;
-          margin-left: -20px !important;  /* 地图容器向左移动 */
+          margin-left: -20px !important;  /* 增加负边距，使地图左侧缩进更多 */
+          padding-left: 0 !important;     /* 确保没有额外的内边距 */
+          width: 78% !important;          /* 稍微减小宽度比例 */
       }
 
       .mapboxgl-canvas {
@@ -3197,6 +3209,25 @@ console.log('GoodsType.js loaded');
       }
       .chartjs-render-monitor text {
         letter-spacing: 2px !important;
+      }
+
+      /* 如果你想要一个更大的地图 */
+      .goods-type-detail-map {
+          min-width: 1000px !important;  /* 增加最小宽度 */
+          min-height: 600px !important;  /* 增加最小高度 */
+          width: 80% !important;         /* 增加宽度百分比 */
+          height: 600px !important;      /* 增加高度 */
+      }
+
+      /* 移动设备上的响应式调整 */
+      @media (max-width: 900px) {
+          .goods-type-detail-map {
+              width: 100vw !important;
+              min-width: 0 !important;
+              height: 420px !important;     /* 从450px减小到420px */
+              min-height: 320px !important; /* 从350px减小到320px */
+              max-height: 470px !important; /* 从500px减小到470px */
+          }
       }
   `;
   document.head.appendChild(style);
