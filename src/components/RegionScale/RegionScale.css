@@ -70,6 +70,216 @@
     margin-bottom: 2rem;
   }
   
+  /* Mapbox 全屏容器样式 */
+  .mapbox-fullscreen {
+    width: 100vw;
+    height: 95vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    display: block;
+  }
+  
+  /* 侧边面板样式 */
+  .map-sidebar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 420px;
+    height: 100%;
+    background-color: rgba(30, 30, 38, 0.85);
+    backdrop-filter: blur(8px);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10;
+  }
+  
+  /* 侧边栏标题 */
+  .sidebar-title {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+  
+  /* 滑动时间轴样式 */
+  .sidebar-timeline {
+    margin-bottom: 40px;
+    padding: 15px 0px 20px 0px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .timeline-years {
+    position: relative;
+    height: 40px;
+    padding: 0 10px;
+  }
+  
+  /* 时间轴基础线 */
+  .timeline-track {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 1;
+  }
+  
+  /* 年份标记 */
+  .timeline-tick {
+    position: absolute;
+    width: 1px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+  
+  /* 年份文本 */
+  .timeline-year {
+    position: absolute;
+    font-size: 12px;
+    color: #ccc;
+    top: 25px;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+  
+  /* 当前年份滑块 */
+  .timeline-slider {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #ff6347;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: left 0.3s ease;
+  }
+  
+  /* 图表容器 */
+  .sidebar-chart-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+  
+  .sidebar-chart {
+    height: 250px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: none;
+    min-height: 250px;
+    position: relative;
+    width: 100%;
+    overflow: visible;
+  }
+  
+  .sidebar-chart.active {
+    display: block;
+  }
+  
+  .sidebar-text {
+    margin-top: 80px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #ddd;
+    display: none;
+    flex: 1;
+    overflow-y: visible;
+    min-height: 150px;
+    height: auto;
+    max-height: none;
+    padding-right: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
+    padding-top: 10px;
+    width: 83%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .sidebar-text.active {
+    display: block;
+  }
+  
+  /* 侧边栏图例样式 - 改为网格布局 */
+  .sidebar-legend {
+    position: relative;
+    width: 100%;
+    font-size: 10px;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 5px 5px 5px 5px;
+    margin: 0 auto;
+    /* 使用网格布局替代flex布局 */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+  }
+  
+  .sidebar-legend-item {
+    display: flex;
+    align-items: center;
+    width: auto;
+    margin: 0;
+    justify-content: center;
+  }
+  
+  .sidebar-legend-color {
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  
+  .sidebar-legend-text {
+    font-size: 9px;
+    color: #ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60px;
+  }
+  
+  /* 切换按钮 */
+  .chart-switch-btn {
+    position: absolute;
+    bottom: 50px;
+    left: 30px;
+    background-color: #2166ac;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+  }
+  
+  .chart-switch-btn:hover {
+    background-color: #2a7bc2;
+  }
+  
   #heatmap-container {
     width: 100%;
     max-width: 1200px;
