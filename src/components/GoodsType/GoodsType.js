@@ -23,7 +23,23 @@ console.log('GoodsType.js loaded');
     '8 Miscellaneous manufactured articles',
     "9 Commodities/transactions not class'd elsewhere in SITC"
   ];
-  const sitcDescriptions = [
+  
+  // 简短描述 - 用于SITC介绍页面
+  const sitcConciseDescriptions = [
+    'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals, and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
+    'Beverages and tobacco include alcoholic drinks, soft drinks, and tobacco products. The UK exports a large share of beverages to the EU, and Brexit has affected export procedures.',
+    'Crude materials include wood, rubber, fibers, and more. The UK plays an important role in global raw materials trade, and Brexit has led to supply chain adjustments.',
+    'Mineral fuels, lubricants, and related materials are key to the UK\'s energy imports and exports. Brexit has affected energy market flows.',
+    'Animal and vegetable oils, fats, and waxes are widely used in food and industry. Trade barriers have increased post-Brexit.',
+    'Chemicals and related products include pharmaceuticals and chemical raw materials. Brexit has impacted regulation and trade policy.',
+    'Manufactured goods classified chiefly by material include metals, building materials, and more. Brexit has brought changes in tariffs and standards.',
+    'Machinery and transport equipment are a pillar of UK exports. Brexit has affected supply chains and export markets.',
+    'Miscellaneous manufactured articles include toys, furniture, clothing, and more. Market access and certification processes have changed post-Brexit.',
+    "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions."
+  ];
+  
+  // 详细描述 - 用于地图页面
+  const sitcDetailedDescriptions = [
     'The impact of Brexit on trade in food and live animals has been relatively limited. Post-Brexit, despite significant changes in related trade policies and tariffs, the overall trade volume has remained relatively stable, with imports slightly higher than exports.',
     'Influenced by the pandemic and political factors, trade in beverages and tobacco between the UK and the EU (such as France, Ireland, and Italy) has shown significant characteristics: import volumes continue to rise, while export volumes have notably decreased, reflecting the structural challenges faced by domestic industries and external competitive pressures.',
     'Since 2018, profound impacts from the global trade war and supply chain disruptions have led to significant fluctuations in the export market and trade volume of crude materials, inedible, except fuels. Particularly in the EU market, the trade experienced considerable volatility from 2018 to 2020, reflecting a deep adjustment in international trade patterns.',
@@ -2753,7 +2769,7 @@ console.log('GoodsType.js loaded');
           // 更新描述文本
           const descElement = document.getElementById('goods-type-detail-desc');
           if (descElement) {
-            descElement.textContent = sitcDescriptions[typeIndex];
+            descElement.textContent = sitcDetailedDescriptions[typeIndex];
           }
 
           // 加载新的SITC数据
@@ -3334,6 +3350,12 @@ console.log('GoodsType.js loaded');
     // 插入到goodstype最前面
     mainWrap.parentNode.insertBefore(introDiv, mainWrap);
     // 初始高亮和描述
+    function updateDesc(index) {
+      const descDiv = document.querySelector('.goods-type-desc');
+      if (descDiv) {
+        descDiv.textContent = sitcConciseDescriptions[index];
+      }
+    }
     updateDesc(0);
     // intro样式
     const style = document.createElement('style');
