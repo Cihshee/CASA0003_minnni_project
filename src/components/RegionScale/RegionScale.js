@@ -1209,7 +1209,7 @@ function renderHeatmap(data, regions, countries, year) {
   
   // 自适应宽高，但使热图更紧凑
   const width = Math.max(300, containerWidth - margin.left - margin.right);
-  const height = Math.max(250, width * 0.5); // 减小高度比例
+  const height = Math.max(350, width * 0.5); // 增加高度，从0.5倍宽度改为0.7倍宽度
 
   // 响应式SVG
   const svg = container.append('svg')
