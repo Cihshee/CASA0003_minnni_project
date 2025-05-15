@@ -184,12 +184,12 @@
 
 #goods-detail-area .goods-type-icons-row {
     display: flex !important;
-    position: sticky;
-    top: 180px;
-    left: 0;
+    position: absolute !important;
+    left: -60px !important;
+    top: 180px !important;
     flex-direction: column;
     gap: 16px;
-    z-index: 100;
+    z-index: 1000;
     background: none;
     padding: 16px;
     border: none;

@@ -1524,6 +1524,7 @@ console.log('GoodsType.js loaded');
         mapDiv.style.minHeight = '400px'; // 添加最小高度
         mapDiv.style.position = 'relative';
         mapDiv.style.overflow = 'hidden';
+        mapDiv.style.marginLeft = '70px'; // 70px 可根据iconBar宽度微调
         
         // 创建SITC图标栏
         createSitcIconBar();
@@ -4110,13 +4111,15 @@ console.log('GoodsType.js loaded');
     iconBar.className = 'goods-type-icons-row';
     iconBar.style.cssText = `
       position: absolute;
-      left: 10px;
+      left: -88px; /* 你可以试试 -40px, -48px, -60px, 直到你满意为止 */
       top: 50%;
       transform: translateY(-50%);
       display: flex;
       flex-direction: column;
       gap: 8px;
-      z-index: 10;
+      z-index: 1000;
+      background: none;
+      pointer-events: auto;
     `;
     
     // SITC图标文件名
@@ -4258,11 +4261,10 @@ console.log('GoodsType.js loaded');
       }, i * 100);
     }
     
-    // 添加到地图容器
+    // 关键：加到地图容器的父节点上
     const mapContainer = document.getElementById('goods-map');
-    if (mapContainer) {
-      mapContainer.style.position = 'relative';
-      mapContainer.appendChild(iconBar);
+    if (mapContainer && mapContainer.parentNode) {
+      mapContainer.parentNode.appendChild(iconBar);
     }
     
     // 添加CSS动画
