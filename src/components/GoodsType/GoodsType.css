@@ -179,23 +179,17 @@
 
 /* 图标布局 */
 .goods-type-icons-row {
-    position: absolute !important;
-    left: -88px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 1000 !important;
-    opacity: 1 !important;
-    animation: none !important;
+    display: none !important;
 }
 
 #goods-detail-area .goods-type-icons-row {
     display: flex !important;
-    position: sticky;
-    top: 180px;
-    left: 0;
+    position: absolute !important;
+    left: -60px !important;
+    top: 180px !important;
     flex-direction: column;
     gap: 16px;
-    z-index: 100;
+    z-index: 1000;
     background: none;
     padding: 16px;
     border: none;
