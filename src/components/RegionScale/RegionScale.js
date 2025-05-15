@@ -11,6 +11,9 @@ let allCountries = null;
 let scrolling = false; // 防止滚动时触发多次更新
 let ukTotalData = null; // 存储uk_total_20country.csv的数据
 let map = null; // 存储 Mapbox 地图实例
+let isGlobeRotating = false; // 控制地球旋转
+let isTimelineAuto = false; // 控制时间轴自动播放
+let timelineAutoId = null; // 自动播放ID
 
 // 设置 Mapbox 访问令牌
 mapboxgl.accessToken = 'pk.eyJ1Ijoidmlja3ljaHUiLCJhIjoiY202MmRqb2I1MG52ejJsc2UzMTJlZ3ozaiJ9.davRHBoLdFZ5sFznPnhFUg';
@@ -37,8 +40,9 @@ function initializeMap() {
   map = new mapboxgl.Map({
     container: 'region-map-container',
     style: 'mapbox://styles/vickychu/cmao6l3px01ku01s497w65rty',
-    center: [42.15, 47.52], // 中心坐标
-    zoom: 3,
+    center: [0, 20], // 调整中心到更全球化的视角
+    zoom: 1.5,
+    projection: 'globe' // 使用地球模式
   });
   
   // 添加导航控制
@@ -51,7 +55,186 @@ function initializeMap() {
     // 设置初始年份过滤器
     const layerID = 'uk-trade-with-coords-dlzrad';
     updateMapYearFilter(layerID, currentYear);
+    
+    // 添加地球旋转控制按钮
+    addGlobeRotationButton();
+    
+    // 为地球添加背景样式
+    map.setFog({
+      'color': 'rgb(186, 210, 235)', // 淡蓝色背景
+      'high-color': 'rgb(36, 92, 223)', // 上方颜色
+      'horizon-blend': 0.02, // 地平线混合
+      'space-color': 'rgb(11, 11, 25)', // 太空颜色
+      'star-intensity': 0.6 // 星星亮度
+    });
+    
+    // 添加图例 - 显示贸易差额颜色含义
+    addTradeBalanceLegend();
+    
+    // 页面加载完成后1.5秒自动开始播放时间轴
+    setTimeout(() => {
+      // 查找播放按钮并触发点击
+      const playButton = document.querySelector('.map-play-button');
+      if (playButton) {
+        playButton.click();
+      }
+    }, 1500);
   });
+}
+
+// 添加贸易差额图例
+function addTradeBalanceLegend() {
+  // 创建图例容器
+  const legendContainer = document.createElement('div');
+  legendContainer.className = 'trade-balance-legend';
+  legendContainer.style.position = 'absolute';
+  legendContainer.style.left = '15px';
+  legendContainer.style.bottom = '15px';
+  legendContainer.style.backgroundColor = 'rgba(0,0,0,0.7)';
+  legendContainer.style.borderRadius = '5px';
+  legendContainer.style.padding = '10px';
+  legendContainer.style.maxWidth = '360px'; // 增加宽度为原来的两倍
+  legendContainer.style.width = '320px'; // 设置固定宽度
+  legendContainer.style.color = 'white';
+  legendContainer.style.fontSize = '12px';
+  legendContainer.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
+  legendContainer.style.zIndex = '10';
+  
+  // 添加标题
+  const title = document.createElement('div');
+  title.textContent = 'UK Trade Balance';
+  title.style.fontWeight = 'bold';
+  title.style.marginBottom = '5px';
+  title.style.textAlign = 'center';
+  legendContainer.appendChild(title);
+  
+  // 创建颜色渐变条
+  const gradientBar = document.createElement('div');
+  gradientBar.style.height = '15px';
+  gradientBar.style.width = '100%';
+  gradientBar.style.marginBottom = '5px';
+  gradientBar.style.background = 'linear-gradient(to right, #2166ac, #92c5de, #f7f7f7, #f4a582, #b2182b)';
+  gradientBar.style.borderRadius = '2px';
+  legendContainer.appendChild(gradientBar);
+  
+  // 添加标签容器
+  const labelsContainer = document.createElement('div');
+  labelsContainer.style.display = 'flex';
+  labelsContainer.style.justifyContent = 'space-between';
+  labelsContainer.style.fontSize = '10px';
+  labelsContainer.style.margin = '0 5px';
+  legendContainer.appendChild(labelsContainer);
+  
+  // 添加左侧标签 - 贸易逆差
+  const deficitLabel = document.createElement('div');
+  deficitLabel.textContent = 'Deficit';
+  deficitLabel.style.color = '#92c5de';
+  deficitLabel.style.fontWeight = 'bold';
+  labelsContainer.appendChild(deficitLabel);
+  
+  // 添加中间标签 - 平衡
+  const balancedLabel = document.createElement('div');
+  balancedLabel.textContent = 'Balanced';
+  balancedLabel.style.color = '#f7f7f7';
+  labelsContainer.appendChild(balancedLabel);
+  
+  // 添加右侧标签 - 贸易顺差
+  const surplusLabel = document.createElement('div');
+  surplusLabel.textContent = 'Surplus';
+  surplusLabel.style.color = '#f4a582';
+  surplusLabel.style.fontWeight = 'bold';
+  labelsContainer.appendChild(surplusLabel);
+  
+  // 将图例添加到地图容器
+  map.getContainer().appendChild(legendContainer);
+}
+
+// 添加地球旋转控制按钮
+function addGlobeRotationButton() {
+  // 创建控制容器
+  const controlContainer = document.createElement('div');
+  controlContainer.className = 'mapboxgl-ctrl mapboxgl-ctrl-group rotate-control';
+  controlContainer.style.margin = '15px';
+  controlContainer.style.borderRadius = '8px';
+  controlContainer.style.overflow = 'hidden';
+  controlContainer.style.background = 'rgba(0,0,0,0.75)';
+  controlContainer.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
+  
+  // 创建旋转按钮
+  const rotateButton = document.createElement('button');
+  rotateButton.id = 'globe-rotate-btn';
+  rotateButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"></path><path d="M2 12h10"></path><path d="M12 2v10"></path><path d="M12 12 8 8"></path></svg>`;
+  rotateButton.style.padding = '12px';
+  rotateButton.style.cursor = 'pointer';
+  rotateButton.style.background = 'transparent';
+  rotateButton.style.border = 'none';
+  rotateButton.style.color = 'white';
+  rotateButton.style.display = 'flex';
+  rotateButton.style.alignItems = 'center';
+  rotateButton.style.justifyContent = 'center';
+  rotateButton.style.width = '52px';
+  rotateButton.style.height = '52px';
+  rotateButton.title = '旋转地球';
+  
+  // 点击事件
+  rotateButton.addEventListener('click', function() {
+    toggleGlobeRotation();
+    
+    // 更新按钮状态
+    if (isGlobeRotating) {
+      this.style.background = 'rgba(255,255,255,0.3)';
+      this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M10 15V9h4"></path></svg>`;
+    } else {
+      this.style.background = 'transparent';
+      this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"></path><path d="M2 12h10"></path><path d="M12 2v10"></path><path d="M12 12 8 8"></path></svg>`;
+    }
+  });
+  
+  // 添加悬停效果
+  rotateButton.addEventListener('mouseover', function() {
+    this.style.background = isGlobeRotating ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)';
+    this.style.transform = 'scale(1.05)';
+  });
+  
+  rotateButton.addEventListener('mouseout', function() {
+    this.style.background = isGlobeRotating ? 'rgba(255,255,255,0.3)' : 'transparent';
+    this.style.transform = 'scale(1)';
+  });
+  
+  controlContainer.appendChild(rotateButton);
+  
+  // 添加到地图
+  map.getContainer().appendChild(controlContainer);
+  
+  // 添加地图时间轴和播放按钮
+  addMapTimeline();
+}
+
+// 切换地球旋转
+function toggleGlobeRotation() {
+  isGlobeRotating = !isGlobeRotating;
+  
+  if (isGlobeRotating) {
+    // 启动旋转动画
+    rotateGlobe();
+  }
+}
+
+// 旋转地球
+function rotateGlobe() {
+  if (!isGlobeRotating || !map) return;
+  
+  // 获取当前旋转角度并增加
+  const currentBearing = map.getBearing();
+  map.setBearing(currentBearing - 0.15); // 使用更小的增量，旋转更平滑、更慢
+  
+  // 轻微调整倾斜角度，使旋转更有动感
+  const time = Date.now() * 0.0001;
+  const pitch = 30 + Math.sin(time) * 10;
+  map.setPitch(pitch);
+  
+  // 使用requestAnimationFrame进行下一帧动画
+  requestAnimationFrame(rotateGlobe);
 }
 
 // 更新地图年份过滤器
@@ -660,6 +843,44 @@ function initTimelineSlider() {
     timelineContainer.appendChild(label);
   });
   
+  // 添加播放按钮
+  const playButton = document.createElement('button');
+  playButton.className = 'timeline-play-button';
+  playButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+  playButton.style.position = 'absolute';
+  playButton.style.left = '-45px';
+  playButton.style.top = '50%';
+  playButton.style.transform = 'translateY(-50%)';
+  playButton.style.background = 'rgba(0,0,0,0.7)';
+  playButton.style.color = 'white';
+  playButton.style.border = 'none';
+  playButton.style.borderRadius = '50%';
+  playButton.style.width = '30px';
+  playButton.style.height = '30px';
+  playButton.style.cursor = 'pointer';
+  playButton.style.display = 'flex';
+  playButton.style.alignItems = 'center';
+  playButton.style.justifyContent = 'center';
+  playButton.style.boxShadow = '0 0 5px rgba(0,0,0,0.3)';
+  playButton.style.transition = 'all 0.3s ease';
+
+  // 添加悬停效果
+  playButton.addEventListener('mouseover', function() {
+    this.style.background = 'rgba(0,0,0,0.85)';
+    this.style.transform = 'translateY(-50%) scale(1.1)';
+  });
+
+  playButton.addEventListener('mouseout', function() {
+    this.style.background = 'rgba(0,0,0,0.7)';
+    this.style.transform = 'translateY(-50%) scale(1)';
+  });
+
+  playButton.addEventListener('click', function() {
+    toggleTimelineAutoPlay(years, timelineSlider, trackWidth, trackPadding);
+  });
+  
+  timelineContainer.appendChild(playButton);
+  
   // 初始化滑块位置 - 默认年份为2016
   let currentYearIndex = 0; // 2016年在数组中的索引为0
   updateSliderPosition(currentYearIndex);
@@ -730,7 +951,15 @@ function initTimelineSlider() {
   function updateSliderPosition(index) {
     const segmentWidth = trackWidth / (years.length - 1);
     const position = trackPadding + (index * segmentWidth);
+    
+    // 添加平滑过渡
+    timelineSlider.style.transition = 'left 0.8s ease';
     timelineSlider.style.left = `${position}px`;
+    
+    // 一段时间后移除过渡以便拖动不受影响
+    setTimeout(() => {
+      timelineSlider.style.transition = '';
+    }, 850);
   }
   
   function updateYearInfo(year) {
@@ -744,6 +973,768 @@ function initTimelineSlider() {
       updateMapYearFilter(layerID, year);
     }
   }
+}
+
+function initializeHeatmap() {
+const container = document.getElementById('heatmap-container');
+if (!container) return;
+container.innerHTML = '';
+
+// 不再创建时间轴，直接创建热力图容器
+const svgContainer = document.createElement('div');
+svgContainer.id = 'heatmap-svg';
+container.appendChild(svgContainer);
+
+loadData();
+}
+
+function loadData() {
+const svgContainer = document.getElementById('heatmap-svg');
+svgContainer.innerHTML = '<div class="loading">Loading data, please wait…</div>';
+
+d3.csv('public/data/region_trade_20country.csv')
+  .then(data => {
+    data.forEach(d => {
+      d.Year = +d.Year;
+      d.Trade_Balance_m = +d.Trade_Balance_m;
+      d.Imports_m = +d.Imports_m;
+      d.Exports_m = +d.Exports_m;
+    });
+
+    // 保存数据以便在滚动时使用
+    allData = data;
+    allRegions = Array.from(new Set(data.map(d => d.Region)));
+    allCountries = Array.from(new Set(data.map(d => d.Country20)));
+
+    // 获取所有在HTML中定义的年份
+    const stepElements = document.querySelectorAll('.step[data-year]');
+    const years = Array.from(stepElements).map(el => +el.getAttribute('data-year')).sort();
+    
+    // 为最后一个步骤添加足够的底部填充，确保能够完全滚动到视图中
+    const lastStep = document.querySelector('.step[data-year="2024"]');
+    if (lastStep) {
+      // 添加填充元素确保可以完全滚动到最后一个步骤
+      const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
+      if (scrollContainer) {
+        // 确保足够的底部填充
+        scrollContainer.style.paddingBottom = '300px';
+      }
+    }
+    
+    // 直接渲染热力图，不创建时间轴
+    renderHeatmap(data, allRegions, allCountries, currentYear);
+    
+    // 设置滚动监听
+    setupScrollListener(years);
+  })
+  .catch(err => {
+    svgContainer.innerHTML = `<div class="error">Error loading data: ${err.message}</div>`;
+  });
+}
+
+function setupScrollListener(years) {
+// 使用节流函数减少更新频率
+let lastScrollTime = 0;
+const scrollThrottle = 300; // 300ms内只处理一次滚动
+let pendingScroll = false;
+
+// 创建观察器来检测哪个步骤在视图中
+const observer = new IntersectionObserver((entries) => {
+  if (scrolling) return; // 如果是按钮触发的滚动，忽略
+  
+  const now = Date.now();
+  if (now - lastScrollTime < scrollThrottle) {
+    if (!pendingScroll) {
+      pendingScroll = true;
+      setTimeout(() => {
+        processScrollEntries(entries);
+        pendingScroll = false;
+        lastScrollTime = Date.now();
+      }, scrollThrottle);
+    }
+    return;
+  }
+  
+  lastScrollTime = now;
+  processScrollEntries(entries);
+}, {
+  threshold: 0.5, // 使用单一阈值
+  rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
+});
+
+function processScrollEntries(entries) {
+  // 找到当前最高交叉比例的步骤
+  let bestEntry = null;
+  let maxRatio = 0;
+  
+  entries.forEach(entry => {
+    if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+      maxRatio = entry.intersectionRatio;
+      bestEntry = entry;
+    }
+  });
+  
+  // 如果找到了最佳步骤，更新年份
+  if (bestEntry) {
+    const year = +bestEntry.target.getAttribute('data-year');
+    if (year && year !== currentYear) {
+      currentYear = year;
+      
+      // 如果正在自动播放，停止它
+      if (isTimelineAuto && timelineAutoId) {
+        clearTimeout(timelineAutoId);
+        timelineAutoId = null;
+        isTimelineAuto = false;
+      }
+      
+      // 更新地图的年份过滤器
+      const layerID = 'uk-trade-with-coords-dlzrad';
+      updateMapYearFilter(layerID, year);
+      
+      // 更新热力图
+      renderHeatmap(allData, allRegions, allCountries, year);
+      
+      // 更新地图时间轴年份按钮
+      document.querySelectorAll('.map-year-btn').forEach(btn => {
+        const btnYear = parseInt(btn.dataset.year);
+        btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
+        btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
+      });
+    }
+  }
+}
+
+
+  // 监测所有步骤
+  document.querySelectorAll('.step[data-year]').forEach(step => {
+    observer.observe(step);
+  });
+  
+  // 特别处理最后一个步骤（2024年）
+  const lastStep = document.querySelector('.step[data-year="2024"]');
+  if (lastStep) {
+    // 创建专门用于2024年的观察器，使用更高的阈值
+    const lastYearObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // 只有当元素大部分进入视图才触发
+        if (entry.isIntersecting && entry.intersectionRatio > 0.7 && !scrolling) {
+          const year = +entry.target.getAttribute('data-year');
+          if (year === 2024 && currentYear !== 2024) {
+            currentYear = 2024;
+            
+            // 更新地图的年份过滤器
+            const layerID = 'uk-trade-with-coords-dlzrad';
+            updateMapYearFilter(layerID, 2024);
+            
+            // 更新热力图
+            renderHeatmap(allData, allRegions, allCountries, 2024);
+            
+            // 更新地图时间轴年份按钮
+            document.querySelectorAll('.map-year-btn').forEach(btn => {
+              const btnYear = parseInt(btn.dataset.year);
+              btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
+              btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
+            });
+          }
+        }
+      });
+    }, {
+      threshold: [0.5, 0.7, 0.9], // 使用更高的阈值
+      rootMargin: '0px 0px 0px 0px' // 移除扩大的底部检测区域
+    });
+    
+    lastYearObserver.observe(lastStep);
+    
+    // 修改滚动容器的滚动事件处理
+    const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', () => {
+        if (scrolling) return;
+        
+        // 检测是否滚动到更接近底部的位置
+        const isNearBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= 
+                            scrollContainer.scrollHeight - 50; // 更接近底部才触发
+        
+        if (isNearBottom && currentYear !== 2024) {
+          currentYear = 2024;
+          
+          // 更新地图过滤器
+          const layerID = 'uk-trade-with-coords-dlzrad';
+          updateMapYearFilter(layerID, 2024);
+          
+          // 更新热力图
+          renderHeatmap(allData, allRegions, allCountries, 2024);
+          
+          // 更新地图时间轴年份按钮
+          document.querySelectorAll('.map-year-btn').forEach(btn => {
+            const btnYear = parseInt(btn.dataset.year);
+            btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
+            btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
+          });
+        }
+      });
+    }
+  }
+}
+
+function renderHeatmap(data, regions, countries, year) {
+  const container = d3.select('#heatmap-svg');
+  container.html('');
+
+  const yearData = data.filter(d => d.Year === year);
+  if (yearData.length === 0) {
+    container.html('<div class="error">No data for this year</div>');
+    return;
+  }
+
+  const lookup = {};
+  yearData.forEach(d => {
+    lookup[`${d.Region}-${d.Country20}`] = {
+      balance: d.Trade_Balance_m,
+      imports: d.Imports_m,
+      exports: d.Exports_m
+    };
+  });
+
+  // 获取当前容器宽度
+  const containerWidth = container.node().clientWidth;
+
+  // 使用更紧凑的边距
+  const margin = { 
+    top: 15,
+    right: Math.max(100, containerWidth * 0.12),
+    bottom: Math.max(80, containerWidth * 0.09),
+    left: Math.max(40, containerWidth * 0.05) 
+  };
+  
+  // 自适应宽高，但使热图更紧凑
+  const width = Math.max(300, containerWidth - margin.left - margin.right);
+  const height = Math.max(250, width * 0.5); // 减小高度比例
+
+  // 响应式SVG
+  const svg = container.append('svg')
+    .attr('width', '100%')
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('overflow', 'visible')
+    .style('display', 'block')
+    .style('margin', 'auto')
+    .append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
+
+  // 定义EU和非EU国家，使用和折线图相同的顺序
+  const euCountries = ["Belgium", "France", "Germany", "Ireland", "Italy", "Netherlands", "Poland", "Spain", "Sweden", "Rest of EU"];
+  const nonEuCountries = ["Australia", "Canada", "China", "India", "Japan", "Norway", "Singapore", "Switzerland", "United States", "Rest of world"];
+  
+  // 组合国家列表，EU国家在前，非EU国家在后
+  const orderedCountries = [...euCountries, ...nonEuCountries];
+  
+  // 只使用实际存在于数据中的国家
+  const filteredOrderedCountries = orderedCountries.filter(country => countries.includes(country));
+
+  const xScale = d3.scaleBand()
+    .domain(filteredOrderedCountries)
+    .range([0, width])
+    .padding(0.1);
+  const yScale = d3.scaleBand()
+    .domain(regions)
+    .range([0, height])
+    .padding(0.1);
+  const colorScale = d3.scaleThreshold()
+    .domain(heatmapBounds.slice(1, -1))
+    .range(heatmapColors);
+
+  let tooltip = d3.select('body').select('.tooltip');
+  if (tooltip.empty()) {
+    tooltip = d3.select('body')
+      .append('div')
+      .attr('class', 'tooltip');
+  }
+
+  // 确定当前需要高亮的区域
+  let highlightedRegion = null;
+  if (year === 2019) {
+    highlightedRegion = 'Scotland';
+  } else if (year === 2021) {
+    highlightedRegion = 'Northern Ireland';
+  } else if (year === 2023) {
+    highlightedRegion = 'London';
+  }
+
+  // 创建一个底层容器来放置所有热图单元格
+  const heatmapCellsGroup = svg.append('g')
+    .attr('class', 'heatmap-cells');
+
+  // 创建悬停高亮遮罩的容器
+  const hoverMaskGroup = svg.append('g')
+    .attr('class', 'hover-masks')
+    .style('opacity', 0); // 初始化为隐藏状态
+
+  // 创建暗化遮罩容器（用于悬停效果）
+  const hoverDimmingGroup = svg.append('g')
+    .attr('class', 'hover-dimming')
+    .style('opacity', 0); // 初始化为隐藏状态
+    
+  // 为主题高亮创建暗化遮罩容器（基于年份的高亮）
+  const dimMaskGroup = svg.append('g')
+    .attr('class', 'year-dimming-masks')
+    .style('opacity', 0); // 初始化为隐藏状态
+
+  // 先创建所有坐标轴，这样可以对它们设置ID，方便后续操作
+  // 创建X轴（底部国家标签）
+  const xAxisGroup = svg.append('g')
+    .attr('class', 'x-axis')
+    .attr('transform', `translate(0,${height})`)
+    .call(d3.axisBottom(xScale));
+
+  // 为每个国家标签添加唯一ID
+  xAxisGroup.selectAll('.tick text')
+    .attr('id', d => `country-label-${d.replace(/\s+/g, '-').toLowerCase()}`);
+
+  // 创建Y轴（左侧区域标签）
+  const yAxisGroup = svg.append('g')
+    .attr('class', 'y-axis')
+    .call(d3.axisLeft(yScale));
+    
+  // 为每个区域标签添加唯一ID
+  yAxisGroup.selectAll('.tick text')
+    .attr('id', d => `region-label-${d.replace(/\s+/g, '-').toLowerCase()}`);
+
+  // 首先绘制所有单元格
+  regions.forEach(region => {
+    filteredOrderedCountries.forEach(country => {
+      const stat = lookup[`${region}-${country}`] || { balance: 0, imports: 0, exports: 0 };
+      
+      // 为每个单元格创建唯一ID
+      const cellId = `cell-${region.replace(/\s+/g, '-').toLowerCase()}-${country.replace(/\s+/g, '-').toLowerCase()}`;
+      
+      // 绘制热图单元格
+      heatmapCellsGroup.append('rect')
+        .attr('id', cellId)
+        .attr('class', `heatmap-cell ${region === highlightedRegion ? 'highlighted' : ''}`)
+        .attr('x', xScale(country))
+        .attr('y', yScale(region))
+        .attr('width', xScale.bandwidth())
+        .attr('height', yScale.bandwidth())
+        .attr('fill', colorScale(stat.balance))
+        .attr('data-region', region)
+        .attr('data-country', country)
+        .on('mouseover', function(event) {
+          // 显示提示框
+          tooltip
+            .style('opacity', 0.9)
+            .html(`
+              <strong>${region} - ${country}</strong><br/>
+              Trade Balance: £${stat.balance.toLocaleString()} million<br/>
+              Imports: £${stat.imports.toLocaleString()} million<br/>
+              Exports: £${stat.exports.toLocaleString()} million
+            `)
+            .style('left', `${event.pageX + 10}px`)
+            .style('top', `${event.pageY - 28}px`);
+          
+          // 高亮相关的行和列
+          highlightRowAndColumn(region, country);
+        })
+        .on('mouseout', function() {
+          // 隐藏提示框
+          tooltip.style('opacity', 0);
+          
+          // 取消高亮
+          unhighlightRowAndColumn();
+        });
+    });
+  });
+
+  // 如果有高亮区域，应用特殊效果
+  if (highlightedRegion) {
+    // 为非高亮区域添加半透明暗色遮罩
+    regions.forEach(region => {
+      if (region !== highlightedRegion) { // 只对非高亮区域应用遮罩
+        dimMaskGroup.append('rect')
+          .attr('class', 'dimming-mask')
+          .attr('x', 0)
+          .attr('y', yScale(region))
+          .attr('width', width)
+          .attr('height', yScale.bandwidth())
+          .attr('fill', 'rgba(0, 0, 0, 0.6)') // 半透明黑色遮罩
+          .attr('pointer-events', 'none'); // 确保不会干扰鼠标事件
+      }
+    });
+    
+    // 显示年份相关的暗化效果，并添加动画
+    dimMaskGroup.transition()
+      .duration(800)
+      .style('opacity', 1);
+  }
+
+  // 美化坐标轴文字
+  xAxisGroup.selectAll('text')
+      .attr('transform', 'rotate(-65)')
+      .style('text-anchor', 'end')
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
+    .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8')
+    .style('font-weight', '600'); // 让文字更清晰
+
+  // 美化Y轴文字
+  yAxisGroup.selectAll('text')
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
+    .style('font-weight', '600') // 让文字更清晰
+    .style('fill', region => region === highlightedRegion ? '#ffffff' : '#cccccc'); // 高亮区域文字更亮
+
+  // 自适应图例
+  const legendX = width + 10;
+  const legendWidth = Math.min(150, margin.right - 20);
+
+  const legend = svg.append('g')
+    .attr('class', 'legend')
+    .attr('transform', `translate(${legendX}, 0)`);
+
+  legend.append('text')
+    .attr('x', 0)
+    .attr('y', 0)
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60)) + 1}px`)
+    .style('font-weight', 'bold')
+    .text('£ Million');
+
+  // 计算图例项目间距
+  const legendSpacing = Math.max(22, Math.min(28, height / 13));
+  const rectSize = Math.max(14, Math.min(18, legendWidth / 9));
+
+  const legendItems = legend.selectAll('.legend-item')
+    .data(heatmapColors)
+    .enter()
+    .append('g')
+      .attr('class', 'legend-item')
+      .attr('transform', (d, i) => `translate(0, ${10 + i * legendSpacing})`);
+
+  legendItems.append('rect')
+    .attr('width', rectSize)
+    .attr('height', rectSize)
+    .style('fill', d => d);
+
+  legendItems.append('text')
+    .attr('x', rectSize + 6)
+    .attr('y', rectSize * 0.75)
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
+    .style('font-weight', '600') // 让图例文字更清晰
+    .text((d, i) => {
+      return `${heatmapBounds[i]} to ${heatmapBounds[i + 1]}`;
+    });
+    
+  // 修改说明文字的位置
+  svg.append('text')
+    .attr('class', 'axis-note')
+    .attr('x', width / 2)
+    .attr('y', height + margin.bottom + 5) 
+    .attr('text-anchor', 'middle')
+    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
+    .style('fill', '#fff')
+    .style('font-weight', '600') // 让文字更清晰
+    .html('Country names are colored by ' + 
+          `<tspan style="fill: #c1e7ff">EU</tspan>` + 
+          ' and ' + 
+          `<tspan style="fill: #ffb7a8">non-EU</tspan>` + 
+          ' grouping.');
+
+  // 函数：高亮特定的行和列
+  function highlightRowAndColumn(region, country) {
+    // 取消基于年份的暗化效果
+    dimMaskGroup.transition().duration(300).style('opacity', 0);
+    
+    // 清除之前的悬停遮罩
+    hoverDimmingGroup.selectAll('*').remove();
+    
+    // 为所有区域创建暗化遮罩（鼠标悬停效果）
+    regions.forEach(r => {
+      filteredOrderedCountries.forEach(c => {
+        // 如果不是当前行或当前列，则添加暗化遮罩
+        if (r !== region && c !== country) {
+          hoverDimmingGroup.append('rect')
+            .attr('x', xScale(c))
+            .attr('y', yScale(r))
+            .attr('width', xScale.bandwidth())
+            .attr('height', yScale.bandwidth())
+            .attr('fill', 'rgba(0, 0, 0, 0.6)')
+            .attr('pointer-events', 'none');
+        }
+      });
+    });
+    
+    // 显示悬停暗化效果
+    hoverDimmingGroup.transition().duration(300).style('opacity', 1);
+    
+    // 高亮当前行和列的标签
+    xAxisGroup.selectAll('.tick text')
+      .transition().duration(300)
+      .style('fill', d => d === country ? '#ffffff' : 'rgba(255, 255, 255, 0.3)')
+      .style('font-weight', d => d === country ? '800' : '400');
+      
+    yAxisGroup.selectAll('.tick text')
+      .transition().duration(300)
+      .style('fill', d => d === region ? '#ffffff' : 'rgba(255, 255, 255, 0.3)')
+      .style('font-weight', d => d === region ? '800' : '400');
+  }
+  
+  // 函数：取消高亮
+  function unhighlightRowAndColumn() {
+    // 隐藏悬停暗化效果
+    hoverDimmingGroup.transition().duration(300).style('opacity', 0);
+    
+    // 恢复基于年份的暗化效果（如果有）
+    if (highlightedRegion) {
+      dimMaskGroup.transition().duration(300).style('opacity', 1);
+    }
+    
+    // 恢复X轴标签样式
+    xAxisGroup.selectAll('.tick text')
+      .transition().duration(300)
+      .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8')
+      .style('font-weight', '600');
+      
+    // 恢复Y轴标签样式
+    yAxisGroup.selectAll('.tick text')
+      .transition().duration(300)
+      .style('fill', region => region === highlightedRegion ? '#ffffff' : '#cccccc')
+      .style('font-weight', '600');
+  }
+
+  // 添加窗口大小变化时的自适应调整
+  window.addEventListener('resize', () => {
+    renderHeatmap(allData, allRegions, allCountries, currentYear);
+  });
+}
+
+// 额外添加一个函数来修复滚动容器布局
+function fixScrollContainerLayout() {
+  // 查找滚动容器
+  const scrollContainer = document.querySelector('.scroll-text');
+  if (!scrollContainer) return;
+  
+  // 确保最后一个步骤能够完全进入视图
+  const lastStep = document.querySelector('.step[data-year="2024"]');
+  if (lastStep) {
+    // 计算当前滚动容器的有效高度
+    const containerHeight = scrollContainer.clientHeight;
+    
+    // 确保滚动容器至少有足够的高度，可以让最后一个步骤居中显示
+    const minHeight = lastStep.offsetHeight + (containerHeight / 2);
+    
+    // 检查当前的底部内边距
+    const currentPadding = parseInt(window.getComputedStyle(scrollContainer).paddingBottom) || 0;
+    
+    // 如果需要更多空间，添加底部内边距
+    const neededPadding = Math.max(containerHeight / 2, 200);
+    if (currentPadding < neededPadding) {
+      scrollContainer.style.paddingBottom = `${neededPadding}px`;
+    }
+  }
+}
+
+// 添加页面可见性变化监听，当页面隐藏时停止动画
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    // 停止地球旋转
+    isGlobeRotating = false;
+    
+    // 更新旋转按钮状态
+    const rotateButton = document.getElementById('globe-rotate-btn');
+    if (rotateButton) {
+      rotateButton.style.background = 'transparent';
+      rotateButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"></path><path d="M2 12h10"></path><path d="M12 2v10"></path><path d="M12 12 8 8"></path></svg>`;
+    }
+    
+    // 停止时间轴自动播放
+    if (timelineAutoId) {
+      clearTimeout(timelineAutoId);
+      timelineAutoId = null;
+      isTimelineAuto = false;
+      
+      const playButton = document.querySelector('.timeline-play-button');
+      if (playButton) {
+        playButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+      }
+    }
+  }
+});
+
+// 添加地图时间轴控制
+function addMapTimeline() {
+  // 创建时间轴容器
+  const timelineContainer = document.createElement('div');
+  timelineContainer.className = 'map-timeline-container';
+  timelineContainer.style.position = 'absolute';
+  timelineContainer.style.bottom = '30px';
+  timelineContainer.style.right = '15px';
+  timelineContainer.style.left = '50%';
+  timelineContainer.style.transform = 'translateX(-50%)';
+  timelineContainer.style.background = 'rgba(0,0,0,0.6)';
+  timelineContainer.style.borderRadius = '10px';
+  timelineContainer.style.padding = '10px 15px 5px 15px';
+  timelineContainer.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
+  timelineContainer.style.display = 'flex';
+  timelineContainer.style.alignItems = 'center';
+  timelineContainer.style.justifyContent = 'center';
+  timelineContainer.style.zIndex = '10';
+  timelineContainer.style.width = 'fit-content';
+  timelineContainer.style.minWidth = '300px';
+  
+  // 创建播放按钮
+  const playButton = document.createElement('button');
+  playButton.className = 'map-play-button';
+  playButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+  playButton.style.background = 'rgba(255,255,255,0.2)';
+  playButton.style.color = 'white';
+  playButton.style.border = 'none';
+  playButton.style.borderRadius = '50%';
+  playButton.style.width = '36px';
+  playButton.style.height = '36px';
+  playButton.style.cursor = 'pointer';
+  playButton.style.marginRight = '15px';
+  playButton.style.display = 'flex';
+  playButton.style.alignItems = 'center';
+  playButton.style.justifyContent = 'center';
+  playButton.style.transition = 'all 0.3s ease';
+  
+  // 年份列表
+  const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+  
+  // 创建年份按钮容器
+  const yearsContainer = document.createElement('div');
+  yearsContainer.className = 'map-years-container';
+  yearsContainer.style.display = 'flex';
+  yearsContainer.style.alignItems = 'center';
+  yearsContainer.style.justifyContent = 'space-between';
+  yearsContainer.style.width = '100%';
+  
+  // 创建年份按钮
+  years.forEach(year => {
+    const yearBtn = document.createElement('button');
+    yearBtn.className = 'map-year-btn';
+    yearBtn.dataset.year = year;
+    yearBtn.textContent = year;
+    yearBtn.style.background = year === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
+    yearBtn.style.color = 'white';
+    yearBtn.style.border = 'none';
+    yearBtn.style.borderRadius = '4px';
+    yearBtn.style.padding = '5px';
+    yearBtn.style.margin = '0 2px';
+    yearBtn.style.cursor = 'pointer';
+    yearBtn.style.fontSize = '12px';
+    yearBtn.style.fontWeight = year === currentYear ? 'bold' : 'normal';
+    yearBtn.style.transition = 'all 0.3s ease';
+    
+    // 点击年份按钮更新数据
+    yearBtn.addEventListener('click', function() {
+      if (currentYear === year) return;
+      
+      // 更新当前选中的年份按钮样式
+      document.querySelectorAll('.map-year-btn').forEach(btn => {
+        btn.style.background = 'transparent';
+        btn.style.fontWeight = 'normal';
+      });
+      this.style.background = 'rgba(255,99,71,0.8)';
+      this.style.fontWeight = 'bold';
+      
+      // 更新全局当前年份
+      currentYear = year;
+      
+      // 更新地图数据
+      const layerID = 'uk-trade-with-coords-dlzrad';
+      updateMapYearFilter(layerID, year);
+    });
+    
+    // 添加悬停效果
+    yearBtn.addEventListener('mouseover', function() {
+      if (currentYear !== year) {
+        this.style.background = 'rgba(255,255,255,0.2)';
+      }
+    });
+    
+    yearBtn.addEventListener('mouseout', function() {
+      if (currentYear !== year) {
+        this.style.background = 'transparent';
+      }
+    });
+    
+    yearsContainer.appendChild(yearBtn);
+  });
+  
+  // 设置播放按钮点击事件
+  playButton.addEventListener('click', function() {
+    // 如果已经在播放，则停止
+    if (isTimelineAuto) {
+      clearInterval(timelineAutoId);
+      isTimelineAuto = false;
+      this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+      this.style.background = 'rgba(255,255,255,0.2)';
+      return;
+    }
+    
+    // 开始播放
+    isTimelineAuto = true;
+    this.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+    this.style.background = 'rgba(255,99,71,0.6)';
+    
+    let currentIndex = years.indexOf(currentYear);
+    if (currentIndex === -1 || currentIndex >= years.length - 1) {
+      currentIndex = 0; // 如果在最后或找不到，从头开始
+    }
+    
+    // 自动播放函数
+    const autoPlay = () => {
+      currentIndex = (currentIndex + 1) % years.length;
+      const nextYear = years[currentIndex];
+      
+      // 更新全局当前年份
+      currentYear = nextYear;
+      
+      // 更新年份按钮样式
+      document.querySelectorAll('.map-year-btn').forEach(btn => {
+        const btnYear = parseInt(btn.dataset.year);
+        btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
+        btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
+      });
+      
+      // 更新地图过滤器
+      const layerID = 'uk-trade-with-coords-dlzrad';
+      updateMapYearFilter(layerID, nextYear);
+      
+      // 如果是最后一年，则停止播放
+      if (currentIndex === years.length - 1) {
+        setTimeout(() => {
+          clearInterval(timelineAutoId);
+          isTimelineAuto = false;
+          playButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+          playButton.style.background = 'rgba(255,255,255,0.2)';
+        }, 800);
+      }
+    };
+    
+    // 立即开始第一次更新
+    autoPlay();
+    
+    // 设置定时更新 - 加快播放速度
+    timelineAutoId = setInterval(autoPlay, 1200);
+  });
+  
+  // 添加悬停效果
+  playButton.addEventListener('mouseover', function() {
+    this.style.background = isTimelineAuto ? 'rgba(255,99,71,0.8)' : 'rgba(255,255,255,0.3)';
+    this.style.transform = 'scale(1.1)';
+  });
+  
+  playButton.addEventListener('mouseout', function() {
+    this.style.background = isTimelineAuto ? 'rgba(255,99,71,0.6)' : 'rgba(255,255,255,0.2)';
+    this.style.transform = 'scale(1)';
+  });
+  
+  // 组装时间轴
+  timelineContainer.appendChild(playButton);
+  timelineContainer.appendChild(yearsContainer);
+  
+  // 添加到地图
+  map.getContainer().appendChild(timelineContainer);
 }
 
 // 处理折线图数据
@@ -1094,215 +2085,6 @@ svg.append('rect')
   }
 }
 
-function initializeHeatmap() {
-const container = document.getElementById('heatmap-container');
-if (!container) return;
-container.innerHTML = '';
-
-// 不需要在这里添加额外的间距，我们已经在折线图部分添加了足够的间距
-
-// 创建时间轴容器替代原来的年份选择器
-const timelineContainer = document.createElement('div');
-timelineContainer.className = 'timeline-container';
-timelineContainer.style.width = '100%';
-timelineContainer.style.maxWidth = '800px';
-timelineContainer.style.margin = '5px auto';
-timelineContainer.style.padding = '10px 0';
-timelineContainer.style.position = 'relative';
-container.appendChild(timelineContainer);
-
-// 添加一个容器用于SVG时间轴
-const timelineSvg = document.createElement('div');
-timelineSvg.id = 'timeline-svg';
-timelineSvg.style.height = '80px';
-timelineContainer.appendChild(timelineSvg);
-
-const svgContainer = document.createElement('div');
-svgContainer.id = 'heatmap-svg';
-container.appendChild(svgContainer);
-
-loadData();
-}
-
-function loadData() {
-const svgContainer = document.getElementById('heatmap-svg');
-svgContainer.innerHTML = '<div class="loading">Loading data, please wait…</div>';
-
-d3.csv('public/data/region_trade_20country.csv')
-  .then(data => {
-    data.forEach(d => {
-      d.Year = +d.Year;
-      d.Trade_Balance_m = +d.Trade_Balance_m;
-      d.Imports_m = +d.Imports_m;
-      d.Exports_m = +d.Exports_m;
-    });
-
-    // 保存数据以便在滚动时使用
-    allData = data;
-    allRegions = Array.from(new Set(data.map(d => d.Region)));
-    allCountries = Array.from(new Set(data.map(d => d.Country20)));
-
-    // 获取所有在HTML中定义的年份
-    const stepElements = document.querySelectorAll('.step[data-year]');
-    const years = Array.from(stepElements).map(el => +el.getAttribute('data-year')).sort();
-    
-    // 为最后一个步骤添加足够的底部填充，确保能够完全滚动到视图中
-    const lastStep = document.querySelector('.step[data-year="2024"]');
-    if (lastStep) {
-      // 添加填充元素确保可以完全滚动到最后一个步骤
-      const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
-      if (scrollContainer) {
-        // 确保足够的底部填充
-        scrollContainer.style.paddingBottom = '300px';
-      }
-    }
-    
-    // 创建时间轴
-    createTimeline(years);
-    
-    // 渲染热力图
-    renderHeatmap(data, allRegions, allCountries, currentYear);
-    
-    // 设置滚动监听
-    setupScrollListener(years);
-  })
-  .catch(err => {
-    svgContainer.innerHTML = `<div class="error">Error loading data: ${err.message}</div>`;
-  });
-}
-
-function createTimeline(years) {
-const container = d3.select('#timeline-svg');
-container.html('');
-
-const width = container.node().clientWidth;
-const height = 80;
-
-// 创建SVG元素
-const svg = container.append('svg')
-  .attr('width', width)
-  .attr('height', height)
-  .style('overflow', 'visible');
-
-// 计算年份比例尺 - 简化为直接映射到离散年份
-const timeScale = d3.scalePoint()
-  .domain(years)
-  .range([50, width - 50]);
-
-// 绘制时间轴线
-svg.append('line')
-  .attr('x1', 0)
-  .attr('y1', height / 2)
-  .attr('x2', width)
-  .attr('y2', height / 2)
-  .attr('stroke', '#ccc')
-  .attr('stroke-width', 2);
-
-// 为每个年份添加刻度和文本
-const yearMarks = svg.selectAll('.year-mark')
-  .data(years)
-  .enter()
-  .append('g')
-  .attr('class', 'year-mark')
-  .attr('transform', d => `translate(${timeScale(d)}, ${height/2})`)
-  .style('cursor', 'pointer')
-  .on('click', (event, d) => {
-    if (scrolling || d === currentYear) return;
-    
-    currentYear = d;
-    updateTimelineSelection(svg, timeScale, years);
-    renderHeatmap(allData, allRegions, allCountries, d);
-    
-    // 滚动到对应年份的步骤
-    scrollToYear(d);
-  });
-
-// 添加刻度线
-yearMarks.append('line')
-  .attr('x1', 0)
-  .attr('y1', 0)
-  .attr('x2', 0)
-  .attr('y2', 10)
-  .attr('stroke', d => d === currentYear ? '#ff6347' : '#888')
-  .attr('stroke-width', 2);
-
-// 添加年份文本
-yearMarks.append('text')
-  .attr('x', 0)
-  .attr('y', 25)
-  .attr('text-anchor', 'middle')
-  .style('font-size', '14px')
-  .style('fill', d => d === currentYear ? '#ff6347' : '#555')
-  .style('font-weight', d => d === currentYear ? 'bold' : 'normal')
-  .text(d => d);
-
-// 简化的拖动功能 - 直接吸附到最近年份
-const drag = d3.drag()
-  .on('drag', function(event) {
-    // 找到最接近的年份位置
-    const xPos = event.x;
-    let closestYear = years[0];
-    let minDistance = Math.abs(timeScale(years[0]) - xPos);
-    
-    years.forEach(year => {
-      const distance = Math.abs(timeScale(year) - xPos);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestYear = year;
-      }
-    });
-    
-    // 直接移动到最接近的年份位置
-    d3.select(this)
-      .attr('transform', `translate(${timeScale(closestYear)}, ${height/2 - 40})`);
-    
-    // 如果年份变了，立即更新数据
-    if (closestYear !== currentYear) {
-      currentYear = closestYear;
-      
-      // 更新热力图
-      renderHeatmap(allData, allRegions, allCountries, currentYear);
-      
-      // 更新其他年份标记样式
-      svg.selectAll('.year-mark')
-        .selectAll('line')
-        .attr('stroke', d => d === currentYear ? '#ff6347' : '#888');
-      
-      svg.selectAll('.year-mark')
-        .selectAll('text')
-        .style('fill', d => d === currentYear ? '#ff6347' : '#555')
-        .style('font-weight', d => d === currentYear ? 'bold' : 'normal');
-      
-      // 更新小球上的文字
-      d3.select(this).select('text')
-        .text(`'${String(currentYear).slice(-2)}`);
-      
-      // 滚动到对应的年份步骤
-      scrollToYear(currentYear);
-    }
-  });
-
-// 添加当前年份标记
-const currentYearGroup = svg.append('g')
-  .attr('class', 'current-year-marker')
-  .attr('transform', `translate(${timeScale(currentYear)}, ${height/2 - 40})`)
-  .style('cursor', 'grab')
-  .call(drag);
-
-currentYearGroup.append('circle')
-  .attr('r', 20)
-  .attr('fill', '#ff6347');
-
-currentYearGroup.append('text')
-  .attr('x', 0)
-  .attr('y', 5)
-  .attr('text-anchor', 'middle')
-  .attr('pointer-events', 'none') // 文本不响应鼠标事件，以免干扰拖动
-  .style('fill', 'white')
-  .style('font-weight', 'bold')
-  .style('font-size', '16px')
-  .text(`'${String(currentYear).slice(-2)}`);
-
 // 辅助函数 - 滚动到特定年份
 function scrollToYear(year) {
   scrolling = true;
@@ -1327,529 +2109,4 @@ function scrollToYear(year) {
     }
   }
   setTimeout(() => { scrolling = false; }, 1000);
-}
-}
-
-function updateTimelineSelection(svg, timeScale, years) {
-  // 更新所有年份标记的样式
-  svg.selectAll('.year-mark')
-    .selectAll('line')
-    .attr('stroke', d => d === currentYear ? '#ff6347' : '#888');
-
-  svg.selectAll('.year-mark')
-    .selectAll('text')
-    .style('fill', d => d === currentYear ? '#ff6347' : '#555')
-    .style('font-weight', d => d === currentYear ? 'bold' : 'normal');
-
-  // 重要：获取当前年份标记的实际X坐标，确保完全对齐
-  // 首先找到当前年份的标记
-  const currentYearMark = svg.selectAll('.year-mark')
-    .filter(d => d === currentYear)
-    .node();
-  
-  let xPosition;
-  if (currentYearMark) {
-    // 提取实际的transform值，确保使用相同的坐标
-    const transform = d3.select(currentYearMark).attr('transform');
-    const match = /translate\(([^,]+),/.exec(transform);
-    xPosition = match ? parseFloat(match[1]) : timeScale(currentYear);
-  } else {
-    xPosition = timeScale(currentYear);
-  }
-
-  // 使用精确的X坐标更新小球位置
-  svg.select('.current-year-marker')
-    .transition()
-    .duration(300)
-    .attr('transform', `translate(${xPosition}, ${80/2 - 40})`);
-
-  // 更新当前年份标记里的文本
-  svg.select('.current-year-marker text')
-    .text(`'${String(currentYear).slice(-2)}`);
-}
-
-function setupScrollListener(years) {
-// 使用节流函数减少更新频率
-let lastScrollTime = 0;
-const scrollThrottle = 300; // 300ms内只处理一次滚动
-let pendingScroll = false;
-
-// 创建观察器来检测哪个步骤在视图中
-const observer = new IntersectionObserver((entries) => {
-  if (scrolling) return; // 如果是按钮触发的滚动，忽略
-  
-  const now = Date.now();
-  if (now - lastScrollTime < scrollThrottle) {
-    if (!pendingScroll) {
-      pendingScroll = true;
-      setTimeout(() => {
-        processScrollEntries(entries);
-        pendingScroll = false;
-        lastScrollTime = Date.now();
-      }, scrollThrottle);
-    }
-    return;
-  }
-  
-  lastScrollTime = now;
-  processScrollEntries(entries);
-}, {
-  threshold: 0.5, // 使用单一阈值
-  rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
-});
-
-function processScrollEntries(entries) {
-  // 找到当前最高交叉比例的步骤
-  let bestEntry = null;
-  let maxRatio = 0;
-  
-  entries.forEach(entry => {
-    if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
-      maxRatio = entry.intersectionRatio;
-      bestEntry = entry;
-    }
-  });
-  
-  // 如果找到了最佳步骤，更新年份
-  if (bestEntry) {
-    const year = +bestEntry.target.getAttribute('data-year');
-    if (year && year !== currentYear) {
-      currentYear = year;
-      
-      // 更新时间轴选择
-      const timelineContainer = d3.select('#timeline-svg');
-      if (!timelineContainer.empty()) {
-        const width = timelineContainer.node().clientWidth;
-        const timeScale = d3.scalePoint()
-          .domain(years)
-          .range([50, width - 50]);
-        updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
-      }
-      
-      renderHeatmap(allData, allRegions, allCountries, year);
-    }
-  }
-}
-
-
-  // 监测所有步骤
-  document.querySelectorAll('.step[data-year]').forEach(step => {
-    observer.observe(step);
-  });
-  
-  // 特别处理最后一个步骤（2024年）
-  const lastStep = document.querySelector('.step[data-year="2024"]');
-  if (lastStep) {
-    // 创建专门用于2024年的观察器，使用更高的阈值
-    const lastYearObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // 只有当元素大部分进入视图才触发
-        if (entry.isIntersecting && entry.intersectionRatio > 0.7 && !scrolling) {
-          const year = +entry.target.getAttribute('data-year');
-          if (year === 2024 && currentYear !== 2024) {
-            currentYear = 2024;
-            
-            // 更新时间轴和热力图
-            const timelineContainer = d3.select('#timeline-svg');
-            if (!timelineContainer.empty()) {
-              const width = timelineContainer.node().clientWidth;
-              const timeScale = d3.scalePoint()
-                .domain(years)
-                .range([50, width - 50]);
-              updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
-            }
-            
-            renderHeatmap(allData, allRegions, allCountries, 2024);
-          }
-        }
-      });
-    }, {
-      threshold: [0.5, 0.7, 0.9], // 使用更高的阈值
-      rootMargin: '0px 0px 0px 0px' // 移除扩大的底部检测区域
-    });
-    
-    lastYearObserver.observe(lastStep);
-    
-    // 修改滚动容器的滚动事件处理
-    const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', () => {
-        if (scrolling) return;
-        
-        // 检测是否滚动到更接近底部的位置
-        const isNearBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= 
-                            scrollContainer.scrollHeight - 50; // 更接近底部才触发
-        
-        if (isNearBottom && currentYear !== 2024) {
-          currentYear = 2024;
-          
-          // 更新时间轴和热力图
-          const timelineContainer = d3.select('#timeline-svg');
-          if (!timelineContainer.empty()) {
-            const width = timelineContainer.node().clientWidth;
-            const timeScale = d3.scalePoint()
-              .domain(years)
-              .range([50, width - 50]);
-            updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
-          }
-          
-          renderHeatmap(allData, allRegions, allCountries, 2024);
-        }
-      });
-    }
-  }
-}
-
-function renderHeatmap(data, regions, countries, year) {
-  const container = d3.select('#heatmap-svg');
-  container.html('');
-
-  const yearData = data.filter(d => d.Year === year);
-  if (yearData.length === 0) {
-    container.html('<div class="error">No data for this year</div>');
-    return;
-  }
-
-  const lookup = {};
-  yearData.forEach(d => {
-    lookup[`${d.Region}-${d.Country20}`] = {
-      balance: d.Trade_Balance_m,
-      imports: d.Imports_m,
-      exports: d.Exports_m
-    };
-  });
-
-  // 获取当前容器宽度
-  const containerWidth = container.node().clientWidth;
-
-  // 自适应边距
-  const margin = { 
-    top: 20,
-    right: Math.max(120, containerWidth * 0.15),
-    bottom: Math.max(100, containerWidth * 0.12),
-    left: Math.max(40, containerWidth * 0.05) 
-  };
-  
-  // 自适应宽高
-  const width = Math.max(300, containerWidth - margin.left - margin.right);
-  const height = Math.max(300, width * 0.6);
-
-  // 响应式SVG
-  const svg = container.append('svg')
-    .attr('width', '100%')
-    .attr('height', height + margin.top + margin.bottom)
-    .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-    .attr('preserveAspectRatio', 'xMidYMid meet')
-    .style('overflow', 'visible')
-    .style('display', 'block')
-    .style('margin', 'auto')
-    .append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
-
-  // 定义EU和非EU国家，使用和折线图相同的顺序
-  const euCountries = ["Belgium", "France", "Germany", "Ireland", "Italy", "Netherlands", "Poland", "Spain", "Sweden", "Rest of EU"];
-  const nonEuCountries = ["Australia", "Canada", "China", "India", "Japan", "Norway", "Singapore", "Switzerland", "United States", "Rest of world"];
-  
-  // 组合国家列表，EU国家在前，非EU国家在后
-  const orderedCountries = [...euCountries, ...nonEuCountries];
-  
-  // 只使用实际存在于数据中的国家
-  const filteredOrderedCountries = orderedCountries.filter(country => countries.includes(country));
-
-  const xScale = d3.scaleBand()
-    .domain(filteredOrderedCountries)
-    .range([0, width])
-    .padding(0.1);
-  const yScale = d3.scaleBand()
-    .domain(regions)
-    .range([0, height])
-    .padding(0.1);
-  const colorScale = d3.scaleThreshold()
-    .domain(heatmapBounds.slice(1, -1))
-    .range(heatmapColors);
-
-  let tooltip = d3.select('body').select('.tooltip');
-  if (tooltip.empty()) {
-    tooltip = d3.select('body')
-      .append('div')
-      .attr('class', 'tooltip');
-  }
-
-  // 确定当前需要高亮的区域
-  let highlightedRegion = null;
-  if (year === 2019) {
-    highlightedRegion = 'Scotland';
-  } else if (year === 2021) {
-    highlightedRegion = 'Northern Ireland';
-  } else if (year === 2023) {
-    highlightedRegion = 'London';
-  }
-
-  // 创建一个底层容器来放置所有热图单元格
-  const heatmapCellsGroup = svg.append('g')
-    .attr('class', 'heatmap-cells');
-
-  // 创建悬停高亮遮罩的容器
-  const hoverMaskGroup = svg.append('g')
-    .attr('class', 'hover-masks')
-    .style('opacity', 0); // 初始化为隐藏状态
-
-  // 创建暗化遮罩容器（用于悬停效果）
-  const hoverDimmingGroup = svg.append('g')
-    .attr('class', 'hover-dimming')
-    .style('opacity', 0); // 初始化为隐藏状态
-    
-  // 为主题高亮创建暗化遮罩容器（基于年份的高亮）
-  const dimMaskGroup = svg.append('g')
-    .attr('class', 'year-dimming-masks')
-    .style('opacity', 0); // 初始化为隐藏状态
-
-  // 先创建所有坐标轴，这样可以对它们设置ID，方便后续操作
-  // 创建X轴（底部国家标签）
-  const xAxisGroup = svg.append('g')
-    .attr('class', 'x-axis')
-    .attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(xScale));
-
-  // 为每个国家标签添加唯一ID
-  xAxisGroup.selectAll('.tick text')
-    .attr('id', d => `country-label-${d.replace(/\s+/g, '-').toLowerCase()}`);
-
-  // 创建Y轴（左侧区域标签）
-  const yAxisGroup = svg.append('g')
-    .attr('class', 'y-axis')
-    .call(d3.axisLeft(yScale));
-    
-  // 为每个区域标签添加唯一ID
-  yAxisGroup.selectAll('.tick text')
-    .attr('id', d => `region-label-${d.replace(/\s+/g, '-').toLowerCase()}`);
-
-  // 首先绘制所有单元格
-  regions.forEach(region => {
-    filteredOrderedCountries.forEach(country => {
-      const stat = lookup[`${region}-${country}`] || { balance: 0, imports: 0, exports: 0 };
-      
-      // 为每个单元格创建唯一ID
-      const cellId = `cell-${region.replace(/\s+/g, '-').toLowerCase()}-${country.replace(/\s+/g, '-').toLowerCase()}`;
-      
-      // 绘制热图单元格
-      heatmapCellsGroup.append('rect')
-        .attr('id', cellId)
-        .attr('class', `heatmap-cell ${region === highlightedRegion ? 'highlighted' : ''}`)
-        .attr('x', xScale(country))
-        .attr('y', yScale(region))
-        .attr('width', xScale.bandwidth())
-        .attr('height', yScale.bandwidth())
-        .attr('fill', colorScale(stat.balance))
-        .attr('data-region', region)
-        .attr('data-country', country)
-        .on('mouseover', function(event) {
-          // 显示提示框
-          tooltip
-            .style('opacity', 0.9)
-            .html(`
-              <strong>${region} - ${country}</strong><br/>
-              Trade Balance: £${stat.balance.toLocaleString()} million<br/>
-              Imports: £${stat.imports.toLocaleString()} million<br/>
-              Exports: £${stat.exports.toLocaleString()} million
-            `)
-            .style('left', `${event.pageX + 10}px`)
-            .style('top', `${event.pageY - 28}px`);
-          
-          // 高亮相关的行和列
-          highlightRowAndColumn(region, country);
-        })
-        .on('mouseout', function() {
-          // 隐藏提示框
-          tooltip.style('opacity', 0);
-          
-          // 取消高亮
-          unhighlightRowAndColumn();
-        });
-    });
-  });
-
-  // 如果有高亮区域，应用特殊效果
-  if (highlightedRegion) {
-    // 为非高亮区域添加半透明暗色遮罩
-    regions.forEach(region => {
-      if (region !== highlightedRegion) { // 只对非高亮区域应用遮罩
-        dimMaskGroup.append('rect')
-          .attr('class', 'dimming-mask')
-          .attr('x', 0)
-          .attr('y', yScale(region))
-          .attr('width', width)
-          .attr('height', yScale.bandwidth())
-          .attr('fill', 'rgba(0, 0, 0, 0.6)') // 半透明黑色遮罩
-          .attr('pointer-events', 'none'); // 确保不会干扰鼠标事件
-      }
-    });
-    
-    // 显示年份相关的暗化效果，并添加动画
-    dimMaskGroup.transition()
-      .duration(800)
-      .style('opacity', 1);
-  }
-
-  // 美化坐标轴文字
-  xAxisGroup.selectAll('text')
-      .attr('transform', 'rotate(-65)')
-      .style('text-anchor', 'end')
-    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
-    .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8')
-    .style('font-weight', '600'); // 让文字更清晰
-
-  // 美化Y轴文字
-  yAxisGroup.selectAll('text')
-    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
-    .style('font-weight', '600') // 让文字更清晰
-    .style('fill', region => region === highlightedRegion ? '#ffffff' : '#cccccc'); // 高亮区域文字更亮
-
-  // 自适应图例
-  const legendX = width + 10;
-  const legendWidth = Math.min(150, margin.right - 20);
-
-  const legend = svg.append('g')
-    .attr('class', 'legend')
-    .attr('transform', `translate(${legendX}, 0)`);
-
-  legend.append('text')
-    .attr('x', 0)
-    .attr('y', 0)
-    .style('font-size', `${Math.max(12, Math.min(14, width / 60)) + 1}px`)
-    .style('font-weight', 'bold')
-    .text('£ Million');
-
-  // 计算图例项目间距
-  const legendSpacing = Math.max(22, Math.min(28, height / 13));
-  const rectSize = Math.max(14, Math.min(18, legendWidth / 9));
-
-  const legendItems = legend.selectAll('.legend-item')
-    .data(heatmapColors)
-    .enter()
-    .append('g')
-      .attr('class', 'legend-item')
-      .attr('transform', (d, i) => `translate(0, ${10 + i * legendSpacing})`);
-
-  legendItems.append('rect')
-    .attr('width', rectSize)
-    .attr('height', rectSize)
-    .style('fill', d => d);
-
-  legendItems.append('text')
-    .attr('x', rectSize + 6)
-    .attr('y', rectSize * 0.75)
-    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
-    .style('font-weight', '600') // 让图例文字更清晰
-    .text((d, i) => {
-      return `${heatmapBounds[i]} to ${heatmapBounds[i + 1]}`;
-    });
-    
-  // 修改说明文字的位置
-  svg.append('text')
-    .attr('class', 'axis-note')
-    .attr('x', width / 2)
-    .attr('y', height + margin.bottom + 5) 
-    .attr('text-anchor', 'middle')
-    .style('font-size', `${Math.max(12, Math.min(14, width / 60))}px`)
-    .style('fill', '#fff')
-    .style('font-weight', '600') // 让文字更清晰
-    .html('Country names are colored by ' + 
-          `<tspan style="fill: #c1e7ff">EU</tspan>` + 
-          ' and ' + 
-          `<tspan style="fill: #ffb7a8">non-EU</tspan>` + 
-          ' grouping.');
-
-  // 函数：高亮特定的行和列
-  function highlightRowAndColumn(region, country) {
-    // 取消基于年份的暗化效果
-    dimMaskGroup.transition().duration(300).style('opacity', 0);
-    
-    // 清除之前的悬停遮罩
-    hoverDimmingGroup.selectAll('*').remove();
-    
-    // 为所有区域创建暗化遮罩（鼠标悬停效果）
-    regions.forEach(r => {
-      filteredOrderedCountries.forEach(c => {
-        // 如果不是当前行或当前列，则添加暗化遮罩
-        if (r !== region && c !== country) {
-          hoverDimmingGroup.append('rect')
-            .attr('x', xScale(c))
-            .attr('y', yScale(r))
-            .attr('width', xScale.bandwidth())
-            .attr('height', yScale.bandwidth())
-            .attr('fill', 'rgba(0, 0, 0, 0.6)')
-            .attr('pointer-events', 'none');
-        }
-      });
-    });
-    
-    // 显示悬停暗化效果
-    hoverDimmingGroup.transition().duration(300).style('opacity', 1);
-    
-    // 高亮当前行和列的标签
-    xAxisGroup.selectAll('.tick text')
-      .transition().duration(300)
-      .style('fill', d => d === country ? '#ffffff' : 'rgba(255, 255, 255, 0.3)')
-      .style('font-weight', d => d === country ? '800' : '400');
-      
-    yAxisGroup.selectAll('.tick text')
-      .transition().duration(300)
-      .style('fill', d => d === region ? '#ffffff' : 'rgba(255, 255, 255, 0.3)')
-      .style('font-weight', d => d === region ? '800' : '400');
-  }
-  
-  // 函数：取消高亮
-  function unhighlightRowAndColumn() {
-    // 隐藏悬停暗化效果
-    hoverDimmingGroup.transition().duration(300).style('opacity', 0);
-    
-    // 恢复基于年份的暗化效果（如果有）
-    if (highlightedRegion) {
-      dimMaskGroup.transition().duration(300).style('opacity', 1);
-    }
-    
-    // 恢复X轴标签样式
-    xAxisGroup.selectAll('.tick text')
-      .transition().duration(300)
-      .style('fill', d => euCountries.includes(d) ? '#c1e7ff' : '#ffb7a8')
-      .style('font-weight', '600');
-      
-    // 恢复Y轴标签样式
-    yAxisGroup.selectAll('.tick text')
-      .transition().duration(300)
-      .style('fill', region => region === highlightedRegion ? '#ffffff' : '#cccccc')
-      .style('font-weight', '600');
-  }
-
-  // 添加窗口大小变化时的自适应调整
-  window.addEventListener('resize', () => {
-    renderHeatmap(allData, allRegions, allCountries, currentYear);
-  });
-}
-
-// 额外添加一个函数来修复滚动容器布局
-function fixScrollContainerLayout() {
-  // 查找滚动容器
-  const scrollContainer = document.querySelector('.scroll-text');
-  if (!scrollContainer) return;
-  
-  // 确保最后一个步骤能够完全进入视图
-  const lastStep = document.querySelector('.step[data-year="2024"]');
-  if (lastStep) {
-    // 计算当前滚动容器的有效高度
-    const containerHeight = scrollContainer.clientHeight;
-    
-    // 确保滚动容器至少有足够的高度，可以让最后一个步骤居中显示
-    const minHeight = lastStep.offsetHeight + (containerHeight / 2);
-    
-    // 检查当前的底部内边距
-    const currentPadding = parseInt(window.getComputedStyle(scrollContainer).paddingBottom) || 0;
-    
-    // 如果需要更多空间，添加底部内边距
-    const neededPadding = Math.max(containerHeight / 2, 200);
-    if (currentPadding < neededPadding) {
-      scrollContainer.style.paddingBottom = `${neededPadding}px`;
-    }
-  }
 }
