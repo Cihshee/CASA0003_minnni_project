@@ -119,9 +119,27 @@ function initMapSidebarCharts(euData, nonEuData) {
     return;
   }
   
-  // 添加说明文本
+  // 添加说明文本并添加淡入效果
+  euTextContainer.style.opacity = '0';
+  euTextContainer.style.transform = 'translateY(20px)';
+  euTextContainer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
   euTextContainer.innerHTML = 'Aside from Ireland, the UK has maintained trade deficits with most EU countries. Although these deficits temporarily narrowed from 2020 to 2021 due to the COVID-19 and transitional Brexit arrangements, they have widened since 2022, reflecting the structural disadvantages introduced by new trade barriers.';
+  
+  nonEuTextContainer.style.opacity = '0';
+  nonEuTextContainer.style.transform = 'translateY(20px)';
+  nonEuTextContainer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
   nonEuTextContainer.innerHTML = 'Meanwhile, the UK has actively pursued trade diversification beyond the EU. However, this "global re-engagement" has not resulted in a stable surplus structure. The UK continues to run trade deficits with many non-EU countries, suggesting that its global trade reset remains incomplete.';
+  
+  // 延迟淡入效果
+  setTimeout(() => {
+    euTextContainer.style.opacity = '1';
+    euTextContainer.style.transform = 'translateY(0)';
+  }, 300);
+  
+  setTimeout(() => {
+    nonEuTextContainer.style.opacity = '1';
+    nonEuTextContainer.style.transform = 'translateY(0)';
+  }, 500);
   
   // 渲染侧边栏中的折线图
   renderSidebarChart(euChartContainer, euData, 'EU Countries Trade Balance', '#ff6347');
@@ -130,19 +148,72 @@ function initMapSidebarCharts(euData, nonEuData) {
   // 添加切换按钮功能
   const switchButton = document.querySelector('.chart-switch-btn');
   if (switchButton) {
+    // 添加按钮动画效果
+    switchButton.style.transition = 'background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease';
+    
+    switchButton.addEventListener('mouseover', function() {
+      this.style.backgroundColor = 'rgba(255,255,255,0.2)';
+      this.style.transform = 'scale(1.05)';
+      this.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+    });
+    
+    switchButton.addEventListener('mouseout', function() {
+      this.style.backgroundColor = 'rgba(255,255,255,0.1)';
+      this.style.transform = 'scale(1)';
+      this.style.boxShadow = 'none';
+    });
+    
     switchButton.addEventListener('click', function() {
-      // 切换图表和文本的显示状态
-      euChartContainer.classList.toggle('active');
-      nonEuChartContainer.classList.toggle('active');
-      euTextContainer.classList.toggle('active');
-      nonEuTextContainer.classList.toggle('active');
+      // 添加过渡动画
+      euChartContainer.style.transition = 'opacity 0.5s ease';
+      nonEuChartContainer.style.transition = 'opacity 0.5s ease';
+      euTextContainer.style.transition = 'opacity 0.5s ease';
+      nonEuTextContainer.style.transition = 'opacity 0.5s ease';
       
-      // 更新按钮文本
+      // 切换前先淡出
       if (euChartContainer.classList.contains('active')) {
-        switchButton.textContent = 'Non-EU →';
+        euChartContainer.style.opacity = '0';
+        euTextContainer.style.opacity = '0';
+        setTimeout(() => {
+          // 切换类
+          euChartContainer.classList.toggle('active');
+          nonEuChartContainer.classList.toggle('active');
+          euTextContainer.classList.toggle('active');
+          nonEuTextContainer.classList.toggle('active');
+          
+          // 然后淡入新内容
+          nonEuChartContainer.style.opacity = '1';
+          nonEuTextContainer.style.opacity = '1';
+        }, 500);
       } else {
-        switchButton.textContent = '← EU';
+        nonEuChartContainer.style.opacity = '0';
+        nonEuTextContainer.style.opacity = '0';
+        setTimeout(() => {
+          // 切换类
+          euChartContainer.classList.toggle('active');
+          nonEuChartContainer.classList.toggle('active');
+          euTextContainer.classList.toggle('active');
+          nonEuTextContainer.classList.toggle('active');
+          
+          // 然后淡入新内容
+          euChartContainer.style.opacity = '1';
+          euTextContainer.style.opacity = '1';
+        }, 500);
       }
+      
+      // 更新按钮文本，添加动画
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = 'scale(1.05)';
+        if (euChartContainer.classList.contains('active')) {
+          switchButton.textContent = 'Non-EU →';
+        } else {
+          switchButton.textContent = '← EU';
+        }
+        setTimeout(() => {
+          this.style.transform = 'scale(1)';
+        }, 100);
+      }, 150);
       
       // 强制重新渲染当前活动的图表，解决切换后图表显示问题
       setTimeout(() => {
@@ -153,7 +224,7 @@ function initMapSidebarCharts(euData, nonEuData) {
           nonEuChartContainer.innerHTML = '';
           renderSidebarChart(nonEuChartContainer, nonEuData, 'Non-EU Countries', '#2166ac');
         }
-      }, 50);
+      }, 550);
     });
   }
   
@@ -205,26 +276,40 @@ function renderSidebarChart(container, data, title, mainColor) {
     .tickValues(yAxisTicks)
     .tickFormat(d => `£${d === 0 ? '0' : d > 0 ? (d/1000) + 'b' : (-d/1000) + 'b'}`);
 
-  // 添加X轴
-  svg.append('g')
+  // 添加X轴 - 带动画效果
+  const xAxisGroup = svg.append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(0,${height})`)
-    .call(xAxis)
+    .style('opacity', 0);
+  
+  xAxisGroup.call(xAxis)
     .selectAll('text')
     .style('fill', '#fff')
     .style('font-size', '10px')
     .attr('transform', 'rotate(-25)')
     .style('text-anchor', 'end');
+  
+  // 添加X轴动画
+  xAxisGroup.transition()
+    .duration(800)
+    .style('opacity', 1);
 
-  // 添加Y轴
-  svg.append('g')
+  // 添加Y轴 - 带动画效果
+  const yAxisGroup = svg.append('g')
     .attr('class', 'y-axis')
-    .call(yAxis)
+    .style('opacity', 0);
+  
+  yAxisGroup.call(yAxis)
     .selectAll('text')
     .style('fill', '#fff')
     .style('font-size', '10px');
+  
+  // 添加Y轴动画
+  yAxisGroup.transition()
+    .duration(800)
+    .style('opacity', 1);
 
-// 添加标题
+  // 添加标题 - 带动画效果
   svg.append('text')
     .attr('x', width / 2)
     .attr('y', -20)
@@ -232,18 +317,25 @@ function renderSidebarChart(container, data, title, mainColor) {
     .style('font-size', '12px')
     .style('fill', '#fff')
     .style('font-weight', 'bold')
-    .text(title);
+    .text(title)
+    .style('opacity', 0)
+    .transition()
+    .duration(1000)
+    .style('opacity', 1);
 
-  // 添加0线
+  // 添加0线 - 带动画效果
   svg.append('line')
     .attr('class', 'zero-line')
     .attr('x1', 0)
-    .attr('x2', width)
+    .attr('x2', 0) // 初始为0宽度
     .attr('y1', y(0))
     .attr('y2', y(0))
     .attr('stroke', '#ffffff')
     .attr('stroke-width', 1)
-    .attr('stroke-dasharray', '2,2');
+    .attr('stroke-dasharray', '2,2')
+    .transition()
+    .duration(1000)
+    .attr('x2', width); // 动画扩展到全宽
 
   // 创建线条生成器 - 修改为适应点比例尺
   const line = d3.line()
@@ -261,20 +353,132 @@ function renderSidebarChart(container, data, title, mainColor) {
     "#56b6c2", "#a39fea", "#ff9e4a", "#e5c07b", 
     "#7590db", "#ff5277"
   ];
-
-  // 为每个国家创建一条线
+  
+  // 创建一个背景趋势组，确保它在最底层
+  const backgroundTrendsGroup = svg.append('g')
+    .attr('class', 'background-trends')
+    .style('opacity', 0);
+  
+  // 首先添加背景趋势线 - 更淡更细的版本
   countries.forEach((country, i) => {
     const countryData = data.map(d => ({ year: d.year, value: d[country] }));
     const countryColor = betterColors[i % betterColors.length];
     
-    // 绘制线条
-    svg.append('path')
+    // 绘制淡化的背景趋势线
+    backgroundTrendsGroup.append('path')
       .datum(countryData)
-      .attr('class', `line-${country.replace(/\s+/g, '-').toLowerCase()}`)
+      .attr('class', `background-line-${country.replace(/\s+/g, '-').toLowerCase()}`)
       .attr('d', line)
       .attr('fill', 'none')
       .attr('stroke', countryColor)
-      .attr('stroke-width', 1.5);
+      .attr('stroke-width', 0.8) // 更细
+      .attr('opacity', 0.15); // 更淡
+  });
+  
+  // 淡入背景趋势线
+  backgroundTrendsGroup.transition()
+    .delay(200)
+    .duration(1000)
+    .style('opacity', 1);
+
+  // 为每个国家创建一条线 - 添加动画和交互效果
+  countries.forEach((country, i) => {
+    const countryData = data.map(d => ({ year: d.year, value: d[country] }));
+    const countryColor = betterColors[i % betterColors.length];
+    
+    // 创建路径并添加动画
+    const path = svg.append('path')
+      .datum(countryData)
+      .attr('class', `line-${country.replace(/\s+/g, '-').toLowerCase()}`)
+      .attr('fill', 'none')
+      .attr('stroke', countryColor)
+      .attr('stroke-width', 1.5)
+      .attr('opacity', 0.8);
+    
+    // 获取路径长度用于动画
+    const pathLength = path.node().getTotalLength();
+    
+    // 设置初始状态
+    path.attr("stroke-dasharray", pathLength)
+      .attr("stroke-dashoffset", pathLength)
+      .transition()
+      .duration(1500)
+      .delay(i * 100) // 每条线依次出现
+      .attr("stroke-dashoffset", 0);
+    
+    // 添加鼠标悬停效果
+    path
+      .on('mouseover', function() {
+        // 高亮当前线条
+        d3.select(this)
+          .attr('stroke-width', 3)
+          .attr('opacity', 1);
+        
+        // 高亮当前背景线
+        backgroundTrendsGroup.select(`.background-line-${country.replace(/\s+/g, '-').toLowerCase()}`)
+          .attr('opacity', 0.3)
+          .attr('stroke-width', 1);
+        
+        // 添加国家标签
+        svg.append('text')
+          .attr('class', 'country-label')
+          .attr('x', width - 5)
+          .attr('y', 20 + i * 20)
+          .attr('text-anchor', 'end')
+          .attr('fill', countryColor)
+          .style('font-size', '12px')
+          .style('font-weight', 'bold')
+          .text(country);
+          
+        // 淡化其他线条
+        svg.selectAll('path.line-')
+          .filter(function() { return this !== path.node(); })
+          .transition().duration(200)
+          .attr('opacity', 0.2);
+        
+        // 淡化其他背景线
+        backgroundTrendsGroup.selectAll('path')
+          .filter(function() { 
+            return !this.classList.contains(`background-line-${country.replace(/\s+/g, '-').toLowerCase()}`); 
+          })
+          .transition().duration(200)
+          .attr('opacity', 0.05);
+      })
+      .on('mouseout', function() {
+        // 恢复线条样式
+        d3.select(this)
+          .attr('stroke-width', 1.5)
+          .attr('opacity', 0.8);
+        
+        // 恢复背景线
+        backgroundTrendsGroup.selectAll('path')
+          .attr('opacity', 0.15)
+          .attr('stroke-width', 0.8);
+        
+        // 移除国家标签
+        svg.selectAll('.country-label').remove();
+        
+        // 恢复其他线条
+        svg.selectAll('path.line-')
+          .transition().duration(200)
+          .attr('opacity', 0.8);
+      });
+      
+    // 添加数据点
+    svg.selectAll(`.dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
+      .data(countryData)
+      .join('circle')
+      .attr('class', `dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
+      .attr('cx', d => x(d.year))
+      .attr('cy', d => y(d.value))
+      .attr('r', 0) // 初始半径为0
+      .attr('fill', countryColor)
+      .attr('opacity', 0)
+      .transition()
+      .duration(800)
+      .delay(1500 + i * 100) // 在线条出现后显示点
+      .attr('r', 3)
+      .attr('opacity', 0.8);
   });
 
   // 为图例创建一个单独的容器，设置在图表下方
@@ -288,151 +492,137 @@ function renderSidebarChart(container, data, title, mainColor) {
   legendWrapper.style.marginRight = 'auto';
   container.appendChild(legendWrapper);
   
-  // 创建底部水平图例 - 两行，每行5个
+  // 创建底部水平图例
   const legendContainer = document.createElement('div');
   legendContainer.className = 'sidebar-legend';
-  legendContainer.style.display = 'grid';
-  legendContainer.style.gridTemplateColumns = 'repeat(5, 1fr)';
-  legendContainer.style.gap = '5px 2px';
-  legendContainer.style.marginBottom = '0';
-  legendContainer.style.textAlign = 'center';
+  legendContainer.style.display = 'flex';
+  legendContainer.style.flexWrap = 'wrap';
+  legendContainer.style.justifyContent = 'center';
+  legendContainer.style.gap = '5px';
+  legendContainer.style.marginTop = '5px';
   legendWrapper.appendChild(legendContainer);
   
-  // 显示前10个国家
-  const displayCountries = countries.slice(0, 10);
-  displayCountries.forEach((country, i) => {
+  // 显示国家列表
+  countries.forEach((country, i) => {
     const countryColor = betterColors[i % betterColors.length];
     
     const legendItem = document.createElement('div');
     legendItem.className = 'sidebar-legend-item';
-    legendItem.style.width = 'auto';
-    legendItem.style.margin = '0';
-    legendItem.style.justifyContent = 'center';
+    legendItem.style.display = 'flex';
+    legendItem.style.alignItems = 'center';
+    legendItem.style.margin = '3px';
+    legendItem.style.cursor = 'pointer';
+    legendItem.style.transition = 'all 0.3s ease';
+    legendItem.style.opacity = '0'; // 初始不可见
+    
+    // 延迟显示图例项
+    setTimeout(() => {
+      legendItem.style.opacity = '1';
+    }, 1800 + i * 100);
     
     const colorDot = document.createElement('span');
-    colorDot.className = 'sidebar-legend-color';
+    colorDot.style.display = 'inline-block';
+    colorDot.style.width = '8px';
+    colorDot.style.height = '8px';
+    colorDot.style.borderRadius = '50%';
     colorDot.style.backgroundColor = countryColor;
+    colorDot.style.marginRight = '5px';
     
     const countryName = document.createElement('span');
-    countryName.className = 'sidebar-legend-text';
-    countryName.textContent = country;
+    countryName.style.fontSize = '10px';
+    countryName.style.color = '#fff';
+    countryName.textContent = country.length > 8 ? country.substring(0, 8) + '...' : country;
     
     legendItem.appendChild(colorDot);
     legendItem.appendChild(countryName);
     legendContainer.appendChild(legendItem);
-  });
-  
-  // 添加交互功能 - 鼠标悬停显示详细信息
-  // 创建提示框
-  let tooltip = d3.select('body').select('.sidebar-tooltip');
-  if (tooltip.empty()) {
-    tooltip = d3.select('body')
-      .append('div')
-      .attr('class', 'sidebar-tooltip')
-      .style('position', 'absolute')
-      .style('pointer-events', 'none')
-      .style('background', 'rgba(40, 40, 48, 0.9)')
-      .style('color', '#fff')
-      .style('padding', '8px 12px')
-      .style('border-radius', '4px')
-      .style('font-size', '12px')
-      .style('box-shadow', '0 2px 6px rgba(0,0,0,0.3)')
-      .style('z-index', '1000')
-      .style('opacity', '0')
-      .style('transition', 'opacity 0.2s');
-  }
-  
-  // 添加垂直参考线
-  const guideline = svg.append('line')
-    .attr('class', 'guideline')
-    .attr('x1', 0)
-    .attr('y1', 0)
-    .attr('x2', 0)
-    .attr('y2', height)
-    .style('stroke', '#fff')
-    .style('stroke-width', '1px')
-    .style('stroke-dasharray', '3,3')
-    .style('opacity', '0');
-  
-  // 添加年份标签
-  const yearLabel = svg.append('text')
-    .attr('class', 'year-label')
-    .attr('text-anchor', 'middle')
-    .style('fill', '#fff')
-    .style('font-size', '10px')
-    .style('font-weight', 'bold')
-    .style('opacity', '0');
-  
-  // 添加交互区域
-  const bisect = d3.bisector(d => d.year).left;
-  
-  svg.append('rect')
-    .attr('width', width)
-    .attr('height', height)
-    .style('fill', 'none')
-    .style('pointer-events', 'all')
-    .on('mousemove', function(event) {
-      // 获取鼠标位置
-      const mouseX = d3.pointer(event)[0];
-      const x0 = x.invert(mouseX);
+    
+    // 添加图例交互效果
+    legendItem.addEventListener('mouseover', function() {
+      // 高亮对应的线条
+      svg.select(`.line-${country.replace(/\s+/g, '-').toLowerCase()}`)
+        .attr('stroke-width', 3)
+        .attr('opacity', 1);
       
-      // 找到最接近的数据点
-      const i = bisect(data, x0, 1);
-      const d0 = data[i - 1];
-      const d1 = data[i] || d0;
-      const d = x0 - d0.year > d1.year - x0 ? d1 : d0;
+      // 高亮对应的背景线
+      backgroundTrendsGroup.select(`.background-line-${country.replace(/\s+/g, '-').toLowerCase()}`)
+        .attr('opacity', 0.3)
+        .attr('stroke-width', 1);
       
-      // 更新参考线位置
-      guideline
-        .attr('x1', x(d.year))
-        .attr('x2', x(d.year))
-        .style('opacity', 1);
+      // 高亮所有点
+      svg.selectAll(`.dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
+        .attr('r', 5)
+        .attr('opacity', 1);
       
-      // 更新年份标签
-      yearLabel
-        .attr('x', x(d.year))
-        .attr('y', -5)
-        .text(d.year)
-        .style('opacity', 1);
+      // 淡化其他线条
+      svg.selectAll('path')
+        .filter(function() { 
+          return !this.classList.contains(`line-${country.replace(/\s+/g, '-').toLowerCase()}`); 
+        })
+        .attr('opacity', 0.2);
       
-      // 构建提示框内容
-      let tooltipContent = `<strong>Year: ${d.year}</strong><br>`;
+      // 淡化其他背景线
+      backgroundTrendsGroup.selectAll('path')
+        .filter(function() { 
+          return !this.classList.contains(`background-line-${country.replace(/\s+/g, '-').toLowerCase()}`); 
+        })
+        .attr('opacity', 0.05);
       
-      // 移除之前的点
-      svg.selectAll('.hover-dot').remove();
-      
-      // 为每个国家添加点和提示内容
-      countries.forEach((country, i) => {
-        const countryColor = betterColors[i % betterColors.length];
-        tooltipContent += `<span style="color:${countryColor}">●</span> ${country}: £${d3.format(",")(d[country])} million<br>`;
+      // 淡化其他点
+      svg.selectAll('circle')
+        .filter(function() { 
+          return !this.classList.contains(`dot-${country.replace(/\s+/g, '-').toLowerCase()}`); 
+        })
+        .attr('opacity', 0.2);
         
-        // 添加高亮点
-        svg.append('circle')
-          .attr('class', 'hover-dot')
-          .attr('cx', x(d.year))
-          .attr('cy', y(d[country]))
-          .attr('r', 4)
-          .attr('fill', countryColor)
-          .attr('stroke', '#222')
-          .attr('stroke-width', 1);
-      });
+      // 高亮图例项
+      this.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+      this.style.transform = 'scale(1.05)';
       
-      // 显示提示框
-      tooltip
-        .html(tooltipContent)
-        .style('left', `${event.pageX + 10}px`)
-        .style('top', `${event.pageY - 28}px`)
-        .style('opacity', 0.95);
-    })
-    .on('mouseout', function() {
-      // 隐藏提示框和参考线
-      tooltip.style('opacity', 0);
-      guideline.style('opacity', 0);
-      yearLabel.style('opacity', 0);
-      
-      // 移除所有高亮点
-      svg.selectAll('.hover-dot').remove();
+      // 添加国家标签
+      svg.append('text')
+        .attr('class', 'country-label')
+        .attr('x', width - 5)
+        .attr('y', 20 + i * 20)
+        .attr('text-anchor', 'end')
+        .attr('fill', countryColor)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+        .text(country);
     });
+    
+    legendItem.addEventListener('mouseout', function() {
+      // 恢复线条样式
+      svg.select(`.line-${country.replace(/\s+/g, '-').toLowerCase()}`)
+        .attr('stroke-width', 1.5)
+        .attr('opacity', 0.8);
+      
+      // 恢复背景线
+      backgroundTrendsGroup.selectAll('path')
+        .attr('opacity', 0.15)
+        .attr('stroke-width', 0.8);
+      
+      // 恢复点样式
+      svg.selectAll(`.dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
+        .attr('r', 3)
+        .attr('opacity', 0.8);
+      
+      // 恢复其他线条
+      svg.selectAll('path')
+        .attr('opacity', 0.8);
+      
+      // 恢复其他点
+      svg.selectAll('circle')
+        .attr('opacity', 0.8);
+        
+      // 恢复图例项
+      this.style.backgroundColor = 'transparent';
+      this.style.transform = 'scale(1)';
+      
+      // 移除国家标签
+      svg.selectAll('.country-label').remove();
+    });
+  });
 }
 
 // 初始化滑动时间轴
