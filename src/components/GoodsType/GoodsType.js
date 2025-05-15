@@ -2871,16 +2871,21 @@ console.log('GoodsType.js loaded');
     const introObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             // 当SITC介绍图片完全滚过视窗，设置更高阈值
-            if (entry.isIntersecting && !window.sitcAnimationTriggered && entry.intersectionRatio > 0.8) {
+            if (entry.isIntersecting && !window.sitcAnimationTriggered) {
+                // 获取元素到视口顶部的距离
+                const rect = entry.target.getBoundingClientRect();
+                // 扩大触发区域，提高灵敏度（100px → 150px）
+                if (rect.top < 150 && rect.top > -20) {
                 // 进一步延迟触发动画，让用户看到更完整的滚动过程
                 setTimeout(() => {
                     console.log('Triggering first phase animation: intro to summary');
                     window.sitcAnimationTriggered = true;  // 标记动画已触发，防止重复触发
                     triggerSITCIconsAnimation();
-                }, 800); // 延长延迟时间，从500ms改为800ms
-            }
+                                  }, 100); // 适当延迟
+                }
+              }
         });
-    }, { threshold: [0.2, 0.4, 0.6, 0.8, 0.9] });  // 增加更多阈值，更精确控制触发时机
+    }, { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9], rootMargin: "-10px 0px 0px 0px" });  // 增加更多阈值和微调rootMargin，提高观察灵敏度
     
     // 开始观察SITC图标行
     const sitcIconsRow = document.querySelector('#goods-type-intro .sitc-icons-row');
@@ -2898,13 +2903,13 @@ console.log('GoodsType.js loaded');
                 // 加载并显示第一个物品数据
                 loadInitialData();
                 
-                // 如果动画还没触发，延迟触发动画（备用方案）
+                // 增强备用方案灵敏度，确保动画能被触发
                 if (!window.sitcAnimationTriggered) {
                     setTimeout(() => {
                         console.log('Triggering first phase animation (backup): intro to summary');
                         window.sitcAnimationTriggered = true;
                         triggerSITCIconsAnimation();
-                    }, 1200); // 更长的延迟，从800ms改为1200ms
+                    }, 800); // 减少延迟，提高响应速度
                 }
                 
                 // 完成后取消观察

@@ -422,15 +422,15 @@ function renderSidebarChart(container, data, title, mainColor) {
   
   // 设置适合侧边栏的边距
   const margin = { top: 40, right: 20, bottom: 40, left: 60 };
-  const width = container.clientWidth - margin.left - margin.right;
-  const height = container.clientHeight - margin.top - margin.bottom;
+const width = container.clientWidth - margin.left - margin.right;
+const height = container.clientHeight - margin.top - margin.bottom;
 
-  // 创建SVG
-  const svg = d3.select(container).append('svg')
-    .attr('width', '100%')
-    .attr('height', '100%')
-    .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
+// 创建SVG
+const svg = d3.select(container).append('svg')
+  .attr('width', '100%')
+  .attr('height', '100%')
+  .append('g')
+  .attr('transform', `translate(${margin.left},${margin.top})`);
 
   // 确保所有年份都在横轴上显示 - 使用固定的年份范围
   const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
@@ -438,15 +438,15 @@ function renderSidebarChart(container, data, title, mainColor) {
   // 创建X轴比例尺 - 使用点比例尺确保均匀间距
   const x = d3.scalePoint()
     .domain(years)
-    .range([0, width]);
+  .range([0, width]);
 
   // 设置Y轴刻度 - 统一两个图表的刻度
   const yRange = [-60000, 10000]; // 固定的Y轴范围
   
   // 设置Y轴比例尺
-  const y = d3.scaleLinear()
+const y = d3.scaleLinear()
     .domain(yRange)
-    .range([height, 0]);
+  .range([height, 0]);
 
   // 创建坐标轴 - 显示所有年份
   const xAxis = d3.axisBottom(x);
@@ -461,13 +461,13 @@ function renderSidebarChart(container, data, title, mainColor) {
 
   // 添加X轴 - 带动画效果
   const xAxisGroup = svg.append('g')
-    .attr('class', 'x-axis')
-    .attr('transform', `translate(0,${height})`)
+  .attr('class', 'x-axis')
+  .attr('transform', `translate(0,${height})`)
     .style('opacity', 0);
   
   xAxisGroup.call(xAxis)
-    .selectAll('text')
-    .style('fill', '#fff')
+  .selectAll('text')
+  .style('fill', '#fff')
     .style('font-size', '10px')
     .attr('transform', 'rotate(-25)')
     .style('text-anchor', 'end');
@@ -479,12 +479,12 @@ function renderSidebarChart(container, data, title, mainColor) {
 
   // 添加Y轴 - 带动画效果
   const yAxisGroup = svg.append('g')
-    .attr('class', 'y-axis')
+  .attr('class', 'y-axis')
     .style('opacity', 0);
   
   yAxisGroup.call(yAxis)
-    .selectAll('text')
-    .style('fill', '#fff')
+  .selectAll('text')
+  .style('fill', '#fff')
     .style('font-size', '10px');
   
   // 添加Y轴动画
@@ -507,12 +507,12 @@ function renderSidebarChart(container, data, title, mainColor) {
     .style('opacity', 1);
 
   // 添加0线 - 带动画效果
-  svg.append('line')
-    .attr('class', 'zero-line')
-    .attr('x1', 0)
+svg.append('line')
+  .attr('class', 'zero-line')
+  .attr('x1', 0)
     .attr('x2', 0) // 初始为0宽度
-    .attr('y1', y(0))
-    .attr('y2', y(0))
+  .attr('y1', y(0))
+  .attr('y2', y(0))
     .attr('stroke', '#ffffff')
     .attr('stroke-width', 1)
     .attr('stroke-dasharray', '2,2')
@@ -521,17 +521,17 @@ function renderSidebarChart(container, data, title, mainColor) {
     .attr('x2', width); // 动画扩展到全宽
 
   // 创建线条生成器 - 修改为适应点比例尺
-  const line = d3.line()
-    .x(d => x(d.year))
-    .y(d => y(d.value))
-    .curve(d3.curveMonotoneX);
+const line = d3.line()
+  .x(d => x(d.year))
+  .y(d => y(d.value))
+  .curve(d3.curveMonotoneX);
 
-  // 获取国家列表(排除year和total)
-  const countries = Object.keys(data[0])
-    .filter(key => key !== 'year' && key !== 'total');
+// 获取国家列表(排除year和total)
+const countries = Object.keys(data[0])
+  .filter(key => key !== 'year' && key !== 'total');
 
   // 优化颜色方案
-  const betterColors = [
+const betterColors = [
     "#e06c75", "#61afef", "#c678dd", "#d4d4d8",
     "#56b6c2", "#a39fea", "#ff9e4a", "#e5c07b", 
     "#7590db", "#ff5277"
@@ -543,17 +543,17 @@ function renderSidebarChart(container, data, title, mainColor) {
     .style('opacity', 0);
   
   // 首先添加背景趋势线 - 更淡更细的版本
-  countries.forEach((country, i) => {
-    const countryData = data.map(d => ({ year: d.year, value: d[country] }));
-    const countryColor = betterColors[i % betterColors.length];
-    
+countries.forEach((country, i) => {
+  const countryData = data.map(d => ({ year: d.year, value: d[country] }));
+  const countryColor = betterColors[i % betterColors.length];
+  
     // 绘制淡化的背景趋势线
     backgroundTrendsGroup.append('path')
-      .datum(countryData)
+    .datum(countryData)
       .attr('class', `background-line-${country.replace(/\s+/g, '-').toLowerCase()}`)
-      .attr('d', line)
-      .attr('fill', 'none')
-      .attr('stroke', countryColor)
+    .attr('d', line)
+    .attr('fill', 'none')
+    .attr('stroke', countryColor)
       .attr('stroke-width', 0.8) // 更细
       .attr('opacity', 0.15); // 更淡
   });
@@ -565,16 +565,16 @@ function renderSidebarChart(container, data, title, mainColor) {
     .style('opacity', 1);
 
   // 为每个国家创建一条线 - 添加动画和交互效果
-  countries.forEach((country, i) => {
+countries.forEach((country, i) => {
     const countryData = data.map(d => ({ year: d.year, value: d[country] }));
-    const countryColor = betterColors[i % betterColors.length];
-    
+  const countryColor = betterColors[i % betterColors.length];
+  
     // 创建路径并添加动画
     const path = svg.append('path')
       .datum(countryData)
       .attr('class', `line-${country.replace(/\s+/g, '-').toLowerCase()}`)
       .attr('fill', 'none')
-      .attr('stroke', countryColor)
+    .attr('stroke', countryColor)
       .attr('stroke-width', 1.5)
       .attr('opacity', 0.8);
     
@@ -609,8 +609,8 @@ function renderSidebarChart(container, data, title, mainColor) {
           .attr('y', 20 + i * 20)
           .attr('text-anchor', 'end')
           .attr('fill', countryColor)
-          .style('font-size', '12px')
-          .style('font-weight', 'bold')
+  .style('font-size', '12px')
+  .style('font-weight', 'bold')
           .text(country);
           
         // 淡化其他线条

@@ -1,25 +1,35 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // 获取所有导航链接
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    // 获取所有章节
+document.addEventListener('DOMContentLoaded', function() {
+    const nav = document.querySelector('.fixed-side-nav');
+    const navLinks = document.querySelectorAll('.fixed-nav-link');
     const sections = document.querySelectorAll('section');
     
-    // 添加滚动事件监听
+    // 显示/隐藏导航
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // 当滚动超过100px时显示导航
+        if (scrollTop > 100) {
+            nav.style.display = 'block';
+        } else {
+            nav.style.display = 'none';
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+
+    // 处理滚动时激活对应的导航项
     window.addEventListener('scroll', () => {
         let current = '';
         
-        // 检查每个章节是否在视口中
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
-            
-            if (window.pageYOffset >= (sectionTop - sectionHeight/3)) {
+            if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
                 current = section.getAttribute('id');
             }
         });
-        
-        // 更新导航链接的激活状态
+
         navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href').slice(1) === current) {
@@ -27,21 +37,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-    
-    // 平滑滚动到目标章节
+
+    // 平滑滚动
     navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetId = link.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            window.scrollTo({
-                top: targetSection.offsetTop - 80,
-                behavior: 'smooth'
-            });
+            const targetId = this.getAttribute('href');
+            if (targetId === '#top') {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
         });
     });
-    
+
     // 添加淡入动画效果
     const observerOptions = {
         threshold: 0.1

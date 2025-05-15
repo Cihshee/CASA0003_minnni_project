@@ -193,6 +193,85 @@
       });
     </script>
 
+    <!-- 右侧固定导航栏的脚本 -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const fixedSideNav = document.getElementById('fixed-side-nav');
+        const fixedNavLinks = document.querySelectorAll('.fixed-nav-link');
+        const sectionsForNav = [
+          { id: 'section1', name: 'homepage' },
+          { id: 'section4', name: 'overview' },
+          { id: 'section5', name: 'partners' },
+          { id: 'section6', name: 'commodities' },
+          { id: 'section7', name: 'transport' },
+          { id: 'section9', name: 'team' }
+        ];
+        
+        const backToTopLink = document.querySelector('.back-to-top');
+        if (backToTopLink) {
+          backToTopLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
+        
+        // 折叠/展开导航栏功能
+        const toggleNavBtn = document.getElementById('toggle-nav-btn');
+        if (toggleNavBtn) {
+          toggleNavBtn.addEventListener('click', function() {
+            fixedSideNav.classList.toggle('collapsed');
+            // 保存用户折叠状态的偏好
+            localStorage.setItem('navCollapsed', fixedSideNav.classList.contains('collapsed'));
+          });
+          
+          // 加载用户之前的折叠状态偏好
+          const savedCollapsedState = localStorage.getItem('navCollapsed');
+          if (savedCollapsedState === 'true') {
+            fixedSideNav.classList.add('collapsed');
+          }
+        }
+        
+        // 在滚动时显示/隐藏右侧导航栏并更新活动链接
+        function updateFixedSideNav() {
+          // 在滚动超过300px后显示右侧导航栏
+          if (window.scrollY > 300) {
+            fixedSideNav.style.display = 'block';
+            // 使用淡入动画
+            setTimeout(() => {
+              fixedSideNav.style.opacity = '1';
+            }, 50);
+          } else {
+            fixedSideNav.style.opacity = '0';
+            // 淡出后隐藏
+            setTimeout(() => {
+              if (window.scrollY <= 300) {
+                fixedSideNav.style.display = 'none';
+              }
+            }, 300);
+          }
+          
+          // 更新活动链接
+          let currentSection = '';
+          for (const section of sectionsForNav) {
+            const el = document.getElementById(section.id);
+            if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.33) {
+              currentSection = section.name;
+            }
+          }
+          
+          fixedNavLinks.forEach(link => {
+            const section = link.getAttribute('data-section');
+            link.classList.toggle('active', section === currentSection);
+          });
+        }
+        
+        window.addEventListener('scroll', updateFixedSideNav);
+        window.addEventListener('resize', updateFixedSideNav);
+        // 初始化调用
+        updateFixedSideNav();
+      });
+    </script>
+
     <!-- 导航栏 -->
     <nav class="navbar">
       <ul>
@@ -203,6 +282,20 @@
         <li><a href="#section7" class="nav-link">Transport Modes</a></li>
         <!-- <li><a href="#section8" class="nav-link">Insights</a></li> -->
         <li><a href="#section9" class="nav-link">Our Team</a></li>
+      </ul>
+    </nav>
+
+    <!-- 右侧固定悬浮导航栏 -->
+    <nav class="fixed-side-nav" id="fixed-side-nav">
+      <ul class="fixed-side-menu">
+        <li><a href="#section1" class="fixed-nav-link" data-title="Homepage"></a></li>
+        <li><a href="#section4" class="fixed-nav-link" data-title="Overview"></a></li>
+        <li><a href="#section5" class="fixed-nav-link" data-title="Trade Partners"></a></li>
+        <li><a href="#section6" class="fixed-nav-link" data-title="Commodities"></a></li>
+        <li><a href="#section7" class="fixed-nav-link" data-title="Transport"></a></li>
+        <li><a href="#section9" class="fixed-nav-link" data-title="Team"></a></li>
+        <li><a href="#top" class="fixed-nav-link back-to-top" data-title="Back to Top"></a></li>
+      </ul>
     </nav>
 
     <!-- 主要内容区域 -->

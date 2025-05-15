@@ -778,7 +778,7 @@
                             <button class="direction-btn" id="outward-btn">Outward Flow</button>
                         </div>
                     </div>
-                    
+
                     <!-- 总览图表容器 -->
                     <div class="overview-chart-container">
                         <canvas id="overview-chart"></canvas>
@@ -1375,7 +1375,7 @@
                 features: features
             };
         }
-
+        
         // 初始化地图
         const map = new mapboxgl.Map({
             container: 'map',
@@ -2565,9 +2565,9 @@
             [inwardChart, outwardChart, overviewChart].forEach(chart => {
                 if (chart && chart.options && chart.options.plugins && chart.options.plugins.annotation) {
                     try {
-                        chart.options.plugins.annotation.annotations.line1.value = currentYear;
-                        chart.options.plugins.annotation.annotations.line1.label.content = currentYear.toString();
-                        chart.update();
+                    chart.options.plugins.annotation.annotations.line1.value = currentYear;
+                    chart.options.plugins.annotation.annotations.line1.label.content = currentYear.toString();
+                    chart.update();
                     } catch (e) {
                         console.warn('Error updating chart year line:', e);
                     }
@@ -2643,8 +2643,8 @@
                     const year = 2016 + index;
                     document.getElementById('slider').value = index;
                     updateYear(year);
-                    stopYearPlay();
-                });
+                stopYearPlay();
+            });
             });
 
             // 方向按钮事件
@@ -2653,7 +2653,7 @@
                     currentDirection = 'Inwards';
                     this.classList.add('active');
                     document.getElementById('outward-btn').classList.remove('active');
-                    updateVisualization();
+                updateVisualization();
                     update3DData();
                     
                     // 更新相应视图的图表
@@ -2845,7 +2845,7 @@
                             currentPort = '';
                             document.getElementById('port-select').value = '';
                             updateVisualization();
-                            
+            
                             // 收起图表面板
                             document.getElementById('chart-container').classList.remove('expanded');
                             
