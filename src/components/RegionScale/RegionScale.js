@@ -554,15 +554,16 @@ countries.forEach((country, i) => {
     .attr('d', line)
     .attr('fill', 'none')
     .attr('stroke', countryColor)
-      .attr('stroke-width', 0.8) // 更细
-      .attr('opacity', 0.15); // 更淡
+      .attr('stroke-width', 1.5) // 更细
+      .attr('opacity', 0.8); // 更淡
   });
   
   // 淡入背景趋势线
   backgroundTrendsGroup.transition()
     .delay(200)
     .duration(1000)
-    .style('opacity', 1);
+    .attr('stroke-width', 1.5)
+    .style('opacity', 0.8);
 
   // 为每个国家创建一条线 - 添加动画和交互效果
 countries.forEach((country, i) => {
@@ -574,7 +575,7 @@ countries.forEach((country, i) => {
       .datum(countryData)
       .attr('class', `line-${country.replace(/\s+/g, '-').toLowerCase()}`)
       .attr('fill', 'none')
-    .attr('stroke', countryColor)
+      .attr('stroke', countryColor)
       .attr('stroke-width', 1.5)
       .attr('opacity', 0.8);
     
@@ -587,7 +588,12 @@ countries.forEach((country, i) => {
       .transition()
       .duration(1500)
       .delay(i * 100) // 每条线依次出现
-      .attr("stroke-dashoffset", 0);
+      .attr("stroke-dashoffset", 0)
+      .on("end", function() {
+        d3.select(this)
+          .attr('stroke-width', 1.5)
+          .attr('opacity', 0.8);
+      });
     
     // 添加鼠标悬停效果
     path
@@ -609,8 +615,8 @@ countries.forEach((country, i) => {
           .attr('y', 20 + i * 20)
           .attr('text-anchor', 'end')
           .attr('fill', countryColor)
-  .style('font-size', '12px')
-  .style('font-weight', 'bold')
+          .style('font-size', '12px')
+          .style('font-weight', 'bold')
           .text(country);
           
         // 淡化其他线条
@@ -636,7 +642,7 @@ countries.forEach((country, i) => {
         // 恢复背景线
         backgroundTrendsGroup.selectAll('path')
           .attr('opacity', 0.15)
-          .attr('stroke-width', 0.8);
+          .attr('stroke-width', 1.5);
         
         // 移除国家标签
         svg.selectAll('.country-label').remove();
@@ -729,12 +735,12 @@ countries.forEach((country, i) => {
       
       // 高亮对应的背景线
       backgroundTrendsGroup.select(`.background-line-${country.replace(/\s+/g, '-').toLowerCase()}`)
-        .attr('opacity', 0.3)
-        .attr('stroke-width', 1);
+        .attr('opacity', 1)
+        .attr('stroke-width', 2.5);
       
       // 高亮所有点
       svg.selectAll(`.dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
-        .attr('r', 5)
+        .attr('r', 4)
         .attr('opacity', 1);
       
       // 淡化其他线条
@@ -742,14 +748,14 @@ countries.forEach((country, i) => {
         .filter(function() { 
           return !this.classList.contains(`line-${country.replace(/\s+/g, '-').toLowerCase()}`); 
         })
-        .attr('opacity', 0.2);
+        .attr('opacity', 0.4);
       
       // 淡化其他背景线
       backgroundTrendsGroup.selectAll('path')
         .filter(function() { 
           return !this.classList.contains(`background-line-${country.replace(/\s+/g, '-').toLowerCase()}`); 
         })
-        .attr('opacity', 0.05);
+        .attr('opacity', 0.1);
       
       // 淡化其他点
       svg.selectAll('circle')
@@ -783,7 +789,7 @@ countries.forEach((country, i) => {
       // 恢复背景线
       backgroundTrendsGroup.selectAll('path')
         .attr('opacity', 0.15)
-        .attr('stroke-width', 0.8);
+        .attr('stroke-width', 1.5);
       
       // 恢复点样式
       svg.selectAll(`.dot-${country.replace(/\s+/g, '-').toLowerCase()}`)
@@ -980,7 +986,22 @@ const container = document.getElementById('heatmap-container');
 if (!container) return;
 container.innerHTML = '';
 
-// 不再创建时间轴，直接创建热力图容器
+// 创建时间轴容器替代原来的年份选择器
+const timelineContainer = document.createElement('div');
+timelineContainer.className = 'timeline-container';
+timelineContainer.style.width = '100%';
+timelineContainer.style.maxWidth = '800px';
+timelineContainer.style.margin = '5px auto';
+timelineContainer.style.padding = '10px 0';
+timelineContainer.style.position = 'relative';
+container.appendChild(timelineContainer);
+
+// 添加一个容器用于SVG时间轴
+const timelineSvg = document.createElement('div');
+timelineSvg.id = 'timeline-svg';
+timelineSvg.style.height = '80px';
+timelineContainer.appendChild(timelineSvg);
+
 const svgContainer = document.createElement('div');
 svgContainer.id = 'heatmap-svg';
 container.appendChild(svgContainer);
@@ -988,6 +1009,7 @@ container.appendChild(svgContainer);
 loadData();
 }
 
+// 修改1: 调整loadData函数，增加底部填充空间
 function loadData() {
 const svgContainer = document.getElementById('heatmap-svg');
 svgContainer.innerHTML = '<div class="loading">Loading data, please wait…</div>';
@@ -1016,12 +1038,15 @@ d3.csv('public/data/region_trade_20country.csv')
       // 添加填充元素确保可以完全滚动到最后一个步骤
       const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
       if (scrollContainer) {
-        // 确保足够的底部填充
-        scrollContainer.style.paddingBottom = '300px';
+          // 仅修改这一行：增加底部填充高度到800px
+          scrollContainer.style.paddingBottom = '800px';
       }
     }
     
-    // 直接渲染热力图，不创建时间轴
+      // 创建时间轴
+      createTimeline(years);
+      
+      // 渲染热力图
     renderHeatmap(data, allRegions, allCountries, currentYear);
     
     // 设置滚动监听
@@ -1032,36 +1057,178 @@ d3.csv('public/data/region_trade_20country.csv')
   });
 }
 
-function setupScrollListener(years) {
-// 使用节流函数减少更新频率
-let lastScrollTime = 0;
-const scrollThrottle = 300; // 300ms内只处理一次滚动
-let pendingScroll = false;
+function createTimeline(years) {
+const container = d3.select('#timeline-svg');
+container.html('');
 
-// 创建观察器来检测哪个步骤在视图中
-const observer = new IntersectionObserver((entries) => {
-  if (scrolling) return; // 如果是按钮触发的滚动，忽略
-  
-  const now = Date.now();
-  if (now - lastScrollTime < scrollThrottle) {
-    if (!pendingScroll) {
-      pendingScroll = true;
-      setTimeout(() => {
-        processScrollEntries(entries);
-        pendingScroll = false;
-        lastScrollTime = Date.now();
-      }, scrollThrottle);
+const width = container.node().clientWidth;
+const height = 80;
+
+// 创建SVG元素
+const svg = container.append('svg')
+  .attr('width', width)
+  .attr('height', height)
+  .style('overflow', 'visible');
+
+// 计算年份比例尺 - 简化为直接映射到离散年份
+const timeScale = d3.scalePoint()
+  .domain(years)
+  .range([50, width - 50]);
+
+// 绘制时间轴线
+svg.append('line')
+  .attr('x1', 0)
+  .attr('y1', height / 2)
+  .attr('x2', width)
+  .attr('y2', height / 2)
+  .attr('stroke', '#ccc')
+  .attr('stroke-width', 2);
+
+// 为每个年份添加刻度和文本
+const yearMarks = svg.selectAll('.year-mark')
+  .data(years)
+  .enter()
+  .append('g')
+  .attr('class', 'year-mark')
+  .attr('transform', d => `translate(${timeScale(d)}, ${height/2})`)
+  .style('cursor', 'pointer')
+  .on('click', (event, d) => {
+    if (scrolling || d === currentYear) return;
+    
+    currentYear = d;
+    updateTimelineSelection(svg, timeScale, years);
+    renderHeatmap(allData, allRegions, allCountries, d);
+    
+    // 滚动到对应年份的步骤
+    scrollToYear(d);
+  });
+
+// 添加刻度线
+yearMarks.append('line')
+  .attr('x1', 0)
+  .attr('y1', 0)
+  .attr('x2', 0)
+  .attr('y2', 10)
+  .attr('stroke', d => d === currentYear ? '#ff6347' : '#888')
+  .attr('stroke-width', 2);
+
+// 添加年份文本
+yearMarks.append('text')
+  .attr('x', 0)
+  .attr('y', 25)
+  .attr('text-anchor', 'middle')
+  .style('font-size', '14px')
+  .style('fill', d => d === currentYear ? '#ff6347' : '#555')
+  .style('font-weight', d => d === currentYear ? 'bold' : 'normal')
+  .text(d => d);
+
+// 简化的拖动功能 - 直接吸附到最近年份
+const drag = d3.drag()
+  .on('drag', function(event) {
+    // 找到最接近的年份位置
+    const xPos = event.x;
+    let closestYear = years[0];
+    let minDistance = Math.abs(timeScale(years[0]) - xPos);
+    
+    years.forEach(year => {
+      const distance = Math.abs(timeScale(year) - xPos);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestYear = year;
+      }
+    });
+    
+    // 直接移动到最接近的年份位置
+    d3.select(this)
+      .attr('transform', `translate(${timeScale(closestYear)}, ${height/2 - 40})`);
+    
+    // 如果年份变了，立即更新数据
+    if (closestYear !== currentYear) {
+      currentYear = closestYear;
+      
+      // 更新热力图
+      renderHeatmap(allData, allRegions, allCountries, currentYear);
+      
+      // 更新其他年份标记样式
+      svg.selectAll('.year-mark')
+        .selectAll('line')
+        .attr('stroke', d => d === currentYear ? '#ff6347' : '#888');
+      
+      svg.selectAll('.year-mark')
+        .selectAll('text')
+        .style('fill', d => d === currentYear ? '#ff6347' : '#555')
+        .style('font-weight', d => d === currentYear ? 'bold' : 'normal');
+      
+      // 更新小球上的文字
+      d3.select(this).select('text')
+        .text(`'${String(currentYear).slice(-2)}`);
+      
+      // 删除或注释掉这一行，防止拖动时页面跳转
+      // scrollToYear(currentYear);
     }
-    return;
-  }
-  
-  lastScrollTime = now;
-  processScrollEntries(entries);
-}, {
-  threshold: 0.5, // 使用单一阈值
-  rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
-});
+  });
 
+// 添加当前年份标记
+const currentYearGroup = svg.append('g')
+  .attr('class', 'current-year-marker')
+  .attr('transform', `translate(${timeScale(currentYear)}, ${height/2 - 40})`)
+  .style('cursor', 'grab')
+  .call(drag);
+
+currentYearGroup.append('circle')
+  .attr('r', 20)
+  .attr('fill', '#ff6347');
+
+currentYearGroup.append('text')
+  .attr('x', 0)
+  .attr('y', 5)
+  .attr('text-anchor', 'middle')
+  .attr('pointer-events', 'none') // 文本不响应鼠标事件，以免干扰拖动
+  .style('fill', 'white')
+  .style('font-weight', 'bold')
+  .style('font-size', '16px')
+  .text(`'${String(currentYear).slice(-2)}`);
+}
+
+function updateTimelineSelection(svg, timeScale, years) {
+  // 更新所有年份标记的样式
+  svg.selectAll('.year-mark')
+    .selectAll('line')
+    .attr('stroke', d => d === currentYear ? '#ff6347' : '#888');
+
+  svg.selectAll('.year-mark')
+    .selectAll('text')
+    .style('fill', d => d === currentYear ? '#ff6347' : '#555')
+    .style('font-weight', d => d === currentYear ? 'bold' : 'normal');
+
+  // 重要：获取当前年份标记的实际X坐标，确保完全对齐
+  // 首先找到当前年份的标记
+  const currentYearMark = svg.selectAll('.year-mark')
+    .filter(d => d === currentYear)
+    .node();
+  
+  let xPosition;
+  if (currentYearMark) {
+    // 提取实际的transform值，确保使用相同的坐标
+    const transform = d3.select(currentYearMark).attr('transform');
+    const match = /translate\(([^,]+),/.exec(transform);
+    xPosition = match ? parseFloat(match[1]) : timeScale(currentYear);
+  } else {
+    xPosition = timeScale(currentYear);
+  }
+
+  // 使用精确的X坐标更新小球位置
+  svg.select('.current-year-marker')
+    .transition()
+    .duration(300)
+    .attr('transform', `translate(${xPosition}, ${80/2 - 40})`);
+
+  // 更新当前年份标记里的文本
+  svg.select('.current-year-marker text')
+    .text(`'${String(currentYear).slice(-2)}`);
+}
+
+// 修改2: 确保processScrollEntries函数中更新时间轴选择
 function processScrollEntries(entries) {
   // 找到当前最高交叉比例的步骤
   let bestEntry = null;
@@ -1078,14 +1245,12 @@ function processScrollEntries(entries) {
   if (bestEntry) {
     const year = +bestEntry.target.getAttribute('data-year');
     if (year && year !== currentYear) {
-      currentYear = year;
+      console.log(`年份从 ${currentYear} 更新为 ${year}`); // 调试用
       
-      // 如果正在自动播放，停止它
-      if (isTimelineAuto && timelineAutoId) {
-        clearTimeout(timelineAutoId);
-        timelineAutoId = null;
-        isTimelineAuto = false;
-      }
+      // 保存之前的年份
+      const previousYear = currentYear;
+      // 更新当前年份
+      currentYear = year;
       
       // 更新地图的年份过滤器
       const layerID = 'uk-trade-with-coords-dlzrad';
@@ -1100,10 +1265,108 @@ function processScrollEntries(entries) {
         btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
         btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
       });
+      
+      // 关键修改：确保更新SVG时间轴
+      const timelineSvg = document.querySelector('#timeline-svg svg');
+      if (timelineSvg) {
+        console.log('找到SVG时间轴元素'); // 调试用
+        
+        const svgSelection = d3.select(timelineSvg);
+        const width = timelineSvg.clientWidth || timelineSvg.getBoundingClientRect().width;
+        const timeScale = d3.scalePoint()
+          .domain([2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024])
+          .range([50, width - 50]);
+        
+        // 直接更新当前年份标记位置
+        const currentYearMarker = svgSelection.select('.current-year-marker');
+        if (currentYearMarker.node()) {
+          console.log('找到当前年份标记元素'); // 调试用
+          
+          currentYearMarker
+            .transition()
+            .duration(300)
+            .attr('transform', `translate(${timeScale(year)}, ${80/2 - 40})`);
+          
+          // 更新标记上的文本
+          currentYearMarker.select('text')
+            .text(`'${String(year).slice(-2)}`);
+            
+          // 更新年份标记样式
+          svgSelection.selectAll('.year-mark')
+            .selectAll('line')
+            .attr('stroke', d => d === year ? '#ff6347' : '#888');
+          
+          svgSelection.selectAll('.year-mark')
+            .selectAll('text')
+            .style('fill', d => d === year ? '#ff6347' : '#555')
+            .style('font-weight', d => d === year ? 'bold' : 'normal');
+        } else {
+          console.log('未找到当前年份标记元素'); // 调试用
+        }
+      } else {
+        console.log('未找到SVG时间轴元素'); // 调试用
+      }
     }
   }
 }
 
+// 修改3: 确保scrollToYear函数正确处理2024年
+function scrollToYear(year) {
+  scrolling = true;
+  const yearStep = document.querySelector(`.step[data-year="${year}"]`);
+  if (yearStep) {
+    // 特殊处理2024年
+    if (year === 2024) {
+      // 找到滚动容器
+      const scrollContainer = yearStep.closest('.scroll-text') || yearStep.parentElement;
+      if (scrollContainer) {
+        // 滚动到容器底部附近，确保步骤完全可见
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight - scrollContainer.clientHeight * 1.2,
+          behavior: 'smooth'
+        });
+      } else {
+        yearStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    } else {
+      // 普通滚动
+      yearStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+  // 延长scrolling标志的重置时间，确保有足够时间完成滚动
+  setTimeout(() => { scrolling = false; }, 1500);
+}
+
+// 修改4: 调整setupScrollListener函数中2024年的处理
+function setupScrollListener(years) {
+  // 使用节流函数减少更新频率
+  let lastScrollTime = 0;
+  const scrollThrottle = 300; // 300ms内只处理一次滚动
+  let pendingScroll = false;
+
+  // 创建观察器来检测哪个步骤在视图中
+  const observer = new IntersectionObserver((entries) => {
+    if (scrolling) return; // 如果是按钮触发的滚动，忽略
+    
+    const now = Date.now();
+    if (now - lastScrollTime < scrollThrottle) {
+      if (!pendingScroll) {
+        pendingScroll = true;
+        setTimeout(() => {
+          processScrollEntries(entries);
+          pendingScroll = false;
+          lastScrollTime = Date.now();
+        }, scrollThrottle);
+      }
+      return;
+    }
+    
+    lastScrollTime = now;
+    processScrollEntries(entries);
+  }, {
+    threshold: 0.5, // 使用单一阈值
+    rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
+  });
 
   // 监测所有步骤
   document.querySelectorAll('.step[data-year]').forEach(step => {
@@ -1117,6 +1380,7 @@ function processScrollEntries(entries) {
     const lastYearObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         // 只有当元素大部分进入视图才触发
+        // 与RegionScale2.js保持一致的触发条件
         if (entry.isIntersecting && entry.intersectionRatio > 0.7 && !scrolling) {
           const year = +entry.target.getAttribute('data-year');
           if (year === 2024 && currentYear !== 2024) {
@@ -1135,23 +1399,33 @@ function processScrollEntries(entries) {
               btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
               btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
             });
+            
+            // 更新时间轴选择
+            const timelineContainer = d3.select('#timeline-svg');
+            if (!timelineContainer.empty()) {
+              const width = timelineContainer.node().clientWidth;
+              const timeScale = d3.scalePoint()
+                .domain(years)
+                .range([50, width - 50]);
+              updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
+            }
           }
         }
       });
     }, {
-      threshold: [0.5, 0.7, 0.9], // 使用更高的阈值
-      rootMargin: '0px 0px 0px 0px' // 移除扩大的底部检测区域
+      threshold: [0.5, 0.7, 0.9], // 与RegionScale2.js保持一致的阈值
+      rootMargin: '0px 0px 0px 0px' // 与RegionScale2.js保持一致的边距
     });
     
     lastYearObserver.observe(lastStep);
     
-    // 修改滚动容器的滚动事件处理
+    // 修改滚动容器的滚动事件处理，与RegionScale2.js保持一致
     const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
     if (scrollContainer) {
       scrollContainer.addEventListener('scroll', () => {
         if (scrolling) return;
         
-        // 检测是否滚动到更接近底部的位置
+        // 与RegionScale2.js保持一致的检测逻辑
         const isNearBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= 
                             scrollContainer.scrollHeight - 50; // 更接近底部才触发
         
@@ -1171,6 +1445,16 @@ function processScrollEntries(entries) {
             btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
             btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
           });
+          
+          // 更新时间轴选择
+          const timelineContainer = d3.select('#timeline-svg');
+          if (!timelineContainer.empty()) {
+            const width = timelineContainer.node().clientWidth;
+            const timeScale = d3.scalePoint()
+              .domain(years)
+              .range([50, width - 50]);
+            updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
+          }
         }
       });
     }
@@ -1518,16 +1802,19 @@ function fixScrollContainerLayout() {
     const containerHeight = scrollContainer.clientHeight;
     
     // 确保滚动容器至少有足够的高度，可以让最后一个步骤居中显示
-    const minHeight = lastStep.offsetHeight + (containerHeight / 2);
+    const minHeight = lastStep.offsetHeight + containerHeight;
     
     // 检查当前的底部内边距
     const currentPadding = parseInt(window.getComputedStyle(scrollContainer).paddingBottom) || 0;
     
     // 如果需要更多空间，添加底部内边距
-    const neededPadding = Math.max(containerHeight / 2, 200);
+    const neededPadding = Math.max(containerHeight * 1.5, 500);
     if (currentPadding < neededPadding) {
       scrollContainer.style.paddingBottom = `${neededPadding}px`;
     }
+    
+    // 为最后一个步骤添加特殊样式，确保它有足够的高度
+    lastStep.style.minHeight = '300px';
   }
 }
 
@@ -2109,4 +2396,9 @@ function scrollToYear(year) {
     }
   }
   setTimeout(() => { scrolling = false; }, 1000);
+}
+
+// 添加一个简单的toggleTimelineAutoPlay函数，避免错误
+function toggleTimelineAutoPlay() {
+  console.log("时间轴播放按钮被点击");
 }
