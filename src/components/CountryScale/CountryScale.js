@@ -1,14 +1,14 @@
 const palette = {
-  exports: "#94bed9",
-  imports: "#ff9466",
+  exports: "#65bceb",
+  imports: "#ff8827",
   balance: "#f1f1f1",
   timeline: "#ffffff" 
 };
 
-const W_box = 1100;
-const H_box = 520;
+const W_box = 2900;
+const H_box = 1450;
 
-const margin = { top: 60, right: 30, bottom: 30, left: 90 };
+const margin = { top: 120, right: 20, bottom: 60, left: 210 };
 const width  = W_box - margin.left - margin.right;
 const height = H_box - margin.top  - margin.bottom;
 
@@ -61,19 +61,33 @@ d3.csv("public/data/eu_trade.csv").then(data => {
     ])
     .nice()
     .range([height, 0]);
- 
 
 g.append("g")
   .attr("transform", `translate(0,${height})`)
-  .call(d3.axisBottom(x))
+  .call(d3.axisBottom(x).tickPadding(15))
   .selectAll("text")
-    .style("font-size", "20px");  
+    .style("font-size", "50px");
+
+g.selectAll("g")
+  .filter(function() {
+    return this.getAttribute("transform") === `translate(0,${height})`;
+  })
+  .select(".domain")
+  .style("stroke-width", "4px")
+  .style("stroke", "#f1f1f1");
 
 g.append("g")
-  .call(d3.axisLeft(y).tickFormat(d3.format(",d")))
+  .call(d3.axisLeft(y).tickFormat(d3.format(",d")).tickPadding(15))
   .selectAll("text")
-    .style("font-size", "20px");
+    .style("font-size", "50px");
 
+g.selectAll("g")
+  .filter(function() {
+    return !this.getAttribute("transform");
+  })
+  .select(".domain")
+  .style("stroke-width", "4px")
+  .style("stroke", "#f1f1f1");
 
 g.append("line")
     .attr("x1", 0)
@@ -81,13 +95,13 @@ g.append("line")
     .attr("y1", y(0))
     .attr("y2", y(0))
     .attr("stroke", "#f1f1f1") 
-    .attr("stroke-width", 1); 
+    .attr("stroke-width", 6); 
 
 g.append("text")
     .attr("x", -margin.left + 10) 
     .attr("y", -margin.top/2 - 10)   
     .attr("fill", "#f1f1f1")
-    .style("font-size", "20px") 
+    .style("font-size", "50px") 
     .style("text-anchor", "start") 
     .text("£ million");
 
@@ -95,7 +109,7 @@ g.append("text")
     .datum(data)
     .attr("fill", "none")
     .attr("stroke", palette.exports)
-    .attr("stroke-width", 4)
+    .attr("stroke-width", 10)
     .attr("d", d3.line()
       .x(d => x(d.month))
       .y(d => y(d.exports))
@@ -108,7 +122,7 @@ g.append("text")
       .attr("class", "dot-exports")
       .attr("cx", d => x(d.month))
       .attr("cy", d => y(d.exports))
-      .attr("r", 4)                     
+      .attr("r", 6)                     
       .attr("fill", palette.exports)
       .attr("fill-opacity", 0)        
       .attr("stroke", "none")
@@ -116,7 +130,7 @@ g.append("text")
       d3.select(event.currentTarget)
         .attr("fill-opacity", 1)
         .attr("stroke-opacity", 1)
-        .attr("r", 6);  
+        .attr("r", 18);  
       tooltip
         .html(
           `<strong>${d3.timeFormat("%B %Y")(d.month)}</strong><br/>` +
@@ -130,7 +144,7 @@ g.append("text")
       d3.select(event.currentTarget)
         .attr("fill-opacity", 0)
         .attr("stroke-opacity", 0)
-        .attr("r", 4);
+        .attr("r", 6);
       tooltip.style("opacity", 0);
     });
  
@@ -139,7 +153,7 @@ g.append("text")
     .datum(data)
     .attr("fill", "none")
     .attr("stroke", palette.imports)
-    .attr("stroke-width", 4)
+    .attr("stroke-width", 10)
     .attr("d", d3.line()
       .x(d => x(d.month))
       .y(d => y(d.imports))
@@ -152,7 +166,7 @@ g.append("text")
       .attr("class", "dot-imports")
       .attr("cx", d => x(d.month))
       .attr("cy", d => y(d.imports))
-      .attr("r", 4)
+      .attr("r", 6)
       .attr("fill", palette.imports)
       .attr("fill-opacity", 0)
       .attr("stroke", "none")
@@ -160,7 +174,7 @@ g.append("text")
       d3.select(event.currentTarget)
         .attr("fill-opacity", 1)
         .attr("stroke-opacity", 1)
-        .attr("r", 6);
+        .attr("r", 18);
       tooltip
         .html(
           `<strong>${d3.timeFormat("%B %Y")(d.month)}</strong><br/>` +
@@ -174,7 +188,7 @@ g.append("text")
       d3.select(event.currentTarget)
         .attr("fill-opacity", 0)
         .attr("stroke-opacity", 0)
-        .attr("r", 4);
+        .attr("r", 6);
       tooltip.style("opacity", 0);
     });
 
@@ -183,8 +197,8 @@ g.append("text")
     .data(data)
     .join("rect")
         .attr("class", "bar")
-        .attr("x", d => x(d.month) - 2)
-        .attr("width", 7)
+        .attr("x", d => x(d.month) - 3)
+        .attr("width", 16)
         .attr("y", d => y(Math.max(0, d.trade_balance)))
         .attr("height", d => Math.abs(y(d.trade_balance) - y(0)))
         .attr("fill", d => d.trade_balance >= 0 ? palette.balance : d3.color(palette.balance).darker(1))
@@ -209,9 +223,9 @@ g.append("text")
 
 g.append("text")
     .attr("x", width - 5) 
-    .attr("y", 270) 
+    .attr("y", 800) 
     .attr("fill", "#f1f1f1") 
-    .style("font-size", "20px")
+    .style("font-size", "50px")
     .style("text-anchor", "end") 
     .text("Trade Balance");
 
@@ -232,8 +246,8 @@ g.append("text")
         .attr("y1", 0)
         .attr("y2", height)
         .attr("stroke", palette.timeline)
-        .attr("stroke-width", 4) 
-        .attr("stroke-dasharray", "8,8") 
+        .attr("stroke-width", 10)
+        .attr("stroke-dasharray", "12,12")
         .attr("opacity", 0);
     }
     return null;

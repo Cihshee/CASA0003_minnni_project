@@ -27,11 +27,11 @@
 }
   
 .country-chart-section h2 .imports {
-    color: #ff9466; 
+    color: #ff8827; 
 }
   
 .country-chart-section h2 .exports {
-    color: #94bed9; 
+    color: #65bceb; 
 }
 
 .scroll-container {
@@ -52,14 +52,13 @@
 .scroll-graphic {
     position: sticky;
     top: calc(50vh - 225px);
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 0;
-    padding-right: 2rem;
-  }
+}
 
 .scroll-text {
     position: relative;
@@ -71,7 +70,6 @@
 
 #scroll-chart {
     width: 100%;
-    max-height: 450px; 
 }
 
 .chart-container {
@@ -148,13 +146,13 @@
 }
 
 .text-link {
-    color: #94bed9;
+    color: #65bceb;
     text-decoration: underline;
     transition: color 0.2s ease;
 }
 
 .text-link:hover {
-    color: #ff9466;
+    color: #ff8827;
 }
 
 .chart-summary.hidden {
