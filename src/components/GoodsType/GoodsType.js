@@ -4330,4 +4330,46 @@ console.log('GoodsType.js loaded');
     `;
     document.head.appendChild(animStyle);
   }
+
+  // 添加地球自转控制按钮（左上角）
+  function addRotationControl(map) {
+    if (document.getElementById('rotation-control-btn')) return;
+    const btn = document.createElement('button');
+    btn.id = 'rotation-control-btn';
+    btn.innerHTML = '<svg width="22" height="22" viewBox="0 0 22 22" style="vertical-align:middle;"><path d="M11 2a9 9 0 1 1-6.36 2.64" stroke="#fff" stroke-width="2" fill="none"/><polygon points="2,2 8,2 5,6" fill="#4fc3f7"/></svg>';
+    btn.title = 'Toggle globe rotation';
+    btn.style.cssText = `
+      position: absolute; left: 20px; top: 20px; z-index: 1001;
+      background: rgba(30,30,30,0.85); color: #fff; border: none; border-radius: 50%;
+      width: 44px; height: 44px; font-size: 22px; cursor: pointer; box-shadow: 0 2px 8px #0005;
+      display: flex; align-items: center; justify-content: center; transition: background 0.2s; outline: none;
+    `;
+    let rotating = false;
+    let rotationId = null;
+    btn.onclick = function() {
+      rotating = !rotating;
+      if (rotating) {
+        btn.style.background = 'rgba(33,150,243,0.92)';
+        let last = performance.now();
+        function rotate() {
+          if (!rotating) return;
+          const now = performance.now();
+          const delta = (now - last) / 1000;
+          last = now;
+          const bearing = (map.getBearing() + delta * 8) % 360; // 每秒8度
+          map.setBearing(bearing);
+          rotationId = requestAnimationFrame(rotate);
+        }
+        rotate();
+      } else {
+        btn.style.background = 'rgba(30,30,30,0.85)';
+        if (rotationId) cancelAnimationFrame(rotationId);
+      }
+    };
+    // hover效果
+    btn.onmouseenter = () => { if (!rotating) btn.style.background = 'rgba(33,150,243,0.5)'; };
+    btn.onmouseleave = () => { if (!rotating) btn.style.background = 'rgba(30,30,30,0.85)'; };
+    map.getContainer().appendChild(btn);
+  }
+  addRotationControl(state.currentMap);
 })();

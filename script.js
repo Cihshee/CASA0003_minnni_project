@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 current = section.getAttribute('id');
             }
         });
-
+        
         navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href').slice(1) === current) {
@@ -37,17 +37,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
+    
     // 平滑滚动
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             if (targetId === '#top') {
-                window.scrollTo({
+            window.scrollTo({
                     top: 0,
-                    behavior: 'smooth'
-                });
+                behavior: 'smooth'
+            });
             } else {
                 const targetSection = document.querySelector(targetId);
                 if (targetSection) {
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
+    
     // 添加淡入动画效果
     const observerOptions = {
         threshold: 0.1

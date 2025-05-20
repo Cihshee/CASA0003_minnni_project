@@ -575,7 +575,7 @@ countries.forEach((country, i) => {
       .datum(countryData)
       .attr('class', `line-${country.replace(/\s+/g, '-').toLowerCase()}`)
       .attr('fill', 'none')
-      .attr('stroke', countryColor)
+    .attr('stroke', countryColor)
       .attr('stroke-width', 1.5)
       .attr('opacity', 0.8);
     
@@ -615,8 +615,8 @@ countries.forEach((country, i) => {
           .attr('y', 20 + i * 20)
           .attr('text-anchor', 'end')
           .attr('fill', countryColor)
-          .style('font-size', '12px')
-          .style('font-weight', 'bold')
+  .style('font-size', '12px')
+  .style('font-weight', 'bold')
           .text(country);
           
         // 淡化其他线条
@@ -1043,10 +1043,10 @@ d3.csv('public/data/region_trade_20country.csv')
       }
     }
     
-      // 创建时间轴
-      createTimeline(years);
-      
-      // 渲染热力图
+    // 创建时间轴
+    createTimeline(years);
+    
+    // 渲染热力图
     renderHeatmap(data, allRegions, allCountries, currentYear);
     
     // 设置滚动监听
@@ -1339,34 +1339,34 @@ function scrollToYear(year) {
 
 // 修改4: 调整setupScrollListener函数中2024年的处理
 function setupScrollListener(years) {
-  // 使用节流函数减少更新频率
-  let lastScrollTime = 0;
-  const scrollThrottle = 300; // 300ms内只处理一次滚动
-  let pendingScroll = false;
+// 使用节流函数减少更新频率
+let lastScrollTime = 0;
+const scrollThrottle = 300; // 300ms内只处理一次滚动
+let pendingScroll = false;
 
-  // 创建观察器来检测哪个步骤在视图中
-  const observer = new IntersectionObserver((entries) => {
-    if (scrolling) return; // 如果是按钮触发的滚动，忽略
-    
-    const now = Date.now();
-    if (now - lastScrollTime < scrollThrottle) {
-      if (!pendingScroll) {
-        pendingScroll = true;
-        setTimeout(() => {
-          processScrollEntries(entries);
-          pendingScroll = false;
-          lastScrollTime = Date.now();
-        }, scrollThrottle);
-      }
-      return;
+// 创建观察器来检测哪个步骤在视图中
+const observer = new IntersectionObserver((entries) => {
+  if (scrolling) return; // 如果是按钮触发的滚动，忽略
+  
+  const now = Date.now();
+  if (now - lastScrollTime < scrollThrottle) {
+    if (!pendingScroll) {
+      pendingScroll = true;
+      setTimeout(() => {
+        processScrollEntries(entries);
+        pendingScroll = false;
+        lastScrollTime = Date.now();
+      }, scrollThrottle);
     }
-    
-    lastScrollTime = now;
-    processScrollEntries(entries);
-  }, {
-    threshold: 0.5, // 使用单一阈值
-    rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
-  });
+    return;
+  }
+  
+  lastScrollTime = now;
+  processScrollEntries(entries);
+}, {
+  threshold: 0.5, // 使用单一阈值
+  rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
+});
 
   // 监测所有步骤
   document.querySelectorAll('.step[data-year]').forEach(step => {
