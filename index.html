@@ -684,6 +684,100 @@
           const MAPBOX_TOKEN = 'pk.eyJ1IjoieWl4aW5nLWxpIiwiYSI6ImNtN3FtNWh6YjA0ancybnM4aGxjZnlheTEifQ.sKwaoIMQR65VQmYDbnu2MQ';
           const MAPBOX_STYLE = 'mapbox://styles/yixing-li/cmaa8uo1j00j001sgc3051vxu';
 
+          // 定义投票数据
+          const votingData = {
+            'Scotland': {
+              seats: 6,
+              distribution: ['remain', 'remain', 'remain', 'leave', 'other', 'other'],
+              center: [-4.2026, 57.8907],
+              offset: [-180, 0],
+              stats: {
+                remain: '62%',
+                leave: '38%',
+                turnout: '67.2%'
+              },
+              regionId: 'UKM'
+            },
+            'N Ireland': {
+              seats: 3,
+              distribution: ['remain', 'remain', 'leave'],
+              center: [-6.4923, 54.7877],
+              offset: [-160, 0],
+              note: 'yet to declare',
+              regionId: 'UKN'
+            },
+            'NE England': {
+              seats: 3,
+              distribution: ['remain', 'remain', 'leave'],
+              center: [-1.6761, 54.9783],
+              offset: [-160, 0],
+              regionId: 'UKC'
+            },
+            'Yorkshire & the Humber': {
+              seats: 6,
+              distribution: ['remain', 'remain', 'remain', 'leave', 'leave', 'other'],
+              center: [-1.0872, 53.9591],
+              offset: [-180, 0],
+              regionId: 'UKE'
+            },
+            'NW England': {
+              seats: 8,
+              distribution: ['remain', 'remain', 'remain', 'leave', 'leave', 'other', 'other', 'other'],
+              center: [-2.7779, 54.4442],
+              offset: [-160, -20],
+              regionId: 'UKD'
+            },
+            'East Midlands': {
+              seats: 5,
+              distribution: ['remain', 'remain', 'remain', 'leave', 'other'],
+              center: [-0.8451, 52.7954],
+              offset: [-160, 0],
+              regionId: 'UKF'
+            },
+            'West Midlands': {
+              seats: 7,
+              distribution: ['remain', 'remain', 'remain', 'remain', 'leave', 'leave', 'other'],
+              center: [-2.1957, 52.4751],
+              offset: [-180, 0],
+              regionId: 'UKG'
+            },
+            'East of England': {
+              seats: 7,
+              distribution: ['remain', 'remain', 'remain', 'other', 'other', 'leave', 'other'],
+              center: [0.5421, 52.1911],
+              offset: [20, 0],
+              regionId: 'UKH'
+            },
+            'Wales': {
+              seats: 4,
+              distribution: ['remain', 'remain', 'leave', 'leave'],
+              center: [-3.7837, 52.1307],
+              offset: [-160, 0],
+              regionId: 'UKL'
+            },
+            'London': {
+              seats: 8,
+              distribution: ['other', 'other', 'other', 'remain', 'remain', 'leave', 'leave', 'other'],
+              center: [-0.1276, 51.5072],
+              offset: [20, 20],
+              regionId: 'UKI'
+            },
+            'SW England': {
+              seats: 6,
+              distribution: ['remain', 'remain', 'remain', 'other', 'leave', 'other'],
+              center: [-3.9999, 50.7772],
+              offset: [-160, 20],
+              regionId: 'UKK'
+            },
+            'SE England': {
+              seats: 10,
+              distribution: ['remain', 'remain', 'remain', 'remain', 'remain', 'leave', 'leave', 'other', 'other', 'other'],
+              center: [-0.5596, 51.1781],
+              offset: [20, -20],
+              regionId: 'UKJ'
+            }
+          };
+
           // 创建Map
           mapboxgl.accessToken = MAPBOX_TOKEN;
           const map = new mapboxgl.Map({
@@ -694,216 +788,254 @@
             interactive: true
           });
 
-          // 并行加载两个GeoJSON，合成区域数据
-          Promise.all([
-            fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/countries.geojson').then(r => r.json()),
-            fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/Regions_December_2024_Boundaries_EN_BUC_4744747487989771477.geojson').then(r => r.json())
-          ]).then(([countries, regions]) => {
-            // 用真实NUTS1区划的Scotland边界（简化版，真实多边形，已适配英国地图投影）
-            const scotland = {
-              "type": "Feature",
-              "properties": { "name": "Scotland", "NUTS_ID": "UKM" },
-              "geometry": {
-                "type": "Polygon",
-                "coordinates": [[
-                  [-5.005, 55.000], [-5.005, 55.500], [-5.005, 56.000], [-5.005, 56.500], [-5.005, 57.000], [-5.005, 57.500], [-5.005, 58.000], [-4.500, 58.500], [-3.000, 59.000], [-1.500, 58.500], [0.000, 58.000], [0.000, 57.500], [0.000, 57.000], [0.000, 56.500], [0.000, 56.000], [0.000, 55.500], [-1.000, 55.000], [-2.000, 54.800], [-3.000, 54.800], [-4.000, 54.900], [-5.005, 55.000]
-                ]]
+          // 当地图加载完成后设置数据和图层
+          map.on('load', function() {
+            // 加载英国NUTS1区域数据
+            map.addSource('uk-regions', {
+              type: 'geojson',
+              data: 'https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-kingdom/uk-nuts-1.json'
+            });
+
+            // 添加区域填充图层
+            map.addLayer({
+              'id': 'region-fills',
+              'type': 'fill',
+              'source': 'uk-regions',
+              'layout': {},
+              'paint': {
+                'fill-color': [
+                  'case',
+                  ['boolean', ['feature-state', 'hover'], false],
+                  'rgba(255, 255, 255, 0.2)',
+                  'rgba(0, 0, 0, 0.0)'
+                ],
+                'fill-outline-color': [
+                  'case',
+                  ['boolean', ['feature-state', 'hover'], false],
+                  '#ffffff',
+                  'rgba(255, 255, 255, 0.4)'
+                ],
+                'fill-opacity': 0.7
               }
-            };
-            // 过滤掉name为Ireland和Scotland的region
-            const otherRegions = regions.features.filter(f => f.properties.name !== "Ireland" && f.properties.name !== "Scotland");
-            // 合成新FeatureCollection
-            const merged = {
-              type: "FeatureCollection",
-              features: [ireland, scotland, ...otherRegions].filter(Boolean)
-            };
-            // 地图加载后添加数据源和图层
-            map.on('load', function() {
-              map.addSource('uk-regions', {
-                type: 'geojson',
-                data: merged
-              });
+            });
 
-              // 添加区域填充图层
-              map.addLayer({
-                'id': 'region-fills',
-                'type': 'fill',
-                'source': 'uk-regions',
-                'layout': {},
-                'paint': {
-                  'fill-color': [
-                    'case',
-                    ['boolean', ['feature-state', 'hover'], false],
-                    'rgba(255, 255, 255, 0.2)',
-                    'rgba(0, 0, 0, 0.0)'
-                  ],
-                  'fill-outline-color': [
-                    'case',
-                    ['boolean', ['feature-state', 'hover'], false],
-                    '#ffffff',
-                    'rgba(255, 255, 255, 0.4)'
-                  ],
-                  'fill-opacity': 0.7
-                }
-              });
+            // 添加区域边界图层
+            map.addLayer({
+              'id': 'region-borders',
+              'type': 'line',
+              'source': 'uk-regions',
+              'layout': {},
+              'paint': {
+                'line-color': 'rgba(255, 255, 255, 0.5)',
+                'line-width': 1
+              }
+            });
 
-              // 添加区域边界图层
-              map.addLayer({
-                'id': 'region-borders',
-                'type': 'line',
-                'source': 'uk-regions',
-                'layout': {},
-                'paint': {
-                  'line-color': 'rgba(255, 255, 255, 0.5)',
-                  'line-width': 1
-                }
-              });
-
-              // 添加区域标签
-              const markers = {};
-              let hoveredStateId = null;
-              
-              // 鼠标悬停交互
-              map.on('mousemove', 'region-fills', (e) => {
-                if (e.features.length > 0) {
-                  if (hoveredStateId !== null) {
-                    map.setFeatureState(
-                      { source: 'uk-regions', id: hoveredStateId },
-                      { hover: false }
-                    );
-                  }
-                  hoveredStateId = e.features[0].id;
-                  map.setFeatureState(
-                    { source: 'uk-regions', id: hoveredStateId },
-                    { hover: true }
-                  );
-                  
-                  // 获取当前区域的属性
-                  const properties = e.features[0].properties;
-                  const regionCode = properties.NUTS_ID;
-                  
-                  // 找出与该区域代码匹配的投票数据区域
-                  const matchingRegion = Object.entries(votingData).find(([name, data]) => 
-                    data.regionId === regionCode
-                  );
-                  
-                  if (matchingRegion) {
-                    const [regionName, regionData] = matchingRegion;
-                    // 高亮显示对应的标记
-                    if (markers[regionName]) {
-                      markers[regionName].getElement().classList.add('highlight');
-                    }
-                  }
-                }
-              });
-              
-              map.on('mouseleave', 'region-fills', () => {
+            // 添加区域标签
+            const markers = {};
+            let hoveredStateId = null;
+            
+            // 鼠标悬停交互
+            map.on('mousemove', 'region-fills', (e) => {
+              if (e.features.length > 0) {
                 if (hoveredStateId !== null) {
                   map.setFeatureState(
                     { source: 'uk-regions', id: hoveredStateId },
                     { hover: false }
                   );
-                  
-                  // 移除所有标记的高亮
-                  Object.values(markers).forEach(marker => {
-                    marker.getElement().querySelector('.region-marker').classList.remove('highlight');
-                  });
                 }
-                hoveredStateId = null;
-              });
-              
-              // 鼠标点击区域
-              map.on('click', 'region-fills', (e) => {
-                if (e.features.length > 0) {
-                  const properties = e.features[0].properties;
-                  const regionCode = properties.NUTS_ID;
+                hoveredStateId = e.features[0].id;
+                map.setFeatureState(
+                  { source: 'uk-regions', id: hoveredStateId },
+                  { hover: true }
+                );
+                
+                // 获取当前区域的属性
+                const properties = e.features[0].properties;
+                const regionCode = properties.NUTS_ID;
+                
+                // 找出与该区域代码匹配的投票数据区域
+                const matchingRegion = Object.entries(votingData).find(([name, data]) => 
+                  data.regionId === regionCode
+                );
+                
+                if (matchingRegion) {
+                  const [regionName, regionData] = matchingRegion;
+                  // 高亮显示对应的标记
+                  if (markers[regionName]) {
+                    markers[regionName].getElement().classList.add('highlight');
+                  }
+                }
+              }
+            });
+            
+            map.on('mouseleave', 'region-fills', () => {
+              if (hoveredStateId !== null) {
+                map.setFeatureState(
+                  { source: 'uk-regions', id: hoveredStateId },
+                  { hover: false }
+                );
+                
+                // 移除所有标记的高亮
+                Object.values(markers).forEach(marker => {
+                  marker.getElement().querySelector('.region-marker').classList.remove('highlight');
+                });
+              }
+              hoveredStateId = null;
+            });
+            
+            // 鼠标点击区域
+            map.on('click', 'region-fills', (e) => {
+              if (e.features.length > 0) {
+                const properties = e.features[0].properties;
+                const regionCode = properties.NUTS_ID;
+                
+                // 找出与该区域代码匹配的投票数据区域
+                const matchingRegion = Object.entries(votingData).find(([name, data]) => 
+                  data.regionId === regionCode
+                );
+                
+                if (matchingRegion) {
+                  const [regionName, regionData] = matchingRegion;
+                  // 动画滚动到标记位置
+                  map.flyTo({
+                    center: regionData.center,
+                    zoom: 6,
+                    duration: 1000
+                  });
                   
-                  // 找出与该区域代码匹配的投票数据区域
-                  const matchingRegion = Object.entries(votingData).find(([name, data]) => 
-                    data.regionId === regionCode
-                  );
-                  
-                  if (matchingRegion) {
-                    const [regionName, regionData] = matchingRegion;
-                    // 动画滚动到标记位置
-                    map.flyTo({
-                      center: regionData.center,
-                      zoom: 6,
-                      duration: 1000
-                    });
+                  // 高亮显示对应的标记
+                  if (markers[regionName]) {
+                    const markerEl = markers[regionName].getElement();
+                    markerEl.querySelector('.region-marker').classList.add('highlight');
                     
-                    // 高亮显示对应的标记
-                    if (markers[regionName]) {
-                      const markerEl = markers[regionName].getElement();
-                      markerEl.querySelector('.region-marker').classList.add('highlight');
-                      
-                      // 3秒后自动移除高亮
+                    // 3秒后自动移除高亮
+                    setTimeout(() => {
+                      markerEl.querySelector('.region-marker').classList.remove('highlight');
+                    }, 3000);
+                    
+                    // 展示详细统计信息
+                    const statsEl = markerEl.querySelector('.region-stats');
+                    if (statsEl) {
+                      statsEl.style.display = 'block';
                       setTimeout(() => {
-                        markerEl.querySelector('.region-marker').classList.remove('highlight');
+                        statsEl.style.display = '';
                       }, 3000);
-                      
-                      // 展示详细统计信息
-                      const statsEl = markerEl.querySelector('.region-stats');
-                      if (statsEl) {
-                        statsEl.style.display = 'block';
-                        setTimeout(() => {
-                          statsEl.style.display = '';
-                        }, 3000);
-                      }
                     }
                   }
                 }
-              });
-              
-              // 改善光标反馈
-              map.on('mouseenter', 'region-fills', () => {
-                map.getCanvas().style.cursor = 'pointer';
-              });
-              
-              map.on('mouseleave', 'region-fills', () => {
-                map.getCanvas().style.cursor = '';
-              });
+              }
+            });
+            
+            // 改善光标反馈
+            map.on('mouseenter', 'region-fills', () => {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+            
+            map.on('mouseleave', 'region-fills', () => {
+              map.getCanvas().style.cursor = '';
+            });
 
-              // 为每个区域添加投票数据marker
-              Object.entries(votingData).forEach(([region, data], index) => {
-                setTimeout(() => {
-                  const el = document.createElement('div');
-                  el.className = 'region-marker';
-                  el.style.animationDelay = `${index * 0.2}s`;
-                  // seats和分布色块
-                  const label = document.createElement('div');
-                  label.className = 'region-label';
-                  label.textContent = `${region} - ${data.seats}`;
-                  if (data.note) {
-                    const note = document.createElement('div');
-                    note.className = 'region-note';
-                    note.textContent = data.note;
-                    label.appendChild(note);
-                  }
-                  const distributionEl = document.createElement('div');
-                  distributionEl.className = 'vote-distribution';
-                  data.distribution.forEach(vote => {
-                    const dot = document.createElement('span');
-                    dot.className = `vote-dot ${vote}`;
-                    distributionEl.appendChild(dot);
+            // 为每个区域添加标记
+            Object.entries(votingData).forEach(([region, data], index) => {
+              setTimeout(() => {
+                const el = document.createElement('div');
+                el.className = 'region-marker';
+                el.style.animationDelay = `${index * 0.2}s`;
+                
+                const label = document.createElement('div');
+                label.className = 'region-label';
+                label.textContent = `${region} - ${data.seats}`;
+                
+                if (data.note) {
+                  const note = document.createElement('div');
+                  note.className = 'region-note';
+                  note.textContent = data.note;
+                  label.appendChild(note);
+                }
+
+                const distributionEl = document.createElement('div');
+                distributionEl.className = 'vote-distribution';
+                data.distribution.forEach(vote => {
+                  const dot = document.createElement('span');
+                  dot.className = `vote-dot ${vote}`;
+                  distributionEl.appendChild(dot);
+                });
+
+                if (data.stats) {
+                  const statsEl = document.createElement('div');
+                  statsEl.className = 'region-stats';
+                  
+                  const stats = [
+                    ['Remain', data.stats.remain],
+                    ['Leave', data.stats.leave],
+                    ['Turnout', data.stats.turnout]
+                  ];
+
+                  stats.forEach(([label, value]) => {
+                    const row = document.createElement('div');
+                    row.className = 'stats-row';
+                    row.innerHTML = `
+                      <span class="stats-label">${label}:</span>
+                      <span class="stats-value">${value}</span>
+                    `;
+                    statsEl.appendChild(row);
                   });
-                  el.appendChild(label);
-                  el.appendChild(distributionEl);
-                  // marker容器
-                  const markerDiv = document.createElement('div');
-                  markerDiv.className = 'marker-container';
-                  markerDiv.setAttribute('data-region', region);
-                  markerDiv.appendChild(el);
-                  // 创建marker并添加到地图
-                  const marker = new mapboxgl.Marker({
-                    element: markerDiv,
-                    anchor: 'center'
-                  })
-                    .setLngLat(data.center)
-                    .addTo(map);
-                  markers[region] = marker;
-                }, index * 150);
-              });
+
+                  el.appendChild(statsEl);
+                }
+
+                el.appendChild(label);
+                el.appendChild(distributionEl);
+
+                // 创建标记容器
+                const markerDiv = document.createElement('div');
+                markerDiv.className = 'marker-container';
+                markerDiv.setAttribute('data-region', region);
+                
+                // 添加连接线
+                const line = document.createElement('div');
+                line.className = 'connector-line';
+                
+                // 应用偏移量到标记上
+                if (data.offset) {
+                  const length = Math.sqrt(data.offset[0] * data.offset[0] + data.offset[1] * data.offset[1]);
+                  const angle = Math.atan2(data.offset[1], data.offset[0]) + Math.PI/2;
+                  
+                  line.style.height = `${length}px`;
+                  line.style.transform = `rotate(${angle}rad)`;
+                  
+                  el.style.transform = `translate(${data.offset[0]}px, ${data.offset[1]}px)`;
+                }
+                
+                markerDiv.appendChild(line);
+                markerDiv.appendChild(el);
+                
+                // 创建标记并添加到地图
+                const marker = new mapboxgl.Marker({
+                  element: markerDiv,
+                  anchor: 'center'
+                })
+                  .setLngLat(data.center)
+                  .addTo(map);
+                
+                // 存储标记引用以便后续交互
+                markers[region] = marker;
+                
+                // 为标记添加点击事件
+                el.addEventListener('click', () => {
+                  map.flyTo({
+                    center: data.center,
+                    zoom: 6,
+                    duration: 1000
+                  });
+                  
+                  el.classList.add('highlight');
+                  setTimeout(() => {
+                    el.classList.remove('highlight');
+                  }, 3000);
+                });
+              }, index * 150);
             });
           });
         });
