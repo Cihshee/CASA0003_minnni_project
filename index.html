@@ -126,12 +126,12 @@
         flex: 0 0 500px;
         padding: 2rem;
         opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        height: 600px; /* 与地图高度一致 */
+        transform: translateX(50px);
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        height: 600px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; /* 均匀分布内容 */
+        justify-content: space-between;
         overflow: hidden;
       }
 
@@ -167,7 +167,7 @@
         border-radius: 15px;
         position: relative;
         z-index: 10;
-        overflow: hidden;
+        overflow: visible; /* 修改为visible允许通知框显示 */
       }
 
       .uk-outline {
@@ -306,25 +306,25 @@
 
       .brexit-text.visible {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
       }
 
       .brexit-text p.visible {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
       }
 
       .brexit-text .vote-content,
       .brexit-text .brexit-content {
         opacity: 0;
-        transform: translateY(20px);
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateX(30px);
+        transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .brexit-text .vote-content.visible,
       .brexit-text .brexit-content.visible {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
       }
 
       .region-marker.visible {
@@ -428,16 +428,58 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
       }
 
-      .party-item.Con { background: #2196F3; }
-      .party-item.Bxt { background: #00BCD4; }
-      .party-item.Grn { background: #4CAF50; }
-      .party-item.Lab { background: #F44336; }
-      .party-item.LD { background: #FFC107; }
-      .party-item.PldC { background: #137a2b; }
-      .party-item.SNP { background: #f7f48b; color: #000; }
+      .party-item.Con { background: #0087DC; }
+      .party-item.Bxt { background: #12B6CF; }
+      .party-item.Grn { background: #6AB023; }
+      .party-item.Lab { background: #DC241f; }
+      .party-item.LD { background: #FDBB30; }
+      .party-item.PldC { background: #008142; }
+      .party-item.SNP { background: #FDF38E; color: #000; }
 
       .region-fills-hover {
         transition: all 0.2s ease;
+      }
+
+      .eu-border {
+        fill: none;
+        stroke: rgba(33, 150, 243, 0);
+        stroke-width: 2;
+        pointer-events: none;
+        transition: stroke 1s ease;
+      }
+
+      .uk-border {
+        fill: none;
+        stroke: rgba(33, 150, 243, 0);
+        stroke-width: 2;
+        pointer-events: none;
+        transition: all 1s ease;
+      }
+
+      .uk-border.highlight {
+        stroke: rgba(244, 67, 54, 1);
+        stroke-width: 3;
+        filter: drop-shadow(0 0 8px rgba(244, 67, 54, 0.5));
+      }
+
+      .brexit-notification {
+        display: none;
+      }
+
+      .brexit-notification::after {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 10px;
+        border-style: solid;
+        border-color: transparent rgba(0, 0, 0, 0.85) transparent transparent;
+      }
+
+      .brexit-notification.visible {
+        opacity: 1;
+        transform: translateX(0);
       }
     </style>
   </head>
@@ -698,22 +740,21 @@
         <div class="content brexit-vote-section">
           <div class="brexit-container">
             <div class="brexit-text">
-              <h2>"Brexit"</h2>
+              <h2 style="color: #5eb3f9;">"Brexit"</h2>
               <div class="vote-content">
-                <p>The 2016 Brexit referendum revealed stark regional divisions across the UK:</p>
-                <ul>
-                  <li>Scotland and Northern Ireland voted strongly to remain</li>
-                  <li>England and Wales backed leaving the EU</li>
-                  <li>London emerged as a remain stronghold</li>
-                </ul>
+                <p>In June 2016, the UK held a historic referendum to decide whether to leave the European Union. Subsequently, prolonged negotiations, political fluctuations, and multiple extensions followed.</p>
+                <p>It marked the start of profound changes to the UK's economy and trade landscape. 
+                  <span style="display: block; text-align: right; font-size: 14px; color: #888; margin: 8px 0; font-style: italic;">
+                    Source: <a href="https://www.youtube.com/watch?v=3icgtyEJMfs" target="_blank" style="color: #888; text-decoration: none;">UK Brexit Triumph: EU Election Map</a>
+                  </span>
+                  And then...
+                </p>
               </div>
               <div class="brexit-content">
-                <p>The 2020 Brexit implementation transformed UK's international trade:</p>
-                <ul>
-                  <li>New trade and customs frameworks</li>
-                  <li>Changed movement of goods</li>
-                  <li>Reshaped business partnerships</li>
-                </ul>
+                <p>It Comes!</p>
+                <div class="delayed-content" style="opacity: 0; transform: translateY(20px); transition: all 0.8s ease;">
+                  <p>On January 31, 2020, the UK officially said goodbye to the EU. The days of passport-free, frictionless trade were over—trade entered a new era full of rules and challenges. Meanwhile, political views across regions varied widely, adding layers of complexity to future trade negotiations.</p>
+                </div>
               </div>
             </div>
             <div id="brexit-map" class="brexit-map">
@@ -751,14 +792,298 @@
           const map = new mapboxgl.Map({
             container: 'brexit-map',
             style: MAPBOX_STYLE,
-            center: [-2.5, 55.5],  // 向上移动中心点
-            zoom: 4.5,  // 稍微拉远视角
+            center: [-2.5, 55.5],
+            zoom: 4.5,
             interactive: true,
             boxZoom: false,
             dragRotate: false,
             pitchWithRotate: false,
             touchZoomRotate: false
           });
+
+          // 等待地图样式加载完成
+          map.on('style.load', function() {
+            // 加载EU和UK边界数据
+            fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/countries.geojson')
+              .then(response => response.json())
+              .then(data => {
+                console.log('Loaded GeoJSON data:', data);
+
+                // 添加数据源
+                if (!map.getSource('countries')) {
+                  map.addSource('countries', {
+                    type: 'geojson',
+                    data: data
+                  });
+                }
+
+                // 添加EU边界图层
+                if (!map.getLayer('eu-borders')) {
+                  map.addLayer({
+                    'id': 'eu-borders',
+                    'type': 'line',
+                    'source': 'countries',
+                    'layout': {},
+                    'paint': {
+                      'line-color': '#2196F3',
+                      'line-width': 2,
+                      'line-opacity': 0
+                    },
+                    'filter': ['any',
+                      ['==', ['get', 'name'], 'France'],
+                      ['==', ['get', 'name'], 'Germany'],
+                      ['==', ['get', 'name'], 'Italy'],
+                      ['==', ['get', 'name'], 'Spain'],
+                      ['==', ['get', 'name'], 'Poland'],
+                      ['==', ['get', 'name'], 'Romania'],
+                      ['==', ['get', 'name'], 'Netherlands'],
+                      ['==', ['get', 'name'], 'Belgium'],
+                      ['==', ['get', 'name'], 'Greece'],
+                      ['==', ['get', 'name'], 'Czech Republic'],
+                      ['==', ['get', 'name'], 'Portugal'],
+                      ['==', ['get', 'name'], 'Sweden'],
+                      ['==', ['get', 'name'], 'Hungary'],
+                      ['==', ['get', 'name'], 'Austria'],
+                      ['==', ['get', 'name'], 'Bulgaria'],
+                      ['==', ['get', 'name'], 'Denmark'],
+                      ['==', ['get', 'name'], 'Finland'],
+                      ['==', ['get', 'name'], 'Slovakia'],
+                      ['==', ['get', 'name'], 'Ireland'],
+                      ['==', ['get', 'name'], 'Croatia'],
+                      ['==', ['get', 'name'], 'Lithuania'],
+                      ['==', ['get', 'name'], 'Slovenia'],
+                      ['==', ['get', 'name'], 'Latvia'],
+                      ['==', ['get', 'name'], 'Estonia'],
+                      ['==', ['get', 'name'], 'Cyprus'],
+                      ['==', ['get', 'name'], 'Luxembourg'],
+                      ['==', ['get', 'name'], 'Malta']
+                    ]
+                  });
+                }
+
+                // 添加UK边界图层
+                if (!map.getLayer('uk-border')) {
+                  map.addLayer({
+                    'id': 'uk-border',
+                    'type': 'line',
+                    'source': 'countries',
+                    'layout': {},
+                    'paint': {
+                      'line-color': '#2196F3',
+                      'line-width': 2,
+                      'line-opacity': 0
+                    },
+                    'filter': ['==', ['get', 'name'], 'United Kingdom']
+                  });
+                }
+
+                // 添加EU填充图层
+                if (!map.getLayer('eu-fill')) {
+                  map.addLayer({
+                    'id': 'eu-fill',
+                    'type': 'fill',
+                    'source': 'countries',
+                    'layout': {},
+                    'paint': {
+                      'fill-color': '#2196F3',
+                      'fill-opacity': 0
+                    },
+                    'filter': ['any',
+                      ['==', ['get', 'name'], 'France'],
+                      ['==', ['get', 'name'], 'Germany'],
+                      ['==', ['get', 'name'], 'Italy'],
+                      ['==', ['get', 'name'], 'Spain'],
+                      ['==', ['get', 'name'], 'Poland'],
+                      ['==', ['get', 'name'], 'Romania'],
+                      ['==', ['get', 'name'], 'Netherlands'],
+                      ['==', ['get', 'name'], 'Belgium'],
+                      ['==', ['get', 'name'], 'Greece'],
+                      ['==', ['get', 'name'], 'Czech Republic'],
+                      ['==', ['get', 'name'], 'Portugal'],
+                      ['==', ['get', 'name'], 'Sweden'],
+                      ['==', ['get', 'name'], 'Hungary'],
+                      ['==', ['get', 'name'], 'Austria'],
+                      ['==', ['get', 'name'], 'Bulgaria'],
+                      ['==', ['get', 'name'], 'Denmark'],
+                      ['==', ['get', 'name'], 'Finland'],
+                      ['==', ['get', 'name'], 'Slovakia'],
+                      ['==', ['get', 'name'], 'Ireland'],
+                      ['==', ['get', 'name'], 'Croatia'],
+                      ['==', ['get', 'name'], 'Lithuania'],
+                      ['==', ['get', 'name'], 'Slovenia'],
+                      ['==', ['get', 'name'], 'Latvia'],
+                      ['==', ['get', 'name'], 'Estonia'],
+                      ['==', ['get', 'name'], 'Cyprus'],
+                      ['==', ['get', 'name'], 'Luxembourg'],
+                      ['==', ['get', 'name'], 'Malta']
+                    ]
+                  });
+                }
+
+                // 添加UK填充图层
+                if (!map.getLayer('uk-fill')) {
+                  map.addLayer({
+                    'id': 'uk-fill',
+                    'type': 'fill',
+                    'source': 'countries',
+                    'layout': {},
+                    'paint': {
+                      'fill-color': '#2196F3',
+                      'fill-opacity': 0,
+                      'fill-opacity-transition': {
+                        duration: 4000
+                      },
+                      'fill-color-transition': {
+                        duration: 6000
+                      }
+                    },
+                    'filter': ['==', ['get', 'name'], 'United Kingdom']
+                  });
+                }
+
+                // 创建通知元素
+                const notification = document.createElement('div');
+                notification.className = 'brexit-notification';
+                notification.textContent = 'Brexit Bill Takes Effect';
+                notification.style.display = 'none';
+
+                // 创建Mapbox marker来放置通知框
+                const notificationMarker = new mapboxgl.Marker({
+                  element: notification,
+                  anchor: 'left'
+                })
+                .setLngLat([-2, 54]) // 英国附近的经纬度位置
+                .addTo(map);
+
+                // 修改switchView函数中的相关部分
+                function switchView(targetView, skipAnimation = false, startHighlight = false) {
+                  if (currentView === targetView) return;
+                  
+                  // 停止自动高亮
+                  if (window.highlightInterval) {
+                    clearInterval(window.highlightInterval);
+                    window.highlightInterval = null;
+                  }
+
+                  clearAllHighlights();
+                  
+                  viewButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === targetView);
+                  });
+
+                  const voteContent = document.querySelector('.vote-content');
+                  const brexitContent = document.querySelector('.brexit-content');
+
+                  if (targetView === 'brexit') {
+                    // 淡出标记和连接线
+                    markers.forEach(data => {
+                      if (data.element) {
+                        data.element.classList.add('fade-out');
+                        data.group.classList.add('fade-out');
+                      }
+                    });
+                    partyLegend.classList.add('fade-out');
+
+                    setTimeout(() => {
+                      brexitContent.classList.add('visible');
+                      // 延迟3秒显示后续内容
+                      setTimeout(() => {
+                        const delayedContent = document.querySelector('.delayed-content');
+                        delayedContent.style.opacity = '1';
+                        delayedContent.style.transform = 'translateY(0)';
+                      }, 3000);
+                    }, 400);
+
+                    setTimeout(() => {
+                      map.flyTo({
+                        ...viewPositions[targetView],
+                        essential: true,
+                        duration: 1500
+                      });
+
+                      // 隐藏所有视觉元素
+                      markers.forEach(data => {
+                        if (data.element) {
+                          data.element.style.display = 'none';
+                          data.group.style.display = 'none';
+                        }
+                      });
+                      partyLegend.style.display = 'none';
+                      
+                      document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
+                        el.style.display = 'none';
+                      });
+
+                      // 显示边界和填充
+                      try {
+                        map.setPaintProperty('eu-borders', 'line-opacity', 1);
+                        map.setPaintProperty('uk-border', 'line-opacity', 1);
+                        
+                        map.setPaintProperty('eu-fill', 'fill-opacity', 0.2);
+                        map.setPaintProperty('uk-fill', 'fill-opacity', 0.2);
+
+                        setTimeout(() => {
+                          map.setPaintProperty('uk-border', 'line-color', '#F44336');
+                          map.setPaintProperty('uk-border', 'line-width', 3);
+                          map.setPaintProperty('uk-fill', 'fill-color', '#F44336');
+                        }, 1000);
+                      } catch (error) {
+                        console.error('Error showing borders:', error);
+                      }
+                    }, 500);
+                  } else {
+                    map.flyTo({
+                      ...viewPositions[targetView],
+                      essential: true
+                    });
+
+                    // 隐藏边界
+                    try {
+                      map.setPaintProperty('eu-borders', 'line-opacity', 0);
+                      map.setPaintProperty('uk-border', 'line-opacity', 0);
+                      map.setPaintProperty('eu-fill', 'fill-opacity', 0);
+                      map.setPaintProperty('uk-fill', 'fill-opacity', 0);
+                      map.setPaintProperty('uk-border', 'line-color', '#2196F3');
+                      map.setPaintProperty('uk-fill', 'fill-color', '#2196F3');
+                    } catch (error) {
+                      console.error('Error hiding borders:', error);
+                    }
+
+                    brexitContent.classList.remove('visible');
+
+                    setTimeout(() => {
+                      document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
+                        el.style.display = '';
+                      });
+
+                      markers.forEach(data => {
+                        if (data.element) {
+                          data.element.style.display = '';
+                          data.group.style.display = '';
+                          data.element.classList.remove('fade-out');
+                          data.element.classList.add('fade-in');
+                          data.group.classList.remove('fade-out');
+                          data.group.classList.add('fade-in');
+                        }
+                      });
+                      partyLegend.style.display = '';
+                      partyLegend.classList.remove('fade-out');
+                      partyLegend.classList.add('fade-in');
+                    }, skipAnimation ? 0 : 1000);
+                  }
+
+                  currentView = targetView;
+                }
+
+                // 更新原有的switchView引用
+                window.switchView = switchView;
+              })
+              .catch(error => {
+                console.error('Error loading borders:', error);
+              });
+          });
+
+          // ... rest of the existing code ...
 
           // 并行加载四个文件，合成区域数据
           Promise.all([
@@ -896,7 +1221,7 @@
               function switchView(targetView, skipAnimation = false, startHighlight = false) {
                 if (currentView === targetView) return;
                 
-                // 停止自动高亮动画
+                // 停止自动高亮
                 if (window.highlightInterval) {
                   clearInterval(window.highlightInterval);
                   window.highlightInterval = null;
@@ -927,13 +1252,20 @@
                   // 显示Brexit内容但保持vote内容可见
                   setTimeout(() => {
                     brexitContent.classList.add('visible');
+                    // 延迟3秒显示后续内容
+                    setTimeout(() => {
+                      const delayedContent = document.querySelector('.delayed-content');
+                      delayedContent.style.opacity = '1';
+                      delayedContent.style.transform = 'translateY(0)';
+                    }, 1000);
                   }, 400);
 
                   // 等待淡出完成后移动地图
                   setTimeout(() => {
                     map.flyTo({
                       ...viewPositions[targetView],
-                      essential: true
+                      essential: true,
+                      duration: 1500
                     });
 
                     // 隐藏所有视觉元素
@@ -949,6 +1281,22 @@
                     document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
                       el.style.display = 'none';
                     });
+
+                    // 显示边界和填充
+                    map.setPaintProperty('eu-borders', 'line-opacity', 1);
+                    map.setPaintProperty('uk-border', 'line-opacity', 1);
+                    
+                    // 显示填充
+                    map.setPaintProperty('eu-fill', 'fill-opacity', 0.2);
+                    map.setPaintProperty('uk-fill', 'fill-opacity', 0.2);
+
+                    // 延迟后改变UK的颜色
+                    setTimeout(() => {
+                      console.log('Highlighting UK border'); // 添加调试日志
+                      map.setPaintProperty('uk-border', 'line-color', '#F44336');
+                      map.setPaintProperty('uk-border', 'line-width', 3);
+                      map.setPaintProperty('uk-fill', 'fill-color', '#F44336');
+                    }, 1000);
                   }, 500);
                 } else {
                   // 从Brexit视图返回Vote视图
