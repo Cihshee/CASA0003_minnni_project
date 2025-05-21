@@ -553,25 +553,36 @@ p {
 }
 
 .avatar-frame {
-  width: 150px;
-  height: 150px;
+  position: relative;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
-  overflow: hidden;
-  border: 3.5px solid #ffffff;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: visible;
   margin-bottom: 1rem;
 }
 
-.avatar-frame:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+.rotating-border {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  background: linear-gradient(100deg, #5eb3f9, #87ceeb);
+  padding: 5px;
+  animation: rotate 4s linear infinite;
+  z-index: 1;
 }
 
+
 .avatar-img {
+  position: relative;
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: cover;
+  z-index: 2;
+  border: 2px solid #ffffff;
 }
 
 .member-name {
@@ -582,14 +593,14 @@ p {
 }
 
 .member-link {
-  color: #ffffff;
-  text-decoration: none;
+  color: #9fcfff;
+  text-decoration: underline;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
 .member-link:hover {
-  color: #4a90e2;
+  color: #9fcfff;
   text-decoration: underline;
 }
 
@@ -639,4 +650,30 @@ p {
   margin-top: 2rem;
   opacity: 0.8;
   font-weight: 300;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes moveDot {
+  0% {
+    transform: translateX(-50%) rotate(0deg) translateY(-98px);
+  }
+  100% {
+    transform: translateX(-50%) rotate(360deg) translateY(-98px);
+  }
+}
+
+.avatar-frame:hover .rotating-border {
+  animation-play-state: paused;
+}
+
+.avatar-frame:hover .rotating-border::before {
+  animation-play-state: paused;
 } 

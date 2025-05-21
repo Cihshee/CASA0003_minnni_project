@@ -481,6 +481,23 @@
         opacity: 1;
         transform: translateX(0);
       }
+
+      .avatar-frame {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        padding: 4px;
+        background: linear-gradient(135deg, #5eb3f9 0%, #ffffff 100%);
+        margin-bottom: 1rem;
+      }
+
+      .avatar-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
     </style>
   </head>
   <body>
@@ -523,33 +540,39 @@
           container: document.getElementById('background-animation'),
           renderer: 'svg',
           loop: true,
-          autoplay: true,
+          autoplay: false,
           path: 'https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/Chevrons-moving-down.json',
           rendererSettings: {
             preserveAspectRatio: 'xMidYMid slice',
-            className: 'lottie-svg-fullscreen'
+            progressiveLoad: true,
+            hideOnTransparent: true
           }
         });
         
-        // 在动画加载完成后减慢速度
+        // 在动画加载完成后设置速度
         anim.addEventListener('DOMLoaded', function() {
-          // 设置为0.3倍速，使动画更慢
-          anim.setSpeed(0.3);
-          console.log('Animation speed set to 0.3');
+          requestAnimationFrame(() => {
+            anim.setSpeed(0.4);
+            anim.goToAndPlay(-2000, true);
+          });
         });
         
-        // Ensure the animation container covers the desired viewport area
-        function resizeAnimation() {
+        // 优化动画容器大小调整
+        const resizeAnimation = debounce(() => {
           const container = document.getElementById('background-animation');
-          container.style.width = (window.innerWidth * 0.9) + 'px';
-          container.style.height = window.innerHeight + 'px';
-          container.style.left = '5%';
-          container.style.right = '5%';
-        }
+          if (container) {
+            requestAnimationFrame(() => {
+              container.style.width = (window.innerWidth * 0.9) + 'px';
+              container.style.height = window.innerHeight + 'px';
+              container.style.left = '5%';
+              container.style.right = '5%';
+            });
+          }
+        }, 150);
         
-        // Call resize on load and on window resize
+        // 调用resize并添加事件监听
         resizeAnimation();
-        window.addEventListener('resize', resizeAnimation);
+        window.addEventListener('resize', resizeAnimation, { passive: true });
       });
     </script>
 
@@ -560,39 +583,68 @@
         'section1','section1b','section4','section5','section6','section7','section8','section9'
       ].map(id => document.getElementById(id));
       
+      // 使用 requestAnimationFrame 优化滚动性能
+      let ticking = false;
       function updateActiveDot() {
-        let idx = 0;
-        const scrollY = window.scrollY || window.pageYOffset;
-        for (let i = 0; i < sections.length; i++) {
-          if (sections[i]) {
-            const rect = sections[i].getBoundingClientRect();
-            if (rect.top <= window.innerHeight * 0.33) idx = i;
-          }
-        }
-        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-        
-        // 根据当前部分切换背景视频
-        const mainBackground = document.getElementById('main-background');
-        const sectionsBackground = document.getElementById('sections-background');
-        
-        if (idx <= 1) { // 首页部分显示第一个视频
-          mainBackground.style.opacity = 1;
-          sectionsBackground.style.opacity = 0;
-        } else { // 其他部分显示第二个视频
-          mainBackground.style.opacity = 0;
-          sectionsBackground.style.opacity = 1;
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            let idx = 0;
+            const scrollY = window.scrollY || window.pageYOffset;
+            for (let i = 0; i < sections.length; i++) {
+              if (sections[i]) {
+                const rect = sections[i].getBoundingClientRect();
+                if (rect.top <= window.innerHeight * 0.33) idx = i;
+              }
+            }
+            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+            
+            // 根据当前部分切换背景视频
+            const mainBackground = document.getElementById('main-background');
+            const sectionsBackground = document.getElementById('sections-background');
+            
+            if (idx <= 1) { // 首页部分显示第一个视频
+              mainBackground.style.opacity = 1;
+              sectionsBackground.style.opacity = 0;
+            } else { // 其他部分显示第二个视频
+              mainBackground.style.opacity = 0;
+              sectionsBackground.style.opacity = 1;
+            }
+            ticking = false;
+          });
+          ticking = true;
         }
       }
+
+      // 防抖函数
+      function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
       
-      window.addEventListener('scroll', updateActiveDot);
-      window.addEventListener('resize', updateActiveDot);
+      // 优化滚动和调整大小的事件监听
+      window.addEventListener('scroll', updateActiveDot, { passive: true });
+      window.addEventListener('resize', debounce(updateActiveDot, 150), { passive: true });
+
       // 初始化时立即调用一次
       document.addEventListener('DOMContentLoaded', updateActiveDot);
       
+      // 优化点击事件
       dots.forEach((dot, i) => {
         dot.addEventListener('click', e => {
           e.preventDefault();
-          if (sections[i]) sections[i].scrollIntoView({behavior:'smooth'});
+          if (sections[i]) {
+            // 使用 requestAnimationFrame 优化滚动
+            requestAnimationFrame(() => {
+              sections[i].scrollIntoView({behavior:'smooth'});
+            });
+          }
         });
       });
     </script>
@@ -1950,6 +2002,25 @@
     </script>
 
       <section id="section9" class="full-page">
+        <style>
+          .avatar-frame {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, #5eb3f9 0%, #ffffff 100%);
+            margin-bottom: 1rem;
+          }
+
+          .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+        </style>
+        
         <div class="content">
           <h2 class="section-title">Our Team</h2>
           <div class="team-container">
@@ -1981,7 +2052,6 @@
               <h3 class="member-name">Scarlett Liu</h3>
               <a href="https://github.com/Scarlett-Cococo" class="member-link" target="_blank">Github page</a>
             </div>
-
           </div>
           <div class="footer-links">
             <a href="https://github.com/Cihshee/CASA0003_minnni_project" class="icon-link" target="_blank">
