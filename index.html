@@ -684,7 +684,7 @@
         <li><a href="#section5" class="nav-link">Trade Partners</a></li>
         <li><a href="#section6" class="nav-link">Key Commodities</a></li>
         <li><a href="#section7" class="nav-link">Transport Modes</a></li>
-        <!-- <li><a href="#section8" class="nav-link">Insights</a></li> -->
+        <li><a href="#section8" class="nav-link">Key Insights</a></li>
         <li><a href="#section9" class="nav-link">Our Team</a></li>
       </ul>
     </nav>
@@ -697,6 +697,7 @@
         <li><a href="#section5" class="fixed-nav-link" data-title="Trade Partners"></a></li>
         <li><a href="#section6" class="fixed-nav-link" data-title="Commodities"></a></li>
         <li><a href="#section7" class="fixed-nav-link" data-title="Transport"></a></li>
+        <li><a href="#section8" class="fixed-nav-link" data-title="Insights"></a></li>
         <li><a href="#section9" class="fixed-nav-link" data-title="Team"></a></li>
         <li><a href="#top" class="fixed-nav-link back-to-top" data-title="Back to Top"></a></li>
       </ul>
@@ -708,25 +709,54 @@
         <div id="threejs-bg" style="position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none;"></div>
         <!-- 添加倒影容器 -->
         <div id="threejs-reflection" style="position:absolute;left:0;top:100%;width:100%;height:100%;z-index:0;pointer-events:none;transform:scaleY(-1);opacity:0.3;background:linear-gradient(to bottom, rgba(0,0,0,0.1), transparent);"></div>
-        <div class="hero-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;max-width:1200px;margin:0 auto;padding-top:5vh;padding-left:0;">
-          <div id="lottie-title" style="width:1800px;max-width:99vw;height:400px;min-height:200px;display:flex;align-items:center;justify-content:flex-start;pointer-events:none;margin-bottom:0;margin-left:-400px;">
-            <div id="lottie-title-player" style="width:1800px;max-width:99vw;height:400px;"></div>
+        <div class="hero-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;max-width:1200px;margin:0 auto;padding-top:2vh;padding-left:0;">
+          <div id="lottie-title" style="width:1900px;max-width:99vw;height:450px;min-height:250px;display:flex;align-items:center;justify-content:flex-start;pointer-events:none;margin-bottom:-20px;margin-left:-400px;">
+            <div id="lottie-title-player" style="width:1900px;max-width:99vw;height:450px;"></div>
           </div>
-          <p class="hero-desc highlight-desc" style="margin-top:-50px;margin-bottom:0;font-size:1.25rem;margin-left:120px;text-shadow:0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.7);color:#fff;font-weight:500;">
+          <p class="hero-desc highlight-desc" style="margin-top:-70px;margin-bottom:0;font-size:1.1rem;text-shadow:0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.7);color:#fff;font-weight:500;text-align:center;width:100%;">
             An Exploration Of The Impact Of Brexit On The Global Commodity Import And Export Trade Network.
           </p>
+          <!-- 添加Start Explore按钮 -->
+          <button id="start-explore-btn" style="margin-top:2.5rem;padding:1rem 2.5rem;font-size:1.2rem;background:rgba(94, 179, 249, 0.2);color:#fff;border:2px solid #5eb3f9;border-radius:30px;cursor:pointer;transition:all 0.3s ease;text-shadow:0 2px 4px rgba(0,0,0,0.5);backdrop-filter:blur(5px);font-weight:700;display:block;margin-left:auto;margin-right:auto;">
+            Start Explore
+            <svg style="width:20px;height:20px;margin-left:10px;transform:translateY(4px)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+          </button>
         </div>
       </section>
 
       <section id="section1b" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;min-height:60vh;background:transparent;">
         <video autoplay muted loop playsinline id="bg-video"
-          style="position:relative;width:60vw;height:auto;max-width:1200px;max-height:100vh;object-fit:cover;z-index:0;border-radius:1.5rem;box-shadow:0 4px 32px rgba(0,0,0,0.18);border:4px solid #444;margin-top:35vh;margin-bottom:20vh;">
+          style="position:relative;width:60vw;height:auto;max-width:1200px;max-height:100vh;object-fit:cover;z-index:0;border-radius:1.5rem;box-shadow:0 4px 32px rgba(0,0,0,0.18);border:4px solid #444;margin-top:20vh;margin-bottom:10vh;">
           <source src="public/cover.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       </section>
 
       <script>
+        // 添加按钮点击事件处理
+        document.getElementById('start-explore-btn').addEventListener('click', function() {
+          document.getElementById('section1b').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        });
+
+        // 添加按钮悬停效果
+        const exploreBtn = document.getElementById('start-explore-btn');
+        exploreBtn.addEventListener('mouseenter', function() {
+          this.style.background = 'rgba(94, 179, 249, 0.4)';
+          this.style.transform = 'translateY(-2px)';
+          this.style.boxShadow = '0 4px 15px rgba(94, 179, 249, 0.3)';
+        });
+        exploreBtn.addEventListener('mouseleave', function() {
+          this.style.background = 'rgba(94, 179, 249, 0.2)';
+          this.style.transform = 'translateY(0)';
+          this.style.boxShadow = 'none';
+        });
+
         lottie.loadAnimation({
           container: document.getElementById('lottie-title-player'),
           renderer: 'svg',
@@ -737,7 +767,7 @@
       </script>
 
       <section id="section2" class="full-page">
-        <div class="content brexit-vote-section">
+        <div class="content brexit-vote-section" style="padding:2rem;background:rgba(255, 255, 255, 0.05);backdrop-filter:blur(10px);border-radius:20px;margin:1rem auto;max-width:1400px;width:100%;box-sizing:border-box;">
           <div class="brexit-container">
             <div class="brexit-text">
               <h2 style="color: #5eb3f9;">"Brexit"</h2>
@@ -1822,7 +1852,7 @@
         });
       </script>
 
-      <section id="section4" class="full-page">
+      <section id="section4" class="full-page" style="margin-top:-2rem;">
         <div class="content">
           <!-- 使用 Country Scale 组件 -->
           <div id="country-scale-container"></div>
@@ -1850,11 +1880,74 @@
         </div>
       </section>
 
-      <!-- <section id="section8" class="full-page">
+      <section id="section8" class="full-page">
         <div class="content">
-          
+          <!-- 使用 Key Insights 组件 -->
+          <div id="key-insights-container"></div>
         </div>
-      </section> -->
+      </section>
+
+    <script>
+        // 加载 Country Scale 组件
+        fetch('src/components/CountryScale/CountryScale.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('country-scale-container').innerHTML = html;
+          const script = document.createElement('script');
+            script.src = 'src/components/CountryScale/CountryScale.js';
+          document.body.appendChild(script);
+        });
+
+      // 加载 Region Scale 组件
+        fetch('src/components/RegionScale/RegionScale.html')
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('region-scale-container').innerHTML = html;
+            const script = document.createElement('script');
+            script.src = 'src/components/RegionScale/RegionScale.js';
+            document.body.appendChild(script);
+          });
+
+      // 加载 Goods Types 组件
+        fetch('src/components/GoodsType/GoodsType.html')
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('goods-types-container').innerHTML = html;
+            const script = document.createElement('script');
+            script.src = 'src/components/GoodsType/GoodsType.js';
+            document.body.appendChild(script);
+          });
+
+      // 加载 Transportation 组件
+      fetch('src/components/Transport/Transport.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('transport-container').innerHTML = html;
+          const script = document.createElement('script');
+          script.src = 'src/components/Transport/Transport.js';
+            document.body.appendChild(script);
+          });
+
+        // 加载 Key Insights 组件并确保样式表被加载
+        Promise.all([
+          fetch('src/components/KeyInsights/KeyInsights.html').then(response => response.text()),
+          fetch('src/components/KeyInsights/KeyInsights.css').then(response => response.text())
+        ]).then(([html, css]) => {
+          // 添加样式
+          const styleSheet = document.createElement('style');
+          styleSheet.textContent = css;
+          document.head.appendChild(styleSheet);
+          
+          // 添加HTML
+          document.getElementById('key-insights-container').innerHTML = html;
+          
+          // 添加脚本
+          const script = document.createElement('script');
+          script.src = 'src/components/KeyInsights/KeyInsights.js';
+          document.body.appendChild(script);
+        });
+
+    </script>
 
       <section id="section9" class="full-page">
         <div class="content">
@@ -1905,53 +1998,8 @@
           </div>
         </div>
       </section>
+    </main>
 
-    <script>
-      // 加载 Country Scale 组件
-      fetch('src/components/CountryScale/CountryScale.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('country-scale-container').innerHTML = html;
-          // 加载组件动画脚本
-          const script = document.createElement('script');
-          script.src = 'src/components/CountryScale/CountryScale.js';
-          document.body.appendChild(script);
-        });
-
-      // 加载 Region Scale 组件
-      fetch('src/components/RegionScale/RegionScale.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('region-scale-container').innerHTML = html;
-          // 加载组件动画脚本
-          const script = document.createElement('script');
-          script.src = 'src/components/RegionScale/RegionScale.js';
-          document.body.appendChild(script);
-        });
-
-      // 加载 Goods Types 组件
-      fetch('src/components/GoodsType/GoodsType.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('goods-types-container').innerHTML = html;
-          // 加载组件动画脚本
-          const script = document.createElement('script');
-          script.src = 'src/components/GoodsType/GoodsType.js';
-          document.body.appendChild(script);
-        });
-
-      // 加载 Transportation 组件
-      fetch('src/components/Transport/Transport.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('transport-container').innerHTML = html;
-          // 加载组件动画脚本
-          const script = document.createElement('script');
-          script.src = 'src/components/Transport/Transport.js';
-          document.body.appendChild(script);
-        });
-
-    </script>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>

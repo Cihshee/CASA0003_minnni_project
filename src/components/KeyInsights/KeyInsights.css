@@ -1,0 +1,21 @@
+.key-insights-section {
+  padding: 0 2rem 4rem 2rem;
+  margin-top: -10vh;
+  background: transparent;
+  backdrop-filter: blur(10px);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.insights-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 2;
+} 
