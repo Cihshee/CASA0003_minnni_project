@@ -13,6 +13,7 @@
     "vite": "^6.3.4"
   },
   "dependencies": {
+    "@turf/turf": "^7.2.0",
     "chart.js": "^4.4.9",
     "mapbox-gl": "^3.11.1"
   }

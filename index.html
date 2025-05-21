@@ -20,6 +20,8 @@
     <!-- 添加网站favicon -->
     <link rel="icon" href="public/img/CASAlogo.svg" type="image/svg+xml">
     <link rel="shortcut icon" href="public/img/CASAlogo.svg" type="image/svg+xml">
+    <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     
     <style>
       /* 视频背景增强效果 */
@@ -108,52 +110,64 @@
         border-radius: 20px;
         margin: 2rem auto;
         max-width: 1400px;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .brexit-container {
         display: flex;
-        gap: 4rem;
-        align-items: center;
-        justify-content: space-between;
+        gap: 3rem;
+        align-items: flex-start;
+        justify-content: center;
+        min-height: 600px;
       }
 
       .brexit-text {
-        flex: 1;
+        flex: 0 0 500px;
         padding: 2rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        height: 600px; /* 与地图高度一致 */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* 均匀分布内容 */
+        overflow: hidden;
       }
 
       .brexit-text h2 {
         color: #fff;
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
+        font-size: 2.8rem; /* 增大标题字号 */
+        margin-bottom: 2rem; /* 增加标题下方间距 */
       }
 
       .brexit-text p {
         color: #fff;
-        font-size: 1.1rem;
-        line-height: 1.6;
+        font-size: 1.05rem; /* 增大正文字号 */
+        line-height: 1.5;
         margin-bottom: 1rem;
       }
 
       .brexit-text ul {
         color: #fff;
-        margin: 1rem 0;
-        padding-left: 1.5rem;
+        margin: 1rem 0 5rem; /* 增加列表上下间距 */
+        padding-left: 1.2rem;
       }
 
       .brexit-text li {
-        margin: 0.5rem 0;
-        font-size: 1.1rem;
+        margin: 0.5rem 0; /* 增加列表项间距 */
+        font-size: 1.05rem; /* 增大列表字号 */
+        line-height: 1.5;
       }
 
       .brexit-map {
-        flex: 1;
+        flex: 0 0 700px;
         height: 600px;
         background: rgba(0, 0, 0, 0.2);
         border-radius: 15px;
-        overflow: visible;
         position: relative;
         z-index: 10;
+        overflow: hidden;
       }
 
       .uk-outline {
@@ -206,205 +220,224 @@
 
       .region-marker {
         background: rgba(0, 0, 0, 0.85);
-        padding: 8px 12px;
-        border-radius: 6px;
+        padding: 8px;
+        border-radius: 4px;
         white-space: nowrap;
-        opacity: 0;
-        animation: fadeIn 0.5s ease forwards;
-        position: relative;
-        transition: all 0.3s ease;
-        z-index: 20;
+        color: #fff;
+        font-size: 12px;
+        pointer-events: auto;
+        z-index: 100;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         backdrop-filter: blur(4px);
-      }
-
-      .region-marker:hover {
-        transform: scale(1.05) !important;
-        z-index: 30;
-      }
-
-      .marker-container {
-        width: 0;
-        height: 0;
-      }
-
-      .connector-line {
         opacity: 0;
-        animation: fadeIn 0.5s ease forwards 0.3s;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      .region-marker::before {
-        content: '';
-        position: absolute;
-        width: 2px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.5);
-        left: 50%;
-        bottom: 100%;
-        transform: scaleY(0);
-        transform-origin: bottom;
-        animation: lineGrow 0.5s ease forwards;
-        animation-delay: 0.3s;
-      }
-
-      .region-marker::after {
-        content: '';
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: white;
-        left: calc(50% - 4px);
-        bottom: calc(100% + 40px);
-        opacity: 0;
-        animation: dotAppear 0.3s ease forwards;
-        animation-delay: 0.8s;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes lineGrow {
-        from {
-          transform: scaleY(0);
-        }
-        to {
-          transform: scaleY(1);
-        }
-      }
-
-      @keyframes dotAppear {
-        from {
-          opacity: 0;
-          transform: scale(0);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
+      .region-marker.highlight {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.95);
+        color: #000;
+        box-shadow: 0 4px 16px rgba(255, 255, 255, 0.5);
+        z-index: 101;
       }
 
       .region-label {
-        color: white;
-        font-size: 14px;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         font-weight: 500;
-      }
-
-      .region-note {
-        color: #aaa;
-        font-size: 12px;
-        font-style: italic;
       }
 
       .vote-distribution {
         display: flex;
-        gap: 3px;
-        justify-content: center;
+        gap: 2px;
       }
 
       .vote-dot {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         border-radius: 3px;
-        display: inline-block;
-        transition: transform 0.2s ease;
       }
 
-      .vote-dot.remain {
-        background-color: #00BCD4;
-      }
+      .vote-dot.yellow { background: #f7f48b; }
+      .vote-dot.red { background: #F44336; }
+      .vote-dot.blue { background: #2196F3; }
+      .vote-dot.cyan { background: #00BCD4; }
+      .vote-dot.green { background: #4CAF50; }
+      .vote-dot.orange { background: #FFC107; }
+      .vote-dot.darkgreen { background: #137a2b; }
 
-      .vote-dot.leave {
-        background-color: #F44336;
-      }
-
-      .vote-dot.other {
-        background-color: #FFC107;
-      }
-
-      .region-marker:hover {
-        transform: translateY(-5px) scale(1.05);
-        background: rgba(0, 0, 0, 0.85);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      }
-
-      .region-marker:hover .vote-dot {
-        transform: scale(1.1);
-      }
-
-      .region-stats {
-        display: none;
-        margin-top: 8px;
-        padding-top: 8px;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        font-size: 12px;
-        color: #fff;
-      }
-
-      .region-marker:hover .region-stats {
-        display: block;
-      }
-
-      .stats-row {
-        display: flex;
-        justify-content: space-between;
-        margin: 4px 0;
-      }
-
-      .stats-label {
-        color: #aaa;
-      }
-
-      /* 为高亮状态添加样式 */
-      .region-marker.highlight {
-        transform: scale(1.1) !important;
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        z-index: 100;
-        background: rgba(0, 0, 0, 0.9);
-      }
-      
-      .region-marker.highlight .region-stats {
-        display: block !important;
-      }
-      
       .connector-line {
-        position: absolute;
-        width: 2px;
-        background: rgba(255, 255, 255, 0.5);
-        transform-origin: top;
-        top: 0;
-        left: 0;
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.8);
+        stroke-width: 1.5;
+        pointer-events: none;
+        stroke-dasharray: 4,4;
+        animation: dash 20s linear infinite;
         opacity: 0;
-        animation: fadeIn 0.5s ease forwards 0.3s;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      
-      .marker-container {
-        width: 0;
-        height: 0;
-        position: relative;
-      }
-      
-      .region-marker {
-        position: absolute;
-        background: rgba(0, 0, 0, 0.85);
-        padding: 8px 12px;
-        border-radius: 6px;
-        white-space: nowrap;
+
+      .connector-dot {
+        fill: rgba(255, 255, 255, 0.8);
+        stroke: rgba(255, 255, 255, 0.4);
+        stroke-width: 1;
+        pointer-events: none;
+        r: 3;
         opacity: 0;
-        animation: fadeIn 0.5s ease forwards;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .connector-line.fade-in,
+      .connector-dot.fade-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .connector-group {
+        opacity: 0;
+        transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .connector-group.fade-in {
+        opacity: 1;
+      }
+
+      .brexit-text.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .brexit-text p.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .brexit-text .vote-content,
+      .brexit-text .brexit-content {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .brexit-text .vote-content.visible,
+      .brexit-text .brexit-content.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .region-marker.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .connector-group.highlight .connector-line {
+        stroke: rgba(255, 255, 255, 1);
+        stroke-width: 3;
+        stroke-dasharray: none;
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+      }
+
+      .connector-group.highlight .connector-dot {
+        fill: rgba(255, 255, 255, 1);
+        stroke: rgba(255, 255, 255, 0.8);
+        r: 5;
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+      }
+
+      .view-toggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+        z-index: 100;
+      }
+
+      .view-button {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
         transition: all 0.3s ease;
-        z-index: 20;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .view-button:hover {
+        background: rgba(0, 0, 0, 0.8);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .view-button.active {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.6);
+      }
+
+      .view-button svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      .fade-out {
+        animation: fadeOut 0.5s forwards;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s forwards;
+      }
+
+      .party-legend {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        gap: 8px;
+        z-index: 100;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 8px;
+        border-radius: 4px;
+        transition: opacity 0.5s ease;
+      }
+
+      .party-item {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 500;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .party-item.Con { background: #2196F3; }
+      .party-item.Bxt { background: #00BCD4; }
+      .party-item.Grn { background: #4CAF50; }
+      .party-item.Lab { background: #F44336; }
+      .party-item.LD { background: #FFC107; }
+      .party-item.PldC { background: #137a2b; }
+      .party-item.SNP { background: #f7f48b; color: #000; }
+
+      .region-fills-hover {
+        transition: all 0.2s ease;
       }
     </style>
   </head>
@@ -665,16 +698,45 @@
         <div class="content brexit-vote-section">
           <div class="brexit-container">
             <div class="brexit-text">
-              <h2>Brexit Referendum Results</h2>
-              <p>The UK's decision to leave the European Union was determined by a historic referendum on June 23, 2016. The vote revealed significant regional variations in Brexit support across the country:</p>
-              <ul>
-                <li>Scotland and Northern Ireland predominantly voted to remain</li>
-                <li>England and Wales showed stronger support for leaving</li>
-                <li>London stood out as a remain stronghold within England</li>
-              </ul>
-              <p>This regional divide has had lasting implications for UK's trade patterns and economic relationships.</p>
+              <h2>"Brexit"</h2>
+              <div class="vote-content">
+                <p>The 2016 Brexit referendum revealed stark regional divisions across the UK:</p>
+                <ul>
+                  <li>Scotland and Northern Ireland voted strongly to remain</li>
+                  <li>England and Wales backed leaving the EU</li>
+                  <li>London emerged as a remain stronghold</li>
+                </ul>
+              </div>
+              <div class="brexit-content">
+                <p>The 2020 Brexit implementation transformed UK's international trade:</p>
+                <ul>
+                  <li>New trade and customs frameworks</li>
+                  <li>Changed movement of goods</li>
+                  <li>Reshaped business partnerships</li>
+                </ul>
+              </div>
             </div>
-            <div id="brexit-map" class="brexit-map" style="position: relative; z-index: 10;"></div>
+            <div id="brexit-map" class="brexit-map">
+              <div class="party-legend">
+                <div class="party-item Con">Con</div>
+                <div class="party-item Bxt">Bxt</div>
+                <div class="party-item Grn">Grn</div>
+                <div class="party-item Lab">Lab</div>
+                <div class="party-item LD">LD</div>
+                <div class="party-item PldC">PldC</div>
+                <div class="party-item SNP">SNP</div>
+              </div>
+              <div class="view-toggle">
+                <button class="view-button active" data-view="vote">
+                  <svg viewBox="0 0 24 24"><path d="M18 13h-.68l-2 2h1.91L19 17H5l1.78-2h2.05l-2-2H6l-3 3v4c0 1.1.89 2 1.99 2H19c1.1 0 2-.89 2-2v-4l-3-3zm-1-5.05l-4.95 4.95-3.54-3.54 4.95-4.95L17 7.95zm-4.24-5.66L6.39 8.66c-.39.39-.39 1.02 0 1.41l4.95 4.95c.39.39 1.02.39 1.41 0l6.36-6.36c.39-.39.39-1.02 0-1.41L14.16 2.3c-.38-.4-1.01-.4-1.4-.01z"/></svg>
+                  2016 Vote
+                </button>
+                <button class="view-button" data-view="brexit">
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                  2020 Brexit
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -684,358 +746,729 @@
           const MAPBOX_TOKEN = 'pk.eyJ1IjoieWl4aW5nLWxpIiwiYSI6ImNtN3FtNWh6YjA0ancybnM4aGxjZnlheTEifQ.sKwaoIMQR65VQmYDbnu2MQ';
           const MAPBOX_STYLE = 'mapbox://styles/yixing-li/cmaa8uo1j00j001sgc3051vxu';
 
-          // 定义投票数据
-          const votingData = {
-            'Scotland': {
-              seats: 6,
-              distribution: ['remain', 'remain', 'remain', 'leave', 'other', 'other'],
-              center: [-4.2026, 57.8907],
-              offset: [-180, 0],
-              stats: {
-                remain: '62%',
-                leave: '38%',
-                turnout: '67.2%'
-              },
-              regionId: 'UKM'
-            },
-            'N Ireland': {
-              seats: 3,
-              distribution: ['remain', 'remain', 'leave'],
-              center: [-6.4923, 54.7877],
-              offset: [-160, 0],
-              note: 'yet to declare',
-              regionId: 'UKN'
-            },
-            'NE England': {
-              seats: 3,
-              distribution: ['remain', 'remain', 'leave'],
-              center: [-1.6761, 54.9783],
-              offset: [-160, 0],
-              regionId: 'UKC'
-            },
-            'Yorkshire & the Humber': {
-              seats: 6,
-              distribution: ['remain', 'remain', 'remain', 'leave', 'leave', 'other'],
-              center: [-1.0872, 53.9591],
-              offset: [-180, 0],
-              regionId: 'UKE'
-            },
-            'NW England': {
-              seats: 8,
-              distribution: ['remain', 'remain', 'remain', 'leave', 'leave', 'other', 'other', 'other'],
-              center: [-2.7779, 54.4442],
-              offset: [-160, -20],
-              regionId: 'UKD'
-            },
-            'East Midlands': {
-              seats: 5,
-              distribution: ['remain', 'remain', 'remain', 'leave', 'other'],
-              center: [-0.8451, 52.7954],
-              offset: [-160, 0],
-              regionId: 'UKF'
-            },
-            'West Midlands': {
-              seats: 7,
-              distribution: ['remain', 'remain', 'remain', 'remain', 'leave', 'leave', 'other'],
-              center: [-2.1957, 52.4751],
-              offset: [-180, 0],
-              regionId: 'UKG'
-            },
-            'East of England': {
-              seats: 7,
-              distribution: ['remain', 'remain', 'remain', 'other', 'other', 'leave', 'other'],
-              center: [0.5421, 52.1911],
-              offset: [20, 0],
-              regionId: 'UKH'
-            },
-            'Wales': {
-              seats: 4,
-              distribution: ['remain', 'remain', 'leave', 'leave'],
-              center: [-3.7837, 52.1307],
-              offset: [-160, 0],
-              regionId: 'UKL'
-            },
-            'London': {
-              seats: 8,
-              distribution: ['other', 'other', 'other', 'remain', 'remain', 'leave', 'leave', 'other'],
-              center: [-0.1276, 51.5072],
-              offset: [20, 20],
-              regionId: 'UKI'
-            },
-            'SW England': {
-              seats: 6,
-              distribution: ['remain', 'remain', 'remain', 'other', 'leave', 'other'],
-              center: [-3.9999, 50.7772],
-              offset: [-160, 20],
-              regionId: 'UKK'
-            },
-            'SE England': {
-              seats: 10,
-              distribution: ['remain', 'remain', 'remain', 'remain', 'remain', 'leave', 'leave', 'other', 'other', 'other'],
-              center: [-0.5596, 51.1781],
-              offset: [20, -20],
-              regionId: 'UKJ'
-            }
-          };
-
           // 创建Map
           mapboxgl.accessToken = MAPBOX_TOKEN;
           const map = new mapboxgl.Map({
             container: 'brexit-map',
             style: MAPBOX_STYLE,
-            center: [-2, 54],
-            zoom: 5.2,
-            interactive: true
+            center: [-2.5, 55.5],  // 向上移动中心点
+            zoom: 4.5,  // 稍微拉远视角
+            interactive: true,
+            boxZoom: false,
+            dragRotate: false,
+            pitchWithRotate: false,
+            touchZoomRotate: false
           });
 
-          // 当地图加载完成后设置数据和图层
-          map.on('load', function() {
-            // 加载英国NUTS1区域数据
-            map.addSource('uk-regions', {
-              type: 'geojson',
-              data: 'https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-kingdom/uk-nuts-1.json'
-            });
-
-            // 添加区域填充图层
-            map.addLayer({
-              'id': 'region-fills',
-              'type': 'fill',
-              'source': 'uk-regions',
-              'layout': {},
-              'paint': {
-                'fill-color': [
-                  'case',
-                  ['boolean', ['feature-state', 'hover'], false],
-                  'rgba(255, 255, 255, 0.2)',
-                  'rgba(0, 0, 0, 0.0)'
-                ],
-                'fill-outline-color': [
-                  'case',
-                  ['boolean', ['feature-state', 'hover'], false],
-                  '#ffffff',
-                  'rgba(255, 255, 255, 0.4)'
-                ],
-                'fill-opacity': 0.7
-              }
-            });
-
-            // 添加区域边界图层
-            map.addLayer({
-              'id': 'region-borders',
-              'type': 'line',
-              'source': 'uk-regions',
-              'layout': {},
-              'paint': {
-                'line-color': 'rgba(255, 255, 255, 0.5)',
-                'line-width': 1
-              }
-            });
-
-            // 添加区域标签
-            const markers = {};
-            let hoveredStateId = null;
+          // 并行加载四个文件，合成区域数据
+          Promise.all([
+            fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/countries.geojson').then(r => r.json()),
+            fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/England_boundaries.json').then(r => r.json()),
+            fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/Scotland_boundaries.json').then(r => r.json()),
+            fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/Wales_boundaries.json').then(r => r.json())
+          ]).then(([countries, englandTopo, scotlandTopo, walesTopo]) => {
+            // 确保所有数据使用相同的坐标系统 (WGS84)
+            const ireland = countries.features.find(f => f.properties.name === "Ireland");
             
-            // 鼠标悬停交互
-            map.on('mousemove', 'region-fills', (e) => {
-              if (e.features.length > 0) {
-                if (hoveredStateId !== null) {
-                  map.setFeatureState(
-                    { source: 'uk-regions', id: hoveredStateId },
-                    { hover: false }
-                  );
+            // 转换TopoJSON到GeoJSON并确保坐标系统一致
+            const england = topojson.feature(englandTopo, englandTopo.objects[Object.keys(englandTopo.objects)[0]]);
+            const scotland = topojson.feature(scotlandTopo, scotlandTopo.objects[Object.keys(scotlandTopo.objects)[0]]);
+            const wales = topojson.feature(walesTopo, walesTopo.objects[Object.keys(walesTopo.objects)[0]]);
+
+            // 合并所有feature
+            const features = [];
+            if (ireland) features.push(ireland);
+            features.push(...england.features);
+            features.push(...scotland.features);
+            features.push(...wales.features);
+
+            // 为每个feature添加唯一ID
+            features.forEach((f, i) => {
+              f.id = i;
+              // 确保properties存在
+              f.properties = f.properties || {};
+            });
+
+            const merged = { 
+              type: "FeatureCollection", 
+              features,
+              crs: {
+                type: "name",
+                properties: {
+                  name: "urn:ogc:def:crs:OGC:1.3:CRS84"
                 }
-                hoveredStateId = e.features[0].id;
-                map.setFeatureState(
-                  { source: 'uk-regions', id: hoveredStateId },
-                  { hover: true }
-                );
-                
-                // 获取当前区域的属性
-                const properties = e.features[0].properties;
-                const regionCode = properties.NUTS_ID;
-                
-                // 找出与该区域代码匹配的投票数据区域
-                const matchingRegion = Object.entries(votingData).find(([name, data]) => 
-                  data.regionId === regionCode
-                );
-                
-                if (matchingRegion) {
-                  const [regionName, regionData] = matchingRegion;
-                  // 高亮显示对应的标记
-                  if (markers[regionName]) {
-                    markers[regionName].getElement().classList.add('highlight');
+              }
+            };
+
+            // 地图加载后添加数据源
+            map.on('load', function() {
+              map.addSource('uk-regions', {
+                type: 'geojson',
+                data: merged,
+                generateId: true
+              });
+
+              // 清除所有高亮状态
+              function clearAllHighlights() {
+                map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], '']);
+                markers.forEach(data => {
+                  if (data.element) {
+                    data.element.classList.remove('highlight');
+                    if (data.group) {
+                      data.group.classList.remove('highlight');
+                    }
                   }
-                }
-              }
-            });
-            
-            map.on('mouseleave', 'region-fills', () => {
-              if (hoveredStateId !== null) {
-                map.setFeatureState(
-                  { source: 'uk-regions', id: hoveredStateId },
-                  { hover: false }
-                );
-                
-                // 移除所有标记的高亮
-                Object.values(markers).forEach(marker => {
-                  marker.getElement().querySelector('.region-marker').classList.remove('highlight');
                 });
               }
-              hoveredStateId = null;
-            });
-            
-            // 鼠标点击区域
-            map.on('click', 'region-fills', (e) => {
-              if (e.features.length > 0) {
-                const properties = e.features[0].properties;
-                const regionCode = properties.NUTS_ID;
+
+              // 高亮特定区域
+              function highlightRegion(regionName) {
+                clearAllHighlights();
                 
-                // 找出与该区域代码匹配的投票数据区域
-                const matchingRegion = Object.entries(votingData).find(([name, data]) => 
-                  data.regionId === regionCode
-                );
+                // 高亮地图区域
+                map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], regionName]);
                 
-                if (matchingRegion) {
-                  const [regionName, regionData] = matchingRegion;
-                  // 动画滚动到标记位置
-                  map.flyTo({
-                    center: regionData.center,
-                    zoom: 6,
-                    duration: 1000
+                // 高亮对应的标签和连接线
+                const marker = markers.get(regionName);
+                if (marker) {
+                  marker.element.classList.add('highlight');
+                  marker.group.classList.add('highlight');
+                }
+              }
+
+              // 启动自动高亮动画
+              function startAutoHighlight() {
+                if (window.highlightInterval) {
+                  clearInterval(window.highlightInterval);
+                }
+
+                const regions = Array.from(markers.keys());
+                let lastRegion = null;
+
+                function getRandomRegion() {
+                  let region;
+                  do {
+                    region = regions[Math.floor(Math.random() * regions.length)];
+                  } while (region === lastRegion && regions.length > 1);
+                  lastRegion = region;
+                  return region;
+                }
+
+                // 立即高亮第一个区域
+                highlightRegion(getRandomRegion());
+
+                // 每800ms切换一次高亮区域
+                window.highlightInterval = setInterval(() => {
+                  if (currentView === 'vote') {
+                    highlightRegion(getRandomRegion());
+                  } else {
+                    clearInterval(window.highlightInterval);
+                    window.highlightInterval = null;
+                  }
+                }, 320);
+              }
+
+              // 添加视图切换逻辑
+              const viewButtons = document.querySelectorAll('.view-button');
+              const partyLegend = document.querySelector('.party-legend');
+              let currentView = 'vote';
+
+              // 定义两个视图的相机位置
+              const viewPositions = {
+                initial: {
+                  center: [0, 50],
+                  zoom: 2,
+                  duration: 2000
+                },
+                vote: {
+                  center: [-2.5, 55.5],
+                  zoom: 4.5,
+                  duration: 2000
+                },
+                brexit: {
+                  center: [0, 50],
+                  zoom: 3,
+                  duration: 2000
+                }
+              };
+
+              // 处理视图切换
+              function switchView(targetView, skipAnimation = false, startHighlight = false) {
+                if (currentView === targetView) return;
+                
+                // 停止自动高亮动画
+                if (window.highlightInterval) {
+                  clearInterval(window.highlightInterval);
+                  window.highlightInterval = null;
+                }
+
+                // 清除所有高亮状态
+                clearAllHighlights();
+                
+                // 更新按钮状态
+                viewButtons.forEach(btn => {
+                  btn.classList.toggle('active', btn.dataset.view === targetView);
+                });
+
+                const voteContent = document.querySelector('.vote-content');
+                const brexitContent = document.querySelector('.brexit-content');
+
+                // 开始转场动画
+                if (targetView === 'brexit') {
+                  // 淡出标记和连接线
+                  markers.forEach(data => {
+                    if (data.element) {
+                      data.element.classList.add('fade-out');
+                      data.group.classList.add('fade-out');
+                    }
                   });
-                  
-                  // 高亮显示对应的标记
-                  if (markers[regionName]) {
-                    const markerEl = markers[regionName].getElement();
-                    markerEl.querySelector('.region-marker').classList.add('highlight');
+                  partyLegend.classList.add('fade-out');
+
+                  // 显示Brexit内容但保持vote内容可见
+                  setTimeout(() => {
+                    brexitContent.classList.add('visible');
+                  }, 400);
+
+                  // 等待淡出完成后移动地图
+                  setTimeout(() => {
+                    map.flyTo({
+                      ...viewPositions[targetView],
+                      essential: true
+                    });
+
+                    // 隐藏所有视觉元素
+                    markers.forEach(data => {
+                      if (data.element) {
+                        data.element.style.display = 'none';
+                        data.group.style.display = 'none';
+                      }
+                    });
+                    partyLegend.style.display = 'none';
                     
-                    // 3秒后自动移除高亮
-                    setTimeout(() => {
-                      markerEl.querySelector('.region-marker').classList.remove('highlight');
-                    }, 3000);
+                    // 隐藏所有连接线和标记
+                    document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
+                      el.style.display = 'none';
+                    });
+                  }, 500);
+                } else {
+                  // 从Brexit视图返回Vote视图
+                  map.flyTo({
+                    ...viewPositions[targetView],
+                    essential: true
+                  });
+
+                  // 隐藏Brexit内容但保持vote内容可见
+                  brexitContent.classList.remove('visible');
+
+                  // 等待地图移动完成后显示元素
+                  setTimeout(() => {
+                    // 显示所有连接线和标记
+                    document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
+                      el.style.display = '';
+                    });
+
+                    markers.forEach(data => {
+                      if (data.element) {
+                        data.element.style.display = '';
+                        data.group.style.display = '';
+                        data.element.classList.remove('fade-out');
+                        data.element.classList.add('fade-in');
+                        data.group.classList.remove('fade-out');
+                        data.group.classList.add('fade-in');
+                      }
+                    });
+                    partyLegend.style.display = '';
+                    partyLegend.classList.remove('fade-out');
+                    partyLegend.classList.add('fade-in');
+                  }, skipAnimation ? 0 : 1000);
+                }
+
+                currentView = targetView;
+              }
+
+              // 添加按钮点击事件
+              viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                  // 手动切换时不启动高亮动画
+                  switchView(button.dataset.view, false, false);
+                });
+              });
+
+              // 添加区域填充图层
+              map.addLayer({
+                'id': 'region-fills',
+                'type': 'fill',
+                'source': 'uk-regions',
+                'layout': {},
+                'paint': {
+                  'fill-color': 'rgba(0, 0, 0, 0)',
+                  'fill-outline-color': 'rgba(255, 255, 255, 0.4)'
+                }
+              });
+
+              // 添加高亮图层
+              map.addLayer({
+                'id': 'region-fills-hover',
+                'type': 'fill',
+                'source': 'uk-regions',
+                'layout': {},
+                'paint': {
+                  'fill-color': 'rgba(255, 255, 255, 0.4)',
+                  'fill-outline-color': '#ffffff',
+                  'fill-opacity': ['case',
+                    ['boolean', ['==', ['get', 'EER13NM'], ''], false],
+                    0,
+                    0.6
+                  ]
+                },
+                'filter': ['==', ['get', 'EER13NM'], '']
+              });
+
+              // 投票数据，包含党派缩写和颜色
+              const votingData = {
+                "Scotland": { 
+                  seats: 6, 
+                  distribution: [
+                    {party:"SNP", color:"yellow"}, {party:"SNP", color:"yellow"}, {party:"Lab", color:"red"}, 
+                    {party:"Lab", color:"red"}, {party:"Lab", color:"red"}, {party:"Con", color:"blue"}
+                  ],
+                  labelOffset: [40, -50]
+                },
+                "Northern Ireland": { 
+                  seats: 3, 
+                  note: "yet to declare",
+                  labelOffset: [-90, -20]
+                },
+                "North East": { 
+                  seats: 3, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, {party:"Lab", color:"red"}
+                  ],
+                  labelOffset: [120, -40]
+                },
+                "Yorkshire and The Humber": { 
+                  seats: 6, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, 
+                    {party:"Lab", color:"red"}, {party:"Con", color:"blue"}, {party:"LD", color:"orange"}
+                  ],
+                  labelOffset: [110, -20]
+                },
+                "North West": { 
+                  seats: 8, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, 
+                    {party:"Lab", color:"red"}, {party:"Lab", color:"red"}, {party:"Con", color:"blue"}, 
+                    {party:"LD", color:"orange"}, {party:"Grn", color:"green"}
+                  ],
+                  labelOffset: [-110, -10]
+                },
+                "West Midlands": { 
+                  seats: 7, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, {party:"Lab", color:"red"}, 
+                    {party:"Lab", color:"red"}, {party:"Con", color:"blue"}, {party:"LD", color:"orange"}, 
+                    {party:"Grn", color:"green"}
+                  ],
+                  labelOffset: [-130, 60]
+                },
+                "Wales": { 
+                  seats: 4, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Lab", color:"red"}, {party:"PlaidC", color:"darkgreen"}, 
+                    {party:"Con", color:"blue"}
+                  ],
+                  labelOffset: [-110, -30]
+                },
+                "South West": { 
+                  seats: 6, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, 
+                    {party:"LD", color:"orange"}, {party:"Con", color:"blue"}, {party:"Grn", color:"green"}
+                  ],
+                  labelOffset: [-60, 70]
+                },
+                "South East": { 
+                  seats: 10, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, 
+                    {party:"Con", color:"blue"}, {party:"Con", color:"blue"}, {party:"LD", color:"orange"}, 
+                    {party:"LD", color:"orange"}, {party:"Grn", color:"green"}, {party:"Lab", color:"red"}, 
+                    {party:"Lab", color:"red"}
+                  ],
+                  labelOffset: [130, 30]
+                },
+                "East Midlands": { 
+                  seats: 5, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, {party:"Con", color:"blue"}, 
+                    {party:"Lab", color:"red"}, {party:"LD", color:"orange"}
+                  ],
+                  labelOffset: [130, 30]
+                },
+                "East of England": { 
+                  seats: 7, 
+                  distribution: [
+                    {party:"Bxt", color:"cyan"}, {party:"Bxt", color:"cyan"}, {party:"Con", color:"blue"}, 
+                    {party:"Con", color:"blue"}, {party:"LD", color:"orange"}, {party:"Grn", color:"green"}, 
+                    {party:"Lab", color:"red"}
+                  ],
+                  labelOffset: [110, -10]
+                },
+                "London": { 
+                  seats: 8, 
+                  distribution: [
+                    {party:"Lab", color:"red"}, {party:"Lab", color:"red"}, {party:"Lab", color:"red"}, 
+                    {party:"Lab", color:"red"}, {party:"LD", color:"orange"}, {party:"LD", color:"orange"}, 
+                    {party:"Grn", color:"green"}, {party:"Con", color:"blue"}
+                  ],
+                  labelOffset: [50, -30]
+                }
+              };
+
+              // 地区名称映射（GeoJSON中的名称到我们的数据中的名称）
+              const regionNameMapping = {
+                "Scotland": "Scotland",
+                "Northern Ireland": "Northern Ireland",
+                "North East": "North East",
+                "Yorkshire and The Humber": "Yorkshire and The Humber",
+                "North West": "North West",
+                "West Midlands": "West Midlands",
+                "Wales": "Wales",
+                "South West": "South West",
+                "South East": "South East",
+                "East Midlands": "East Midlands",
+                "East of England": "East of England",
+                "London": "London"
+              };
+
+              // 创建SVG容器
+              const svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+              svgContainer.style.position = 'absolute';
+              svgContainer.style.top = '0';
+              svgContainer.style.left = '0';
+              svgContainer.style.width = '100%';
+              svgContainer.style.height = '100%';
+              svgContainer.style.pointerEvents = 'none';
+              svgContainer.style.zIndex = '99';
+              document.getElementById('brexit-map').appendChild(svgContainer);
+
+              // 存储所有标记和连接线
+              const markers = new Map();
+
+              // 遍历每个地区创建标记
+              merged.features.forEach(feature => {
+                const regionName = feature.properties.EER13NM;
+                if (!regionName) return;
+                
+                const mappedName = regionNameMapping[regionName];
+                const data = votingData[mappedName];
+                if (!data) return;
+
+                // 计算地区中心点
+                const center = turf.center(feature).geometry.coordinates;
+
+                // 创建标记容器
+                const markerEl = document.createElement('div');
+                markerEl.className = 'region-marker';
+                markerEl.setAttribute('data-region', regionName);
+
+                // 添加地区名称和座位数
+                const label = document.createElement('div');
+                label.className = 'region-label';
+                label.textContent = `${regionName} - ${data.seats}`;
+                markerEl.appendChild(label);
+
+                // 添加投票分布
+                if (data.distribution) {
+                  const distributionEl = document.createElement('div');
+                  distributionEl.className = 'vote-distribution';
+                  data.distribution.forEach(vote => {
+                    const dot = document.createElement('div');
+                    dot.className = `vote-dot ${vote.color}`;
+                    distributionEl.appendChild(dot);
+                  });
+                  markerEl.appendChild(distributionEl);
+                }
+
+                // 创建标记并添加到地图
+                const marker = new mapboxgl.Marker({
+                  element: markerEl,
+                  offset: data.labelOffset
+                })
+                .setLngLat(center)
+                .addTo(map);
+
+                // 创建连接线组
+                const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                group.setAttribute('class', 'connector-group');
+                
+                // 创建连接线
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('class', 'connector-line');
+                group.appendChild(path);
+
+                // 创建端点圆点
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('class', 'connector-dot');
+                circle.setAttribute('r', '3');
+                group.appendChild(circle);
+
+                svgContainer.appendChild(group);
+
+                // 存储标记信息
+                markers.set(regionName, {
+                  marker,
+                  center,
+                  element: markerEl,
+                  line: path,
+                  dot: circle,
+                  group: group
+                });
+              });
+
+              // 更新连接线函数
+              function updateConnectors() {
+                const mapCanvas = map.getCanvas();
+                const mapRect = mapCanvas.getBoundingClientRect();
+
+                markers.forEach((data, regionName) => {
+                  const { marker, center, line, dot, group, element } = data;
+                  if (!marker || !center) return;
+
+                  // 获取标签元素和它在地图上的位置
+                  const markerEl = marker.getElement();
+
+                  // 确保标签位置计算正确
+                  try {
+                    const markerRect = markerEl.getBoundingClientRect();
                     
-                    // 展示详细统计信息
-                    const statsEl = markerEl.querySelector('.region-stats');
-                    if (statsEl) {
-                      statsEl.style.display = 'block';
-                      setTimeout(() => {
-                        statsEl.style.display = '';
-                      }, 3000);
+                    // 计算地理中心点在屏幕上的位置
+                    const centerPoint = map.project(center);
+                    const start = {
+                      x: centerPoint.x,
+                      y: centerPoint.y
+                    };
+
+                    // 计算标签底部中心位置
+                    const end = {
+                      x: markerRect.left + markerRect.width / 2 - mapRect.left,
+                      y: markerRect.top + markerRect.height - mapRect.top
+                    };
+
+                    // 计算连接线路径
+                    // 使用直角连接线
+                    const path = `
+                      M ${start.x} ${start.y}
+                      L ${start.x} ${end.y}
+                      L ${end.x} ${end.y}
+                    `;
+
+                    // 更新路径和圆点
+                    line.setAttribute('d', path);
+                    dot.setAttribute('cx', start.x);
+                    dot.setAttribute('cy', start.y);
+                    
+                    // 确保连接线组可见
+                    group.style.display = 'block';
+                    group.style.opacity = '1';
+                  } catch (e) {
+                    console.error("Error updating connector for region: " + regionName, e);
+                  }
+                });
+              }
+
+              // 监听地图事件
+              map.on('move', updateConnectors);
+              map.on('zoom', updateConnectors);
+              map.on('style.load', updateConnectors);
+              window.addEventListener('resize', updateConnectors);
+
+              // 更新滚动动画，确保所有元素同时出现
+              function addScrollAnimation() {
+                const brexitSection = document.getElementById('section2');
+                const brexitText = document.querySelector('.brexit-text');
+                
+                const observer = new IntersectionObserver((entries) => {
+                  entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                      requestAnimationFrame(() => {
+                        markers.forEach((data) => {
+                          if (data.element) data.element.classList.add('visible');
+                          if (data.group) data.group.classList.add('visible');
+                        });
+                        if (brexitText) {
+                          brexitText.classList.add('visible');
+                        }
+                      });
+                      
+                      observer.unobserve(entry.target);
+                    }
+                  });
+                }, { threshold: 0.2 });
+
+                observer.observe(brexitSection);
+              }
+
+              // 初始化连接线并添加滚动动画
+              map.once('load', () => {
+                updateConnectors();
+                addScrollAnimation();
+              });
+
+              // 鼠标悬停交互
+              let hoveredRegionId = null;
+
+              map.on('mousemove', 'region-fills', (e) => {
+                if (e.features.length > 0) {
+                  if (hoveredRegionId) {
+                    map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], '']);
+                    const prevMarker = markers.get(hoveredRegionId);
+                    if (prevMarker) {
+                      prevMarker.element.style.transform = '';
+                      prevMarker.element.style.background = '';
+                      prevMarker.element.style.boxShadow = '';
+                      prevMarker.group.querySelector('.connector-line').style.stroke = '';
+                      prevMarker.group.querySelector('.connector-line').style.strokeWidth = '';
+                      prevMarker.group.querySelector('.connector-dot').style.fill = '';
+                      prevMarker.group.querySelector('.connector-dot').style.stroke = '';
+                      prevMarker.group.querySelector('.connector-dot').setAttribute('r', '3');
+                    }
+                  }
+
+                  hoveredRegionId = e.features[0].properties.EER13NM;
+                  if (hoveredRegionId) {
+                    map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], hoveredRegionId]);
+                    const marker = markers.get(hoveredRegionId);
+                    if (marker) {
+                      marker.element.style.transform = 'scale(1.05)';
+                      marker.element.style.background = 'rgba(0, 0, 0, 0.95)';
+                      marker.element.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
+                      marker.group.querySelector('.connector-line').style.stroke = 'rgba(255, 255, 255, 1)';
+                      marker.group.querySelector('.connector-line').style.strokeWidth = '2';
+                      marker.group.querySelector('.connector-dot').style.fill = 'rgba(255, 255, 255, 1)';
+                      marker.group.querySelector('.connector-dot').style.stroke = 'rgba(255, 255, 255, 0.6)';
+                      marker.group.querySelector('.connector-dot').setAttribute('r', '4');
                     }
                   }
                 }
-              }
-            });
-            
-            // 改善光标反馈
-            map.on('mouseenter', 'region-fills', () => {
-              map.getCanvas().style.cursor = 'pointer';
-            });
-            
-            map.on('mouseleave', 'region-fills', () => {
-              map.getCanvas().style.cursor = '';
-            });
+              });
 
-            // 为每个区域添加标记
-            Object.entries(votingData).forEach(([region, data], index) => {
-              setTimeout(() => {
-                const el = document.createElement('div');
-                el.className = 'region-marker';
-                el.style.animationDelay = `${index * 0.2}s`;
-                
-                const label = document.createElement('div');
-                label.className = 'region-label';
-                label.textContent = `${region} - ${data.seats}`;
-                
-                if (data.note) {
-                  const note = document.createElement('div');
-                  note.className = 'region-note';
-                  note.textContent = data.note;
-                  label.appendChild(note);
+              map.on('mouseleave', 'region-fills', () => {
+                if (hoveredRegionId) {
+                  map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], '']);
+                  const prevMarker = markers.get(hoveredRegionId);
+                  if (prevMarker) {
+                    prevMarker.element.style.transform = '';
+                    prevMarker.element.style.background = '';
+                    prevMarker.element.style.boxShadow = '';
+                    prevMarker.group.querySelector('.connector-line').style.stroke = '';
+                    prevMarker.group.querySelector('.connector-line').style.strokeWidth = '';
+                    prevMarker.group.querySelector('.connector-dot').style.fill = '';
+                    prevMarker.group.querySelector('.connector-dot').style.stroke = '';
+                    prevMarker.group.querySelector('.connector-dot').setAttribute('r', '3');
+                  }
                 }
+                hoveredRegionId = null;
+              });
 
-                const distributionEl = document.createElement('div');
-                distributionEl.className = 'vote-distribution';
-                data.distribution.forEach(vote => {
-                  const dot = document.createElement('span');
-                  dot.className = `vote-dot ${vote}`;
-                  distributionEl.appendChild(dot);
+              // 初始化地图位置和自动播放序列
+              let hasPlayedSequence = false;
+
+              // 创建Intersection Observer来检测地图区域的可见性
+              const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                  if (entry.isIntersecting && !hasPlayedSequence) {
+                    hasPlayedSequence = true;
+                    
+                    // 设置初始远景位置
+                    map.jumpTo(viewPositions.initial);
+                    
+                    // 隐藏所有元素
+                    markers.forEach(data => {
+                      if (data.element) {
+                        data.element.style.display = 'none';
+                        data.group.style.display = 'none';
+                      }
+                    });
+                    partyLegend.style.display = 'none';
+                    document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
+                      el.style.display = 'none';
+                    });
+
+                    // 显示2016投票内容
+                    const voteContent = document.querySelector('.vote-content');
+                    const brexitContent = document.querySelector('.brexit-content');
+                    voteContent.classList.add('visible');
+                    brexitContent.classList.remove('visible');
+
+                    // 开始动画序列
+                    setTimeout(() => {
+                      map.flyTo({
+                        ...viewPositions.vote,
+                        duration: 1500
+                      });
+                      
+                      setTimeout(() => {
+                        markers.forEach(data => {
+                          if (data.element) {
+                            data.element.style.display = '';
+                            data.element.classList.add('fade-in');
+                            if (data.group) {
+                              data.group.style.display = '';
+                              data.group.classList.add('fade-in');
+                            }
+                          }
+                        });
+                        
+                        partyLegend.style.display = '';
+                        partyLegend.classList.add('fade-in');
+                        
+                        document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
+                          el.style.display = '';
+                          el.classList.add('fade-in');
+                        });
+                        
+                        updateConnectors();
+                        
+                        setTimeout(() => {
+                          startAutoHighlight();
+                          
+                          setTimeout(() => {
+                            switchView('brexit', false, false);
+                          }, 2000); // 减少等待时间从5000ms到3000ms
+                        }, 400);
+                      }, 1500);
+                    }, 500);
+                  }
                 });
+              }, { threshold: 0.5 });
 
-                if (data.stats) {
-                  const statsEl = document.createElement('div');
-                  statsEl.className = 'region-stats';
-                  
-                  const stats = [
-                    ['Remain', data.stats.remain],
-                    ['Leave', data.stats.leave],
-                    ['Turnout', data.stats.turnout]
-                  ];
+              // 开始观察地图容器
+              observer.observe(document.getElementById('brexit-map'));
 
-                  stats.forEach(([label, value]) => {
-                    const row = document.createElement('div');
-                    row.className = 'stats-row';
-                    row.innerHTML = `
-                      <span class="stats-label">${label}:</span>
-                      <span class="stats-value">${value}</span>
-                    `;
-                    statsEl.appendChild(row);
-                  });
+              // 添加鼠标悬停暂停自动高亮的功能
+              map.on('mousemove', 'region-fills', (e) => {
+                if (e.features.length > 0) {
+                  // 暂停自动高亮
+                  if (window.highlightInterval) {
+                    clearInterval(window.highlightInterval);
+                    window.highlightInterval = null;
+                  }
 
-                  el.appendChild(statsEl);
+                  const regionName = e.features[0].properties.EER13NM;
+                  if (regionName) {
+                    highlightRegion(regionName);
+                  }
                 }
+              });
 
-                el.appendChild(label);
-                el.appendChild(distributionEl);
-
-                // 创建标记容器
-                const markerDiv = document.createElement('div');
-                markerDiv.className = 'marker-container';
-                markerDiv.setAttribute('data-region', region);
-                
-                // 添加连接线
-                const line = document.createElement('div');
-                line.className = 'connector-line';
-                
-                // 应用偏移量到标记上
-                if (data.offset) {
-                  const length = Math.sqrt(data.offset[0] * data.offset[0] + data.offset[1] * data.offset[1]);
-                  const angle = Math.atan2(data.offset[1], data.offset[0]) + Math.PI/2;
-                  
-                  line.style.height = `${length}px`;
-                  line.style.transform = `rotate(${angle}rad)`;
-                  
-                  el.style.transform = `translate(${data.offset[0]}px, ${data.offset[1]}px)`;
+              map.on('mouseleave', 'region-fills', () => {
+                // 恢复自动高亮
+                if (currentView === 'vote' && !window.highlightInterval) {
+                  startAutoHighlight();
                 }
-                
-                markerDiv.appendChild(line);
-                markerDiv.appendChild(el);
-                
-                // 创建标记并添加到地图
-                const marker = new mapboxgl.Marker({
-                  element: markerDiv,
-                  anchor: 'center'
-                })
-                  .setLngLat(data.center)
-                  .addTo(map);
-                
-                // 存储标记引用以便后续交互
-                markers[region] = marker;
-                
-                // 为标记添加点击事件
-                el.addEventListener('click', () => {
-                  map.flyTo({
-                    center: data.center,
-                    zoom: 6,
-                    duration: 1000
-                  });
-                  
-                  el.classList.add('highlight');
-                  setTimeout(() => {
-                    el.classList.remove('highlight');
-                  }, 3000);
-                });
-              }, index * 150);
+              });
             });
           });
         });
@@ -1351,6 +1784,122 @@
           line.style.strokeDashoffset = '4';
           line.style.animation = 'dash 20s linear infinite';
         });
+      });
+    </script>
+
+    <script>
+      // 清除所有高亮状态
+      function clearAllHighlights() {
+        map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], '']);
+        markers.forEach(data => {
+          if (data.element) {
+            data.element.classList.remove('highlight');
+            if (data.group) {
+              data.group.classList.remove('highlight');
+            }
+          }
+        });
+      }
+
+      // 高亮特定区域
+      function highlightRegion(regionName) {
+        clearAllHighlights();
+        
+        // 高亮地图区域
+        map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], regionName]);
+        
+        // 高亮对应的标签和连接线
+        const marker = markers.get(regionName);
+        if (marker) {
+          marker.element.classList.add('highlight');
+          marker.group.classList.add('highlight');
+        }
+      }
+
+      // 启动自动高亮动画
+      function startAutoHighlight() {
+        if (window.highlightInterval) {
+          clearInterval(window.highlightInterval);
+        }
+
+        const regions = Array.from(markers.keys());
+        let lastRegion = null;
+
+        function getRandomRegion() {
+          let region;
+          do {
+            region = regions[Math.floor(Math.random() * regions.length)];
+          } while (region === lastRegion && regions.length > 1);
+          lastRegion = region;
+          return region;
+        }
+
+        // 立即高亮第一个区域
+        highlightRegion(getRandomRegion());
+
+        // 每800ms切换一次高亮区域
+        window.highlightInterval = setInterval(() => {
+          if (currentView === 'vote') {
+            highlightRegion(getRandomRegion());
+          } else {
+            clearInterval(window.highlightInterval);
+            window.highlightInterval = null;
+          }
+        }, 800);
+      }
+
+      // 在初始动画序列中添加自动高亮启动
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasPlayedSequence) {
+            hasPlayedSequence = true;
+            
+            // ... existing initial animation code ...
+            
+            setTimeout(() => {
+              map.flyTo({
+                ...viewPositions.vote,
+                duration: 1500
+              });
+              
+              setTimeout(() => {
+                // ... existing element show code ...
+                
+                // 启动自动高亮
+                setTimeout(() => {
+                  startAutoHighlight();
+                }, 500);
+                
+                setTimeout(() => {
+                  switchView('brexit');
+                }, 2000);
+              }, 1500);
+            }, 500);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      // 添加鼠标悬停暂停自动高亮的功能
+      map.on('mousemove', 'region-fills', (e) => {
+        if (e.features.length > 0) {
+          // 暂停自动高亮
+          if (window.highlightInterval) {
+            clearInterval(window.highlightInterval);
+            window.highlightInterval = null;
+          }
+
+          const regionName = e.features[0].properties.EER13NM;
+          if (regionName) {
+            highlightRegion(regionName);
+          }
+        }
+      });
+
+      map.on('mouseleave', 'region-fills', () => {
+        // 恢复自动高亮
+        if (currentView === 'vote' && !window.highlightInterval) {
+          startAutoHighlight();
+        }
       });
     </script>
   </body>

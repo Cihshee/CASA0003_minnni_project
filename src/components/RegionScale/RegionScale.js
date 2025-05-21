@@ -40,9 +40,11 @@ function initializeMap() {
   map = new mapboxgl.Map({
     container: 'region-map-container',
     style: 'mapbox://styles/vickychu/cmao6l3px01ku01s497w65rty',
-    center: [0, 20], // 调整中心到更全球化的视角
-    zoom: 1.5,
-    projection: 'globe' // 使用地球模式
+    center: [30, 48], // 调整中心到更全球化的视角
+    zoom: 3,
+    projection: 'globe', // 使用地球模式
+    pitch: 30, // 添加初始倾斜角度，与rotateGlobe函数中的基准值一致
+    bearing: 0 // 设置初始方位角
   });
   
   // 添加导航控制
@@ -55,6 +57,9 @@ function initializeMap() {
     // 设置初始年份过滤器
     const layerID = 'uk-trade-with-coords-dlzrad';
     updateMapYearFilter(layerID, currentYear);
+    
+    // 添加增强的贸易气泡图层效果
+    enhanceTradeBubbles(layerID);
     
     // 添加地球旋转控制按钮
     addGlobeRotationButton();
@@ -82,6 +87,318 @@ function initializeMap() {
   });
 }
 
+// 增强贸易气泡效果的函数
+function enhanceTradeBubbles(sourceLayerId) {
+  // 检查地图和图层是否存在
+  if (!map || !map.getLayer(sourceLayerId)) {
+    console.error('地图或源图层不存在');
+    return;
+  }
+  
+  // 获取源图层的信息
+  const sourceId = map.getLayer(sourceLayerId).source;
+  
+  // 1. 添加外发光光晕图层
+  map.addLayer({
+    'id': 'trade-bubbles-halo',
+    'type': 'circle',
+    'source': sourceId,
+    'filter': ['==', ['get', 'Year'], parseInt(currentYear)],
+    'paint': {
+      // 根据贸易差额设置不同颜色
+      'circle-color': [
+        'case',
+        ['>', ['get', 'Trade_Balance_m'], 0], 'rgba(214, 81, 23, 0.6)', // 贸易顺差 - 红橙色
+        ['==', ['get', 'Trade_Balance_m'], 0], 'rgba(247, 247, 247, 0.6)', // 贸易平衡 - 白色
+        'rgba(146, 197, 222, 0.6)' // 贸易逆差 - 蓝色
+      ],
+      // 圆圈半径根据进出口总量设置
+      'circle-radius': [
+        '+',
+        ['/', ['sqrt', ['abs', ['get', 'Trade_Balance_m']]], 2],
+        ['/', ['+', ['get', 'Imports_m'], ['get', 'Exports_m']], 25000]
+      ],
+      'circle-blur': 0.6,
+      'circle-opacity': 0.7
+    }
+  }, sourceLayerId); // 在原图层之下
+  
+  // 2. 添加脉冲动画光环
+  map.addLayer({
+    'id': 'trade-bubbles-pulse',
+    'type': 'circle',
+    'source': sourceId,
+    'filter': ['==', ['get', 'Year'], parseInt(currentYear)],
+    'paint': {
+      // 根据贸易差额设置不同颜色
+      'circle-color': [
+        'case',
+        ['>', ['get', 'Trade_Balance_m'], 0], 'rgba(244, 165, 130, 0.3)', // 贸易顺差
+        ['==', ['get', 'Trade_Balance_m'], 0], 'rgba(247, 247, 247, 0.3)', // 贸易平衡
+        'rgba(146, 197, 222, 0.3)' // 贸易逆差
+      ],
+      // 脉冲半径动画
+      'circle-radius': [
+        '+',
+        ['*', 
+          ['/', ['sqrt', ['abs', ['get', 'Trade_Balance_m']]], 1.5],
+          ['+', 1, ['*', 0.5, ['sin', ['*', ['^', ['time'], 1], 0.5]]]]
+        ],
+        ['/', ['+', ['get', 'Imports_m'], ['get', 'Exports_m']], 20000]
+      ],
+      'circle-opacity': [
+        '*',
+        0.5,
+        ['-', 1, ['*', 0.5, ['sin', ['*', ['^', ['time'], 1], 0.5]]]] // 透明度也随时间变化
+      ],
+      'circle-blur': 0.7
+    }
+  }, 'trade-bubbles-halo');
+  
+  // 3. 修改原始气泡图层样式
+  // map.setPaintProperty(sourceLayerId, 'circle-color', [
+  //   'case',
+  //   ['>', ['get', 'Trade_Balance_m'], 0], '#ff9e8a', // 贸易顺差 - 深红色
+  //   ['==', ['get', 'Trade_Balance_m'], 0], '#f7f7f7', // 贸易平衡 - 白色
+  //   '#2166ac' // 贸易逆差 - 深蓝色
+  // ]);
+  
+  // 调整原图层圆圈大小，更好地反映贸易量
+  map.setPaintProperty(sourceLayerId, 'circle-radius', [
+    '+',
+    ['/', ['sqrt', ['abs', ['get', 'Trade_Balance_m']]], 3],
+    ['/', ['+', ['get', 'Imports_m'], ['get', 'Exports_m']], 35000]
+  ]);
+  
+  // 增加原图层的边缘，使其更清晰
+  map.setPaintProperty(sourceLayerId, 'circle-stroke-width', 1.5);
+  map.setPaintProperty(sourceLayerId, 'circle-stroke-color', [
+    'case',
+    ['>', ['get', 'Trade_Balance_m'], 0], 'rgba(244, 165, 130, 0.9)',
+    ['==', ['get', 'Trade_Balance_m'], 0], 'rgba(247, 247, 247, 0.9)',
+    'rgba(146, 197, 222, 0.9)'
+  ]);
+  
+  // 4. 添加顶层光点效果
+  map.addLayer({
+    'id': 'trade-bubbles-highlight',
+    'type': 'circle',
+    'source': sourceId,
+    'filter': ['==', ['get', 'Year'], parseInt(currentYear)],
+    'paint': {
+      'circle-color': 'white',
+      'circle-radius': 2,
+      'circle-opacity': [
+        '*',
+        0.8,
+        ['+', 0.5, ['*', 0.5, ['sin', ['*', ['^', ['time'], 1], 0.8]]]]
+      ],
+      'circle-blur': 0.1
+    }
+  });
+  
+  // 5. 添加气泡悬停交互效果
+  addBubbleInteractions(sourceLayerId);
+}
+
+// 添加气泡悬停交互
+function addBubbleInteractions(layerId) {
+  // 创建用于悬停提示的弹出框
+  const popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+    maxWidth: '300px',
+    className: 'trade-bubble-popup'
+  });
+  
+  // 添加CSS样式来美化弹出框
+  const style = document.createElement('style');
+  style.textContent = `
+    .trade-bubble-popup .mapboxgl-popup-content {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      max-width: 280px;
+    }
+    .trade-bubble-popup .mapboxgl-popup-tip {
+      border-top-color: rgba(0, 0, 0, 0.8);
+      border-bottom-color: rgba(0, 0, 0, 0.8);
+      border-left-color: rgba(0, 0, 0, 0.8);
+      border-right-color: rgba(0, 0, 0, 0.8);
+    }
+    .popup-content {
+      font-family: 'Arial', sans-serif;
+    }
+    .popup-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: white;
+      text-align: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .popup-data {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .popup-label {
+      color: #ccc;
+    }
+    .popup-value {
+      font-weight: bold;
+    }
+    .surplus { color: #ff9e8a; }
+    .deficit { color: #92c5de; }
+    .balanced { color: #f7f7f7; }
+  `;
+  document.head.appendChild(style);
+  
+  // 鼠标悬停进入气泡时
+  map.on('mouseenter', layerId, (e) => {
+    // 将鼠标样式更改为指针
+    map.getCanvas().style.cursor = 'pointer';
+    
+    // 获取气泡的特性（国家、贸易数据等）
+    const feature = e.features[0];
+    const props = feature.properties;
+    
+    // 格式化显示的数值
+    const formatValue = (value) => {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP',
+        notation: 'compact',
+        maximumFractionDigits: 2
+      }).format(value);
+    };
+    
+    // 判断贸易状态
+    const tradeStatus = props.Trade_Balance_m > 0 ? 'surplus' : 
+                        props.Trade_Balance_m < 0 ? 'deficit' : 'balanced';
+    
+    // 创建弹出框HTML内容
+    const html = `
+      <div class="popup-content">
+        <div class="popup-title">${props.Country} (${props.Year})</div>
+        <div class="popup-data">
+          <span class="popup-label">Imports:</span>
+          <span class="popup-value">${formatValue(props.Imports_m)} m</span>
+        </div>
+        <div class="popup-data">
+          <span class="popup-label">Exports:</span>
+          <span class="popup-value">${formatValue(props.Exports_m)} m</span>
+        </div>
+        <div class="popup-data" style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+          <span class="popup-label">Trade Balance:  </span>
+          <span class="popup-value ${tradeStatus}">${formatValue(props.Trade_Balance_m)} m</span>
+        </div>
+      </div>
+    `;
+    
+    // 设置弹出框位置和内容
+    popup.setLngLat(feature.geometry.coordinates)
+      .setHTML(html)
+      .addTo(map);
+    
+    // 突出显示当前气泡
+    map.setFeatureState(
+      { source: map.getLayer(layerId).source, id: feature.id },
+      { hover: true }
+    );
+    
+    // 使当前气泡闪烁
+    const pulseHighlight = () => {
+      if (!map.getFeatureState({ source: map.getLayer(layerId).source, id: feature.id }).hover) {
+        return; // 如果不再悬停，停止闪烁
+      }
+      
+      // 设置突出显示图层的大小和不透明度
+      const highlightLayer = 'trade-bubbles-hover-highlight';
+      if (map.getLayer(highlightLayer)) {
+        map.setPaintProperty(highlightLayer, 'circle-radius', 
+          ['*', 1.5, map.getPaintProperty(layerId, 'circle-radius')]);
+      }
+      
+      requestAnimationFrame(pulseHighlight);
+    };
+    
+    // 添加特定于悬停的高亮图层
+    if (!map.getLayer('trade-bubbles-hover-highlight')) {
+      map.addLayer({
+        'id': 'trade-bubbles-hover-highlight',
+        'type': 'circle',
+        'source': map.getLayer(layerId).source,
+        'filter': ['==', ['id'], feature.id],
+        'paint': {
+          'circle-color': 'white',
+          'circle-opacity': 0.4,
+          'circle-radius': ['*', 1.5, map.getPaintProperty(layerId, 'circle-radius')],
+          'circle-stroke-width': 2,
+          'circle-stroke-color': 'white',
+          'circle-stroke-opacity': 0.7
+        }
+      });
+    } else {
+      map.setFilter('trade-bubbles-hover-highlight', ['==', ['id'], feature.id]);
+    }
+    
+    // 开始闪烁动画
+    pulseHighlight();
+  });
+  
+  // 鼠标离开气泡时
+  map.on('mouseleave', layerId, () => {
+    // 恢复鼠标样式
+    map.getCanvas().style.cursor = '';
+    
+    // 隐藏弹出框
+    popup.remove();
+    
+    // 移除悬停状态
+    map.removeFeatureState({
+      source: map.getLayer(layerId).source
+    }, 'hover');
+    
+    // 移除悬停高亮图层
+    if (map.getLayer('trade-bubbles-hover-highlight')) {
+      map.removeLayer('trade-bubbles-hover-highlight');
+    }
+  });
+}
+
+// 更新地图年份过滤器 - 修改版，同时更新增强气泡的过滤器
+function updateMapYearFilter(layerID, year) {
+  if (!map || !map.isStyleLoaded()) return;
+  
+  try {
+    // 设置特定图层的年份过滤器
+    map.setFilter(layerID, ['==', ['get', 'Year'], parseInt(year)]);
+    
+    // 更新增强气泡图层的过滤器
+    const bubblesLayers = [
+      'trade-bubbles-halo',
+      'trade-bubbles-pulse',
+      'trade-bubbles-highlight'
+    ];
+    
+    bubblesLayers.forEach(layer => {
+      if (map.getLayer(layer)) {
+        map.setFilter(layer, ['==', ['get', 'Year'], parseInt(year)]);
+      }
+    });
+    
+    console.log(`Applied year filter to layers for year ${year}`);
+  } catch (err) {
+    console.error(`Error setting filter for layer ${layerID}:`, err);
+  }
+}
+
 // 添加贸易差额图例
 function addTradeBalanceLegend() {
   // 创建图例容器
@@ -89,7 +406,7 @@ function addTradeBalanceLegend() {
   legendContainer.className = 'trade-balance-legend';
   legendContainer.style.position = 'absolute';
   legendContainer.style.left = '15px';
-  legendContainer.style.bottom = '15px';
+  legendContainer.style.bottom = '30px';
   legendContainer.style.backgroundColor = 'rgba(0,0,0,0.7)';
   legendContainer.style.borderRadius = '5px';
   legendContainer.style.padding = '10px';
@@ -156,9 +473,9 @@ function addGlobeRotationButton() {
   controlContainer.className = 'mapboxgl-ctrl mapboxgl-ctrl-group rotate-control';
   controlContainer.style.margin = '15px';
   controlContainer.style.borderRadius = '8px';
-  controlContainer.style.overflow = 'hidden';
-  controlContainer.style.background = 'rgba(0,0,0,0.75)';
-  controlContainer.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
+  controlContainer.style.overflow = 'visible';
+  controlContainer.style.background = 'transparent';
+  controlContainer.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.01)';
   
   // 创建旋转按钮
   const rotateButton = document.createElement('button');
@@ -174,7 +491,7 @@ function addGlobeRotationButton() {
   rotateButton.style.justifyContent = 'center';
   rotateButton.style.width = '52px';
   rotateButton.style.height = '52px';
-  rotateButton.title = '旋转地球';
+  rotateButton.title = 'Rotating the Earth';
   
   // 点击事件
   rotateButton.addEventListener('click', function() {
@@ -235,19 +552,6 @@ function rotateGlobe() {
   
   // 使用requestAnimationFrame进行下一帧动画
   requestAnimationFrame(rotateGlobe);
-}
-
-// 更新地图年份过滤器
-function updateMapYearFilter(layerID, year) {
-  if (!map || !map.isStyleLoaded()) return;
-  
-  try {
-    // 设置特定图层的年份过滤器
-    map.setFilter(layerID, ['==', ['get', 'Year'], parseInt(year)]);
-    console.log(`Applied year filter to layer: ${layerID} for year ${year}`);
-  } catch (err) {
-    console.error(`Error setting filter for layer ${layerID}:`, err);
-  }
 }
 
 // 加载uk_total_20country.csv数据
@@ -815,171 +1119,171 @@ countries.forEach((country, i) => {
 }
 
 // 初始化滑动时间轴
-function initTimelineSlider() {
-  const timelineContainer = document.querySelector('.timeline-years');
-  const timelineTrack = document.querySelector('.timeline-track');
-  const timelineSlider = document.querySelector('.timeline-slider');
+// function initTimelineSlider() {
+//   const timelineContainer = document.querySelector('.timeline-years');
+//   const timelineTrack = document.querySelector('.timeline-track');
+//   const timelineSlider = document.querySelector('.timeline-slider');
   
-  if (!timelineContainer || !timelineTrack || !timelineSlider) {
-    console.error('时间轴元素未找到');
-    return;
-  }
+//   if (!timelineContainer || !timelineTrack || !timelineSlider) {
+//     console.error('时间轴元素未找到');
+//     return;
+//   }
   
-  // 获取年份范围
-  const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
-  const containerWidth = timelineContainer.clientWidth;
-  const trackPadding = 20; // 轨道两端的内边距
-  const trackWidth = containerWidth - (trackPadding * 2);
+//   // 获取年份范围
+//   const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+//   const containerWidth = timelineContainer.clientWidth;
+//   const trackPadding = 20; // 轨道两端的内边距
+//   const trackWidth = containerWidth - (trackPadding * 2);
   
-  // 创建刻度和标签
-  years.forEach((year, i) => {
-    const position = trackPadding + (i * (trackWidth / (years.length - 1)));
+//   // 创建刻度和标签
+//   years.forEach((year, i) => {
+//     const position = trackPadding + (i * (trackWidth / (years.length - 1)));
     
-    // 创建刻度
-    const tick = document.createElement('div');
-    tick.className = 'timeline-tick';
-    tick.style.left = `${position}px`;
-    timelineContainer.appendChild(tick);
+//     // 创建刻度
+//     const tick = document.createElement('div');
+//     tick.className = 'timeline-tick';
+//     tick.style.left = `${position}px`;
+//     timelineContainer.appendChild(tick);
     
-    // 创建标签
-    const label = document.createElement('div');
-    label.className = 'timeline-year';
-    label.textContent = year;
-    label.style.left = `${position}px`;
-    timelineContainer.appendChild(label);
-  });
+//     // 创建标签
+//     const label = document.createElement('div');
+//     label.className = 'timeline-year';
+//     label.textContent = year;
+//     label.style.left = `${position}px`;
+//     timelineContainer.appendChild(label);
+//   });
   
-  // 添加播放按钮
-  const playButton = document.createElement('button');
-  playButton.className = 'timeline-play-button';
-  playButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
-  playButton.style.position = 'absolute';
-  playButton.style.left = '-45px';
-  playButton.style.top = '50%';
-  playButton.style.transform = 'translateY(-50%)';
-  playButton.style.background = 'rgba(0,0,0,0.7)';
-  playButton.style.color = 'white';
-  playButton.style.border = 'none';
-  playButton.style.borderRadius = '50%';
-  playButton.style.width = '30px';
-  playButton.style.height = '30px';
-  playButton.style.cursor = 'pointer';
-  playButton.style.display = 'flex';
-  playButton.style.alignItems = 'center';
-  playButton.style.justifyContent = 'center';
-  playButton.style.boxShadow = '0 0 5px rgba(0,0,0,0.3)';
-  playButton.style.transition = 'all 0.3s ease';
+//   // 添加播放按钮
+//   const playButton = document.createElement('button');
+//   playButton.className = 'timeline-play-button';
+//   playButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+//   playButton.style.position = 'absolute';
+//   playButton.style.left = '-45px';
+//   playButton.style.top = '50%';
+//   playButton.style.transform = 'translateY(-50%)';
+//   playButton.style.background = 'rgba(0,0,0,0.7)';
+//   playButton.style.color = 'white';
+//   playButton.style.border = 'none';
+//   playButton.style.borderRadius = '50%';
+//   playButton.style.width = '30px';
+//   playButton.style.height = '30px';
+//   playButton.style.cursor = 'pointer';
+//   playButton.style.display = 'flex';
+//   playButton.style.alignItems = 'center';
+//   playButton.style.justifyContent = 'center';
+//   playButton.style.boxShadow = '0 0 5px rgba(0,0,0,0.3)';
+//   playButton.style.transition = 'all 0.3s ease';
 
-  // 添加悬停效果
-  playButton.addEventListener('mouseover', function() {
-    this.style.background = 'rgba(0,0,0,0.85)';
-    this.style.transform = 'translateY(-50%) scale(1.1)';
-  });
+//   // 添加悬停效果
+//   playButton.addEventListener('mouseover', function() {
+//     this.style.background = 'rgba(0,0,0,0.85)';
+//     this.style.transform = 'translateY(-50%) scale(1.1)';
+//   });
 
-  playButton.addEventListener('mouseout', function() {
-    this.style.background = 'rgba(0,0,0,0.7)';
-    this.style.transform = 'translateY(-50%) scale(1)';
-  });
+//   playButton.addEventListener('mouseout', function() {
+//     this.style.background = 'rgba(0,0,0,0.7)';
+//     this.style.transform = 'translateY(-50%) scale(1)';
+//   });
 
-  playButton.addEventListener('click', function() {
-    toggleTimelineAutoPlay(years, timelineSlider, trackWidth, trackPadding);
-  });
+//   playButton.addEventListener('click', function() {
+//     toggleTimelineAutoPlay(years, timelineSlider, trackWidth, trackPadding);
+//   });
   
-  timelineContainer.appendChild(playButton);
+//   timelineContainer.appendChild(playButton);
   
-  // 初始化滑块位置 - 默认年份为2016
-  let currentYearIndex = 0; // 2016年在数组中的索引为0
-  updateSliderPosition(currentYearIndex);
+//   // 初始化滑块位置 - 默认年份为2016
+//   let currentYearIndex = 0; // 2016年在数组中的索引为0
+//   updateSliderPosition(currentYearIndex);
   
-  // 为滑块添加拖动功能
-  let isDragging = false;
+//   // 为滑块添加拖动功能
+//   let isDragging = false;
   
-  timelineSlider.addEventListener('mousedown', startDrag);
-  timelineSlider.addEventListener('touchstart', startDrag, { passive: false });
+//   timelineSlider.addEventListener('mousedown', startDrag);
+//   timelineSlider.addEventListener('touchstart', startDrag, { passive: false });
   
-  window.addEventListener('mousemove', drag);
-  window.addEventListener('touchmove', drag, { passive: false });
+//   window.addEventListener('mousemove', drag);
+//   window.addEventListener('touchmove', drag, { passive: false });
   
-  window.addEventListener('mouseup', endDrag);
-  window.addEventListener('touchend', endDrag);
+//   window.addEventListener('mouseup', endDrag);
+//   window.addEventListener('touchend', endDrag);
   
-  // 点击轨道时移动滑块
-  timelineTrack.addEventListener('click', function(e) {
-    const trackRect = timelineTrack.getBoundingClientRect();
-    const clickPosition = e.clientX - trackRect.left;
-    const segmentWidth = trackWidth / (years.length - 1);
+//   // 点击轨道时移动滑块
+//   timelineTrack.addEventListener('click', function(e) {
+//     const trackRect = timelineTrack.getBoundingClientRect();
+//     const clickPosition = e.clientX - trackRect.left;
+//     const segmentWidth = trackWidth / (years.length - 1);
     
-    // 找到最接近点击位置的年份索引
-    const newIndex = Math.round(clickPosition / segmentWidth);
-    if (newIndex >= 0 && newIndex < years.length) {
-      currentYearIndex = newIndex;
-      updateSliderPosition(currentYearIndex);
-      updateYearInfo(years[currentYearIndex]);
-    }
-  });
+//     // 找到最接近点击位置的年份索引
+//     const newIndex = Math.round(clickPosition / segmentWidth);
+//     if (newIndex >= 0 && newIndex < years.length) {
+//       currentYearIndex = newIndex;
+//       updateSliderPosition(currentYearIndex);
+//       updateYearInfo(years[currentYearIndex]);
+//     }
+//   });
   
-  function startDrag(e) {
-    e.preventDefault();
-    isDragging = true;
-    timelineSlider.style.cursor = 'grabbing';
-  }
+//   function startDrag(e) {
+//     e.preventDefault();
+//     isDragging = true;
+//     timelineSlider.style.cursor = 'grabbing';
+//   }
   
-  function drag(e) {
-    if (!isDragging) return;
+//   function drag(e) {
+//     if (!isDragging) return;
     
-    e.preventDefault();
+//     e.preventDefault();
     
-    const trackRect = timelineTrack.getBoundingClientRect();
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+//     const trackRect = timelineTrack.getBoundingClientRect();
+//     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
     
-    if (!clientX) return;
+//     if (!clientX) return;
     
-    const dragPosition = clientX - trackRect.left;
-    const segmentWidth = trackWidth / (years.length - 1);
+//     const dragPosition = clientX - trackRect.left;
+//     const segmentWidth = trackWidth / (years.length - 1);
     
-    // 将拖动位置限制在轨道范围内
-    const constrainedPosition = Math.max(0, Math.min(trackWidth, dragPosition));
+//     // 将拖动位置限制在轨道范围内
+//     const constrainedPosition = Math.max(0, Math.min(trackWidth, dragPosition));
     
-    // 找到最接近拖动位置的年份索引
-    const newIndex = Math.round(constrainedPosition / segmentWidth);
-    if (newIndex >= 0 && newIndex < years.length && newIndex !== currentYearIndex) {
-      currentYearIndex = newIndex;
-      updateSliderPosition(currentYearIndex);
-      updateYearInfo(years[currentYearIndex]);
-    }
-  }
+//     // 找到最接近拖动位置的年份索引
+//     const newIndex = Math.round(constrainedPosition / segmentWidth);
+//     if (newIndex >= 0 && newIndex < years.length && newIndex !== currentYearIndex) {
+//       currentYearIndex = newIndex;
+//       updateSliderPosition(currentYearIndex);
+//       updateYearInfo(years[currentYearIndex]);
+//     }
+//   }
   
-  function endDrag() {
-    isDragging = false;
-    timelineSlider.style.cursor = 'pointer';
-  }
+//   function endDrag() {
+//     isDragging = false;
+//     timelineSlider.style.cursor = 'pointer';
+//   }
   
-  function updateSliderPosition(index) {
-    const segmentWidth = trackWidth / (years.length - 1);
-    const position = trackPadding + (index * segmentWidth);
+//   function updateSliderPosition(index) {
+//     const segmentWidth = trackWidth / (years.length - 1);
+//     const position = trackPadding + (index * segmentWidth);
     
-    // 添加平滑过渡
-    timelineSlider.style.transition = 'left 0.8s ease';
-    timelineSlider.style.left = `${position}px`;
+//     // 添加平滑过渡
+//     timelineSlider.style.transition = 'left 0.8s ease';
+//     timelineSlider.style.left = `${position}px`;
     
-    // 一段时间后移除过渡以便拖动不受影响
-    setTimeout(() => {
-      timelineSlider.style.transition = '';
-    }, 850);
-  }
+//     // 一段时间后移除过渡以便拖动不受影响
+//     setTimeout(() => {
+//       timelineSlider.style.transition = '';
+//     }, 850);
+//   }
   
-  function updateYearInfo(year) {
-    // 更新全局当前年份并重新渲染热力图
-    if (currentYear !== year && allData && allRegions && allCountries) {
-      currentYear = year;
-      renderHeatmap(allData, allRegions, allCountries, currentYear);
+//   function updateYearInfo(year) {
+//     // 更新全局当前年份并重新渲染热力图
+//     if (currentYear !== year && allData && allRegions && allCountries) {
+//       currentYear = year;
+//       renderHeatmap(allData, allRegions, allCountries, currentYear);
       
-      // 更新 Mapbox 地图的年份过滤
-      const layerID = 'uk-trade-with-coords-dlzrad';
-      updateMapYearFilter(layerID, year);
-    }
-  }
-}
+//       // 更新 Mapbox 地图的年份过滤
+//       const layerID = 'uk-trade-with-coords-dlzrad';
+//       updateMapYearFilter(layerID, year);
+//     }
+//   }
+// }
 
 function initializeHeatmap() {
 const container = document.getElementById('heatmap-container');
