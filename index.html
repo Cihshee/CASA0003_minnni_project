@@ -1646,6 +1646,27 @@
       })();
     </script>
 
+    <!-- 添加用于处理从uk-port.html返回时自动点击Transport Modes导航按钮的脚本 -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // 检查localStorage中是否有需要点击Transport按钮的标记
+        if (localStorage.getItem('autoClickTransport') === 'true') {
+          // 清除标记，防止刷新页面时再次触发
+          localStorage.removeItem('autoClickTransport');
+          
+          // 延迟1000毫秒以确保页面完全加载
+          setTimeout(() => {
+            // 查找并点击Transport Modes导航按钮
+            const transportLink = document.querySelector('a[href="#section7"]');
+            if (transportLink) {
+              transportLink.click();
+              console.log('自动点击了Transport Modes导航按钮，延迟2000ms');
+            }
+          }, 2000);
+        }
+      });
+    </script>
+
     <!-- three.js 雾气城市背景脚本，只渲染到首页section1 -->
     <script type="module">
       import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.153.0/+esm';

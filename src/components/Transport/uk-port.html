@@ -563,23 +563,7 @@
             z-index: 100;
         }
 
-        .next-button {
-            background: rgba(42, 42, 42, 0.95); /* 更深的背景颜色 */
-            color: #ffffff;
-            border: 2px solid rgba(255, 255, 255, 0.4); /* 加粗边框并增加对比度 */
-            border-radius: 10px; /* 增加圆角 */
-            padding: 10px 20px; /* 缩小内边距，适合放在顶部 */
-            cursor: pointer;
-            font-size: 15px; /* 适当减小字体 */
-            font-weight: 700; /* 保持字体粗细 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* 保持阴影效果 */
-            width: 160px; /* 设置固定宽度 */
-            letter-spacing: 0.5px; /* 保持字间距 */
-        }
+        .next-button {            background: rgba(42, 42, 42, 0.95); /* 更深的背景颜色 */            color: #ffffff;            border: 2px solid rgba(255, 255, 255, 0.4); /* 加粗边框并增加对比度 */            border-radius: 10px; /* 增加圆角 */            padding: 10px 20px; /* 缩小内边距，适合放在顶部 */            cursor: pointer;            font-size: 15px; /* 适当减小字体 */            font-weight: 700; /* 保持字体粗细 */            display: flex;            align-items: center;            justify-content: center;            transition: all 0.25s ease;            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* 保持阴影效果 */            width: 210px; /* 设置固定宽度 */            letter-spacing: 0.5px; /* 保持字间距 */            margin: 15px 0; /* 为左侧面板的按钮添加上下边距 */        }
 
         .next-button:hover {
             background: rgba(33, 150, 243, 0.8); /* 鼠标悬停时变为蓝色 */
@@ -593,6 +577,17 @@
             margin-left: 10px; /* 增加图标与文字间距 */
             width: 18px; /* 增大图标 */
             height: 18px;
+        }
+
+        /* 为左侧面板的返回按钮添加特定样式 */
+        #back-button {
+            width: 100%; /* 使按钮宽度与控制面板一致 */
+            margin-top: 20px; /* 增加与上方内容的间距 */
+        }
+        
+        #back-button .next-button-icon {
+            margin-left: 0;
+            margin-right: 10px; /* 调整箭头位置，使其在文字左侧 */
         }
 
         /* 添加加载指示器样式 */
@@ -825,6 +820,14 @@
                     <p class="data-source">
                         Data Source: <a href="https://www.gov.uk/government/statistical-data-sets/port-and-domestic-waterborne-freight-statistics-port" target="_blank">Department for Transport</a>
                     </p>
+                    
+                    <!-- 添加返回按钮 -->
+                    <button id="back-button" class="next-button" onclick="goBack()">
+                        <svg class="next-button-icon" style="transform: rotate(90deg);" viewBox="0 0 24 24" fill="white">
+                            <path d="M3 4l9 16 9-16H3zm3.44 2h11.12l-5.56 9.83L6.44 6z"/>
+                        </svg>
+                        <span id="back-button-text">Go back</span>
+                    </button>
                 </div>
             </div>
             
@@ -3673,6 +3676,19 @@
             if (overviewChart) overviewChart.destroy();
             if (hoverChart) hoverChart.destroy();
         });
+        
+        // 添加返回功能
+        function goBack() {
+            // 如果有历史记录，则返回上一页
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // 设置localStorage标记，指示需要点击Transport Modes导航按钮
+                localStorage.setItem('autoClickTransport', 'true');
+                // 跳转到主页
+                window.location.href = '../../../index.html';
+            }
+        }
     </script>
 </body>
 </html>
