@@ -58,11 +58,12 @@ function initializeMap() {
     const layerID = 'uk-trade-with-coords-dlzrad';
     updateMapYearFilter(layerID, currentYear);
     
+    // 添加地球旋转控制按钮
+    addGlobeRotationButton();
+    
     // 添加增强的贸易气泡图层效果
     enhanceTradeBubbles(layerID);
     
-    // 添加地球旋转控制按钮
-    addGlobeRotationButton();
     
     // 为地球添加背景样式
     map.setFog({
@@ -73,21 +74,7 @@ function initializeMap() {
       'star-intensity': 0.6 // 星星亮度
     });
     
-    // 添加图例 - 显示贸易差额颜色含义
-    addTradeBalanceLegend();
-    
-    // 页面加载完成后1.5秒自动开始播放时间轴
-    setTimeout(() => {
-      // 查找播放按钮并触发点击
-      const playButton = document.querySelector('.map-play-button');
-      if (playButton) {
-        playButton.click();
-      }
-    }, 1500);
-  });
-}
-
-// 增强贸易气泡效果的函数
+    // 增强贸易气泡效果的函数
 function enhanceTradeBubbles(sourceLayerId) {
   // 检查地图和图层是否存在
   if (!map || !map.getLayer(sourceLayerId)) {
@@ -399,6 +386,20 @@ function updateMapYearFilter(layerID, year) {
   }
 }
 
+    // 添加图例 - 显示贸易差额颜色含义
+    addTradeBalanceLegend();
+    
+    // 页面加载完成后1.5秒自动开始播放时间轴
+    setTimeout(() => {
+      // 查找播放按钮并触发点击
+      const playButton = document.querySelector('.map-play-button');
+      if (playButton) {
+        playButton.click();
+      }
+    }, 1500);
+  });
+}
+
 // 添加贸易差额图例
 function addTradeBalanceLegend() {
   // 创建图例容器
@@ -552,6 +553,19 @@ function rotateGlobe() {
   
   // 使用requestAnimationFrame进行下一帧动画
   requestAnimationFrame(rotateGlobe);
+}
+
+// 更新地图年份过滤器
+function updateMapYearFilter(layerID, year) {
+  if (!map || !map.isStyleLoaded()) return;
+  
+  try {
+    // 设置特定图层的年份过滤器
+    map.setFilter(layerID, ['==', ['get', 'Year'], parseInt(year)]);
+    console.log(`Applied year filter to layer: ${layerID} for year ${year}`);
+  } catch (err) {
+    console.error(`Error setting filter for layer ${layerID}:`, err);
+  }
 }
 
 // 加载uk_total_20country.csv数据
@@ -1119,171 +1133,171 @@ countries.forEach((country, i) => {
 }
 
 // 初始化滑动时间轴
-// function initTimelineSlider() {
-//   const timelineContainer = document.querySelector('.timeline-years');
-//   const timelineTrack = document.querySelector('.timeline-track');
-//   const timelineSlider = document.querySelector('.timeline-slider');
+function initTimelineSlider() {
+  const timelineContainer = document.querySelector('.timeline-years');
+  const timelineTrack = document.querySelector('.timeline-track');
+  const timelineSlider = document.querySelector('.timeline-slider');
   
-//   if (!timelineContainer || !timelineTrack || !timelineSlider) {
-//     console.error('时间轴元素未找到');
-//     return;
-//   }
+  if (!timelineContainer || !timelineTrack || !timelineSlider) {
+    console.error('时间轴元素未找到');
+    return;
+  }
   
-//   // 获取年份范围
-//   const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
-//   const containerWidth = timelineContainer.clientWidth;
-//   const trackPadding = 20; // 轨道两端的内边距
-//   const trackWidth = containerWidth - (trackPadding * 2);
+  // 获取年份范围
+  const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+  const containerWidth = timelineContainer.clientWidth;
+  const trackPadding = 20; // 轨道两端的内边距
+  const trackWidth = containerWidth - (trackPadding * 2);
   
-//   // 创建刻度和标签
-//   years.forEach((year, i) => {
-//     const position = trackPadding + (i * (trackWidth / (years.length - 1)));
+  // 创建刻度和标签
+  years.forEach((year, i) => {
+    const position = trackPadding + (i * (trackWidth / (years.length - 1)));
     
-//     // 创建刻度
-//     const tick = document.createElement('div');
-//     tick.className = 'timeline-tick';
-//     tick.style.left = `${position}px`;
-//     timelineContainer.appendChild(tick);
+    // 创建刻度
+    const tick = document.createElement('div');
+    tick.className = 'timeline-tick';
+    tick.style.left = `${position}px`;
+    timelineContainer.appendChild(tick);
     
-//     // 创建标签
-//     const label = document.createElement('div');
-//     label.className = 'timeline-year';
-//     label.textContent = year;
-//     label.style.left = `${position}px`;
-//     timelineContainer.appendChild(label);
-//   });
+    // 创建标签
+    const label = document.createElement('div');
+    label.className = 'timeline-year';
+    label.textContent = year;
+    label.style.left = `${position}px`;
+    timelineContainer.appendChild(label);
+  });
   
-//   // 添加播放按钮
-//   const playButton = document.createElement('button');
-//   playButton.className = 'timeline-play-button';
-//   playButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
-//   playButton.style.position = 'absolute';
-//   playButton.style.left = '-45px';
-//   playButton.style.top = '50%';
-//   playButton.style.transform = 'translateY(-50%)';
-//   playButton.style.background = 'rgba(0,0,0,0.7)';
-//   playButton.style.color = 'white';
-//   playButton.style.border = 'none';
-//   playButton.style.borderRadius = '50%';
-//   playButton.style.width = '30px';
-//   playButton.style.height = '30px';
-//   playButton.style.cursor = 'pointer';
-//   playButton.style.display = 'flex';
-//   playButton.style.alignItems = 'center';
-//   playButton.style.justifyContent = 'center';
-//   playButton.style.boxShadow = '0 0 5px rgba(0,0,0,0.3)';
-//   playButton.style.transition = 'all 0.3s ease';
+  // 添加播放按钮
+  const playButton = document.createElement('button');
+  playButton.className = 'timeline-play-button';
+  playButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+  playButton.style.position = 'absolute';
+  playButton.style.left = '-45px';
+  playButton.style.top = '50%';
+  playButton.style.transform = 'translateY(-50%)';
+  playButton.style.background = 'rgba(0,0,0,0.7)';
+  playButton.style.color = 'white';
+  playButton.style.border = 'none';
+  playButton.style.borderRadius = '50%';
+  playButton.style.width = '30px';
+  playButton.style.height = '30px';
+  playButton.style.cursor = 'pointer';
+  playButton.style.display = 'flex';
+  playButton.style.alignItems = 'center';
+  playButton.style.justifyContent = 'center';
+  playButton.style.boxShadow = '0 0 5px rgba(0,0,0,0.3)';
+  playButton.style.transition = 'all 0.3s ease';
 
-//   // 添加悬停效果
-//   playButton.addEventListener('mouseover', function() {
-//     this.style.background = 'rgba(0,0,0,0.85)';
-//     this.style.transform = 'translateY(-50%) scale(1.1)';
-//   });
+  // 添加悬停效果
+  playButton.addEventListener('mouseover', function() {
+    this.style.background = 'rgba(0,0,0,0.85)';
+    this.style.transform = 'translateY(-50%) scale(1.1)';
+  });
 
-//   playButton.addEventListener('mouseout', function() {
-//     this.style.background = 'rgba(0,0,0,0.7)';
-//     this.style.transform = 'translateY(-50%) scale(1)';
-//   });
+  playButton.addEventListener('mouseout', function() {
+    this.style.background = 'rgba(0,0,0,0.7)';
+    this.style.transform = 'translateY(-50%) scale(1)';
+  });
 
-//   playButton.addEventListener('click', function() {
-//     toggleTimelineAutoPlay(years, timelineSlider, trackWidth, trackPadding);
-//   });
+  playButton.addEventListener('click', function() {
+    toggleTimelineAutoPlay(years, timelineSlider, trackWidth, trackPadding);
+  });
   
-//   timelineContainer.appendChild(playButton);
+  timelineContainer.appendChild(playButton);
   
-//   // 初始化滑块位置 - 默认年份为2016
-//   let currentYearIndex = 0; // 2016年在数组中的索引为0
-//   updateSliderPosition(currentYearIndex);
+  // 初始化滑块位置 - 默认年份为2016
+  let currentYearIndex = 0; // 2016年在数组中的索引为0
+  updateSliderPosition(currentYearIndex);
   
-//   // 为滑块添加拖动功能
-//   let isDragging = false;
+  // 为滑块添加拖动功能
+  let isDragging = false;
   
-//   timelineSlider.addEventListener('mousedown', startDrag);
-//   timelineSlider.addEventListener('touchstart', startDrag, { passive: false });
+  timelineSlider.addEventListener('mousedown', startDrag);
+  timelineSlider.addEventListener('touchstart', startDrag, { passive: false });
   
-//   window.addEventListener('mousemove', drag);
-//   window.addEventListener('touchmove', drag, { passive: false });
+  window.addEventListener('mousemove', drag);
+  window.addEventListener('touchmove', drag, { passive: false });
   
-//   window.addEventListener('mouseup', endDrag);
-//   window.addEventListener('touchend', endDrag);
+  window.addEventListener('mouseup', endDrag);
+  window.addEventListener('touchend', endDrag);
   
-//   // 点击轨道时移动滑块
-//   timelineTrack.addEventListener('click', function(e) {
-//     const trackRect = timelineTrack.getBoundingClientRect();
-//     const clickPosition = e.clientX - trackRect.left;
-//     const segmentWidth = trackWidth / (years.length - 1);
+  // 点击轨道时移动滑块
+  timelineTrack.addEventListener('click', function(e) {
+    const trackRect = timelineTrack.getBoundingClientRect();
+    const clickPosition = e.clientX - trackRect.left;
+    const segmentWidth = trackWidth / (years.length - 1);
     
-//     // 找到最接近点击位置的年份索引
-//     const newIndex = Math.round(clickPosition / segmentWidth);
-//     if (newIndex >= 0 && newIndex < years.length) {
-//       currentYearIndex = newIndex;
-//       updateSliderPosition(currentYearIndex);
-//       updateYearInfo(years[currentYearIndex]);
-//     }
-//   });
+    // 找到最接近点击位置的年份索引
+    const newIndex = Math.round(clickPosition / segmentWidth);
+    if (newIndex >= 0 && newIndex < years.length) {
+      currentYearIndex = newIndex;
+      updateSliderPosition(currentYearIndex);
+      updateYearInfo(years[currentYearIndex]);
+    }
+  });
   
-//   function startDrag(e) {
-//     e.preventDefault();
-//     isDragging = true;
-//     timelineSlider.style.cursor = 'grabbing';
-//   }
+  function startDrag(e) {
+    e.preventDefault();
+    isDragging = true;
+    timelineSlider.style.cursor = 'grabbing';
+  }
   
-//   function drag(e) {
-//     if (!isDragging) return;
+  function drag(e) {
+    if (!isDragging) return;
     
-//     e.preventDefault();
+    e.preventDefault();
     
-//     const trackRect = timelineTrack.getBoundingClientRect();
-//     const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const trackRect = timelineTrack.getBoundingClientRect();
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
     
-//     if (!clientX) return;
+    if (!clientX) return;
     
-//     const dragPosition = clientX - trackRect.left;
-//     const segmentWidth = trackWidth / (years.length - 1);
+    const dragPosition = clientX - trackRect.left;
+    const segmentWidth = trackWidth / (years.length - 1);
     
-//     // 将拖动位置限制在轨道范围内
-//     const constrainedPosition = Math.max(0, Math.min(trackWidth, dragPosition));
+    // 将拖动位置限制在轨道范围内
+    const constrainedPosition = Math.max(0, Math.min(trackWidth, dragPosition));
     
-//     // 找到最接近拖动位置的年份索引
-//     const newIndex = Math.round(constrainedPosition / segmentWidth);
-//     if (newIndex >= 0 && newIndex < years.length && newIndex !== currentYearIndex) {
-//       currentYearIndex = newIndex;
-//       updateSliderPosition(currentYearIndex);
-//       updateYearInfo(years[currentYearIndex]);
-//     }
-//   }
+    // 找到最接近拖动位置的年份索引
+    const newIndex = Math.round(constrainedPosition / segmentWidth);
+    if (newIndex >= 0 && newIndex < years.length && newIndex !== currentYearIndex) {
+      currentYearIndex = newIndex;
+      updateSliderPosition(currentYearIndex);
+      updateYearInfo(years[currentYearIndex]);
+    }
+  }
   
-//   function endDrag() {
-//     isDragging = false;
-//     timelineSlider.style.cursor = 'pointer';
-//   }
+  function endDrag() {
+    isDragging = false;
+    timelineSlider.style.cursor = 'pointer';
+  }
   
-//   function updateSliderPosition(index) {
-//     const segmentWidth = trackWidth / (years.length - 1);
-//     const position = trackPadding + (index * segmentWidth);
+  function updateSliderPosition(index) {
+    const segmentWidth = trackWidth / (years.length - 1);
+    const position = trackPadding + (index * segmentWidth);
     
-//     // 添加平滑过渡
-//     timelineSlider.style.transition = 'left 0.8s ease';
-//     timelineSlider.style.left = `${position}px`;
+    // 添加平滑过渡
+    timelineSlider.style.transition = 'left 0.8s ease';
+    timelineSlider.style.left = `${position}px`;
     
-//     // 一段时间后移除过渡以便拖动不受影响
-//     setTimeout(() => {
-//       timelineSlider.style.transition = '';
-//     }, 850);
-//   }
+    // 一段时间后移除过渡以便拖动不受影响
+    setTimeout(() => {
+      timelineSlider.style.transition = '';
+    }, 850);
+  }
   
-//   function updateYearInfo(year) {
-//     // 更新全局当前年份并重新渲染热力图
-//     if (currentYear !== year && allData && allRegions && allCountries) {
-//       currentYear = year;
-//       renderHeatmap(allData, allRegions, allCountries, currentYear);
+  function updateYearInfo(year) {
+    // 更新全局当前年份并重新渲染热力图
+    if (currentYear !== year && allData && allRegions && allCountries) {
+      currentYear = year;
+      renderHeatmap(allData, allRegions, allCountries, currentYear);
       
-//       // 更新 Mapbox 地图的年份过滤
-//       const layerID = 'uk-trade-with-coords-dlzrad';
-//       updateMapYearFilter(layerID, year);
-//     }
-//   }
-// }
+      // 更新 Mapbox 地图的年份过滤
+      const layerID = 'uk-trade-with-coords-dlzrad';
+      updateMapYearFilter(layerID, year);
+    }
+  }
+}
 
 function initializeHeatmap() {
 const container = document.getElementById('heatmap-container');
