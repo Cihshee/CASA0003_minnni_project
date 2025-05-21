@@ -211,10 +211,10 @@ function addBubbleInteractions(layerId) {
       max-width: 280px;
     }
     .trade-bubble-popup .mapboxgl-popup-tip {
-      border-top-color: rgba(0, 0, 0, 0.8);
-      border-bottom-color: rgba(0, 0, 0, 0.8);
-      border-left-color: rgba(0, 0, 0, 0.8);
-      border-right-color: rgba(0, 0, 0, 0.8);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
     }
     .popup-content {
       font-family: 'Arial', sans-serif;

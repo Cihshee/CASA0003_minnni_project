@@ -640,8 +640,8 @@ function initPortImageScroll() {
             console.log('点击了地图按钮');
             stopAutoPlay(); // 停止自动播放
             
-            // 在新窗口打开地图页面
-            window.open('./src/components/Transport/uk-port.html', '_blank');
+            // 在当前窗口中加载新页面，而不是打开新窗口
+            window.location.href = './src/components/Transport/uk-port.html';
         });
     });
     

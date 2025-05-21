@@ -3679,15 +3679,11 @@
         
         // 添加返回功能
         function goBack() {
-            // 如果有历史记录，则返回上一页
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                // 设置localStorage标记，指示需要点击Transport Modes导航按钮
-                localStorage.setItem('autoClickTransport', 'true');
-                // 跳转到主页
-                window.location.href = '../../../index.html';
-            }
+            // 设置localStorage标记，指示需要点击Transport Modes导航按钮
+            localStorage.setItem('autoClickTransport', 'true');
+            // 跳转到主页
+            window.location.href = '../../../index.html';
+            
         }
     </script>
 </body>
