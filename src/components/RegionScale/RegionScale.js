@@ -36,6 +36,19 @@ function initializeMap() {
   const mapContainer = document.getElementById('region-map-container');
   if (!mapContainer) return;
   
+  // 显示加载提示
+  const mapLoading = document.createElement('div');
+  mapLoading.id = 'map-loading';
+  mapLoading.innerHTML = `
+    <div class="loading-text">Loading Map</div>
+    <div class="loading-dots">
+      <span>.</span>
+      <span>.</span>
+      <span>.</span>
+    </div>
+  `;
+  mapContainer.appendChild(mapLoading);
+  
   // 创建 Mapbox 地图实例
   map = new mapboxgl.Map({
     container: 'region-map-container',
@@ -52,6 +65,10 @@ function initializeMap() {
   
   // 等待地图加载完成
   map.on('load', function() {
+    // 隐藏加载提示
+    if (mapLoading) {
+      mapLoading.style.display = 'none';
+    }
     console.log('Mapbox map loaded successfully');
     
     // 设置初始年份过滤器
