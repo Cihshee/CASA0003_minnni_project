@@ -211,10 +211,10 @@ function addBubbleInteractions(layerId) {
       max-width: 280px;
     }
     .trade-bubble-popup .mapboxgl-popup-tip {
-      border-top-color: rgba(0, 0, 0, 0.8);
-      border-bottom-color: rgba(0, 0, 0, 0.8);
-      border-left-color: rgba(0, 0, 0, 0.8);
-      border-right-color: rgba(0, 0, 0, 0.8);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
     }
     .popup-content {
       font-family: 'Arial', sans-serif;
@@ -1436,7 +1436,7 @@ yearMarks.append('text')
   .attr('y', 25)
   .attr('text-anchor', 'middle')
   .style('font-size', '14px')
-  .style('fill', d => d === currentYear ? '#ff6347' : '#555')
+  .style('fill', d => d === currentYear ? '#ff6347' : '#888')
   .style('font-weight', d => d === currentYear ? 'bold' : 'normal')
   .text(d => d);
 
@@ -1516,7 +1516,7 @@ function updateTimelineSelection(svg, timeScale, years) {
 
   svg.selectAll('.year-mark')
     .selectAll('text')
-    .style('fill', d => d === currentYear ? '#ff6347' : '#555')
+    .style('fill', d => d === currentYear ? '#ff6347' : '#888')
     .style('font-weight', d => d === currentYear ? 'bold' : 'normal');
 
   // 重要：获取当前年份标记的实际X坐标，确保完全对齐
@@ -1559,14 +1559,19 @@ function processScrollEntries(entries) {
     }
   });
   
-  // 如果找到了最佳步骤，更新年份
+  // 如果找到了最佳步骤，更新高亮状态和年份
   if (bestEntry) {
+    // 首先更新高亮状态
+    document.querySelectorAll('.step').forEach(step => {
+      step.classList.remove('is-active');
+    });
+    bestEntry.target.classList.add('is-active');
+    
+    // 获取年份并处理变化
     const year = +bestEntry.target.getAttribute('data-year');
     if (year && year !== currentYear) {
-      console.log(`年份从 ${currentYear} 更新为 ${year}`); // 调试用
+      console.log(`年份从 ${currentYear} 更新为 ${year}`);
       
-      // 保存之前的年份
-      const previousYear = currentYear;
       // 更新当前年份
       currentYear = year;
       
@@ -1584,45 +1589,16 @@ function processScrollEntries(entries) {
         btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
       });
       
-      // 关键修改：确保更新SVG时间轴
+      // 更新时间轴选择
       const timelineSvg = document.querySelector('#timeline-svg svg');
       if (timelineSvg) {
-        console.log('找到SVG时间轴元素'); // 调试用
-        
         const svgSelection = d3.select(timelineSvg);
         const width = timelineSvg.clientWidth || timelineSvg.getBoundingClientRect().width;
         const timeScale = d3.scalePoint()
           .domain([2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024])
           .range([50, width - 50]);
         
-        // 直接更新当前年份标记位置
-        const currentYearMarker = svgSelection.select('.current-year-marker');
-        if (currentYearMarker.node()) {
-          console.log('找到当前年份标记元素'); // 调试用
-          
-          currentYearMarker
-            .transition()
-            .duration(300)
-            .attr('transform', `translate(${timeScale(year)}, ${80/2 - 40})`);
-          
-          // 更新标记上的文本
-          currentYearMarker.select('text')
-            .text(`'${String(year).slice(-2)}`);
-            
-          // 更新年份标记样式
-          svgSelection.selectAll('.year-mark')
-            .selectAll('line')
-            .attr('stroke', d => d === year ? '#ff6347' : '#888');
-          
-          svgSelection.selectAll('.year-mark')
-            .selectAll('text')
-            .style('fill', d => d === year ? '#ff6347' : '#555')
-            .style('font-weight', d => d === year ? 'bold' : 'normal');
-        } else {
-          console.log('未找到当前年份标记元素'); // 调试用
-        }
-      } else {
-        console.log('未找到SVG时间轴元素'); // 调试用
+        updateTimelineSelection(svgSelection, timeScale, [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]);
       }
     }
   }
@@ -1657,124 +1633,135 @@ function scrollToYear(year) {
 
 // 修改4: 调整setupScrollListener函数中2024年的处理
 function setupScrollListener(years) {
-// 使用节流函数减少更新频率
-let lastScrollTime = 0;
-const scrollThrottle = 300; // 300ms内只处理一次滚动
-let pendingScroll = false;
+  // 使用更长的节流时间和更好的缓冲来防止抖动
+  let lastScrollTime = 0;
+  const scrollThrottle = 500; // 增加到500ms，减少更新频率
+  let pendingScroll = false;
 
-// 创建观察器来检测哪个步骤在视图中
-const observer = new IntersectionObserver((entries) => {
-  if (scrolling) return; // 如果是按钮触发的滚动，忽略
-  
-  const now = Date.now();
-  if (now - lastScrollTime < scrollThrottle) {
-    if (!pendingScroll) {
-      pendingScroll = true;
-      setTimeout(() => {
-        processScrollEntries(entries);
-        pendingScroll = false;
-        lastScrollTime = Date.now();
-      }, scrollThrottle);
+  // 创建更稳定的观察器，提高阈值
+  const observer = new IntersectionObserver((entries) => {
+    if (scrolling) return; // 如果是按钮触发的滚动，忽略
+    
+    const now = Date.now();
+    if (now - lastScrollTime < scrollThrottle) {
+      if (!pendingScroll) {
+        pendingScroll = true;
+        setTimeout(() => {
+          processStableEntries(entries);
+          pendingScroll = false;
+          lastScrollTime = Date.now();
+        }, scrollThrottle);
+      }
+      return;
     }
-    return;
-  }
-  
-  lastScrollTime = now;
-  processScrollEntries(entries);
-}, {
-  threshold: 0.5, // 使用单一阈值
-  rootMargin: '-10% 0px -10% 0px' // 缩小检测范围
-});
+    
+    lastScrollTime = now;
+    processStableEntries(entries);
+  }, {
+    threshold: [0.5, 0.7], // 使用更高阈值，需要更明确的可见度
+    rootMargin: '-15% 0px -15% 0px' // 进一步缩小检测范围
+  });
 
   // 监测所有步骤
   document.querySelectorAll('.step[data-year]').forEach(step => {
     observer.observe(step);
   });
   
-  // 特别处理最后一个步骤（2024年）
-  const lastStep = document.querySelector('.step[data-year="2024"]');
-  if (lastStep) {
-    // 创建专门用于2024年的观察器，使用更高的阈值
-    const lastYearObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // 只有当元素大部分进入视图才触发
-        // 与RegionScale2.js保持一致的触发条件
-        if (entry.isIntersecting && entry.intersectionRatio > 0.7 && !scrolling) {
-          const year = +entry.target.getAttribute('data-year');
-          if (year === 2024 && currentYear !== 2024) {
-            currentYear = 2024;
-            
-            // 更新地图的年份过滤器
-            const layerID = 'uk-trade-with-coords-dlzrad';
-            updateMapYearFilter(layerID, 2024);
-            
-            // 更新热力图
-            renderHeatmap(allData, allRegions, allCountries, 2024);
-            
-            // 更新地图时间轴年份按钮
-            document.querySelectorAll('.map-year-btn').forEach(btn => {
-              const btnYear = parseInt(btn.dataset.year);
-              btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
-              btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
-            });
-            
-            // 更新时间轴选择
-            const timelineContainer = d3.select('#timeline-svg');
-            if (!timelineContainer.empty()) {
-              const width = timelineContainer.node().clientWidth;
-              const timeScale = d3.scalePoint()
-                .domain(years)
-                .range([50, width - 50]);
-              updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
-            }
-          }
-        }
-      });
-    }, {
-      threshold: [0.5, 0.7, 0.9], // 与RegionScale2.js保持一致的阈值
-      rootMargin: '0px 0px 0px 0px' // 与RegionScale2.js保持一致的边距
+  // 分离高亮逻辑和年份更新逻辑
+  function processStableEntries(entries) {
+    // 找到当前最高交叉比例的步骤
+    let bestEntry = null;
+    let maxRatio = 0;
+    
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+        maxRatio = entry.intersectionRatio;
+        bestEntry = entry;
+      }
     });
     
-    lastYearObserver.observe(lastStep);
+    // 只有当交叉比例足够高时才更新年份
+    if (bestEntry && bestEntry.intersectionRatio > 0.6) {
+      const year = +bestEntry.target.getAttribute('data-year');
+      
+      // 只有当年份变化时才更新，减少不必要的更新
+      if (year && year !== currentYear) {
+        // 保存之前的年份
+        const previousYear = currentYear;
+        // 更新当前年份
+        currentYear = year;
+        
+        // 更新热力图和地图，但不影响滚动交互
+        renderHeatmap(allData, allRegions, allCountries, year);
+        updateMapYearFilter('uk-trade-with-coords-dlzrad', year);
+        
+        // 更新时间轴滑块位置 - 更平滑的转换
+        updateTimelineSlider(year);
+        
+        // 更新高亮状态 - 单独处理以避免频繁更新DOM
+        updateStepHighlight(previousYear, year);
+      }
+    }
+  }
+  
+  // 单独处理高亮状态更新，使用CSS转换使其更平滑
+  function updateStepHighlight(oldYear, newYear) {
+    // 移除之前年份的高亮
+    const oldStep = document.querySelector(`.step[data-year="${oldYear}"]`);
+    if (oldStep) {
+      oldStep.classList.remove('active');
+      oldStep.querySelector('.timeline-dot')?.classList.remove('active');
+      oldStep.querySelector('.timeline-year')?.classList.remove('active');
+    }
     
-    // 修改滚动容器的滚动事件处理，与RegionScale2.js保持一致
-    const scrollContainer = lastStep.closest('.scroll-text') || lastStep.parentElement;
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', () => {
-        if (scrolling) return;
-        
-        // 与RegionScale2.js保持一致的检测逻辑
-        const isNearBottom = scrollContainer.scrollTop + scrollContainer.clientHeight >= 
-                            scrollContainer.scrollHeight - 50; // 更接近底部才触发
-        
-        if (isNearBottom && currentYear !== 2024) {
-          currentYear = 2024;
+    // 添加新年份的高亮，使用延迟确保过渡平滑
+    setTimeout(() => {
+      const newStep = document.querySelector(`.step[data-year="${newYear}"]`);
+      if (newStep) {
+        newStep.classList.add('active');
+        newStep.querySelector('.timeline-dot')?.classList.add('active');
+        newStep.querySelector('.timeline-year')?.classList.add('active');
+      }
+    }, 50);
+  }
+  
+  // 更平滑地更新时间轴滑块位置
+  function updateTimelineSlider(year) {
+    const timelineContainer = d3.select('#timeline-svg');
+    if (!timelineContainer.empty()) {
+      const width = timelineContainer.node().clientWidth;
+    const timeScale = d3.scalePoint()
+      .domain(years)
+      .range([50, width - 50]);
+    
+      const svgSelection = timelineContainer.select('svg');
+      if (!svgSelection.empty()) {
+        // 使用更长的转换时间和缓动函数
+      const currentYearMarker = svgSelection.select('.current-year-marker');
+        if (currentYearMarker.node()) {
+          currentYearMarker.transition()
+            .duration(600)
+            .ease(d3.easeCubicOut)
+            .attr('transform', `translate(${timeScale(year)}, ${80/2 - 40})`);
           
-          // 更新地图过滤器
-          const layerID = 'uk-trade-with-coords-dlzrad';
-          updateMapYearFilter(layerID, 2024);
-          
-          // 更新热力图
-          renderHeatmap(allData, allRegions, allCountries, 2024);
-          
-          // 更新地图时间轴年份按钮
-          document.querySelectorAll('.map-year-btn').forEach(btn => {
-            const btnYear = parseInt(btn.dataset.year);
-            btn.style.background = btnYear === currentYear ? 'rgba(255,99,71,0.8)' : 'transparent';
-            btn.style.fontWeight = btnYear === currentYear ? 'bold' : 'normal';
-          });
-          
-          // 更新时间轴选择
-          const timelineContainer = d3.select('#timeline-svg');
-          if (!timelineContainer.empty()) {
-            const width = timelineContainer.node().clientWidth;
-            const timeScale = d3.scalePoint()
-              .domain(years)
-              .range([50, width - 50]);
-            updateTimelineSelection(timelineContainer.select('svg'), timeScale, years);
-          }
+          currentYearMarker.select('text')
+            .text(`'${String(year).slice(-2)}`);
         }
-      });
+      
+        // 更新年份标记样式，也使用转换动画
+      svgSelection.selectAll('.year-mark')
+        .selectAll('line')
+          .transition()
+          .duration(400)
+        .attr('stroke', d => d === year ? '#ff6347' : '#888');
+      
+      svgSelection.selectAll('.year-mark')
+        .selectAll('text')
+          .transition()
+          .duration(400)
+        .style('fill', d => d === year ? '#ff6347' : '#555')
+        .style('font-weight', d => d === year ? 'bold' : 'normal');
+      }
     }
   }
 }
@@ -2719,4 +2706,99 @@ function scrollToYear(year) {
 // 添加一个简单的toggleTimelineAutoPlay函数，避免错误
 function toggleTimelineAutoPlay() {
   console.log("时间轴播放按钮被点击");
+}
+
+function setupScrollListener(years) {
+  // 使用简单的配置
+  const observer = new IntersectionObserver((entries) => {
+    if (scrolling) return;
+    
+    // 找到当前最高交叉比例的步骤
+    let bestEntry = null;
+    let maxRatio = 0;
+    
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+        maxRatio = entry.intersectionRatio;
+        bestEntry = entry;
+      }
+    });
+    
+    // 如果找到了最佳步骤，更新年份
+    if (bestEntry) {
+      const year = +bestEntry.target.getAttribute('data-year');
+      if (year && year !== currentYear) {
+        // 更新当前年份
+        currentYear = year;
+        
+        // 更新地图的年份过滤器
+        const layerID = 'uk-trade-with-coords-dlzrad';
+        updateMapYearFilter(layerID, year);
+        
+        // 更新热力图
+        renderHeatmap(allData, allRegions, allCountries, year);
+        
+        // 更新时间轴选择 - 使用现有的updateTimelineSelection函数
+        const timelineSvg = document.querySelector('#timeline-svg svg');
+        if (timelineSvg) {
+          const svgSelection = d3.select(timelineSvg);
+          const width = timelineSvg.clientWidth;
+          const timeScale = d3.scalePoint()
+            .domain(years)
+            .range([50, width - 50]);
+          
+          updateTimelineSelection(svgSelection, timeScale, years);
+        }
+      }
+    }
+  }, {
+    threshold: 0.5,
+    rootMargin: '-10% 0px -10% 0px'
+  });
+  
+  // 监测所有步骤
+  document.querySelectorAll('.step[data-year]').forEach(step => {
+    observer.observe(step);
+  });
+  
+  // 特别处理最后一个步骤（2024年）
+  const lastStep = document.querySelector('.step[data-year="2024"]');
+  if (lastStep) {
+    // 创建专门用于2024年的观察器
+    const lastYearObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // 只有当元素大部分进入视图才触发
+        if (entry.isIntersecting && entry.intersectionRatio > 0.7 && !scrolling) {
+          const year = +entry.target.getAttribute('data-year');
+          if (year === 2024 && currentYear !== 2024) {
+            currentYear = 2024;
+            
+            // 更新地图的年份过滤器
+            const layerID = 'uk-trade-with-coords-dlzrad';
+            updateMapYearFilter(layerID, 2024);
+            
+            // 更新热力图
+            renderHeatmap(allData, allRegions, allCountries, 2024);
+            
+            // 更新时间轴
+            const timelineSvg = document.querySelector('#timeline-svg svg');
+            if (timelineSvg) {
+              const svgSelection = d3.select(timelineSvg);
+              const width = timelineSvg.clientWidth;
+              const timeScale = d3.scalePoint()
+                .domain(years)
+                .range([50, width - 50]);
+              
+              updateTimelineSelection(svgSelection, timeScale, years);
+            }
+          }
+        }
+      });
+    }, {
+      threshold: [0.5, 0.7, 0.9],
+      rootMargin: '0px 0px 0px 0px'
+    });
+    
+    lastYearObserver.observe(lastStep);
+  }
 }

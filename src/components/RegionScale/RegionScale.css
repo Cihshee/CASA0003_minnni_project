@@ -340,7 +340,7 @@
 /* 调整垂直线样式，确保与CountryScale完全一致 */
 .region-chart-section .timeline-vertical-line {
   position: absolute;
-  left: -50px; /* 调整位置，向左移动 */
+  left: -45px; /* 调整位置，向左移动 */
   top: 0;
   bottom: 0;
   width: 1px;
@@ -353,4 +353,68 @@
   margin-top: 50vh; /* 与mapbox容器高度匹配 */
   width: 100%;
   z-index: 10; /* 确保在地图上方显示 */
+}
+
+
+/* 时间轴标记容器 */
+.timeline-marker {
+  position: absolute;
+  left: -45px;
+  width: 70px;
+  height: 20px;
+  z-index: 2;
+}
+
+/* 时间轴圆点 - 精确对齐在垂直线上 */
+.timeline-dot {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+/* 时间轴水平连接线 */
+.timeline-connector {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 70px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 2;
+}
+
+/* 步骤容器调整 */
+.step {
+  position: relative;
+  margin-bottom: 150px;
+  padding-left: 30px;
+}
+
+/* 年份标题样式 */
+.step-year {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+/* 步骤内容样式调整 */
+.step-content {
+  padding-left: 10px;
+}
+
+/* 高亮当前步骤样式 - 移除任何发光效果 */
+.step.is-active .timeline-dot {
+  background-color: #ffffff;
+  /* 移除box-shadow效果 */
+}
+
+.step.is-active .timeline-connector {
+  background-color: rgba(255, 255, 255, 0.8);
 }
