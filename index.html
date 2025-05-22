@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="src/components/CountryScale/CountryScale.css">
     <link rel="stylesheet" href="src/components/RegionScale/RegionScale.css">
     <link rel="stylesheet" href="src/components/GoodsType/GoodsType.css">
+    <link rel="stylesheet" href="src/components/KeyInsights/KeyInsights.css">
     <!-- Mapbox CSS and JS -->
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
@@ -1980,25 +1981,45 @@
             document.body.appendChild(script);
           });
 
-        // 加载 Key Insights 组件并确保样式表被加载
-        Promise.all([
-          fetch('src/components/KeyInsights/KeyInsights.html').then(response => response.text()),
-          fetch('src/components/KeyInsights/KeyInsights.css').then(response => response.text())
-        ]).then(([html, css]) => {
-          // 添加样式
-          const styleSheet = document.createElement('style');
-          styleSheet.textContent = css;
-          document.head.appendChild(styleSheet);
-          
-          // 添加HTML
+      // 加载 Key Insights 组件并确保样式表被加载
+        fetch('src/components/KeyInsights/KeyInsights.html')
+        .then(response => response.text())
+        .then(html => {
           document.getElementById('key-insights-container').innerHTML = html;
           
-          // 添加脚本
-          const script = document.createElement('script');
-          script.src = 'src/components/KeyInsights/KeyInsights.js';
-          document.body.appendChild(script);
+          // 确保CSS已加载
+          if (!document.querySelector('link[href="src/components/KeyInsights/KeyInsights.css"]')) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'src/components/KeyInsights/KeyInsights.css';
+            document.head.appendChild(link);
+          }
+          
+          // 添加内联脚本确保全局D3可用
+          const checkD3Script = document.createElement('script');
+          checkD3Script.textContent = `
+            if (typeof d3 === 'undefined') {
+              console.log('全局D3未找到，正在加载...');
+              const d3Script = document.createElement('script');
+              d3Script.src = 'https://d3js.org/d3.v7.min.js';
+              d3Script.onload = function() {
+                console.log('D3加载完成，现在加载KeyInsights.js');
+                loadKeyInsightsScript();
+              };
+              document.head.appendChild(d3Script);
+            } else {
+              console.log('D3已加载，直接加载KeyInsights.js');
+              loadKeyInsightsScript();
+            }
+            
+            function loadKeyInsightsScript() {
+              const script = document.createElement('script');
+              script.src = 'src/components/KeyInsights/KeyInsights.js';
+              document.body.appendChild(script);
+            }
+          `;
+          document.body.appendChild(checkD3Script);
         });
-
     </script>
 
       <section id="section9" class="full-page">

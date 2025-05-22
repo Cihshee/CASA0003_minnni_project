@@ -1,21 +1,228 @@
 .key-insights-section {
-  padding: 0 2rem 4rem 2rem;
-  margin-top: -10vh;
-  background: transparent;
-  backdrop-filter: blur(10px);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  z-index: 1;
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .insights-container {
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   width: 100%;
+}
+
+.insights-row {
+  display: flex;
+  gap: 30px;
+  opacity: 1;
+  width: 100%;
+}
+
+.insight-box {
+  flex: 1;
+  padding: 35px 25px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.insight-box.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.insight-box:hover {
+  transform: translateY(-5px);
+}
+
+.insight-box h3 {
+  margin-top: 0;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.text-content {
+  max-width: 90%;
   margin: 0 auto;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* 线条动画容器样式 */
+.line-container {
+  width: 100%;
+  height: 140px;
+  margin-top: 20px;
   position: relative;
-  z-index: 2;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.insights-summary {
+  padding: 35px 30px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.insights-summary.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.insights-summary h3 {
+  margin-top: 0;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 瀑布流容器样式 */
+.waterfall-container {
+  display: flex;
+  width: 100%;
+  margin-top: 60px;
+  gap: 8px; /* 缩小容器间间隔 */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.waterfall-container.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.waterfall-item {
+  position: relative;
+  overflow: hidden;
+  height: 500px;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.waterfall-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.waterfall-left, .waterfall-right {
+  width: 25%;
+}
+
+.waterfall-center {
+  width: 50%;
+  /* 默认应用悬浮效果 */
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.waterfall-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: all 0.5s ease;
+}
+
+/* 左右图片默认灰色 */
+.waterfall-left .waterfall-image, 
+.waterfall-right .waterfall-image {
+  filter: grayscale(0.9) brightness(0.7);
+}
+
+/* 中间图片默认高亮显示 */
+.waterfall-center .waterfall-image {
+  filter: grayscale(0) brightness(1);
+  transform: scale(1.05);
+}
+
+/* 鼠标悬停时取消灰色效果 */
+.waterfall-item:hover .waterfall-image {
+  filter: grayscale(0) brightness(1);
+  transform: scale(1.05);
+}
+
+.waterfall-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 25px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 80%, transparent 100%);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  color: #fff;
+}
+
+/* 中间容器文字内容默认显示 */
+.waterfall-center .waterfall-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.waterfall-item:hover .waterfall-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.waterfall-content h4 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.waterfall-content p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  opacity: 0.9;
+}
+
+/* 响应式布局 - 仅在非常小的屏幕上转为列布局 */
+@media (max-width: 767px) {
+  .insights-row {
+    flex-direction: column;
+  }
+  
+  .insight-box {
+    margin-bottom: 20px;
+  }
+  
+  .waterfall-container {
+    flex-direction: column;
+  }
+  
+  .waterfall-left,
+  .waterfall-center,
+  .waterfall-right {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 400px; /* 移动设备上调整高度 */
+  }
 } 
