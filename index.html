@@ -498,6 +498,46 @@
         border-radius: 50%;
         object-fit: cover;
       }
+
+      .loading-dots {
+        display: inline-block;
+        margin-left: 4px;
+      }
+
+      .loading-dots span {
+        display: inline-block;
+        font-size: 24px;
+        font-weight: bold;
+        color: #edf7ff;
+        opacity: 0;
+        animation: dotAnimation 1.4s infinite;
+        animation-fill-mode: both;
+        transform: translateY(-2px);
+        margin: 0 2px;
+      }
+
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes dotAnimation {
+        0% { 
+          opacity: 0;
+          transform: translateY(-2px) scale(0.8);
+        }
+        20% { 
+          opacity: 1;
+          transform: translateY(-2px) scale(1.2);
+        }
+        100% { 
+          opacity: 0;
+          transform: translateY(-2px) scale(0.8);
+        }
+      }
     </style>
   </head>
   <body>
@@ -829,7 +869,7 @@
                   <span style="display: block; text-align: right; font-size: 14px; color: #888; margin: 8px 0; font-style: italic;">
                     Source: <a href="https://www.youtube.com/watch?v=3icgtyEJMfs" target="_blank" style="color: #888; text-decoration: none;">UK Brexit Triumph: EU Election Map</a>
                   </span>
-                  And then...
+                  And then<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
                 </p>
               </div>
               <div class="brexit-content">
@@ -1221,6 +1261,7 @@
                 markers.forEach(data => {
                   if (data.element) {
                     data.element.classList.remove('highlight');
+                    data.element.classList.remove('visible'); // 修正：移除visible
                     if (data.group) {
                       data.group.classList.remove('highlight');
                     }
@@ -1239,6 +1280,7 @@
                 const marker = markers.get(regionName);
                 if (marker) {
                   marker.element.classList.add('highlight');
+                  marker.element.classList.add('visible'); // 修正：加visible
                   marker.group.classList.add('highlight');
                 }
               }
@@ -1264,7 +1306,7 @@
                 // 立即高亮第一个区域
                 highlightRegion(getRandomRegion());
 
-                // 每800ms切换一次高亮区域
+                // 每1200ms切换一次高亮区域
                 window.highlightInterval = setInterval(() => {
                   if (currentView === 'vote') {
                     highlightRegion(getRandomRegion());
@@ -1272,7 +1314,7 @@
                     clearInterval(window.highlightInterval);
                     window.highlightInterval = null;
                   }
-                }, 320);
+                }, 900); // 速度从1200ms改为900ms
               }
 
               // 添加视图切换逻辑
@@ -1284,8 +1326,8 @@
               const viewPositions = {
                 initial: {
                   center: [0, 50],
-                  zoom: 2,
-                  duration: 2000
+                  zoom: 3,
+                  duration: 1000
                 },
                 vote: {
                   center: [-2.5, 55.5],
@@ -1419,7 +1461,12 @@
               // 添加按钮点击事件
               viewButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                  // 手动切换时不启动高亮动画
+                  // 手动切换时不启动高亮动画，并且清除任何现有的高亮
+                  if (window.highlightInterval) {
+                    clearInterval(window.highlightInterval);
+                    window.highlightInterval = null;
+                  }
+                  clearAllHighlights();
                   switchView(button.dataset.view, false, false);
                 });
               });
@@ -1756,8 +1803,9 @@
                     const prevMarker = markers.get(hoveredRegionId);
                     if (prevMarker) {
                       prevMarker.element.style.transform = '';
-                      prevMarker.element.style.background = '';
                       prevMarker.element.style.boxShadow = '';
+                      prevMarker.element.classList.remove('highlight'); // 新增：移除高亮
+                      prevMarker.element.classList.remove('visible');
                       prevMarker.group.querySelector('.connector-line').style.stroke = '';
                       prevMarker.group.querySelector('.connector-line').style.strokeWidth = '';
                       prevMarker.group.querySelector('.connector-dot').style.fill = '';
@@ -1772,8 +1820,9 @@
                     const marker = markers.get(hoveredRegionId);
                     if (marker) {
                       marker.element.style.transform = 'scale(1.05)';
-                      marker.element.style.background = 'rgba(0, 0, 0, 0.95)';
                       marker.element.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
+                      marker.element.classList.add('highlight'); // 新增：加高亮
+                      marker.element.classList.add('visible');
                       marker.group.querySelector('.connector-line').style.stroke = 'rgba(255, 255, 255, 1)';
                       marker.group.querySelector('.connector-line').style.strokeWidth = '2';
                       marker.group.querySelector('.connector-dot').style.fill = 'rgba(255, 255, 255, 1)';
@@ -1790,8 +1839,9 @@
                   const prevMarker = markers.get(hoveredRegionId);
                   if (prevMarker) {
                     prevMarker.element.style.transform = '';
-                    prevMarker.element.style.background = '';
                     prevMarker.element.style.boxShadow = '';
+                    prevMarker.element.classList.remove('highlight'); // 新增：移除高亮
+                    prevMarker.element.classList.remove('visible');
                     prevMarker.group.querySelector('.connector-line').style.stroke = '';
                     prevMarker.group.querySelector('.connector-line').style.strokeWidth = '';
                     prevMarker.group.querySelector('.connector-dot').style.fill = '';
@@ -1866,7 +1916,7 @@
                           
                           setTimeout(() => {
                             switchView('brexit', false, false);
-                          }, 2000); // 减少等待时间从5000ms到3000ms
+                          }, 5000); // 增加等待时间从2000ms到5000ms
                         }, 400);
                       }, 1500);
                     }, 500);
@@ -1894,8 +1944,8 @@
               });
 
               map.on('mouseleave', 'region-fills', () => {
-                // 恢复自动高亮
-                if (currentView === 'vote' && !window.highlightInterval) {
+                // 只有在初始动画序列中才恢复自动高亮
+                if (currentView === 'vote' && !window.highlightInterval && !hasPlayedSequence) {
                   startAutoHighlight();
                 }
               });
@@ -2281,6 +2331,7 @@
         markers.forEach(data => {
           if (data.element) {
             data.element.classList.remove('highlight');
+            data.element.classList.remove('visible'); // 修正：移除visible
             if (data.group) {
               data.group.classList.remove('highlight');
             }
@@ -2299,6 +2350,7 @@
         const marker = markers.get(regionName);
         if (marker) {
           marker.element.classList.add('highlight');
+          marker.element.classList.add('visible'); // 修正：加visible
           marker.group.classList.add('highlight');
         }
       }
@@ -2324,7 +2376,7 @@
         // 立即高亮第一个区域
         highlightRegion(getRandomRegion());
 
-        // 每800ms切换一次高亮区域
+        // 每1200ms切换一次高亮区域
         window.highlightInterval = setInterval(() => {
           if (currentView === 'vote') {
             highlightRegion(getRandomRegion());
@@ -2332,7 +2384,7 @@
             clearInterval(window.highlightInterval);
             window.highlightInterval = null;
           }
-        }, 800);
+        }, 900); // 速度从1200ms改为900ms
       }
 
       // 在初始动画序列中添加自动高亮启动
@@ -2383,8 +2435,8 @@
       });
 
       map.on('mouseleave', 'region-fills', () => {
-        // 恢复自动高亮
-        if (currentView === 'vote' && !window.highlightInterval) {
+        // 只有在初始动画序列中才恢复自动高亮
+        if (currentView === 'vote' && !window.highlightInterval && !hasPlayedSequence) {
           startAutoHighlight();
         }
       });
