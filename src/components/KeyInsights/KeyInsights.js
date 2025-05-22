@@ -10,6 +10,18 @@ console.log("KeyInsights.js 文件已加载");
     waterfallShown: false
   };
   
+  // 添加鼠标移动跟踪
+  function handleMouseMove(event) {
+    const boxes = document.querySelectorAll('.insight-box');
+    boxes.forEach(box => {
+      const rect = box.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / box.offsetWidth) * 100;
+      const y = ((event.clientY - rect.top) / box.offsetHeight) * 100;
+      box.style.setProperty('--mouse-x', `${x}%`);
+      box.style.setProperty('--mouse-y', `${y}%`);
+    });
+  }
+  
   // 添加滚动监听
   window.addEventListener('scroll', function() {
     const insightsSection = document.querySelector('.key-insights-section');
@@ -35,6 +47,19 @@ console.log("KeyInsights.js 文件已加载");
       insightBoxes.forEach((box, index) => {
         setTimeout(() => {
           box.classList.add('fade-in');
+          // 添加鼠标移动监听
+          box.addEventListener('mousemove', handleMouseMove);
+          // 添加鼠标进入效果
+          box.addEventListener('mouseenter', () => {
+            box.style.transform = 'translateY(-5px) scale(1.01)';
+          });
+          // 添加鼠标离开效果
+          box.addEventListener('mouseleave', () => {
+            box.style.transform = 'translateY(0) scale(1)';
+            // 重置光效位置
+            box.style.setProperty('--mouse-x', '50%');
+            box.style.setProperty('--mouse-y', '50%');
+          });
         }, index * 300);
       });
       

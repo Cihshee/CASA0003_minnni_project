@@ -593,20 +593,18 @@ function initPortImageScroll() {
     
     const slides = document.querySelectorAll('.port-image-slide');
     const dots = document.querySelectorAll('.indicator-dot');
-    const prevButton = document.getElementById('prev-port-image'); // 通过ID获取按钮
-    const nextButton = document.getElementById('next-port-image'); // 通过ID获取按钮
-    const textContents = document.querySelectorAll('.port-text-content'); // 获取所有文字内容区域
-    const exploreMapBtns = document.querySelectorAll('.explore-map-btn'); // 获取所有地图按钮
+    const prevButton = document.getElementById('prev-port-image');
+    const nextButton = document.getElementById('next-port-image');
+    const textContents = document.querySelectorAll('.port-text-content');
+    const exploreMapBtns = document.querySelectorAll('.explore-map-btn');
     
     console.log('找到幻灯片数量:', slides.length);
     console.log('找到指示点数量:', dots.length);
     console.log('找到文字内容数量:', textContents.length);
-    console.log('上一张按钮:', prevButton);
-    console.log('下一张按钮:', nextButton);
     
     let currentIndex = 0;
-    let autoPlayTimer = null; // 自动播放定时器
-    const autoPlayInterval = 3000; // 自动播放间隔，3秒
+    let autoPlayTimer = null;
+    const autoPlayInterval = 5000; // 增加到5秒，让用户有更多时间阅读
     
     // 如果元素不存在，直接返回
     if (!slides.length || !dots.length) {
@@ -616,11 +614,11 @@ function initPortImageScroll() {
     
     // 开始自动播放功能
     function startAutoPlay() {
+        console.log('启动自动播放');
         if (autoPlayTimer) {
             clearInterval(autoPlayTimer);
         }
         autoPlayTimer = setInterval(() => {
-            console.log('自动播放切换到下一张');
             currentIndex = (currentIndex + 1) % slides.length;
             updateSlides();
         }, autoPlayInterval);
@@ -628,107 +626,23 @@ function initPortImageScroll() {
     
     // 停止自动播放
     function stopAutoPlay() {
+        console.log('停止自动播放');
         if (autoPlayTimer) {
             clearInterval(autoPlayTimer);
             autoPlayTimer = null;
         }
     }
-    
+
     // 为所有地图按钮添加点击事件
     exploreMapBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             console.log('点击了地图按钮');
             stopAutoPlay(); // 停止自动播放
             
-            // 在当前窗口中加载新页面，而不是打开新窗口
+            // 在当前窗口中加载新页面
             window.location.href = './src/components/Transport/uk-port.html';
         });
     });
-    
-    // 检查按钮元素并绑定事件
-    if (!prevButton || !nextButton) {
-        console.error('导航按钮未找到，尝试重新获取...');
-        // 尝试通过类名获取
-        const prevBtnClass = document.querySelector('.prev-button');
-        const nextBtnClass = document.querySelector('.next-button');
-        
-        if (prevBtnClass && nextBtnClass) {
-            console.log('通过类名找到按钮，设置事件...');
-            setupButtonEvents(prevBtnClass, nextBtnClass);
-        } else {
-            console.error('无法找到导航按钮，请检查HTML结构');
-        }
-    } else {
-        // 直接使用DOM绑定事件，避免事件委托问题
-        console.log('通过ID找到按钮，直接绑定事件...');
-        
-        prevButton.onclick = function(e) {
-            console.log('点击了上一张按钮（直接事件）');
-            e.stopPropagation();
-            stopAutoPlay(); // 停止自动播放
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            updateSlides();
-            startAutoPlay(); // 重新开始自动播放
-        };
-        
-        nextButton.onclick = function(e) {
-            console.log('点击了下一张按钮（直接事件）');
-            e.stopPropagation();
-            stopAutoPlay(); // 停止自动播放
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateSlides();
-            startAutoPlay(); // 重新开始自动播放
-        };
-    }
-    
-    // 设置按钮事件
-    function setupButtonEvents(prev, next) {
-        console.log('设置导航按钮事件...');
-        
-        // 使用onclick代替addEventListener
-        prev.onclick = function(e) {
-            console.log('点击了上一张按钮');
-            e.stopPropagation();
-            stopAutoPlay(); // 停止自动播放
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            updateSlides();
-            startAutoPlay(); // 重新开始自动播放
-        };
-        
-        next.onclick = function(e) {
-            console.log('点击了下一张按钮');
-            e.stopPropagation();
-            stopAutoPlay(); // 停止自动播放
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateSlides();
-            startAutoPlay(); // 重新开始自动播放
-        };
-    }
-    
-    // 点击指示点切换图片
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', function() {
-            console.log('点击了指示点:', index);
-            stopAutoPlay(); // 停止自动播放
-            currentIndex = index;
-            updateSlides();
-            startAutoPlay(); // 重新开始自动播放
-        });
-    });
-    
-    // 鼠标悬停暂停自动播放
-    const imageContainer = document.querySelector('.port-image-container');
-    if (imageContainer) {
-        imageContainer.addEventListener('mouseenter', function() {
-            console.log('鼠标进入，暂停自动播放');
-            stopAutoPlay();
-        });
-        
-        imageContainer.addEventListener('mouseleave', function() {
-            console.log('鼠标离开，恢复自动播放');
-            startAutoPlay();
-        });
-    }
     
     // 更新幻灯片和文字内容
     function updateSlides() {
@@ -744,7 +658,6 @@ function initPortImageScroll() {
         // 更新文字内容
         textContents.forEach(content => {
             content.classList.remove('active');
-            // 为了制造更明显的动画效果，先让所有内容重置
             content.style.opacity = '0';
             content.style.transform = 'translateY(20px)';
         });
@@ -754,10 +667,7 @@ function initPortImageScroll() {
         const textContent = document.getElementById(textId);
         
         if (textContent) {
-            // 先添加active类
             textContent.classList.add('active');
-            
-            // 使用setTimeout确保CSS过渡效果能够正常触发
             setTimeout(() => {
                 textContent.style.opacity = '1';
                 textContent.style.transform = 'translateY(0)';
@@ -765,11 +675,58 @@ function initPortImageScroll() {
         }
     }
     
-    // 初始化显示第一张
-    updateSlides();
+    // 设置按钮事件
+    if (prevButton && nextButton) {
+        prevButton.onclick = function(e) {
+            e.stopPropagation();
+            stopAutoPlay();
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlides();
+            startAutoPlay();
+        };
+        
+        nextButton.onclick = function(e) {
+            e.stopPropagation();
+            stopAutoPlay();
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlides();
+            startAutoPlay();
+        };
+    }
     
-    // 启动自动播放
+    // 点击指示点切换图片
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+            stopAutoPlay();
+            currentIndex = index;
+            updateSlides();
+            startAutoPlay();
+        });
+    });
+    
+    // 鼠标悬停暂停自动播放
+    const imageContainer = document.querySelector('.port-image-container');
+    if (imageContainer) {
+        imageContainer.addEventListener('mouseenter', stopAutoPlay);
+        imageContainer.addEventListener('mouseleave', startAutoPlay);
+    }
+    
+    // 初始化显示第一张并启动自动播放
+    updateSlides();
     startAutoPlay();
+    
+    // 确保页面可见时自动播放正常工作
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            stopAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    });
+    
+    // 当窗口重新获得焦点时重新开始自动播放
+    window.addEventListener('focus', startAutoPlay);
+    window.addEventListener('blur', stopAutoPlay);
 }
 
 

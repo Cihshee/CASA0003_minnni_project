@@ -83,10 +83,10 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 80px);
     padding: 20px;
     box-sizing: border-box;
-    gap: 20px;
+    gap: 30px;
     overflow: hidden;
     align-items: center;
     justify-content: center;
@@ -105,8 +105,8 @@
 
 /* 视频部分 - 左侧 */
 .port-video-section {
-    width: 60%;
-    height: 70%;
+    width: 75%;  /* 增加宽度以显示完整图片 */
+    height: 85%;  /* 增加高度以显示完整图片 */
     display: flex;
     overflow: hidden;
     border-radius: 12px;
@@ -154,8 +154,14 @@
 .port-image-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;  /* 默认使用 contain */
     border-radius: 12px;
+    background-color: #2a2a2a;
+}
+
+/* 专门为第一张图片设置样式 */
+#port-image-1 img {
+    object-fit: cover;  /* 第一张图片使用 cover */
 }
 
 .image-indicator {
@@ -235,8 +241,8 @@
 
 /* 文字部分 - 右侧 */
 .port-text-section {
-    width: 23%;
-    height: 80%;
+    width: 20%;  /* 相应减小文字部分宽度 */
+    height: 85%;  /* 保持与左侧一致 */
     display: flex;
     flex-direction: column;
     padding: 25px;
@@ -346,15 +352,18 @@
     /* 小屏幕上改为上下布局 */
     .port-content {
         flex-direction: column;
+        height: auto;
+        padding: 15px;
     }
     
     .port-video-section {
         width: 100%;
-        height: 40vh;
+        height: 50vh;
     }
     
     .port-text-section {
         width: 100%;
+        height: auto;
         padding: 15px;
     }
     

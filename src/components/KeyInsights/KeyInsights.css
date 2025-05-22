@@ -1,16 +1,60 @@
 .key-insights-section {
-  padding: 60px 20px;
+  padding: 0px 0px 20px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: -60px auto 0;
   color: #fff;
+  position: relative;
 }
 
 .section-title {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   font-size: 2.5rem;
   color: #fff;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+}
+
+.insights-intro {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .insights-container {
@@ -18,30 +62,98 @@
   flex-direction: column;
   gap: 0;
   width: 100%;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .insights-row {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   opacity: 1;
   width: 100%;
-  align-items: flex-start;
-  margin-bottom: 10px;
+  align-items: stretch;
+  margin-bottom: 20px;
 }
 
 .insight-box {
   flex: 1;
-  padding: 0;
-  min-height: unset;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* 发光边框效果提高透明度 */
+.insight-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.insight-box.eu-trade {
+  background: linear-gradient(165deg, 
+    rgba(103, 186, 255, 0.08) 0%, 
+    rgba(103, 186, 255, 0.03) 100%
+  );
+}
+
+.insight-box.eu-trade:hover {
+  background: linear-gradient(165deg, 
+    rgba(103, 186, 255, 0.12) 0%, 
+    rgba(103, 186, 255, 0.05) 100%
+  );
+}
+
+.insight-box.non-eu-trade {
+  background: linear-gradient(165deg, 
+    rgba(249, 167, 132, 0.08) 0%, 
+    rgba(249, 167, 132, 0.03) 100%
+  );
+}
+
+.insight-box.non-eu-trade:hover {
+  background: linear-gradient(165deg, 
+    rgba(249, 167, 132, 0.12) 0%, 
+    rgba(249, 167, 132, 0.05) 100%
+  );
 }
 
 .insight-box.fade-in {
@@ -51,49 +163,117 @@
 
 .insight-box:hover {
   transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.626);
 }
 
 .insight-box h3 {
-  margin-top: 0;
+  margin: 0 0 12px 0;
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
   text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.insight-box:hover h3 {
+  transform: scale(1.02);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
 .text-content {
   font-size: 1rem;
   margin: 0;
   padding: 0;
-  max-width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  transition: all 0.3s ease;
 }
 
 .text-content p {
-  margin-bottom: 0.2rem;
-  line-height: 1.2;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+  opacity: 0.95;
+  max-width: 90%;
+  transition: all 0.3s ease;
+}
+
+/* 添加强调文字样式 */
+.text-highlight {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.text-highlight-blue {
+  color: rgba(103, 186, 255, 0.95);
+  font-weight: 600;
+}
+
+.text-highlight-orange {
+  color: rgba(249, 167, 132, 0.95);
+  font-weight: 600;
+}
+
+.text-italic {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.insight-box:hover .text-content p {
+  opacity: 1;
+  transform: translateY(-2px);
 }
 
 /* 线条动画容器样式 */
 .line-container {
   width: 100%;
-  height: 500px;
-  margin-top: 0;
-  margin-bottom: 0;
+  height: 260px;
+  margin: 0;
+  padding: 0;
   position: relative;
   overflow: hidden;
-  border-radius: 0px;
+  border-radius: 12px;
+  transform: scale(1.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.line-container svg, .line-container canvas, .line-container div {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
+.insight-box:hover .line-container {
+  transform: scale(1.22);
+}
+
+.line-container svg, 
+.line-container canvas, 
+.line-container div {
+  width: 120% !important;
+  height: 120% !important;
+  max-width: none !important;
+  max-height: none !important;
   display: block;
-  margin: 0 auto;
+  margin: -10% !important;
+  transform-origin: center center;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 添加浮动粒子效果 */
+.insight-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+    rgba(255, 255, 255, 0.05) 0%, 
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.insight-box:hover::after {
+  opacity: 1;
 }
 
 .insights-summary {
@@ -120,9 +300,9 @@
 /* 瀑布流容器样式 */
 .waterfall-container {
   display: flex;
-  width: 100%;
-  margin-top: 30px;
-  gap: 8px;
+  width: 98%;
+  margin: 40px auto;
+  gap: 12px;
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
@@ -136,25 +316,49 @@
 .waterfall-item {
   position: relative;
   overflow: hidden;
-  height: 500px;
+  height: 550px;
   cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 .waterfall-item:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.waterfall-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.waterfall-item:hover::after {
+  opacity: 1;
 }
 
 .waterfall-left, .waterfall-right {
-  width: 25%;
+  width: 32%;
 }
 
 .waterfall-center {
-  width: 50%;
-  /* 默认应用悬浮效果 */
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  width: 36%;
 }
 
 .waterfall-image {
@@ -165,7 +369,7 @@
   height: 100%;
   background-size: cover;
   background-position: center;
-  transition: all 0.5s ease;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* 左右图片默认灰色 */
@@ -182,8 +386,8 @@
 
 /* 鼠标悬停时取消灰色效果 */
 .waterfall-item:hover .waterfall-image {
-  filter: grayscale(0) brightness(1);
-  transform: scale(1.05);
+  transform: scale(1.1);
+  filter: brightness(1.1) contrast(1.1);
 }
 
 .waterfall-content {
@@ -192,35 +396,107 @@
   left: 0;
   width: 100%;
   padding: 25px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 80%, transparent 100%);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  color: #fff;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.5) 60%,
+    transparent 100%
+  );
+  transform: translateY(100%);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
 }
 
-/* 中间容器文字内容默认显示 */
+/* 中间Brexit图片的内容默认显示 */
 .waterfall-center .waterfall-content {
-  opacity: 1;
   transform: translateY(0);
 }
 
-.waterfall-item:hover .waterfall-content {
+.waterfall-center .waterfall-content h4,
+.waterfall-center .waterfall-content p,
+.waterfall-center .waterfall-content li {
+  transform: translateY(0);
   opacity: 1;
+}
+
+/* 当其他图片hover时，隐藏中间内容 */
+.waterfall-left:hover ~ .waterfall-center .waterfall-content,
+.waterfall-right:hover ~ .waterfall-center .waterfall-content {
+  transform: translateY(100%);
+}
+
+.waterfall-left:hover ~ .waterfall-center .waterfall-content h4,
+.waterfall-left:hover ~ .waterfall-center .waterfall-content p,
+.waterfall-left:hover ~ .waterfall-center .waterfall-content li,
+.waterfall-right:hover ~ .waterfall-center .waterfall-content h4,
+.waterfall-right:hover ~ .waterfall-center .waterfall-content p,
+.waterfall-right:hover ~ .waterfall-center .waterfall-content li {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+/* 其他图片的内容hover效果 */
+.waterfall-left:hover .waterfall-content,
+.waterfall-right:hover .waterfall-content {
   transform: translateY(0);
 }
 
+.waterfall-left:hover .waterfall-content h4,
+.waterfall-left:hover .waterfall-content p,
+.waterfall-left:hover .waterfall-content li,
+.waterfall-right:hover .waterfall-content h4,
+.waterfall-right:hover .waterfall-content p,
+.waterfall-right:hover .waterfall-content li {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* 优化过渡效果 */
 .waterfall-content h4 {
   font-size: 1.4rem;
-  margin-bottom: 10px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 12px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.waterfall-content p {
+.waterfall-content p,
+.waterfall-content li {
   font-size: 0.95rem;
   line-height: 1.5;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-  opacity: 0.9;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 6px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 添加点击波纹效果 */
+.waterfall-item.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.waterfall-item.ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease-out, height 0.6s ease-out;
+  z-index: 1;
+}
+
+.waterfall-item.ripple:active::before {
+  width: 300%;
+  height: 300%;
 }
 
 /* 响应式布局 - 仅在非常小的屏幕上转为列布局 */
@@ -243,5 +519,71 @@
     width: 100%;
     margin-bottom: 20px;
     height: 400px; /* 移动设备上调整高度 */
+  }
+}
+
+/* 调整列表样式 */
+.waterfall-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.waterfall-content li {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  padding-left: 16px;
+  position: relative;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.waterfall-content li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* 添加浮动粒子效果 */
+.key-insights-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 10%);
+  background-size: 3vw 3vw;
+  animation: particleFloat 20s linear infinite;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+@keyframes particleFloat {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .key-insights-section {
+    padding: 15px 15px 40px;
+    margin-top: -10px;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+  
+  .insights-intro {
+    font-size: 1rem;
+    padding: 0 20px;
+    margin-bottom: 30px;
   }
 } 
