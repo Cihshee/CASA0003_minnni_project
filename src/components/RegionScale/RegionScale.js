@@ -699,6 +699,13 @@ function initMapSidebarCharts(euData, nonEuData) {
           euTextContainer.classList.toggle('active');
           nonEuTextContainer.classList.toggle('active');
           
+          // 更新按钮文本 - 移到这里，确保在类切换后更新
+          if (!euChartContainer.classList.contains('active')) {
+            switchButton.textContent = '← EU';
+          } else {
+            switchButton.textContent = 'Non-EU →';
+          }
+          
           // 然后淡入新内容
           nonEuChartContainer.style.opacity = '1';
           nonEuTextContainer.style.opacity = '1';
@@ -713,27 +720,30 @@ function initMapSidebarCharts(euData, nonEuData) {
           euTextContainer.classList.toggle('active');
           nonEuTextContainer.classList.toggle('active');
           
+          // 更新按钮文本 - 移到这里，确保在类切换后更新
+          if (!euChartContainer.classList.contains('active')) {
+            switchButton.textContent = '← EU';
+          } else {
+            switchButton.textContent = 'Non-EU →';
+          }
+          
           // 然后淡入新内容
           euChartContainer.style.opacity = '1';
           euTextContainer.style.opacity = '1';
         }, 500);
       }
       
-      // 更新按钮文本，添加动画
+      // 删除这里的按钮文本更新代码
       this.style.transform = 'scale(0.95)';
       setTimeout(() => {
         this.style.transform = 'scale(1.05)';
-        if (euChartContainer.classList.contains('active')) {
-          switchButton.textContent = 'Non-EU →';
-        } else {
-          switchButton.textContent = '← EU';
-        }
+        // 删除原来的按钮文本更新代码
         setTimeout(() => {
           this.style.transform = 'scale(1)';
         }, 100);
       }, 150);
       
-      // 强制重新渲染当前活动的图表，解决切换后图表显示问题
+      // 强制重新渲染当前活动的图表
       setTimeout(() => {
         if (euChartContainer.classList.contains('active')) {
           euChartContainer.innerHTML = '';
