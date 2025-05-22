@@ -36,6 +36,19 @@ function initializeMap() {
   const mapContainer = document.getElementById('region-map-container');
   if (!mapContainer) return;
   
+  // 显示加载提示
+  const mapLoading = document.createElement('div');
+  mapLoading.id = 'map-loading';
+  mapLoading.innerHTML = `
+    <div class="loading-text">Loading Map</div>
+    <div class="loading-dots">
+      <span>.</span>
+      <span>.</span>
+      <span>.</span>
+    </div>
+  `;
+  mapContainer.appendChild(mapLoading);
+  
   // 创建 Mapbox 地图实例
   map = new mapboxgl.Map({
     container: 'region-map-container',
@@ -52,6 +65,10 @@ function initializeMap() {
   
   // 等待地图加载完成
   map.on('load', function() {
+    // 隐藏加载提示
+    if (mapLoading) {
+      mapLoading.style.display = 'none';
+    }
     console.log('Mapbox map loaded successfully');
     
     // 设置初始年份过滤器
@@ -1634,28 +1651,28 @@ function scrollToYear(year) {
 // 修改4: 调整setupScrollListener函数中2024年的处理
 function setupScrollListener(years) {
   // 使用更长的节流时间和更好的缓冲来防止抖动
-  let lastScrollTime = 0;
+let lastScrollTime = 0;
   const scrollThrottle = 500; // 增加到500ms，减少更新频率
-  let pendingScroll = false;
+let pendingScroll = false;
 
   // 创建更稳定的观察器，提高阈值
-  const observer = new IntersectionObserver((entries) => {
-    if (scrolling) return; // 如果是按钮触发的滚动，忽略
-    
-    const now = Date.now();
-    if (now - lastScrollTime < scrollThrottle) {
-      if (!pendingScroll) {
-        pendingScroll = true;
-        setTimeout(() => {
+const observer = new IntersectionObserver((entries) => {
+  if (scrolling) return; // 如果是按钮触发的滚动，忽略
+  
+  const now = Date.now();
+  if (now - lastScrollTime < scrollThrottle) {
+    if (!pendingScroll) {
+      pendingScroll = true;
+      setTimeout(() => {
           processStableEntries(entries);
-          pendingScroll = false;
-          lastScrollTime = Date.now();
-        }, scrollThrottle);
-      }
-      return;
+        pendingScroll = false;
+        lastScrollTime = Date.now();
+      }, scrollThrottle);
     }
-    
-    lastScrollTime = now;
+    return;
+  }
+  
+  lastScrollTime = now;
     processStableEntries(entries);
   }, {
     threshold: [0.5, 0.7], // 使用更高阈值，需要更明确的可见度
@@ -1669,30 +1686,30 @@ function setupScrollListener(years) {
   
   // 分离高亮逻辑和年份更新逻辑
   function processStableEntries(entries) {
-    // 找到当前最高交叉比例的步骤
-    let bestEntry = null;
-    let maxRatio = 0;
-    
-    entries.forEach(entry => {
-      if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
-        maxRatio = entry.intersectionRatio;
-        bestEntry = entry;
-      }
-    });
-    
+  // 找到当前最高交叉比例的步骤
+  let bestEntry = null;
+  let maxRatio = 0;
+  
+  entries.forEach(entry => {
+    if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+      maxRatio = entry.intersectionRatio;
+      bestEntry = entry;
+    }
+  });
+  
     // 只有当交叉比例足够高时才更新年份
     if (bestEntry && bestEntry.intersectionRatio > 0.6) {
-      const year = +bestEntry.target.getAttribute('data-year');
+    const year = +bestEntry.target.getAttribute('data-year');
       
       // 只有当年份变化时才更新，减少不必要的更新
-      if (year && year !== currentYear) {
+    if (year && year !== currentYear) {
         // 保存之前的年份
         const previousYear = currentYear;
         // 更新当前年份
-        currentYear = year;
-        
+      currentYear = year;
+      
         // 更新热力图和地图，但不影响滚动交互
-        renderHeatmap(allData, allRegions, allCountries, year);
+      renderHeatmap(allData, allRegions, allCountries, year);
         updateMapYearFilter('uk-trade-with-coords-dlzrad', year);
         
         // 更新时间轴滑块位置 - 更平滑的转换
@@ -1727,12 +1744,12 @@ function setupScrollListener(years) {
   
   // 更平滑地更新时间轴滑块位置
   function updateTimelineSlider(year) {
-    const timelineContainer = d3.select('#timeline-svg');
-    if (!timelineContainer.empty()) {
-      const width = timelineContainer.node().clientWidth;
-    const timeScale = d3.scalePoint()
-      .domain(years)
-      .range([50, width - 50]);
+          const timelineContainer = d3.select('#timeline-svg');
+          if (!timelineContainer.empty()) {
+            const width = timelineContainer.node().clientWidth;
+            const timeScale = d3.scalePoint()
+              .domain(years)
+              .range([50, width - 50]);
     
       const svgSelection = timelineContainer.select('svg');
       if (!svgSelection.empty()) {

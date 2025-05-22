@@ -418,3 +418,62 @@
 .step.is-active .timeline-connector {
   background-color: rgba(255, 255, 255, 0.8);
 }
+
+#map-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px 30px;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+
+#map-loading .loading-text {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+#map-loading .loading-dots {
+  display: inline-block;
+}
+
+#map-loading .loading-dots span {
+  display: inline-block;
+  font-size: 24px;
+  font-weight: bold;
+  color: #edf7ff;
+  opacity: 0;
+  animation: dotAnimation 1.4s infinite;
+  animation-fill-mode: both;
+  transform: translateY(-2px);
+  margin: 0 2px;
+}
+
+#map-loading .loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+#map-loading .loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dotAnimation {
+  0% { 
+    opacity: 0;
+    transform: translateY(-2px) scale(0.8);
+  }
+  20% { 
+    opacity: 1;
+    transform: translateY(-2px) scale(1.2);
+  }
+  100% { 
+    opacity: 0;
+    transform: translateY(-2px) scale(0.8);
+  }
+}
