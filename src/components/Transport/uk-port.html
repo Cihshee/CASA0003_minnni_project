@@ -24,7 +24,7 @@
             scroll-snap-type: y mandatory;
         }
 
-        /* 地图页面样式 */
+        /* Map page style */
         .map-container {
             height: 100vh;
             position: relative;
@@ -36,7 +36,7 @@
             height: 100%;
         }
 
-        /* 地图控件样式 - 修改为暗色系 */
+        /* Map control style - modified to dark color scheme */
         .map-overlay {
             position: absolute;
             top: 20px;
@@ -100,7 +100,7 @@
             color: #ffffff;
         }
 
-        /* 方向按钮样式 - 减小高度 */
+        /* Direction button style - reduced height */
         .direction-buttons {
             display: flex;
             gap: 10px;
@@ -131,30 +131,30 @@
             box-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
         }
 
-        /* 将时间轴移到右上角 */
+        /* Move the timeline to the top right */
         .year-control {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(42, 42, 42, 0.85); /* 稍微调整透明度 */
-            padding: 15px 18px; /* 增加内边距 */
-            border-radius: 12px; /* 增加圆角 */
-            border: 2px solid rgba(72, 72, 72, 0.7); /* 添加更明显的边框 */
-            width: 270px; /* 略微增加宽度 */
+            background: rgba(42, 42, 42, 0.85); /* Slightly adjust transparency */
+            padding: 15px 18px; /* Increase padding */
+            border-radius: 12px; /* Increase rounded corners */
+            border: 2px solid rgba(72, 72, 72, 0.7); /* Add a more obvious border */
+            width: 270px; /* Slightly increase width */
             z-index: 10;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* 增加阴影效果 */
-            backdrop-filter: blur(5px); /* 添加背景模糊效果 */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Add shadow effect */
+            backdrop-filter: blur(5px); /* Add background blur effect */
         }
 
         .year-control label {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px; /* 增加标签下方间距 */
-            color: #ffffff; /* 更亮的文字颜色 */
-            font-weight: 600; /* 增加字体粗细 */
-            font-size: 1rem; /* 增大字体 */
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7); /* 添加文字阴影 */
+            margin-bottom: 10px; /* Increase spacing below labels */
+            color: #ffffff; /* Brighter text color */
+            font-weight: 600; /* Increase font weight */
+            font-size: 1rem; /* Increase font size */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7); /* Add text shadow */
         }
 
         #year {
@@ -171,27 +171,27 @@
 
         #slider {
             width: 100%;
-            margin: 10px 0; /* 增加上下间距 */
-            background: #333; /* 改回深色背景 */
-            height: 6px; /* 保持高度 */
+            margin: 10px 0; /* Increase spacing above and below */
+            background: #333; /* Revert to dark background */
+            height: 6px; /* Keep height */
             -webkit-appearance: none;
             appearance: none;
             outline: none;
-            border-radius: 6px; /* 保持圆角 */
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); /* 保持内部阴影效果 */
+            border-radius: 6px; /* Keep rounded corners */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5); /* Keep internal shadow effect */
         }
 
-        /* 将圆形滑块改为三角形，颜色从白色改为亮蓝色 */
+        /* Change the circular slider to a triangle, change the color from white to bright blue */
         #slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px; /* 增大滑块尺寸 */
+            width: 20px; /* Increase slider size */
             height: 20px;
-            background: #2196F3; /* 亮蓝色背景 */
-            border-radius: 50%; /* 圆形滑块 */
+            background: #2196F3; /* Bright blue background */
+            border-radius: 50%; /* Circular slider */
             cursor: pointer;
-            border: 2px solid #ffffff; /* 白色边框 */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* 添加阴影 */
+            border: 2px solid #ffffff; /* White border */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Add shadow */
             transition: all 0.2s ease;
             animation: pulse 2s infinite;
         }
@@ -203,11 +203,11 @@
         }
 
         #slider::-webkit-slider-thumb:hover {
-            background: #64b5f6; /* 悬停时颜色变化 */
-            transform: scale(1.1); /* 略微放大 */
+            background: #64b5f6; /* Hover color change */
+            transform: scale(1.1); /* Slightly larger */
         }
 
-        /* 同样修改Firefox样式 */
+        /* Similarly modify Firefox styles */
         #slider::-moz-range-thumb {
             width: 20px;
             height: 20px;
@@ -224,7 +224,7 @@
             transform: scale(1.1);
         }
 
-        /* 年份刻度标记样式 */
+        /* Year scale mark style */
         #slider + datalist {
             display: flex;
             justify-content: space-between;
@@ -239,7 +239,7 @@
             position: relative;
         }
 
-        /* 视图级别指示器 - 减小高度 */
+        /* View level indicator - reduce height */
         .view-indicator {
             display: flex;
             justify-content: space-between;
@@ -265,7 +265,7 @@
             margin-right: 5px;
         }
 
-        /* 修改图例布局为网格布局，更紧凑 */
+        /* Modify the legend layout to a grid layout, more compact */
         .legend-items {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -306,7 +306,7 @@
             color: #a8d1ff;
         }
 
-        /* 添加图例样式 - 修改为暗色系 */
+        /* Add legend style - modify to dark color scheme */
         .legend-control {
             background: rgba(42, 42, 42, 0.8);
             padding: 15px;
@@ -342,26 +342,26 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        /* 修改图表容器样式 - 可折叠面板 */
+        /* Modify the chart container style - collapsible panel */
         .chart-container {
             position: fixed;
-            bottom: -260px; /* 初始状态为隐藏，只显示顶部 */
+            bottom: -260px; /* Initial state is hidden, only the top is visible */
             left: 50%;
             transform: translateX(-50%);
             background: rgba(33, 33, 33, 0.9);
             padding: 20px;
-            border-radius: 8px 8px 0 0; /* 只有上边角为圆角 */
+            border-radius: 8px 8px 0 0; /* Only the top corners are rounded */
             box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.5);
             width: 1200px;
             height: 300px;
-            display: block; /* 始终显示 */
+            display: block; /* Always visible */
             margin-left: 160px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: bottom 0.3s ease-in-out;
             z-index: 100;
         }
         
-        /* 添加图表面板的拉动手柄 */
+        /* Add the chart handle to the chart container */
         .chart-handle {
             position: absolute;
             top: 0;
@@ -375,7 +375,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* 拉动手柄的图标 */
+        /* The handle icon for the chart */
         .chart-handle::after {
             content: '';
             width: 40px;
@@ -384,7 +384,7 @@
             border-radius: 3px;
         }
         
-        /* 拉动手柄的上/下箭头 */
+        /* The up/down arrow for the chart handle */
         .chart-handle-icon {
             position: absolute;
             right: 20px;
@@ -393,26 +393,26 @@
             height: 16px;
             border-left: 2px solid rgba(255, 255, 255, 0.5);
             border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-            transform: rotate(-45deg); /* 初始状态为向下箭头 */
+            transform: rotate(-45deg); /* Initial state is downward arrow */
             transition: transform 0.3s ease;
         }
         
-        /* 展开状态的箭头方向 */
+        /* The arrow direction for the expanded state */
         .chart-container.expanded .chart-handle-icon {
-            transform: rotate(135deg); /* 变为向上箭头 */
+            transform: rotate(135deg); /* Change to upward arrow */
         }
         
-        /* 展开状态 */
+        /* The expanded state */
         .chart-container.expanded {
-            bottom: 40px; /* 展开时的位置 */
+            bottom: 40px; /* The position when expanded */
         }
         
         .charts-wrapper {
-            margin-top: 40px; /* 为手柄腾出空间 */
+            margin-top: 40px; /* Make space for the handle */
             display: flex;
             justify-content: space-between;
             gap: 20px;
-            height: calc(100% - 40px); /* 减去手柄的高度 */
+            height: calc(100% - 40px); /* Subtract the handle height */
         }
 
         .chart-box {
@@ -423,7 +423,7 @@
             padding: 10px;
         }
 
-        /* 修改悬浮卡片样式 - 暗色系 */
+        /* Modify the floating card style - dark color scheme */
         .popup-chart {
             display: none;
             position: absolute;
@@ -511,7 +511,7 @@
             font-weight: 600;
         }
         
-        /* 新增详细弹出框样式 */
+        /* New detailed popup box style */
         .destination-popup-detailed {
             max-width: 280px;
             font-family: 'Open Sans', sans-serif;
@@ -555,42 +555,42 @@
             color: #64b5f6;
         }
 
-        /* 新增视图控制按钮样式 */
+        /* New view control button style */
         .view-controls {
             position: absolute;
-            left: 340px; /* 保持靠近侧边栏 */
-            top: 20px; /* 调整顶部位置，避免与标题重叠 */
+            left: 340px; /* Keep close to the sidebar */
+            top: 20px; /* Adjust the top position, avoid overlapping with the title */
             z-index: 100;
         }
 
-        .next-button {            background: rgba(42, 42, 42, 0.95); /* 更深的背景颜色 */            color: #ffffff;            border: 2px solid rgba(255, 255, 255, 0.4); /* 加粗边框并增加对比度 */            border-radius: 10px; /* 增加圆角 */            padding: 10px 20px; /* 缩小内边距，适合放在顶部 */            cursor: pointer;            font-size: 15px; /* 适当减小字体 */            font-weight: 700; /* 保持字体粗细 */            display: flex;            align-items: center;            justify-content: center;            transition: all 0.25s ease;            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* 保持阴影效果 */            width: 210px; /* 设置固定宽度 */            letter-spacing: 0.5px; /* 保持字间距 */            margin: 15px 0; /* 为左侧面板的按钮添加上下边距 */        }
+        .next-button {            background: rgba(42, 42, 42, 0.95);             color: #ffffff;            border: 2px solid rgba(255, 255, 255, 0.4);             border-radius: 10px; /* 增加圆角 */            padding: 10px 20px; /* 缩小内边距，适合放在顶部 */            cursor: pointer;            font-size: 15px; /* 适当减小字体 */            font-weight: 700; /* 保持字体粗细 */            display: flex;            align-items: center;            justify-content: center;            transition: all 0.25s ease;            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);             width: 210px;         letter-spacing: 0.5px;          margin: 15px 0;        }
 
         .next-button:hover {
-            background: rgba(33, 150, 243, 0.8); /* 鼠标悬停时变为蓝色 */
+            background: rgba(33, 150, 243, 0.8); /* When hovering, change to blue */
             border-color: rgba(255, 255, 255, 0.7);
-            transform: translateY(-3px); /* 增加悬浮效果 */
+            transform: translateY(-3px); /* Increase the floating effect */
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
             color: white;
         }
 
         .next-button-icon {
-            margin-left: 10px; /* 增加图标与文字间距 */
-            width: 18px; /* 增大图标 */
+            margin-left: 10px; /* Increase the icon and text spacing */
+            width: 18px; /* Increase the icon */
             height: 18px;
         }
 
-        /* 为左侧面板的返回按钮添加特定样式 */
+        /* Add specific styles to the back button for the left sidebar */
         #back-button {
-            width: 100%; /* 使按钮宽度与控制面板一致 */
-            margin-top: 20px; /* 增加与上方内容的间距 */
+            width: 100%; /* Make the button width consistent with the control panel */
+            margin-top: 20px; /* Increase the spacing between the button and the content above */
         }
         
         #back-button .next-button-icon {
             margin-left: 0;
-            margin-right: 10px; /* 调整箭头位置，使其在文字左侧 */
+            margin-right: 10px; /* Adjust the arrow position,使其在文字左侧 */
         }
 
-        /* 添加加载指示器样式 */
+        /* Add the loading indicator style */
         .loading-indicator {
             position: absolute;
             top: 50%;
@@ -607,7 +607,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* 添加3D柱状图的弹出信息样式 */
+        /* Add the 3D bar chart popup information style */
         .port-3d-popup {
             max-width: 250px;
             font-family: 'Arial', sans-serif;
@@ -647,7 +647,7 @@
             color: #64b5f6;
         }
 
-        /* 添加Explore按钮样式 */
+        /* Add the Explore button style */
         .explore-button {
             display: block;
             background: #2196F3;
@@ -677,7 +677,7 @@
             display: none;
         }
 
-        /* 每个年份的标记点 */
+        /* The marker point for each year */
         .year-markers {
             display: flex;
             justify-content: space-between;
@@ -716,7 +716,7 @@
             white-space: nowrap;
         }
 
-        /* 当前年份的高亮效果 */
+        /* The highlight effect for the current year */
         .year-marker.active {
             background-color: #2196F3;
             width: 10px;
@@ -724,7 +724,7 @@
             box-shadow: 0 0 6px rgba(33, 150, 243, 0.7);
         }
 
-        /* 调整年份显示样式 */
+        /* Adjust the year display style */
         #year {
             background: rgba(33, 150, 243, 0.5);
             padding: 3px 10px;
@@ -740,18 +740,18 @@
 </head>
 <body>
     <div class="container">
-        <!-- 地图页面 -->
+        <!-- Map page -->
         <div class="map-container">
             <div id="map"></div>
-            <!-- 添加加载指示器 -->
+            <!-- Add the loading indicator -->
             <div id="loading-indicator" class="loading-indicator">Loading 3D data...</div>
             <div class="map-overlay top">
-                <!-- 地图控件内容 -->
+                <!-- Map control content -->
                 <div class='map-overlay-inner'>
                     <h2>Cargo Transport of Top30 UK Ports</h2>
                     <p>Choose a port to view freight flows and cargo tonnage.</p>
                     
-                    <!-- 视图状态指示器 -->
+                    <!-- View status indicator -->
                     <div class="view-indicator">
                         <div class="view-step active" id="view-step-1">Overview</div>
                         <div class="view-step" id="view-step-2">Ports Compare</div>
@@ -767,14 +767,14 @@
 
                     <div class="direction-control">
                         <label>Direction:</label>
-                        <!-- 将下拉菜单改为按钮 -->
+                        <!-- Change the dropdown menu to a button -->
                         <div class="direction-buttons">
                             <button class="direction-btn active" id="inward-btn">Inward Flow</button>
                             <button class="direction-btn" id="outward-btn">Outward Flow</button>
                         </div>
                     </div>
 
-                    <!-- 总览图表容器 -->
+                    <!-- Overview chart container -->
                     <div class="overview-chart-container">
                         <canvas id="overview-chart"></canvas>
                     </div>
@@ -821,7 +821,7 @@
                         Data Source: <a href="https://www.gov.uk/government/statistical-data-sets/port-and-domestic-waterborne-freight-statistics-port" target="_blank">Department for Transport</a>
                     </p>
                     
-                    <!-- 添加返回按钮 -->
+                    <!-- Add the return button -->
                     <button id="back-button" class="next-button" onclick="goBack()">
                         <svg class="next-button-icon" style="transform: rotate(90deg);" viewBox="0 0 24 24" fill="white">
                             <path d="M3 4l9 16 9-16H3zm3.44 2h11.12l-5.56 9.83L6.44 6z"/>
@@ -831,7 +831,7 @@
                 </div>
             </div>
             
-            <!-- 将时间轴移到右上角 -->
+            <!-- Move the timeline to the top right -->
             <div class="year-control">
                 <label>
                     <span>Timeline</span>
@@ -868,7 +868,7 @@
                 </datalist>
             </div>
             
-            <!-- 保留视图控制按钮 -->
+            <!-- Keep the view control button -->
             <div class="view-controls">
                 <button id="next-view-button" class="next-button" onclick="toggleView()">
                     <span id="view-button-text">Switch to 3D</span>
@@ -879,7 +879,7 @@
             </div>
         </div>
 
-        <!-- 修改图表容器结构 -->
+        <!-- Modify the chart container structure -->
         <div class="chart-container" id="chart-container">
             <div class="chart-handle" id="chart-handle">
                 <span class="chart-handle-icon"></span>
@@ -909,43 +909,43 @@
         </div>
     </div>
 
-    <!-- 添加Chart.js库 -->
+    <!-- Add Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- 添加Chart.js数据标签插件 -->
+    <!-- Add Chart.js data label plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script>
 
-        // 全局变量
-        let portData = null;        // 用于图表数据
-        let flowData = null;        // 用于流向线数据
+        // Global variables
+        let portData = null;        // For chart data
+        let flowData = null;        // For flow line data
         let currentYear = 2016;
         let currentDirection = 'Inwards';
         let currentPort = '';
         let mapLoaded = false;
         let mapStyleLoaded = false;
         let filteredData = [];
-        let inwardChart = null;  // 用于存储进口图表实例
-        let outwardChart = null; // 用于存储出口图表实例
-        let yearPlayInterval = null; // 用于存储年份播放的interval ID
-        let hoverChart = null;  // 用于存储悬浮卡片图表实例
+        let inwardChart = null;  // For storing the import chart instance
+        let outwardChart = null; // For storing the export chart instance
+        let yearPlayInterval = null; // For storing the year playback interval ID
+        let hoverChart = null;  // For storing the hover card chart instance
         let flowDotsAnimationId = null;
-        let flowDots = []; // 用于存储所有流动点的数据
-        let overviewChart = null; // 用于存储总览图表实例
-        let currentViewStep = 1; // 当前视图步骤：1=总览, 2=港口比较, 3=单一港口
+        let flowDots = []; // For storing all flow points data
+        let overviewChart = null; // For storing the overview chart instance
+        let currentViewStep = 1; // Current view step: 1=overview, 2=ports compare, 3=single port
 
-        // 在全局变量部分添加颜色映射 - 调整为更亮的颜色
+        // Add color mapping to the global variables - adjusted to brighter colors
         const regionColors = {
-            'Africa (excluding Mediterranean)': '#a54dff', // 改回更饱和度高的紫色
-            'America': '#ff9c33', // 改回更饱和度高的橙色
-            'Asia (excluding Mediterranean)': '#4dff33', // 改回更饱和度高的绿色
-            'Australasia': '#ff5233', // 改回更饱和度高的红色
-            'European Union (excluding United Kingdom)': '#33eeff', // 改回更饱和度高的青色
-            'Other Europe (excluding European Union) & Mediterranean': '#ff33cc', // 改回更饱和度高的粉色
-            'United Kingdom (inc CHI & IOM)': '#fdff33', // 改回更饱和度高的黄色
-            'Other': '#b3b3b3' // 改回更饱和度高的灰色
+            'Africa (excluding Mediterranean)': '#a54dff', // Revert to higher saturation purple
+            'America': '#ff9c33', // Revert to higher saturation orange
+            'Asia (excluding Mediterranean)': '#4dff33', // Revert to higher saturation green
+            'Australasia': '#ff5233', // Revert to higher saturation red
+            'European Union (excluding United Kingdom)': '#33eeff', // Revert to higher saturation cyan
+            'Other Europe (excluding European Union) & Mediterranean': '#ff33cc', // Revert to higher saturation pink
+            'United Kingdom (inc CHI & IOM)': '#fdff33', // Revert to higher saturation yellow
+            'Other': '#b3b3b3' // Revert to higher saturation gray
         };
 
-        // 添加区域缩写映射
+        // Add region abbreviation mapping
         const regionAbbreviations = {
             'Africa (excluding Mediterranean)': 'AFR',
             'America': 'AME',
@@ -957,7 +957,7 @@
             'Other': 'OTH'
         };
 
-        // 添加年度总量数据
+        // Add yearly total data
         const yearlyTotals = {
             2016: { Inwards: 262471.4211, Outwards: 160284.3571 },
             2017: { Inwards: 260304.7465, Outwards: 161268.0357 },
@@ -969,54 +969,54 @@
             2023: { Inwards: 254612.8163, Outwards: 126671.6067 }
         };
 
-        // 将Next按钮代码移至mapboxgl.accessToken下，确保在全局范围内定义变量和函数
+        // Move the Next button code to mapboxgl.accessToken, ensure the variables and functions are defined in the global scope
         mapboxgl.accessToken = 'pk.eyJ1IjoieWl5YW9jdWlpaSIsImEiOiJjbTY4MnFqZTgwYjEwMm5xejZraTBoMzJjIn0.32mcU30CT9cEByX-ZHvgzw';
 
-        // 设置全局变量，用于跟踪当前视图
+        // Set the global variable, for tracking the current view
         var isGlobalView = true;
 
-        // 视图切换函数
+        // View switching function
         function toggleView() {
-            console.log("按钮被点击，开始切换视图，当前视图是：", isGlobalView ? "全球视角" : "英国视角");
+            console.log("Button clicked, starting view switch, current view is:", isGlobalView ? "Global view" : "UK view");
             
-            // 修改视图切换逻辑，支持3种视图模式
+            // Modify the view switching logic, support 3 view modes
             if (isGlobalView) {
-                // 从全球视图切换到3D视图
-                console.log("切换到英国斜视角");
+                // Switch from global view to 3D view
+                console.log("Switch to UK oblique view");
                 
-                // 先停止所有动画和定时器
+                // Stop all animations and timers
                 stopAllAnimations();
                 
-                // 更新按钮文本
+                // Update button text
                 document.getElementById('view-button-text').textContent = 'Compare Ports';
                 
-                // 清除当前选择的港口，确保显示所有港口
+                // Clear the current selected port, ensure all ports are displayed
                 currentPort = '';
                 document.getElementById('port-select').value = '';
                 
-                // 收起图表面板
+                // Collapse the chart panel
                 document.getElementById('chart-container').classList.remove('expanded');
                 
-                // 显示加载指示器
+                // Show the loading indicator
                 document.getElementById('loading-indicator').style.display = 'block';
                 
-                // 进入第二视图步骤，更新视图指示器
+                // Enter the second view step, update the view indicators
                 currentViewStep = 2;
                 updateViewStepIndicators();
                 
-                // 使用setTimeout让UI有时间刷新显示加载指示器
+                // Use setTimeout to allow the UI to refresh and display the loading indicator
                 setTimeout(() => {
-                    // 添加3D数据源和图层（如果尚不存在）
+                    // Add 3D data source and layer (if it doesn't exist)
                     if (!map.getSource('ports-3d')) {
-                        console.log("添加3D数据源和图层");
+                        console.log("Add 3D data source and layer");
                         
-                        // 添加3D数据源
+                        // Add 3D data source
                         map.addSource('ports-3d', {
                             type: 'geojson',
                             data: createPortsGeoJSON()
                         });
                         
-                        // 添加3D图层
+                        // Add 3D layer
                         map.addLayer({
                             id: 'ports-3d',
                             type: 'fill-extrusion',
@@ -1042,21 +1042,21 @@
                             }
                         });
                         
-                        // 添加3D柱子的点击事件，创建一个独立的事件处理器
+                        // Add the click event of the 3D column, create a separate event handler
                         map.on('click', 'ports-3d', function(e) {
-                            // 重要：阻止事件冒泡
+                            // Important: Prevent event bubbling
                             e.originalEvent.stopPropagation();
                             
-                            // 获取点击的特征
+                            // Get the clicked feature
                             const feature = e.features[0];
                             const properties = feature.properties;
                             const portName = properties.port;
                             
-                            // 格式化显示方向
+                            // Format the display direction
                             const directionText = properties.direction === 'Inwards' ? 'Inward' : 
                                                 properties.direction === 'Outwards' ? 'Outward' : 'Total';
                             
-                            // 创建弹出框内容，添加Explore按钮
+                            // Create the popup content, add the Explore button
                             const html = `
                                 <h3>${properties.port}</h3>
                                 <p><strong>Year:</strong> ${properties.year}</p>
@@ -1064,7 +1064,7 @@
                                 <button class="explore-button" id="explore-port-button">Explore Port Details</button>
                             `;
                             
-                            // 设置弹出框内容并显示
+                            // Set the popup content and display
                             const popup = new mapboxgl.Popup({
                                 closeButton: true,
                                 closeOnClick: true,
@@ -1075,47 +1075,47 @@
                             .setHTML(html)
                             .addTo(map);
                             
-                            // 在弹出框完全添加到DOM后添加按钮点击事件
+                            // Add the button click event after the popup is fully added to the DOM
                             setTimeout(() => {
                                 const exploreButton = document.getElementById('explore-port-button');
                                 if (exploreButton) {
                                     exploreButton.addEventListener('click', function() {
                                         console.log(`Exploring port: ${portName}`);
                                         
-                                        // 关闭弹出框
+                                        // Close the popup
                                         popup.remove();
                                         
-                                        // 先切换回全球视图
+                                        // Switch back to the global view first
                                         if (!isGlobalView) {
-                                            toggleView(); // 切换到全球视图
+                                            toggleView(); // Switch to the global view
                                         }
                                         
-                                        // 等待视图转换完成后选择港口
+                                        // Wait for the view to be switched before selecting the port
                                         setTimeout(() => {
-                                            // 设置下拉框的值
+                                            // Set the value of the dropdown
                                             const portSelect = document.getElementById('port-select');
                                             portSelect.value = portName;
                                             
-                                            // 手动触发change事件以应用选择
+                                            // Manually trigger the change event to apply the selection
                                             const event = new Event('change');
                                             portSelect.dispatchEvent(event);
                                             
-                                            // 确保切换到单港口视图步骤
+                                            // Ensure the switch to the single port view step
                                             currentViewStep = 3;
                                             updateViewStepIndicators();
                                             
-                                            // 更新按钮文本
+                                            // Update the button text
                                             document.getElementById('view-button-text').textContent = 'Back to Overview';
                                         }, 2000);
                                     });
                                 }
                             }, 100);
                             
-                            // 阻止进一步的事件处理
+                            // Prevent further event processing
                             return false;
                         });
                         
-                        // 添加鼠标悬停事件 - 在创建3D图层时就添加监听器
+                        // Add the mouse hover event - add the listener when creating the 3D layer
                         map.on('mouseenter', 'ports-3d', function() {
                             console.log('mouseenter on 3D column detected');
                             map.getCanvas().style.cursor = 'pointer';
@@ -1126,15 +1126,15 @@
                             map.getCanvas().style.cursor = '';
                         });
                     } else {
-                        // 更新现有3D数据
-                        console.log("更新3D数据");
+                        // Update the existing 3D data
+                        console.log("Update 3D data");
                         map.getSource('ports-3d').setData(createPortsGeoJSON());
                         
-                        // 确保3D图层可见
+                        // Ensure the 3D layer is visible
                         map.setLayoutProperty('ports-3d', 'visibility', 'visible');
                     }
                     
-                    // 当在3D视图模式下暂时禁用港口选择功能
+                    // When in 3D view mode, temporarily disable the port selection function
                     if (map.getLayer('ports-circle')) {
                         map.setLayoutProperty('ports-circle', 'visibility', 'none');
                     }
@@ -1142,29 +1142,29 @@
                     map.flyTo({
                         center: [-4, 55],
                         zoom: 5.5,
-                        pitch: 60,  // 增加俯仰角以更好地看到3D效果
+                        pitch: 60,  // Increase the pitch angle to better see the 3D effect
                         bearing: 15,
                         duration: 2000
                     });
                     
-                    // 隐藏加载指示器
+                    // Hide the loading indicator
                     document.getElementById('loading-indicator').style.display = 'none';
                 }, 100);
             } else if (currentViewStep === 2) {
-                // 从3D视图切换到单港口视图
-                console.log("切换到单港口视图");
+                // Switch from 3D view to single port view
+                console.log("Switch to single port view");
                 
-                // 先停止所有动画和定时器
+                // Stop all animations and timers
                 stopAllAnimations();
                 
-                // 更新按钮文本
+                // Update the button text
                 document.getElementById('view-button-text').textContent = 'Back to Overview';
                 
-                // 切换到第三个视图步骤
+                // Switch to the third view step
                 currentViewStep = 3;
                 updateViewStepIndicators();
                 
-                // 如果尚未选择港口，默认选择排名第一的港口
+                // If the port is not selected, default to the first port
                 if (!currentPort) {
                     const topPorts = getTopPortsByTonnage(1, currentYear, currentDirection);
                     if (topPorts.length > 0) {
@@ -1175,18 +1175,18 @@
                     }
                 }
                 
-                // 隐藏3D图层
+                // Hide the 3D layer
                 if (map.getLayer('ports-3d')) {
-                    console.log("隐藏3D图层");
+                    console.log("Hide the 3D layer");
                     map.setLayoutProperty('ports-3d', 'visibility', 'none');
                 }
                 
-                // 重新启用港口选择功能
+                // Re-enable the port selection function
                 if (map.getLayer('ports-circle')) {
                     map.setLayoutProperty('ports-circle', 'visibility', 'visible');
                 }
                 
-                // 显示特定港口并聚焦
+                // Display the specific port and focus
                 if (currentPort) {
                     const portFeature = portData.find(d => d.port === currentPort);
                     if (portFeature) {
@@ -1200,28 +1200,28 @@
                     }
                 }
             } else {
-                // 从单港口视图返回总览视图
-                console.log("返回总览视图");
+                // Return to the overview view from the single port view
+                console.log("Return to the overview view");
                 
-                // 先停止所有动画和定时器
+                // Stop all animations and timers
                 stopAllAnimations();
                 
-                // 更新按钮文本
+                // Update the button text
                 document.getElementById('view-button-text').textContent = 'Switch to 3D';
                 
-                // 清除当前选择的港口，确保显示所有港口
+                // Clear the current selected port, ensure all ports are displayed
                 currentPort = '';
                 const portSelect = document.getElementById('port-select');
                 portSelect.value = '';
                 
-                // 收起图表面板
+                // Collapse the chart panel
                 document.getElementById('chart-container').classList.remove('expanded');
                 
-                // 切换回第一视图步骤
+                // Switch back to the first view step
                 currentViewStep = 1;
                 updateViewStepIndicators();
                 
-                // 重置港口样式
+                // Reset the port style
                 map.setPaintProperty('ports-circle', 'circle-color', '#64b5f6');
                 map.setPaintProperty('ports-circle', 'circle-opacity', 1);
                 map.setPaintProperty('ports-halo', 'circle-color', 'rgba(100, 181, 246, 0.4)');
@@ -1229,7 +1229,7 @@
                 map.setPaintProperty('ports-label', 'text-opacity', 1);
                 map.setPaintProperty('ports-label', 'text-color', 'rgba(255, 255, 255, 0.9)');
                 
-                // 飞回全球视图
+                // Fly back to the global view
                 map.flyTo({
                     center: [-2, 45],
                     zoom: 2,
@@ -1238,42 +1238,39 @@
                     duration: 2000
                 });
                 
-                // 更新可视化和图表
+                // Update the visualization and chart
                 updateVisualization();
                 updateOverviewChart();
             }
             
-            // 只有在切换到或离开3D视图时更新isGlobalView
+            // Only update isGlobalView when switching to or leaving 3D view
             if (currentViewStep === 2 || (currentViewStep === 1 && !isGlobalView)) {
                 isGlobalView = !isGlobalView;
-                console.log("视图状态已更新，当前视图是：", isGlobalView ? "全球视角" : "英国视角");
+                console.log("View state updated, current view is:", isGlobalView ? "Global view" : "UK view");
             }
         }
         
-        // 新增函数：停止所有动画和定时器
+        // Add function: stop all animations and timers
         function stopAllAnimations() {
-            // 停止年份播放
+            // Stop year playback
             stopYearPlay();
             
-            // 停止流动点动画
+            // Stop the flow dots animation
             if (flowDotsAnimationId) {
                 cancelAnimationFrame(flowDotsAnimationId);
                 flowDotsAnimationId = null;
             }
             
-            // 清空流动点数组
+            // Clear the flow dots array
             flowDots = [];
             
-            // 停止任何其他可能的定时器
-            // 如果有其他定时器，也应该在这里停止
-        }
 
-        // 创建一个六边形坐标数组
+        // Create a hexagon coordinate array
         function createHexagon(center, size) {
             const [centerX, centerY] = center;
             const vertices = [];
             
-            // 创建六边形的六个顶点
+            // Create the six vertices of the hexagon
             for (let i = 0; i < 6; i++) {
                 const angle = (Math.PI / 3) * i; // 60度角 = π/3 弧度
                 const x = centerX + size * Math.cos(angle);
@@ -1281,25 +1278,25 @@
                 vertices.push([x, y]);
             }
             
-            // 闭合多边形
+            // Close the polygon
             vertices.push(vertices[0]);
             
             return vertices;
         }
 
-        // 创建港口GeoJSON数据
+        // Create the port GeoJSON data
         function createPortsGeoJSON() {
             if (!portData) return { type: 'FeatureCollection', features: [] };
             
-            console.log("创建3D港口数据");
+            console.log("Create 3D port data");
             
-            // 获取当前筛选条件下的港口数据
+            // Get the port data under the current filtering conditions
             const filteredData = portData.filter(d => 
                 parseInt(d.year) === currentYear && 
                 (currentPort ? d.port === currentPort : true)
             );
             
-            // 先按港口分组合并数据
+            // First group the data by port
             const portMap = {};
             
             filteredData.forEach(d => {
@@ -1321,10 +1318,10 @@
                 }
             });
             
-            // 创建特征
+            // Create features
             const features = [];
             
-            // 找出最大吨位值用于比例缩放
+            // Find the maximum tonnage value for scaling
             let maxTonnage = 0;
             Object.values(portMap).forEach(port => {
                 const tonnage = Math.max(port.inwardTonnage, port.outwardTonnage);
@@ -1332,7 +1329,7 @@
             });
             
             Object.values(portMap).forEach(port => {
-                // 根据当前选择的方向确定使用的吨位数据
+                // Determine the tonnage data to use based on the current selected direction
                 let tonnage = 0;
                 if (currentDirection === 'Inwards') {
                     tonnage = port.inwardTonnage;
@@ -1343,23 +1340,23 @@
                 }
                 
                 if (tonnage > 0) {
-                    // 基础尺寸，根据吨位调整大小
+                    // Basic size, adjust size based on tonnage
                     const size = 0.08 + (tonnage / maxTonnage) * 0.04;
                     
-                    // 调整高度比例，使其更明显
+                    // Adjust the height ratio to make it more obvious
                     const height = (tonnage / maxTonnage) * 500000;
                     
-                    // 创建六边形坐标
+                    // Create hexagon coordinates
                     const hexCoords = createHexagon(port.coordinates, size);
                     
-                    // 添加主体柱子
+                    // Add the main column
                     features.push({
                         type: 'Feature',
                         properties: {
                             port: port.port,
                             tonnage: tonnage,
-                            height: height, // 更显著的高度
-                            base: 0,        // 起始高度为0
+                            height: height, // More obvious height
+                            base: 0,        // Start height is 0
                             direction: currentDirection,
                             year: currentYear
                         },
@@ -1371,7 +1368,7 @@
                 }
             });
             
-            console.log(`创建了${features.length}个港口3D特征，最大吨位: ${maxTonnage}`);
+            console.log(`Created ${features.length} port 3D features, max tonnage: ${maxTonnage}`);
             
             return {
                 type: 'FeatureCollection',
@@ -1379,7 +1376,7 @@
             };
         }
         
-        // 初始化地图
+        // Initialize the map
         const map = new mapboxgl.Map({
             container: 'map',
             //style: 'mapbox://styles/yiyaocuiii/cm7w0vtat00p301sd0pac2xxl',
@@ -1388,104 +1385,104 @@
             zoom: 5
         });
 
-        // 添加函数：更新3D数据
+        // Add function: update 3D data
         function update3DData() {
-            // 只有在3D视图且3D数据源已创建时才更新
+            // Only update if in 3D view and 3D data source exists
             if (!isGlobalView && map.getSource('ports-3d')) {
-                console.log("更新3D数据...");
-                // 显示加载指示器
+                console.log("Updating 3D data...");
+                // Show loading indicator
                 document.getElementById('loading-indicator').style.display = 'block';
                 
                 try {
-                    // 使用setTimeout让UI有时间刷新显示加载指示器
+                    // Use setTimeout to allow the UI to refresh and display the loading indicator
                     setTimeout(() => {
                         try {
                             map.getSource('ports-3d').setData(createPortsGeoJSON());
-                            console.log("3D数据更新完成");
+                            console.log("3D data updated");
                         } catch (error) {
-                            console.error("更新3D数据时出错:", error);
+                            console.error("Error updating 3D data:", error);
                         } finally {
-                            // 无论成功与否，都隐藏加载指示器
+                            // Hide loading indicator regardless of success or failure
                             document.getElementById('loading-indicator').style.display = 'none';
                         }
                     }, 100);
                 } catch (error) {
-                    console.error("准备更新3D数据时出错:", error);
+                    console.error("Error preparing to update 3D data:", error);
                     document.getElementById('loading-indicator').style.display = 'none';
                 }
             } else {
-                console.log("跳过3D数据更新 - 当前不是3D视图或数据源未创建");
+                console.log("Skip 3D data update - current not 3D view or data source not created");
             }
         }
 
-        // 修改年份更新函数
+        // Modify the year update function
         const originalUpdateYear = updateYear;
         updateYear = function(newYear) {
-            // 调用原始函数
+            // Call the original function
             originalUpdateYear(newYear);
             
-            // 更新3D数据
+            // Update 3D data
             update3DData();
         };
 
-        // 加载数据
+        // Load data
         async function loadData() {
             try {
-                // 尝试首先从本地加载数据
+                // Try to load data from local first
                 const localDataPath = '../../../public/data/';
                 const backupLocalPath = './public/data/';
                 const githubDataPath = 'https://raw.githubusercontent.com/Cihshee/CASA0003/refs/heads/main/data/';
                 
-                // 数据文件名
+                // Data file name
                 const dataFileName = 'port0499-2016-2023-EU-top30-latlon.json';
                 
-                // 尝试从本地路径加载
+                // Try to load data from local path
                 try {
-                    console.log('尝试从本地路径加载数据...');
+                    console.log('Trying to load data from local path...');
                     const [flowResponse, portResponse] = await Promise.all([
                         fetch(`${localDataPath}${dataFileName}`),
                         fetch(`${localDataPath}${dataFileName}`)
                     ]);
                     
                     if (flowResponse.ok && portResponse.ok) {
-                        console.log('成功从本地路径加载数据');
+                        console.log('Successfully loaded data from local path');
                         flowData = await flowResponse.json();
                         portData = await portResponse.json();
                         checkInitialization();
                         return;
                     }
                 } catch (localError) {
-                    console.warn('从第一个本地路径加载数据失败，尝试备用本地路径...', localError);
+                    console.warn('Failed to load data from the first local path, trying the backup local path...', localError);
                 }
                 
-                // 尝试从备用本地路径加载
+                // Try to load data from the backup local path
                 try {
-                    console.log('尝试从备用本地路径加载数据...');
+                    console.log('Trying to load data from the backup local path...');
                     const [flowResponse, portResponse] = await Promise.all([
                         fetch(`${backupLocalPath}${dataFileName}`),
                         fetch(`${backupLocalPath}${dataFileName}`)
                     ]);
                     
                     if (flowResponse.ok && portResponse.ok) {
-                        console.log('成功从备用本地路径加载数据');
+                        console.log('Successfully loaded data from the backup local path');
                         flowData = await flowResponse.json();
                         portData = await portResponse.json();
                         checkInitialization();
                         return;
                     }
                 } catch (backupError) {
-                    console.warn('从备用本地路径加载数据失败，尝试从GitHub加载...', backupError);
+                    console.warn('Failed to load data from the backup local path, trying to load from GitHub...', backupError);
                 }
                 
-                // 如果本地加载都失败，尝试从GitHub加载
-                console.log('尝试从GitHub加载数据...');
+                // If local loading fails, try to load from GitHub
+                console.log('Trying to load data from GitHub...');
                 const [flowResponse, portResponse] = await Promise.all([
                     fetch(`${githubDataPath}${dataFileName}`),
                     fetch(`${githubDataPath}${dataFileName}`)
                 ]);
                 
                 if (!flowResponse.ok || !portResponse.ok) {
-                    throw new Error('网络请求失败，状态码: ' + 
+                    throw new Error('Network request failed, status code: ' + 
                         (flowResponse.status || portResponse.status));
                 }
                 
@@ -1496,48 +1493,48 @@
             } catch (error) {
                 console.error('Error loading data:', error);
                 
-                // 显示错误消息在地图上
+                // Display error message on the map
                 const mapContainer = document.getElementById('map');
                 if (mapContainer) {
                     mapContainer.innerHTML = `
                         <div style="display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column; color: white; background-color: rgba(0,0,0,0.7); padding: 20px; text-align: center;">
-                            <h3>数据加载失败</h3>
-                            <p>无法加载所需的数据文件。请检查网络连接或数据文件位置。</p>
-                            <p>错误详情: ${error.message}</p>
-                            <button onclick="window.close()" style="margin-top: 20px; padding: 10px 20px; background-color: #2196F3; border: none; color: white; cursor: pointer; border-radius: 4px;">关闭窗口</button>
+                            <h3>Data loading failed</h3>
+                            <p>Failed to load the required data file. Please check your network connection or data file location.</p>
+                            <p>Error details: ${error.message}</p>
+                            <button onclick="window.close()" style="margin-top: 20px; padding: 10px 20px; background-color: #2196F3; border: none; color: white; cursor: pointer; border-radius: 4px;">Close window</button>
                         </div>
                     `;
                 }
             }
         }
 
-        // 检查初始化条件
+        // Check initialization conditions
         function checkInitialization() {
             if (mapLoaded && mapStyleLoaded && portData && flowData) {
                 initializeVisualization();
             }
         }
 
-        // 初始化可视化
+        // Initialize visualization
         function initializeVisualization() {
             try {
                 initializePortSelect();
                 addPortLayer();
                 addFlowLayer();
-                // 设置默认方向为Inwards
+                // Set default direction to Inwards
                 currentDirection = 'Inwards';
                 document.getElementById('inward-btn').classList.add('active');
                 document.getElementById('outward-btn').classList.remove('active');
-                // 确保页面初始化时显示所有港口的流向
+                // Ensure all ports are displayed when the page is initialized
                 currentPort = '';
                 updateVisualization();
                 setupEventListeners();
                 setupHoverEvents();
                 
-                // 初始化年份标记
+                // Initialize year markers
                 updateYearMarkers(currentYear);
                 
-                // 设置初始视图为全球宏观视角 - 简化视角变化，直接一步到位
+                // Set initial view to global macro view - simplify view change, directly step in
                 console.log('Setting initial global view');
                 map.flyTo({
                     center: [-2, 45],
@@ -1547,21 +1544,21 @@
                     duration: 1500
                 });
                 
-                // 初始化默认为视图步骤1
+                // Initialize the default view step to 1
                 currentViewStep = 1;
                 updateViewStepIndicators();
                 
-                // 隐藏端口选择控件，因为在总览模式下不需要
+                // Hide the port selection control, as it is not needed in the overview mode
                 document.getElementById('port-control').style.display = 'none';
                 
-                // 创建初始总览图表
+                // Create the initial overview chart
                 updateOverviewChart();
             } catch (error) {
                 console.error('Error in initialization:', error);
             }
         }
 
-        // 初始化港口选择下拉框
+        // Initialize the port selection dropdown
         function initializePortSelect() {
             if (!portData) return;
             
@@ -1575,11 +1572,11 @@
                 portSelect.appendChild(option);
             });
             
-            // 初始化图表容器的折叠/展开功能
+            // Initialize the chart container's collapse/expand function
             initializeChartPanel();
         }
         
-        // 初始化图表面板折叠/展开功能
+        // Initialize the chart panel's collapse/expand function
         function initializeChartPanel() {
             const chartContainer = document.getElementById('chart-container');
             const chartHandle = document.getElementById('chart-handle');
@@ -1588,7 +1585,7 @@
                 chartHandle.addEventListener('click', function() {
                     chartContainer.classList.toggle('expanded');
                     
-                    // 如果展开了图表并且有选定港口，更新图表
+                    // If the chart is expanded and there is a selected port, update the chart
                     if (chartContainer.classList.contains('expanded') && currentPort) {
                         updateTrendChart(currentPort);
                     }
@@ -1596,22 +1593,21 @@
             }
         }
 
-        // 等待地图加载完成
+        // Wait for the map to load
         map.on('load', () => {
             mapLoaded = true;
             checkInitialization();
             
-            // 添加全局鼠标事件跟踪，用于调试和确保3D交互正常工作
+            // Add global mouse event tracking, for debugging and ensuring 3D interaction works
             const mapCanvas = map.getCanvas();
             
-            // 启用指针事件调试
+            // Enable pointer event debugging
             map.on('mousemove', function(e) {
                 const features = map.queryRenderedFeatures(e.point, { layers: ['ports-3d'] });
                 if (features.length > 0) {
                     mapCanvas.style.cursor = 'pointer';
-                    // 检测到3D图层的鼠标悬停
                 } else {
-                    // 当不在3D柱子上时，检查是否需要重置光标
+                    // When not hovering over the 3D column, check if the cursor needs to be reset
                     const otherFeatures = map.queryRenderedFeatures(e.point, { layers: ['ports-circle'] });
                     if (otherFeatures.length === 0) {
                         mapCanvas.style.cursor = '';
@@ -1620,13 +1616,13 @@
             });
         });
 
-        // 等待地图样式加载完成
+        // Wait for the map style to load
         map.on('style.load', () => {
             mapStyleLoaded = true;
             checkInitialization();
         });
 
-        // 添加港口点图层
+        // Add the port point layer
         function addPortLayer() {
             if (!portData) return;
             
@@ -1659,7 +1655,7 @@
                     }
                 });
 
-                // 添加港口点光晕图层
+                // Add the port point halo layer
                 map.addLayer({
                     id: 'ports-halo',
                     type: 'circle',
@@ -1672,20 +1668,20 @@
                     }
                 });
 
-                // 添加港口点图层 - 调整颜色更加明亮
+                // Add the port point layer - adjust color to be brighter
                 map.addLayer({
                     id: 'ports-circle',
                     type: 'circle',
                     source: 'ports',
                     paint: {
                         'circle-radius': 1.75,
-                        'circle-color': '#64b5f6',  // 更亮的蓝色
+                        'circle-color': '#64b5f6',  // Brighter blue
                         'circle-stroke-width': 2,
                         'circle-stroke-color': 'rgba(255, 255, 255, 0.8)'
                     }
                 });
 
-                // 添加港口标签图层 - 调整标签颜色和样式
+                // Add the port label layer - adjust label color and style
                 map.addLayer({
                     id: 'ports-label',
                     type: 'symbol',
@@ -1707,7 +1703,7 @@
             }
         }
 
-        // 添加流向线图层
+        // Add the flow line layer
         function addFlowLayer() {
             map.addSource('flows', {
                 type: 'geojson',
@@ -1715,10 +1711,10 @@
                     type: 'FeatureCollection',
                     features: []
                 },
-                lineMetrics: true  // 启用线条度量
+                lineMetrics: true  // Enable line metrics
             });
 
-            // 添加线条的白色外轮廓层，放在最底层
+            // Add the white outer outline layer of the lines, placed at the bottom
             map.addLayer({
                 id: 'flow-lines-white-outline',
                 type: 'line',
@@ -1733,15 +1729,15 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 1.1],  // 从1.3降低到1.1
-                        1, ['*', ['get', 'weight'], 0.5]   // 从0.7降低到0.5
+                        0, ['*', ['get', 'weight'], 1.1],  // Reduce from 1.3 to 1.1
+                        1, ['*', ['get', 'weight'], 0.5]   // Reduce from 0.7 to 0.5
                     ],
-                    'line-opacity': 0.3,  // 从0.35降低到0.3
-                    'line-blur': 1.0  // 从1.2降低到1.0
+                    'line-opacity': 0.3,  // Reduce from 0.35 to 0.3
+                    'line-blur': 1.0  // Reduce from 1.2 to 1.0
                 }
             });
             
-            // 添加额外的外发光效果
+            // Add additional outer glow effect
             map.addLayer({
                 id: 'flow-lines-outer-glow',
                 type: 'line',
@@ -1756,15 +1752,15 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 0.7],  // 从0.9降低到0.7
-                        1, ['*', ['get', 'weight'], 0.3]   // 从0.4降低到0.3
+                        0, ['*', ['get', 'weight'], 0.7],  // Reduce from 0.9 to 0.7
+                        1, ['*', ['get', 'weight'], 0.3]   // Reduce from 0.4 to 0.3
                     ],
-                    'line-opacity': 0.2,  // 从0.25降低到0.2
+                    'line-opacity': 0.2,  // Reduce from 0.25 to 0.2
                     'line-blur': 3
                 }
             }, 'flow-lines-white-outline');
             
-            // 添加线条发光效果图层
+            // Add the line glow effect layer
             map.addLayer({
                 id: 'flow-lines-glow',
                 type: 'line',
@@ -1780,14 +1776,14 @@
                         ['linear'],
                         ['line-progress'],
                         0, ['*', ['get', 'weight'], 0.6],
-                        1, ['*', ['get', 'weight'], 0.3]   // 从0.4降低到0.3
+                        1, ['*', ['get', 'weight'], 0.3]   // Reduce from 0.4 to 0.3
                     ],
-                    'line-opacity': 0.5,  // 从0.6降低到0.5
-                    'line-blur': 2  // 从3降低到2
+                    'line-opacity': 0.5,  // Reduce from 0.6 to 0.5
+                    'line-blur': 2  // Reduce from 3 to 2
                 }
             }, 'flow-lines-outer-glow');
             
-            // 添加流向线图层
+            // Add the flow line layer
             map.addLayer({
                 id: 'flow-lines',
                 type: 'line',
@@ -1802,15 +1798,15 @@
                         'interpolate',
                         ['linear'],
                         ['line-progress'],
-                        0, ['*', ['get', 'weight'], 0.4],  // 从0.6降低到0.4
-                        1, ['*', ['get', 'weight'], 0.15]  // 从0.2降低到0.15
+                        0, ['*', ['get', 'weight'], 0.4],  // Reduce from 0.6 to 0.4
+                        1, ['*', ['get', 'weight'], 0.15]  // Reduce from 0.2 to 0.15
                     ],
-                    'line-opacity': 0.9,  // 降低不透明度，让整体看起来更轻盈
+                    'line-opacity': 0.9,  // Reduce opacity to make the overall look lighter
                     'line-blur': 0
                 }
             }, 'flow-lines-glow');
             
-            // 添加流动点图层的数据源
+            // Add the flow dot layer data source
             map.addSource('flow-dots', {
                 type: 'geojson',
                 data: {
@@ -1819,7 +1815,7 @@
                 }
             });
             
-            // 添加流动线段 - 改进白色点的可见性
+            // Add the flow line segment - improve the visibility of the white point
             map.addLayer({
                 id: 'flow-dots',
                 type: 'line',
@@ -1832,11 +1828,11 @@
                     'line-color': '#ffffff',
                     'line-width': ['*', ['get', 'size'], 1.2],
                     'line-opacity': ['get', 'opacity'],
-                    'line-blur': 0.12    // 增加一点模糊以使动画点看起来更柔和，从0.08到0.12
+                    'line-blur': 0.12    // Increase a little blur to make the animated point look softer, from 0.08 to 0.12
                 }
             });
             
-            // 添加目的地国家标记数据源
+            // Add the destination country marker data source
             map.addSource('destinations', {
                 type: 'geojson',
                 data: {
@@ -1845,29 +1841,29 @@
                 }
             });
             
-            // 删除旧的目的地圆圈标记，创建新的星形目的地标记
+            // Delete the old destination circle marker, create a new star destination marker
             
-            // 1. 添加一个外部发光层作为背景效果
+            // 1. Add an external glow layer as a background effect
             map.addLayer({
                 id: 'destination-glow',
                 type: 'circle',
                 source: 'destinations',
                 paint: {
-                    'circle-radius': ['*', ['get', 'weight'], 4.5], // 增加半径从3到4.5
+                    'circle-radius': ['*', ['get', 'weight'], 4.5], // Increase radius from 3 to 4.5
                     'circle-color': ['get', 'color'],
-                    'circle-opacity': 0.5, // 增加不透明度从0.4到0.5
-                    'circle-blur': 1.5 // 增加模糊从1到1.5
+                    'circle-opacity': 0.5, // Increase opacity from 0.4 to 0.5
+                    'circle-blur': 1.5 // Increase blur from 1 to 1.5
                 }
             });
             
-            // 2. 添加一个脉动星形图层
+            // 2. Add a pulsing star layer
             map.addLayer({
                 id: 'destination-stars',
                 type: 'symbol',
                 source: 'destinations',
                 layout: {
-                    'icon-image': 'marker-15', // Mapbox预设的marker图标
-                    'icon-size': ['*', ['get', 'weight'], 1.4], // 增大尺寸从1.2到1.4
+                        'icon-image': 'marker-15', // Mapbox preset marker icon
+                    'icon-size': ['*', ['get', 'weight'], 1.4], // Increase size from 1.2 to 1.4
                     'icon-allow-overlap': true,
                     'icon-ignore-placement': true
                 },
@@ -1882,19 +1878,19 @@
                         1000, 0.8
                     ],
                     'icon-halo-color': '#ffffff',
-                    'icon-halo-width': 2.5, // 增加光晕宽度从2到2.5
-                    'icon-halo-blur': 0.5 // 增加光晕模糊从0.3到0.5
+                    'icon-halo-width': 2.5, // Increase halo width from 2 to 2.5
+                    'icon-halo-blur': 0.5 // Increase halo blur from 0.3 to 0.5
                 }
             });
             
-            // 3. 添加小菱形作为补充效果，增强视觉效果
+            // 3. Add a small diamond as a supplementary effect to enhance the visual effect
             map.addLayer({
                 id: 'destination-diamonds',
                 type: 'symbol',
                 source: 'destinations',
                 layout: {
-                    'icon-image': 'diamond-11', // Mapbox预设的菱形图标
-                    'icon-size': ['*', ['get', 'weight'], 1.0], // 增大尺寸从0.8到1.0
+                    'icon-image': 'diamond-11', // Mapbox preset diamond icon
+                    'icon-size': ['*', ['get', 'weight'], 1.0], // Increase size from 0.8 to 1.0
                     'icon-allow-overlap': true,
                     'icon-ignore-placement': true,
                     'icon-rotate': [
@@ -1907,51 +1903,51 @@
                 },
                 paint: {
                     'icon-color': '#ffffff',
-                    'icon-opacity': 1.0 // 增加不透明度从0.9到1.0
+                    'icon-opacity': 1.0 // Increase opacity from 0.9 to 1.0
                 }
             });
             
-            // 移除目的地国家名称标签图层
-            // 不再添加destination-labels图层，避免显示国家名称
+            // Remove the destination country name label layer
+            // No longer add the destination-labels layer, to avoid displaying the country name
         }
 
-        // 更新可视化
+        // Update visualization
         function updateVisualization() {
             if (!flowData) return;
 
-            // 停止之前的流动点动画
+            // Stop the previous flow dot animation
             if (flowDotsAnimationId) {
                 cancelAnimationFrame(flowDotsAnimationId);
                 flowDotsAnimationId = null;
             }
 
-            // 筛选当前年份和方向的数据
+            // Filter the data for the current year and direction
             let filteredData = flowData.filter(d => 
                 parseInt(d.year) === currentYear && 
                 d.direction === currentDirection
             );
             
-            // 如果选择了特定港口，则只显示该港口的流线
+            // If a specific port is selected, only display the flow lines for that port
             if (currentPort) {
                 filteredData = filteredData.filter(d => d.port === currentPort);
             } else {
-                // 如果没有选择特定港口，则显示所有港口的主要流线
-                // 获取所有港口列表
+                // If no specific port is selected, display the main flow lines for all ports
+                // Get all port list
                 const allPorts = [...new Set(filteredData.map(d => d.port))];
                 
-                // 为每个港口只保留几条主要流线以避免图形过于复杂
+                // Keep only a few main flow lines for each port to avoid too complex graphics
                 const limitedData = [];
                 allPorts.forEach(port => {
                     const portFlows = filteredData.filter(d => d.port === port)
                         .sort((a, b) => parseFloat(b.cargo_tonnage) - parseFloat(a.cargo_tonnage))
-                        .slice(0, 3);  // 每个港口只取前3条主要流线
+                        .slice(0, 3);  // Keep only the top 3 main flow lines for each port to avoid too complex graphics
                     limitedData.push(...portFlows);
                 });
                 
                 filteredData = limitedData;
             }
             
-            // 如果筛选后没有数据，清空可视化
+            // If no data after filtering, clear the visualization
             if (filteredData.length === 0) {
                 map.getSource('flows').setData({
                     type: 'FeatureCollection',
@@ -1965,7 +1961,7 @@
                     type: 'FeatureCollection',
                     features: []
                 });
-                // 清除之前的动画
+                // Clear the previous animation
                 if (flowDotsAnimationId) {
                     cancelAnimationFrame(flowDotsAnimationId);
                     flowDotsAnimationId = null;
@@ -1973,16 +1969,16 @@
                 return;
             }
 
-            // 修改流向线特征创建
+            // Modify the flow line feature creation
             const flowFeatures = filteredData.map(d => {
                 const portCoords = [parseFloat(d.port_lon), parseFloat(d.port_lat)];
                 const countryCoords = [parseFloat(d.country_lon), parseFloat(d.country_lat)];
                 
                 const tonnage = parseFloat(d.cargo_tonnage);
-                // 在初始全局视图下，线条更细，在选择特定港口时线条较粗
+                // In the initial global view, the lines are thinner, and when a specific port is selected, the lines are thicker
                 const baseWeight = currentPort 
                     ? Math.max(0.5, Math.log(tonnage) / Math.log(10) * 0.8)
-                    : Math.max(0.3, Math.log(tonnage) / Math.log(10) * 0.5);  // 初始更细的线条
+                    : Math.max(0.3, Math.log(tonnage) / Math.log(10) * 0.5);  // The initial lines are thinner, and when a specific port is selected, the lines are thicker
 
                 const midPoint = getMidPoint(portCoords, countryCoords);
                 const curvedPath = createCurvedPath(portCoords, countryCoords, midPoint);
@@ -2003,29 +1999,29 @@
                 };
             });
             
-            // 创建目的地国家标记
+            // Create destination country markers
             const destinationFeatures = createDestinationFeatures(filteredData);
 
-            // 更新流向线数据
+            // Update flow line data
             try {
                 map.getSource('flows').setData({
                     type: 'FeatureCollection',
                     features: flowFeatures
                 });
                 
-                // 更新目的地标记
+                // Update destination markers
                 map.getSource('destinations').setData({
                     type: 'FeatureCollection',
                     features: destinationFeatures
                 });
                 
-                // 如果选择了特定港口，显示完整的动画点效果
-                // 如果是全局视图，为了性能考虑，减少动画点的数量
+                // If a specific port is selected, display the full animation point effect
+                // For the global view, for performance considerations, reduce the number of animation points
                 if (currentPort) {
-                    // 完整的动画效果
+                    // Full animation effect
                     startFlowDotsAnimation(flowFeatures);
                 } else {
-                    // 全局视图下也有动画，但数量和效果会受限制
+                    // There is also an animation in the global view, but the number and effect will be limited
                     startSimplifiedDotsAnimation(flowFeatures);
                 }
                 
@@ -2034,81 +2030,81 @@
             }
         }
 
-        // 为全局视图添加简化版的动画点效果
+        // Add a simplified animation point effect for the global view
         function startSimplifiedDotsAnimation(flowFeatures) {
-            // 如果之前有动画，取消它
+            // If there is an animation before, cancel it
             if (flowDotsAnimationId) {
                 cancelAnimationFrame(flowDotsAnimationId);
                 flowDotsAnimationId = null;
             }
             
-            // 如果没有数据，不执行动画
+            // If there is no data, do not execute the animation
             if (!flowFeatures || flowFeatures.length === 0) return;
             
-            // 初始化流动点
+            // Initialize flow dots
             flowDots = [];
             
-            // 根据当前流向决定动画方向
+            // Determine the animation direction based on the current flow direction
             const isInwardsFlow = currentDirection === 'Inwards';
             
-            // 为每条线创建1-2个流动点，简化全局视图动画
+            // Create 1-2 flow dots for each line, simplify the global view animation
             flowFeatures.forEach((feature) => {
                 const weight = feature.properties.weight;
                 const coords = feature.geometry.coordinates;
                 
-                // 设置初始位置和移动方向
-                const initialProgress = isInwardsFlow ? 0.98 : 0.02; // Inwards从国家端开始，Outwards从港口端开始
-                const speed = isInwardsFlow ? -0.001 : 0.001; // 负值表示反方向移动
+                // Set the initial position and moving direction
+                const initialProgress = isInwardsFlow ? 0.98 : 0.02; // Inwards starts from the country end, Outwards starts from the port end
+                const speed = isInwardsFlow ? -0.001 : 0.001; // Negative value represents the opposite direction movement
                 
-                // 每条线只添加1个点，确保起始位置根据流向设置
+                // Add 1-2 flow dots for each line, ensure the starting position is set according to the flow direction
                 flowDots.push({
                     progress: initialProgress,
                     speed: speed,
                     coordinates: coords,
                     properties: {
-                        size: Math.min(weight * 0.8 + 0.6, 1.8) // 更大更明显的点
+                        size: Math.min(weight * 0.8 + 0.6, 1.8) // Larger and more obvious points
                     },
-                    // 增加线段长度，使动画看起来更流畅
+                    // Increase the line length to make the animation look smoother
                     lineLength: 0.05 + (weight * 0.008),
                     totalTime: 0
                 });
             });
             
-            // 开始动画循环
+            // Start the animation loop
             animate();
             
             function animate() {
-                // 更新每个流动线段的位置
+                // Update the position of each flow line
                 for (let dot of flowDots) {
                     dot.progress += dot.speed;
-                    dot.totalTime += 1/60; // 假设60fps
+                    dot.totalTime += 1/60; // Assuming 60fps
                     
-                    // 处理边界情况，循环动画
-                    if (dot.speed > 0) { // Outwards方向
+                    // Handle boundary cases, loop animation
+                    if (dot.speed > 0) { // Outwards direction
                         if (dot.progress >= 1) {
                             dot.progress = 0;
                         }
-                    } else { // Inwards方向
+                    } else { // Inwards direction
                         if (dot.progress <= 0) {
                             dot.progress = 1;
                         }
                     }
                 }
                 
-                // 创建具有渐变效果的线段
+                // Create a line with a gradient effect
                 const dotFeatures = flowDots.map(dot => {
-                    // 根据流向方向计算线段端点
+                    // Calculate the endpoints of the line based on the flow direction
                     const startProgress = dot.progress;
                     const endProgress = dot.speed > 0 
                         ? Math.min(startProgress + Math.abs(dot.lineLength), 1) // Outwards
                         : Math.max(startProgress - Math.abs(dot.lineLength), 0); // Inwards
                     
-                    // 处理边界情况
+                    // Handle boundary cases
                     if ((dot.speed > 0 && endProgress >= 0.99) || (dot.speed < 0 && endProgress <= 0.01)) {
-                        // 如果线段将跨越边界，提前调整
+                        // If the line will cross the boundary, adjust it in advance
                         const adjustedEndProgress = dot.speed > 0 ? 0.99 : 0.01;
                         
-                        // 生成点
+                        // Generate points
                         const numPoints = 4;
                         const points = [];
                         const effectiveLength = Math.abs(adjustedEndProgress - startProgress);
@@ -2125,11 +2121,11 @@
                             return [];
                         }
                         
-                        // 创建渐变线段
+                        // Create a gradient line
                         return createGradientSegments(points, dot);
                     }
                     
-                    // 正常情况处理
+                    // Normal case processing
                     const numPoints = 4;
                     const points = [];
                     const step = dot.lineLength / (numPoints - 1) * (dot.speed > 0 ? 1 : -1);
@@ -2144,7 +2140,7 @@
                     return createGradientSegments(points, dot);
                 }).flat();
                 
-                // 更新地图上的流动线段
+                // Update the flow line on the map
                 if (map.getSource('flow-dots')) {
                     map.getSource('flow-dots').setData({
                         type: 'FeatureCollection',
@@ -2152,11 +2148,11 @@
                     });
                 }
                 
-                // 继续动画循环
+                // Continue the animation loop
                 flowDotsAnimationId = requestAnimationFrame(animate);
             }
             
-            // 辅助函数：创建渐变线段
+            // Helper function: create a gradient line
             function createGradientSegments(points, dot) {
                 if (points.length < 2) return [];
                 
@@ -2166,10 +2162,10 @@
                 for (let i = 0; i < points.length - 1; i++) {
                     const t = i / (points.length - 1);
                     
-                    // 根据流向调整渐变方向
+                    // Adjust the gradient direction based on the flow direction
                     const gradientT = isOutwards ? t : (1 - t);
                     
-                    // 柔和渐变以使动画更自然
+                    // Soften the gradient to make the animation more natural
                     const opacity = 0.95 * Math.pow(1 - gradientT, 1.5);
                     
                     segmentFeatures.push({
@@ -2189,20 +2185,20 @@
             }
         }
 
-        // 创建目的地国家标记特征 - 显示具体国家而非区域，并精确定位
+        // Create destination country marker features - display specific countries rather than regions, and accurately locate
         function createDestinationFeatures(data) {
-            // 按目的地国家分组并合并，使用国家坐标和国家名称
+            // Group by destination country and merge, use country coordinates and country name
             const destinations = {};
             
-            // 检查数据的第一个元素，了解可用字段
+            // Check the first element of the data, understand the available fields
             if (data.length > 0) {
-                console.log("数据示例:", data[0]);
+                console.log("Data example:", data[0]);
             }
             
             data.forEach(d => {
-                // 提取国家名称
+                // Extract country name
                 let countryName = '';
-                // 尝试从数据中提取国家名
+                // Try to extract the country name from the data
                 if (d.destination_country) {
                     countryName = d.destination_country;
                 } else if (d.destination) {
@@ -2210,18 +2206,18 @@
                 } else if (d.country) {
                     countryName = d.country;
                 } else {
-                    // 从区域名称中提取可能的国家名称
+                    // Extract possible country names from the region name
                     const region = d.destination_region || '';
                     
-                    // 对已知区域进行特殊处理，转换为主要国家名
+                    // Special processing for known regions, convert to main country names
                     if (region.includes('United Kingdom')) {
                         countryName = 'UK';
                     } else if (region.includes('European Union')) {
-                        // 根据坐标确定具体欧盟国家
+                        // Determine the specific EU country based on coordinates
                         const lat = parseFloat(d.country_lat);
                         const lon = parseFloat(d.country_lon);
                         
-                        // 基于坐标粗略判断国家
+                        // Based on coordinates, roughly determine the country
                         if (lon > 10 && lat > 45) countryName = 'Germany';
                         else if (lon < 0 && lat > 43) countryName = 'France';
                         else if (lon > 10 && lat < 45) countryName = 'Italy';
@@ -2265,7 +2261,7 @@
                 const tonnage = parseFloat(d.cargo_tonnage);
                 const region = d.destination_region; // 用于保留颜色分类
                 
-                // 使用坐标作为key，避免同一国家不同名称导致的重复
+                // Use coordinates as the key, avoid duplicate due to different names for the same country
                 const coordKey = `${coords[0].toFixed(1)},${coords[1].toFixed(1)}`;
                 
                 if (!destinations[coordKey]) {
@@ -2280,12 +2276,12 @@
                 }
             });
             
-            // 转换为GeoJSON特征
+            // Convert to GeoJSON features
             return Object.values(destinations).map(dest => ({
                 type: 'Feature',
                 properties: {
                     name: dest.name,
-                    weight: Math.max(2.2, Math.log(dest.tonnage) / Math.log(10) * 1.6), // 增加基础权重和系数
+                    weight: Math.max(2.2, Math.log(dest.tonnage) / Math.log(10) * 1.6), // Increase the base weight and coefficient
                     tonnage: dest.tonnage,
                     color: dest.color
                 },
@@ -2296,50 +2292,50 @@
             }));
         }
 
-        // 改进版的流动点动画 - 确保每条线有连续的流动效果和渐变特效
+        // Improved flow point animation - ensure each line has continuous flow effect and gradient effect
         function startFlowDotsAnimation(flowFeatures) {
-            // 如果之前有动画，取消它
+            // If there is an animation before, cancel it
             if (flowDotsAnimationId) {
                 cancelAnimationFrame(flowDotsAnimationId);
                 flowDotsAnimationId = null;
             }
             
-            // 如果没有数据，不执行动画
+            // If there is no data, do not execute the animation
             if (!flowFeatures || flowFeatures.length === 0) return;
             
-            // 初始化流动点
+            // Initialize flow points
             flowDots = [];
             
-            // 为每条线创建2-3个流动点，让动画效果更丰富
+            // Create 2-3 flow points for each line, make the animation effect more丰富
             flowFeatures.forEach((feature) => {
                 const weight = feature.properties.weight;
                 const coords = feature.geometry.coordinates;
                 const totalLength = getTotalDistance(coords);
                 
-                // 根据线的长度决定点的数量：较长线3个点，中等长度2个点
+                // Determine the number of points based on the length of the line: longer lines 3 points, medium length 2 points
                 let numDots;
                 if (totalLength > 1000) {
-                    numDots = 3;  // 长线3个点
+                    numDots = 3;  // Long lines 3 points
                 } else if (totalLength > 400) {
-                    numDots = 2;  // 中等长度线2个点
+                    numDots = 2;  // Medium length lines 2 points
                 } else {
-                    numDots = 2;  // 短线也至少2个点
+                    numDots = 2;  // Short lines also have at least 2 points
                 }
                 
-                // 根据当前流向方向决定点的起始位置和运动方向
-                // Inwards: 从国家到港口(结束点到起始点)，Outwards: 从港口到国家(起始点到结束点)
+                // Determine the starting position and movement direction of the points based on the current flow direction
+                // Inwards: from country to port (end point to start point), Outwards: from port to country (start point to end point)
                 const isInwardsFlow = currentDirection === 'Inwards';
                 
-                // 为每条线生成点，确保正确的流动方向
+                // Generate points for each line, ensure correct flow direction
                 for (let i = 0; i < numDots; i++) {
-                    // 起始位置：
-                    // 对于Inwards，点从1(国家端)向0(港口端)移动，所以初始进度接近1
-                    // 对于Outwards，点从0(港口端)向1(国家端)移动，所以初始进度接近0
+                    // Starting position:
+                    // For Inwards, the point moves from 1 (country end) to 0 (port end), so the initial progress is close to 1
+                    // For Outwards, the point moves from 0 (port end) to 1 (country end), so the initial progress is close to 0
                     const initialProgress = isInwardsFlow 
-                        ? (0.98 - (1 / numDots) * i * 0.7) // 从国家端(接近1)开始
-                        : (0.02 + (1 / numDots) * i * 0.7); // 从港口端(接近0)开始
+                        ? (0.98 - (1 / numDots) * i * 0.7) // Start from the country end (close to 1)
+                        : (0.02 + (1 / numDots) * i * 0.7); // Start from the port end (close to 0)
                     
-                    // 移动速度，负值表示方向相反
+                    // Movement speed, negative value represents the opposite direction
                     const speed = isInwardsFlow ? -0.001 : 0.001;
                     
                     flowDots.push({
@@ -2347,83 +2343,83 @@
                         speed: speed,
                         coordinates: coords,
                         properties: {
-                            size: Math.min(weight * 0.9 + 0.6, 1.9) // 调整大小
+                            size: Math.min(weight * 0.9 + 0.6, 1.9) // Adjust size
                         },
-                        lineLength: 0.06 + (weight * 0.008), // 增加线段长度
+                        lineLength: 0.06 + (weight * 0.008), // Increase line length
                         totalTime: 0
                     });
                 }
             });
             
-            // 开始动画循环
+            // Start the animation loop
             animate();
             
             function animate() {
-                // 更新每个流动线段的位置
+                // Update the position of each flow line
                 for (let dot of flowDots) {
                     dot.progress += dot.speed;
-                    dot.totalTime += 1/60; // 假设60fps
+                    dot.totalTime += 1/60; // Assuming 60fps
                     
-                    // 当线段到达边界时，循环回到另一端
-                    // 注意流向方向对循环边界的影响
-                    if (dot.speed > 0) { // Outwards方向
+                    // When the line reaches the boundary, loop back to the other end
+                    // Note the influence of the flow direction on the loop boundary
+                    if (dot.speed > 0) { // Outwards direction
                         if (dot.progress >= 1) {
                             dot.progress = 0;
                         }
-                    } else { // Inwards方向
+                    } else { // Inwards direction
                         if (dot.progress <= 0) {
                             dot.progress = 1;
                         }
                     }
                 }
                 
-                // 创建具有渐变效果的线段 - 修复终点回到起点的直线bug
+                // Create a line with a gradient effect - fix the bug where the line returns to the starting point
                 const dotFeatures = flowDots.map(dot => {
-                    // 计算线段的起点和终点
+                    // Calculate the start and end points of the line
                     const startProgress = dot.progress;
                     const endProgress = dot.speed > 0 
                         ? Math.min(startProgress + Math.abs(dot.lineLength), 1) // Outwards
                         : Math.max(startProgress - Math.abs(dot.lineLength), 0); // Inwards
                     
-                    // 处理特殊情况：线段接近边界
+                    // Handle special cases: line approaching the boundary
                     if ((dot.speed > 0 && endProgress >= 0.99) || (dot.speed < 0 && endProgress <= 0.01)) {
-                        // 对于临近终点的线段，缩短长度避免跨越边界
+                        // For lines nearing the end, shorten the length to avoid crossing the boundary
                         const adjustedEndProgress = dot.speed > 0 ? 0.99 : 0.01;
                         const startPos = interpolatePosition(dot.coordinates, startProgress);
                         const endPos = interpolatePosition(dot.coordinates, adjustedEndProgress);
                         
-                        // 生成中间点来创建渐变效果 - 更平滑的过渡
-                        const numPoints = 6; // 增加点数以改善渐变效果
+                        // Generate intermediate points to create a gradient effect - smoother transition
+                        const numPoints = 6; // Increase the number of points to improve the gradient effect
                         const points = [];
                         
-                        // 重新计算点，确保不会超过边界
+                        // Recalculate points to ensure they don't exceed the boundary
                         const effectiveLength = Math.abs(adjustedEndProgress - startProgress);
                         const step = effectiveLength / (numPoints - 1) * (dot.speed > 0 ? 1 : -1);
                         
                         for (let i = 0; i < numPoints; i++) {
                             const progress = startProgress + step * i;
-                            // 确保不超出有效范围
+                            // Ensure they don't exceed the valid range
                             if (progress >= 0 && progress <= 1) {
                                 points.push(interpolatePosition(dot.coordinates, progress));
                             }
                         }
                         
-                        // 如果没有足够的点，不创建任何线段
+                        // If there are not enough points, do not create any lines
                         if (points.length < 2) {
                             return [];
                         }
                         
-                        // 创建线段的渐变效果
+                        // Create a gradient effect for the line
                         return createGradientSegments(points, dot.properties.size, dot.speed > 0);
                     }
                     
-                    // 常规情况：线段不靠近边界
+                    // Normal case: line not near the boundary
                     const startPos = interpolatePosition(dot.coordinates, startProgress);
                     
                     const endPos = interpolatePosition(dot.coordinates, endProgress);
                     
-                    // 生成中间点来创建渐变效果
-                    const numPoints = 5; // 增加点数以改善渐变效果
+                    // Generate intermediate points to create a gradient effect
+                    const numPoints = 5; // Increase the number of points to improve the gradient effect
                     const points = [];
                     
                     for (let i = 0; i < numPoints; i++) {
@@ -2432,18 +2428,18 @@
                         points.push(interpolatePosition(dot.coordinates, progress));
                     }
                     
-                    // 为每个中间线段创建更自然的渐变过渡
+                    // Create a more natural gradient transition for each intermediate line
                     const segmentFeatures = [];
                     for (let i = 0; i < points.length - 1; i++) {
                         const t = i / (points.length - 1);
                         
-                        // 使用指数函数创建更陡峭的头部渐变，尾部更快消失
-                        const opacity = 1.0 * Math.exp(-1.5 * t); // 减小衰减速率，从1.8降到1.5
+                        // Create a steeper head gradient with an exponential function, and the tail fades faster
+                        const opacity = 1.0 * Math.exp(-1.5 * t); // Decrease the decay rate, from 1.8 to 1.5
                         
                         segmentFeatures.push({
                             type: 'Feature',
                             properties: {
-                                size: dot.properties.size * (1 - Math.pow(t, 0.7) * 0.3), // 减小尾部变细的程度
+                                size: dot.properties.size * (1 - Math.pow(t, 0.7) * 0.3), // Decrease the degree of tail thinning
                                 opacity: opacity
                             },
                             geometry: {
@@ -2456,7 +2452,7 @@
                     return segmentFeatures;
                 }).flat();
                 
-                // 更新地图上的流动线段
+                // Update the flow line on the map
                 if (map.getSource('flow-dots')) {
                     map.getSource('flow-dots').setData({
                         type: 'FeatureCollection',
@@ -2464,25 +2460,25 @@
                     });
                 }
                 
-                // 继续动画循环
+                // Continue the animation loop
                 flowDotsAnimationId = requestAnimationFrame(animate);
             }
             
-            // 辅助函数：创建渐变线段
+            // Helper function: create a gradient line
             function createGradientSegments(points, baseSize, isOutwards) {
-                // 如果点不足，返回空数组
+                // If there are not enough points, return an empty array
                 if (points.length < 2) return [];
                 
                 const segmentFeatures = [];
                 for (let i = 0; i < points.length - 1; i++) {
                     const t = i / (points.length - 1); // 0到1之间的值
                     
-                    // 根据流向方向调整渐变效果：
-                    // Outwards: 头部明亮，尾部淡出
-                    // Inwards: 头部明亮，尾部淡出（使用相反的t值计算）
+                    // Adjust the gradient effect based on the flow direction:
+                    // Outwards: head bright, tail fades
+                    // Inwards: head bright, tail fades (use the opposite t value to calculate)
                     const gradientT = isOutwards ? t : (1 - t);
                     
-                    // 使用指数函数创建更陡峭的头部渐变，尾部更快消失
+                    // Create a steeper head gradient with an exponential function, and the tail fades faster
                     const opacity = 1.0 * Math.exp(-1.5 * gradientT);
                     
                     segmentFeatures.push({
@@ -2502,7 +2498,7 @@
             }
         }
 
-        // 计算线条总长度
+        // Calculate the total length of the line
         function getTotalDistance(coordinates) {
             let totalDistance = 0;
             for (let i = 1; i < coordinates.length; i++) {
@@ -2511,13 +2507,13 @@
             return totalDistance;
         }
 
-        // 插值计算点在路径上的位置
+        // Interpolate the position of the point on the path
         function interpolatePosition(coordinates, progress) {
             if (!coordinates || coordinates.length < 2) {
                 return [0, 0];
             }
             
-            // 计算路径的总长度
+            // Calculate the total length of the path
             let totalDistance = 0;
             const distances = [];
             
@@ -2529,14 +2525,14 @@
             
             if (totalDistance === 0) return coordinates[0];
             
-            // 目标距离
+            // Target distance
             const targetDistance = progress * totalDistance;
             
-            // 查找对应的线段
+            // Find the corresponding segment
             let currentDistance = 0;
             for (let i = 0; i < distances.length; i++) {
                 if (currentDistance + distances[i] >= targetDistance) {
-                    // 在此线段内插值
+                    // Interpolate within this segment
                     const segmentProgress = (targetDistance - currentDistance) / distances[i];
                     return [
                         coordinates[i][0] + (coordinates[i+1][0] - coordinates[i][0]) * segmentProgress,
@@ -2546,11 +2542,11 @@
                 currentDistance += distances[i];
             }
             
-            // 如果达到最后，返回最后一个点
+            // If it reaches the end, return the last point
             return coordinates[coordinates.length - 1];
         }
 
-        // 计算两点之间的距离
+        // Calculate the distance between two points
         function distance(point1, point2) {
             return Math.sqrt(
                 Math.pow(point2[0] - point1[0], 2) + 
@@ -2558,13 +2554,13 @@
             );
         }
 
-        // 更新年份和图表
+        // Update the year and charts
         function updateYear(newYear) {
             currentYear = newYear;
             document.getElementById('year').textContent = currentYear;
             updateVisualization();
             
-            // 更新图表的年份指示线
+            // Update the year line of the chart
             [inwardChart, outwardChart, overviewChart].forEach(chart => {
                 if (chart && chart.options && chart.options.plugins && chart.options.plugins.annotation) {
                     try {
@@ -2577,38 +2573,38 @@
                 }
             });
             
-            // 更新年份标记的激活状态
+            // Update the active state of the year markers
             updateYearMarkers(newYear);
             
-            // 根据当前视图步骤更新相应图表
+            // Update the corresponding chart based on the current view step
             if (currentViewStep === 1) {
-                // 年份变化会影响总览图表的年份线，但不需要重绘整个图表
+                // The year change will affect the year line of the overview chart, but does not need to redraw the entire chart
             } else if (currentViewStep === 2) {
-                // 更新港口比较图表
+                // Update the ports comparison chart
                 updatePortsCompareChart();
             } else if (currentViewStep === 3 && currentPort) {
-                // 单港口视图 - 年份变化已经由上面的updateVisualization()处理
+                // Single port view - the year change is handled by the above updateVisualization()
             }
             
-            // 如果有3D视图，也更新它
+            // If there is a 3D view, also update it
             update3DData();
         }
         
-        // 更新年份标记的激活状态
+        // Update the active state of the year markers
         function updateYearMarkers(year) {
-            // 移除所有年份标记的active类
+            // Remove the active class from all year markers
             document.querySelectorAll('.year-marker').forEach(marker => {
                 marker.classList.remove('active');
             });
             
-            // 为当前年份添加active类
+            // Add the active class to the current year
             const activeMarkerIndex = year - 2016;
             if (activeMarkerIndex >= 0 && activeMarkerIndex < 8) {
                 document.querySelectorAll('.year-marker')[activeMarkerIndex].classList.add('active');
             }
         }
 
-        // 添加年份自动播放功能
+        // Add year auto-play function
         function startYearPlay() {
             if (yearPlayInterval) return;
 
@@ -2632,15 +2628,15 @@
             }
         }
 
-        // 修改事件监听器设置
+        // Modify event listener settings
         function setupEventListeners() {
-            // 年份滑块事件
+            // Year slider event
             document.getElementById('slider').addEventListener('input', (e) => {
                 updateYear(2016 + parseInt(e.target.value));
                 stopAllAnimations();
             });
 
-            // 年份标记点击事件
+            // Year marker click event
             document.querySelectorAll('.year-marker').forEach((marker, index) => {
                 marker.addEventListener('click', () => {
                     const year = 2016 + index;
@@ -2650,7 +2646,7 @@
             });
             });
 
-            // 方向按钮事件
+            // Direction button event
             document.getElementById('inward-btn').addEventListener('click', function() {
                 if (currentDirection !== 'Inwards') {
                     currentDirection = 'Inwards';
@@ -2659,7 +2655,7 @@
                 updateVisualization();
                     update3DData();
                     
-                    // 更新相应视图的图表
+                    // Update the chart of the corresponding view
                     if (currentViewStep === 1) {
                         updateOverviewChart();
                     } else if (currentViewStep === 2) {
@@ -2678,7 +2674,7 @@
                     updateVisualization();
                     update3DData();
                     
-                    // 更新相应视图的图表
+                    // Update the chart of the corresponding view
                     if (currentViewStep === 1) {
                         updateOverviewChart();
                     } else if (currentViewStep === 2) {
@@ -2689,33 +2685,33 @@
                 }
             });
 
-            // 港口选择事件
+            // Port selection event
             document.getElementById('port-select').addEventListener('change', (e) => {
                 currentPort = e.target.value;
                 
-                // 停止所有动画和定时器
+                // Stop all animations and timers
                 stopAllAnimations();
                 
-                // 当选择了特定港口，切换到视图步骤3
+                // When a specific port is selected, switch to view step 3
                 if (currentPort) {
                     currentViewStep = 3;
                     updateViewStepIndicators();
                     
-                    // 更新按钮文本为"Back to Overview"
+                    // Update the button text to "Back to Overview"
                     document.getElementById('view-button-text').textContent = 'Back to Overview';
                 } else {
-                    // 如果没有选择港口，回到视图步骤1
+                    // If no port is selected, switch to view step 1
                     currentViewStep = 1;
                     updateViewStepIndicators();
                     
-                    // 更新按钮文本为"Switch to 3D"
+                    // Update the button text to "Switch to 3D"
                     document.getElementById('view-button-text').textContent = 'Switch to 3D';
                     
-                    // 确保图表面板收起
+                    // Ensure the chart container is collapsed
                     document.getElementById('chart-container').classList.remove('expanded');
                 }
                 
-                // 更新3D数据，以反映选择的港口
+                // Update 3D data to reflect the selected port
                 update3DData();
                 
                 if (currentPort) {
@@ -2734,22 +2730,22 @@
                         });
                     }
                     
-                    // 更新港口样式 - 调整为更醒目的高亮效果
+                    // Update port style - adjusted to a more prominent highlight effect
                     ['circle-color', 'circle-opacity'].forEach(prop => {
                         map.setPaintProperty('ports-circle', prop, [
                             'case',
                             ['==', ['get', 'port'], currentPort],
-                            prop === 'circle-color' ? '#ff9800' : 1,  // 更亮的橙色高亮
+                            prop === 'circle-color' ? '#ff9800' : 1,  // Lighter orange highlight
                             prop === 'circle-color' ? '#64b5f6' : 0.5
                         ]);
                     });
                     
                     
-                    // 更新港口光晕效果
+                    // Update the port halo effect
                     map.setPaintProperty('ports-halo', 'circle-color', [
                         'case',
                         ['==', ['get', 'port'], currentPort],
-                        'rgba(255, 152, 0, 0.4)',  // 橙色光晕
+                        'rgba(255, 152, 0, 0.4)',  // Orange halo
                         'rgba(100, 181, 246, 0.2)'
                     ]);
                     
@@ -2757,11 +2753,11 @@
                     map.setPaintProperty('ports-halo', 'circle-radius', [
                         'case',
                         ['==', ['get', 'port'], currentPort],
-                        16,  // 更大的光晕
+                        16,  // Larger halo
                         12
                     ]);
                     
-                    // 更新标签样式
+                    // Update label style
                     map.setPaintProperty('ports-label', 'text-opacity', [
                         'case',
                         ['==', ['get', 'port'], currentPort],
@@ -2772,22 +2768,22 @@
                     map.setPaintProperty('ports-label', 'text-color', [
                         'case',
                         ['==', ['get', 'port'], currentPort],
-                        '#ffffff',  // 高亮标签白色
+                        '#ffffff',  // Highlighted label white
                         'rgba(255, 255, 255, 0.7)'
                     ]);
                     
-                    // 自动展开图表面板
+                    // Automatically expand the chart container
                     const chartContainer = document.getElementById('chart-container');
                     chartContainer.classList.add('expanded');
                     
-                    // 更新图表
+                    // Update the chart
                     updateTrendChart(currentPort);
                     
                     if (currentDirection) {
                         startYearPlay();
                     }
                 } else {
-                    // 如果没有选择港口，回到视图步骤1
+                    // If no port is selected, switch to view step 1
                     currentViewStep = 1;
                     updateViewStepIndicators();
                     
@@ -2798,7 +2794,7 @@
                         essential: true
                     });
                     
-                    // 重置港口样式
+                    // Reset port style
                     map.setPaintProperty('ports-circle', 'circle-color', '#64b5f6');
                     map.setPaintProperty('ports-circle', 'circle-opacity', 1);
                     map.setPaintProperty('ports-halo', 'circle-color', 'rgba(100, 181, 246, 0.4)');
@@ -2812,47 +2808,47 @@
                 updateVisualization();
             });
             
-            // 新增：添加地图点击事件，点击港口时自动选择该港口
+            // Add: Add map click event, click port automatically select the port
             map.on('click', 'ports-circle', (e) => {
                 if (e.features && e.features.length > 0) {
                     const port = e.features[0].properties.port;
                     console.log('点击了港口:', port);
                     
-                    // 设置下拉框的值
+                    // Set the value of the dropdown box
                     const portSelect = document.getElementById('port-select');
                     portSelect.value = port;
                     
-                    // 手动触发change事件以应用选择
+                    // Manually trigger the change event to apply the selection
                     const event = new Event('change');
                     portSelect.dispatchEvent(event);
                 }
             });
             
-            // 添加视图步骤指示器点击事件 - 允许用户手动切换视图
+            // Add: Add view step indicator click event - allow users to manually switch views
             document.querySelectorAll('.view-step').forEach((step, index) => {
                 step.addEventListener('click', function() {
                     const previousStep = currentViewStep;
                     currentViewStep = index + 1;
                     
-                    // 停止所有动画和定时器
+                    // Stop all animations and timers
                     stopAllAnimations();
                     
                     updateViewStepIndicators();
                     
-                    // 根据视图步骤更新按钮文本
+                    // Update the button text based on the view step
                     if (currentViewStep === 1) {
                         document.getElementById('view-button-text').textContent = 'Switch to 3D';
                         
-                        // 如果从单港口视图切换到总览，清除港口选择
+                        // If switching from a single port view to overview, clear the port selection
                         if (previousStep === 3) {
                             currentPort = '';
                             document.getElementById('port-select').value = '';
                             updateVisualization();
             
-                            // 收起图表面板
+                            // Collapse the chart container
                             document.getElementById('chart-container').classList.remove('expanded');
                             
-                            // 重置港口样式
+                            // Reset port style
                             map.setPaintProperty('ports-circle', 'circle-color', '#64b5f6');
                             map.setPaintProperty('ports-circle', 'circle-opacity', 1);
                             map.setPaintProperty('ports-halo', 'circle-color', 'rgba(100, 181, 246, 0.4)');
@@ -2865,19 +2861,19 @@
                     } else if (currentViewStep === 2) {
                         document.getElementById('view-button-text').textContent = 'Compare Ports';
                         
-                        // 如果从任何其他视图切换到3D视图，但目前不在3D视图
+                        // If switching from any other view to 3D view, but currently not in 3D view
                         if (isGlobalView) {
-                            toggleView(); // 切换到3D视图
+                            toggleView(); // Switch to 3D view
                         }
                     } else if (currentViewStep === 3) {
                         document.getElementById('view-button-text').textContent = 'Back to Overview';
                     }
                     
-                    // 如果切换到单一港口视图但没有选择港口，默认选择第一个港口
+                    // If switching to a single port view but no port is selected, default to the first port
                     if (currentViewStep === 3 && !currentPort) {
                         const portSelect = document.getElementById('port-select');
                         if (portSelect.options.length > 1) {
-                            portSelect.selectedIndex = 1; // 选择第一个实际港口
+                            portSelect.selectedIndex = 1; // Select the first actual port
                             const event = new Event('change');
                             portSelect.dispatchEvent(event);
                         }
@@ -2886,7 +2882,7 @@
             });
         }
 
-        // 计算两点之间的中点
+        // Calculate the midpoint between two points
         function getMidPoint(point1, point2) {
             return [
                 (point1[0] + point2[0]) / 2,
@@ -2894,18 +2890,18 @@
             ];
         }
 
-        // 创建弧线路径
+        // Create a curved path
         function createCurvedPath(start, end, mid) {
             const curvePoints = [];
-            const steps = 150; // 增加平滑度，从100提高到150
+            const steps = 150; // Increase smoothness, from 100 to 150
             
-            // 计算控制点（向上偏移）
+            // Calculate the control point (upward offset)
             const controlPoint = [
                 mid[0],
                 mid[1] + calculateControlPointOffset(start, end)
             ];
 
-            // 使用二次贝塞尔曲线生成路径点
+            // Use quadratic Bezier curve to generate path points
             for (let i = 0; i <= steps; i++) {
                 const t = i / steps;
                 const point = quadraticBezier(start, controlPoint, end, t);
@@ -2915,16 +2911,16 @@
             return curvePoints;
         }
 
-        // 计算控制点偏移量
+        // Calculate the control point offset
         function calculateControlPointOffset(start, end) {
             const distance = Math.sqrt(
                 Math.pow(end[0] - start[0], 2) + 
                 Math.pow(end[1] - start[1], 2)
             );
-            return distance * 0.35; // 增加弧度，从0.3提高到0.35
+            return distance * 0.35; // Increase the arc, from 0.3 to 0.35
         }
 
-        // 二次贝塞尔曲线插值
+        // Quadratic Bezier curve interpolation
         function quadraticBezier(p0, p1, p2, t) {
             const x = Math.pow(1 - t, 2) * p0[0] + 
                      2 * (1 - t) * t * p1[0] + 
@@ -2935,7 +2931,7 @@
             return [x, y];
         }
 
-        // 计算适当的缩放级别和中心点
+        // Calculate the appropriate zoom level and center point
         function calculateViewport(features) {
             if (!features || features.length === 0) return null;
 
@@ -2944,7 +2940,7 @@
             let minLat = Infinity;
             let maxLat = -Infinity;
 
-            // 遍历所有坐标点找到边界
+            // Iterate through all coordinate points to find the boundaries
             features.forEach(feature => {
                 feature.geometry.coordinates.forEach(coord => {
                     minLng = Math.min(minLng, coord[0]);
@@ -2954,18 +2950,18 @@
                 });
             });
 
-            // 计算中心点
+            // Calculate the center point
             const center = [
                 (minLng + maxLng) / 2,
                 (minLat + maxLat) / 2
             ];
 
-            // 计算适当的缩放级别
+            // Calculate the appropriate zoom level
             const lngDiff = maxLng - minLng;
             const latDiff = maxLat - minLat;
             const maxDiff = Math.max(lngDiff, latDiff);
             
-            // 根据经纬度差值确定缩放级别
+            // Determine the zoom level based on the latitude and longitude difference
             let zoom = 2;
             if (maxDiff < 50) zoom = 3;
             if (maxDiff < 20) zoom = 4;
@@ -2975,23 +2971,23 @@
             return { center, zoom };
         }
 
-        // 更新趋势图表
+        // Update the trend chart
         function updateTrendChart(port) {
             const chartContainer = document.getElementById('chart-container');
             
             if (!port) {
-                // 当没有选择港口时，自动折叠图表面板
+                // When no port is selected, automatically collapse the chart container
                 chartContainer.classList.remove('expanded');
                 return;
             }
 
-            // 如果图表面板处于展开状态，则更新图表
-            // 如果处于折叠状态，不会立即更新，但会在用户展开时更新
+            // If the chart container is in the expanded state, update the chart
+            // If it is in the collapsed state, it will not be updated immediately, but will be updated when the user expands it
             if (chartContainer.classList.contains('expanded')) {
                 const years = Array.from({length: 8}, (_, i) => 2016 + i);
                 const regions = [...new Set(portData.map(d => d.destination_region))];
                 
-                // 通用图表配置
+                // General chart configuration
                 const chartConfig = {
                     type: 'line',
                     options: {
@@ -3002,7 +2998,7 @@
                                 position: 'right',
                                 labels: { 
                                     boxWidth: 20,
-                                    color: '#e0e0e0' // 确保图例文字在暗色背景上可见
+                                    color: '#e0e0e0' // Ensure the legend text is visible on the dark background
                                 }
                             },
                             annotation: {
@@ -3043,29 +3039,29 @@
                                 title: {
                                     display: true,
                                     text: 'Thousand Tonnes',
-                                    color: '#e0e0e0' // 暗色背景上的标题颜色
+                                    color: '#e0e0e0' // The title color on the dark background
                                 },
                                 ticks: {
                                     callback: function(value) {
                                         return value.toFixed(2);
                                     },
-                                    color: '#b0b0b0' // 暗色背景上的刻度颜色
+                                    color: '#b0b0b0' // The tick color on the dark background
                                 },
                                 grid: {
-                                    color: 'rgba(255, 255, 255, 0.1)' // 暗色背景上的网格线颜色
+                                    color: 'rgba(255, 255, 255, 0.1)' // The grid line color on the dark background
                                 }
                             },
                             x: {
                                 title: {
                                     display: true,
                                     text: 'Year',
-                                    color: '#e0e0e0' // 暗色背景上的标题颜色
+                                    color: '#e0e0e0' // The title color on the dark background
                                 },
                                 ticks: {
                                     maxRotation: 0,
                                     autoSkip: false,
                                     padding: 10,
-                                    color: '#b0b0b0' // 暗色背景上的刻度颜色
+                                    color: '#b0b0b0' // The tick color on the dark background
                                 },
                                 grid: {
                                     display: true,
@@ -3073,14 +3069,14 @@
                                     drawOnChartArea: true,
                                     drawTicks: true,
                                     tickLength: 10,
-                                    color: 'rgba(255, 255, 255, 0.1)' // 暗色背景上的网格线颜色
+                                    color: 'rgba(255, 255, 255, 0.1)' // The grid line color on the dark background
                                 }
                             }
                         }
                     }
                 };
 
-                // 准备数据函数
+                // Prepare data function
                 function prepareData(direction) {
                     return regions.map(region => ({
                         region: region,
@@ -3096,11 +3092,11 @@
                     }));
                 }
 
-                // 销毁旧图表
+                // Destroy old charts
                 if (inwardChart) inwardChart.destroy();
                 if (outwardChart) outwardChart.destroy();
 
-                // 创建进口图表
+                // Create the import chart
                 const inwardData = prepareData('Inwards');
                 inwardChart = new Chart(document.getElementById('inward-chart').getContext('2d'), {
                     ...chartConfig,
@@ -3124,13 +3120,13 @@
                                 display: true,
                                 text: `Inward Freight Flow for ${port}`,
                                 font: { size: 16 },
-                                color: '#ffffff' // 暗色背景上的标题颜色
+                                color: '#ffffff' // The title color on the dark background
                             }
                         }
                     }
                 });
 
-                // 创建出口图表
+                // Create the export chart
                 const outwardData = prepareData('Outwards');
                 outwardChart = new Chart(document.getElementById('outward-chart').getContext('2d'), {
                     ...chartConfig,
@@ -3154,7 +3150,7 @@
                                 display: true,
                                 text: `Outward Freight Flow for ${port}`,
                                 font: { size: 16 },
-                                color: '#ffffff' // 暗色背景上的标题颜色
+                                color: '#ffffff' // The title color on the dark background
                             }
                         }
                     }
@@ -3162,21 +3158,21 @@
             }
         }
 
-        // 添加鼠标悬浮事件处理函数
+        // Add mouse hover event processing function
         function setupHoverEvents() {
             const popup = document.getElementById('popup-chart');
             
             map.on('mousemove', 'ports-circle', (e) => {
                 const port = e.features[0].properties.port;
                 if (port === currentPort) {
-                    // 更新悬浮卡片位置
+                    // Update the hover card position
                     popup.style.left = (e.point.x + 10) + 'px';
                     popup.style.top = (e.point.y + 10) + 'px';
                     
-                    // 显示悬浮卡片
+                    // Display the hover card
                     popup.style.display = 'block';
                     
-                    // 更新直方图
+                    // Update the histogram
                     updateHoverChart(port);
                 }
             });
@@ -3189,14 +3185,14 @@
                 }
             });
             
-            // 为目的地圆圈添加鼠标悬停事件
+            // Add mouse hover event to the destination circle
             const destinationPopup = new mapboxgl.Popup({
                 closeButton: false,
                 closeOnClick: false,
                 className: 'destination-popup'
             });
             
-            // 添加鼠标悬停事件到发光层 - 面积最大，最容易触发
+            // Add mouse hover event to the glow layer - the largest area, the easiest to trigger
             map.on('mouseenter', 'destination-glow', (e) => {
                 map.getCanvas().style.cursor = 'pointer';
                 
@@ -3204,7 +3200,7 @@
                 const name = e.features[0].properties.name;
                 const tonnage = parseFloat(e.features[0].properties.tonnage).toLocaleString();
                 
-                // 创建弹出框内容
+                // Create the popup content
                 const popupContent = `
                     <div class="destination-info">
                         <h4>${name}</h4>
@@ -3215,7 +3211,7 @@
                     </div>
                 `;
                 
-                // 显示弹出框
+                // Display the popup
                 destinationPopup
                     .setLngLat(coordinates)
                     .setHTML(popupContent)
@@ -3234,7 +3230,7 @@
                 const name = e.features[0].properties.name;
                 const tonnage = parseFloat(e.features[0].properties.tonnage).toLocaleString();
                 
-                // 创建弹出框内容
+                // Create the popup content
                 const popupContent = `
                     <div class="destination-info">
                         <h4>${name}</h4>
@@ -3245,7 +3241,7 @@
                     </div>
                 `;
                 
-                // 显示弹出框
+                // Display the popup
                 destinationPopup
                     .setLngLat(coordinates)
                     .setHTML(popupContent)
@@ -3257,7 +3253,7 @@
                 destinationPopup.remove();
             });
             
-            // 也应用到菱形图标上
+            // Also apply to the diamond icon
             map.on('mouseenter', 'destination-diamonds', (e) => {
                 map.getCanvas().style.cursor = 'pointer';
                 
@@ -3265,7 +3261,7 @@
                 const name = e.features[0].properties.name;
                 const tonnage = parseFloat(e.features[0].properties.tonnage).toLocaleString();
                 
-                // 创建弹出框内容
+                // Create the popup content
                 const popupContent = `
                     <div class="destination-info">
                         <h4>${name}</h4>
@@ -3276,7 +3272,7 @@
                     </div>
                 `;
                 
-                // 显示弹出框
+                // Display the popup
                 destinationPopup
                     .setLngLat(coordinates)
                     .setHTML(popupContent)
@@ -3289,9 +3285,9 @@
             });
         }
 
-        // 更新悬浮卡片中的内容
+        // Update the content of the hover card
         function updateHoverChart(port) {
-            // 获取当前年份的数据
+            // Get the data of the current year
             const inwardData = flowData.filter(d => 
                 parseInt(d.year) === currentYear && 
                 d.direction === 'Inwards' &&
@@ -3304,51 +3300,51 @@
                 d.port === port
             );
 
-            // 计算总进出口量
+            // Calculate the total import and export volume
             const totalInward = inwardData.reduce((sum, d) => sum + parseFloat(d.cargo_tonnage), 0);
             const totalOutward = outwardData.reduce((sum, d) => sum + parseFloat(d.cargo_tonnage), 0);
 
-            // 计算占比
+            // Calculate the proportion
             const inwardPercentage = (totalInward / yearlyTotals[currentYear].Inwards * 100).toFixed(2);
             const outwardPercentage = (totalOutward / yearlyTotals[currentYear].Outwards * 100).toFixed(2);
 
-            // 更新标题
+            // Update the title
             document.querySelector('#popup-chart h4').textContent = `${port} - ${currentYear}`;
             
-            // 更新百分比
+            // Update the percentage
             const tradeFlows = document.querySelectorAll('.trade-flow');
             tradeFlows[0].querySelector('.flow-percentage').textContent = `${outwardPercentage}%`;
             tradeFlows[1].querySelector('.flow-percentage').textContent = `${inwardPercentage}%`;
 
-            // 显示悬浮卡片
+            // Display the hover card
             document.getElementById('popup-chart').style.display = 'block';
         }
 
-        // 开始加载数据
+        // Start loading data
         loadData();
 
-        // 添加目的地国家名称标签 - 改进文本可见性
+        // Add the destination country name label - improve text visibility
         map.addLayer({
             id: 'destination-labels',
             type: 'symbol',
             source: 'destinations',
             layout: {
                 'text-field': ['get', 'name'],
-                'text-font': ['Open Sans Bold'],  // 使用粗体
-                'text-size': 16,  // 保持大小不变
-                'text-offset': [0, 2.8], // 增加偏移，从2.2到2.8，与更大的图标保持适当距离
+                'text-font': ['Open Sans Bold'],  // Use bold
+                'text-size': 16,  // Keep the size unchanged
+                'text-offset': [0, 2.8], // Increase the offset, from 2.2 to 2.8, to keep an appropriate distance from the larger icon
                 'text-anchor': 'top',
-                'text-allow-overlap': true,  // 允许文本重叠，确保显示
-                'text-ignore-placement': true  // 忽略位置限制
+                'text-allow-overlap': true,  // Allow text overlap, ensure display
+                'text-ignore-placement': true  // Ignore position limit
             },
             paint: {
                 'text-color': '#ffffff',  
-                'text-halo-color': 'rgba(0, 0, 0, 0.9)',  // 加深光晕颜色
-                'text-halo-width': 3.5  // 增加光晕宽度，从3到3.5
+                'text-halo-color': 'rgba(0, 0, 0, 0.9)',  // Darken the halo color
+                'text-halo-width': 3.5  // Increase the halo width, from 3 to 3.5
             }
         });
 
-        // 创建弹出框用于显示港口信息
+        // Create a popup for displaying port information
         const port3dPopup = new mapboxgl.Popup({
             closeButton: true,
             closeOnClick: true,
@@ -3356,17 +3352,17 @@
             className: 'port-3d-popup'
         });
 
-        // 添加3D柱子的鼠标悬停事件
+        // Add the mouse hover event for the 3D column
         map.on('mouseenter', 'ports-3d', function(e) {
             map.getCanvas().style.cursor = 'pointer';
         });
 
-        // 鼠标离开3D柱子时恢复默认鼠标样式
+        // When the mouse leaves the 3D column, restore the default mouse style
         map.on('mouseleave', 'ports-3d', function(e) {
             map.getCanvas().style.cursor = '';
         });
 
-        // 更新视图步骤指示器
+        // Update the view step indicators
         function updateViewStepIndicators() {
             document.querySelectorAll('.view-step').forEach((step, index) => {
                 if (index + 1 === currentViewStep) {
@@ -3376,28 +3372,28 @@
                 }
             });
             
-            // 根据不同视图步骤更新UI元素
+            // Update the UI elements based on different view steps
             const portControl = document.getElementById('port-control');
             const chartContainer = document.getElementById('chart-container');
             
             if (currentViewStep === 1) {
-                // 总览视图 - 隐藏港口选择
+                // Overview view - hide the port selection
                 portControl.style.display = 'none';
-                // 收起图表面板
+                // Collapse the chart panel
                 chartContainer.classList.remove('expanded');
-                // 更新总览图表
+                // Update the overview chart
                 updateOverviewChart();
             } else if (currentViewStep === 2) {
-                // 港口比较视图 - 隐藏港口选择
+                // Port comparison view - hide the port selection
                 portControl.style.display = 'none';
-                // 收起图表面板
+                // Collapse the chart panel
                 chartContainer.classList.remove('expanded');
-                // 更新港口比较图表
+                // Update the port comparison chart
                 updatePortsCompareChart();
             } else if (currentViewStep === 3) {
-                // 单一港口视图 - 显示港口选择
+                // Single port view - display the port selection
                 portControl.style.display = 'block';
-                // 单一港口视图下默认展开图表（只有在当前有选择的港口时）
+                // The chart panel is expanded by default in the single port view (only when the current port is selected)
                 if (currentPort) {
                     chartContainer.classList.add('expanded');
                     updateTrendChart(currentPort);
@@ -3405,19 +3401,19 @@
             }
         }
         
-        // 创建总览图表 - 显示UK整体进出口货运量随时间变化
+        // Create the overview chart - display the UK's overall import and export cargo volume over time
         function updateOverviewChart() {
-            // 销毁之前的图表实例
+            // Destroy the previous chart instance
             if (overviewChart) {
                 overviewChart.destroy();
             }
             
-            // 准备数据 - 使用全国年度总量数据
+            // Prepare data - use the national annual total data
             const years = Object.keys(yearlyTotals).map(Number);
-            const inwardData = years.map(year => yearlyTotals[year].Inwards / 1000); // 转为千吨单位
+            const inwardData = years.map(year => yearlyTotals[year].Inwards / 1000); // Convert to thousand tonnes
             const outwardData = years.map(year => yearlyTotals[year].Outwards / 1000);
             
-            // 创建图表
+            // Create the chart
             const ctx = document.getElementById('overview-chart').getContext('2d');
             overviewChart = new Chart(ctx, {
                 type: 'line',
@@ -3512,21 +3508,21 @@
             });
         }
         
-        // 创建港口比较图表 - 显示top5港口的货运量比较
+        // Create the port comparison chart - display the comparison of the top 5 ports' cargo volume
         function updatePortsCompareChart() {
-            // 销毁之前的图表实例
+            // Destroy the previous chart instance
             if (overviewChart) {
                 overviewChart.destroy();
             }
             
-            // 仅当有数据时继续
+            // Only continue if there is data
             if (!portData) return;
             
-            // 准备数据 - 为当前年份和方向获取前5个港口
+            // Prepare data - get the top 5 ports for the current year and direction
             const topPorts = getTopPortsByTonnage(5, currentYear, currentDirection);
             const years = Array.from({length: 8}, (_, i) => 2016 + i);
             
-            // 为每个港口准备随时间变化的数据
+            // Prepare data - prepare the data for each port over time
             const datasets = topPorts.map((port, index) => {
                 const portName = port.port;
                 const colorIndex = index % 10; // 循环使用颜色
@@ -3535,14 +3531,14 @@
                     '#46BDC6', '#9C27B0', '#2196F3', '#00BCD4', '#795548'
                 ];
                 
-                // 获取该港口所有年份的数据
+                // Get the data for all years for this port
                 const data = years.map(year => {
                     const match = portData.find(d => 
                         d.port === portName && 
                         parseInt(d.year) === year && 
                         d.direction === currentDirection
                     );
-                    return match ? parseFloat(match.cargo_tonnage) / 1000 : 0; // 转为千吨单位
+                    return match ? parseFloat(match.cargo_tonnage) / 1000 : 0; // Convert to thousand tonnes
                 });
                 
                 return {
@@ -3555,7 +3551,7 @@
                 };
             });
             
-            // 创建图表
+            // Create the chart
             const ctx = document.getElementById('overview-chart').getContext('2d');
             overviewChart = new Chart(ctx, {
                 type: 'line',
@@ -3635,18 +3631,18 @@
             });
         }
         
-        // 获取指定年份和方向下货运量最大的港口
+        // Get the ports with the highest cargo volume for the specified year and direction
         function getTopPortsByTonnage(count, year, direction) {
-            // 仅当有数据时继续
+            // Only continue if there is data
             if (!portData) return [];
             
-            // 筛选指定年份和方向的数据
+            // Filter the data for the specified year and direction
             const filteredData = portData.filter(d => 
                 parseInt(d.year) === year && 
                 d.direction === direction
             );
             
-            // 按港口分组并合计吨位
+            // Group by port and sum the tonnage
             const portTotals = {};
             filteredData.forEach(d => {
                 const port = d.port;
@@ -3656,32 +3652,32 @@
                 portTotals[port] += parseFloat(d.cargo_tonnage);
             });
             
-            // 转为数组并排序
+            // Convert to an array and sort
             const sortedPorts = Object.keys(portTotals).map(port => ({
                 port: port,
                 tonnage: portTotals[port]
             })).sort((a, b) => b.tonnage - a.tonnage);
             
-            // 返回前N个港口
+            // Return the top N ports
             return sortedPorts.slice(0, count);
         }
 
-        // 在页面卸载时清理资源
+        // Clean up resources when the page is unloaded
         window.addEventListener('beforeunload', function() {
             stopAllAnimations();
             
-            // 清理其他资源
+            // Clean up other resources
             if (inwardChart) inwardChart.destroy();
             if (outwardChart) outwardChart.destroy();
             if (overviewChart) overviewChart.destroy();
             if (hoverChart) hoverChart.destroy();
         });
         
-        // 添加返回功能
+        // Add the return function
         function goBack() {
-            // 设置localStorage标记，指示需要点击Transport Modes导航按钮
+            // Set the localStorage marker to indicate that the Transport Modes navigation button needs to be clicked
             localStorage.setItem('autoClickTransport', 'true');
-            // 跳转到主页
+            // Redirect to the homepage
             window.location.href = '../../../index.html';
             
         }
