@@ -46,5 +46,6 @@ Vite provides a fast and modern development experience, allowing us to use a com
 
 1. Open **VS Code** and create a **New Terminal** at the top.  
 2. Make sure the current path is the project folder.  
-3. To start the development server, run: `npm run dev`
-4. To stop the server, press: `ctrl+c`
+3. To install dependencies, run: `npm install`
+4. To start the development server, run: `npm run dev`
+5. To stop the server, press: `ctrl+c`
