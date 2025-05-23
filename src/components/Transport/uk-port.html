@@ -563,7 +563,24 @@
             z-index: 100;
         }
 
-        .next-button {            background: rgba(42, 42, 42, 0.95);             color: #ffffff;            border: 2px solid rgba(255, 255, 255, 0.4);             border-radius: 10px; /* 增加圆角 */            padding: 10px 20px; /* 缩小内边距，适合放在顶部 */            cursor: pointer;            font-size: 15px; /* 适当减小字体 */            font-weight: 700; /* 保持字体粗细 */            display: flex;            align-items: center;            justify-content: center;            transition: all 0.25s ease;            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);             width: 210px;         letter-spacing: 0.5px;          margin: 15px 0;        }
+        .next-button {            
+            background: rgba(42, 42, 42, 0.95);             
+            color: #ffffff;            
+            border: 2px solid rgba(255, 255, 255, 0.4);             
+            border-radius: 10px;             
+            padding: 10px 20px;          
+            cursor: pointer;            
+            font-size: 15px; /* decrease the font size */            
+            font-weight: 700; /* keep the font weight */            
+            display: flex;            
+            align-items: center;            
+            justify-content: center;           
+            transition: all 0.25s ease;            
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);             
+            width: 210px;         
+            letter-spacing: 0.5px;          
+            margin: 15px 0;        
+        }
 
         .next-button:hover {
             background: rgba(33, 150, 243, 0.8); /* When hovering, change to blue */
@@ -587,7 +604,7 @@
         
         #back-button .next-button-icon {
             margin-left: 0;
-            margin-right: 10px; /* Adjust the arrow position,使其在文字左侧 */
+            margin-right: 10px; /* Adjust the arrow position,make it on the left of the text */
         }
 
         /* Add the loading indicator style */
@@ -1272,7 +1289,7 @@
             
             // Create the six vertices of the hexagon
             for (let i = 0; i < 6; i++) {
-                const angle = (Math.PI / 3) * i; // 60度角 = π/3 弧度
+                const angle = (Math.PI / 3) * i;
                 const x = centerX + size * Math.cos(angle);
                 const y = centerY + size * Math.sin(angle);
                 vertices.push([x, y]);
@@ -2253,13 +2270,13 @@
                     } else if (region.includes('Australasia')) {
                         countryName = 'Australia';
                     } else {
-                        countryName = region.split(' ')[0]; // 取第一个词作为国家名
+                        countryName = region.split(' ')[0]; // Take the first word as the country name
                     }
                 }
                 
                 const coords = [parseFloat(d.country_lon), parseFloat(d.country_lat)];
                 const tonnage = parseFloat(d.cargo_tonnage);
-                const region = d.destination_region; // 用于保留颜色分类
+                const region = d.destination_region; // For color classification
                 
                 // Use coordinates as the key, avoid duplicate due to different names for the same country
                 const coordKey = `${coords[0].toFixed(1)},${coords[1].toFixed(1)}`;
@@ -2306,7 +2323,6 @@
             // Initialize flow points
             flowDots = [];
             
-            // Create 2-3 flow points for each line, make the animation effect more丰富
             flowFeatures.forEach((feature) => {
                 const weight = feature.properties.weight;
                 const coords = feature.geometry.coordinates;
@@ -2471,7 +2487,7 @@
                 
                 const segmentFeatures = [];
                 for (let i = 0; i < points.length - 1; i++) {
-                    const t = i / (points.length - 1); // 0到1之间的值
+                    const t = i / (points.length - 1); // The value between 0 and 1
                     
                     // Adjust the gradient effect based on the flow direction:
                     // Outwards: head bright, tail fades
@@ -2812,7 +2828,7 @@
             map.on('click', 'ports-circle', (e) => {
                 if (e.features && e.features.length > 0) {
                     const port = e.features[0].properties.port;
-                    console.log('点击了港口:', port);
+                    console.log('Click the port:', port);
                     
                     // Set the value of the dropdown box
                     const portSelect = document.getElementById('port-select');
@@ -3525,7 +3541,7 @@
             // Prepare data - prepare the data for each port over time
             const datasets = topPorts.map((port, index) => {
                 const portName = port.port;
-                const colorIndex = index % 10; // 循环使用颜色
+                const colorIndex = index % 10;  // Cycle through colors
                 const colors = [
                     '#4285F4', '#EA4335', '#FBBC05', '#34A853', '#FF6D01', 
                     '#46BDC6', '#9C27B0', '#2196F3', '#00BCD4', '#795548'
@@ -3545,7 +3561,7 @@
                     label: portName,
                     data: data,
                     borderColor: colors[colorIndex],
-                    backgroundColor: `${colors[colorIndex]}33`, // 33 = 20% 透明度
+                    backgroundColor: `${colors[colorIndex]}33`, // 33 = 20% transparency
                     borderWidth: 2,
                     tension: 0.4
                 };
