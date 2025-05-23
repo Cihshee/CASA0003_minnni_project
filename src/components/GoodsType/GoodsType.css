@@ -177,7 +177,6 @@
     }
 }
 
-/* 图标布局 */
 .goods-type-icons-row {
     display: none !important;
 }
@@ -197,7 +196,6 @@
     min-width: 100px;
 }
 
-/* 图标基础样式 */
 .goods-type-icon-btn {
     background-color: #1e2832 !important;
     border: 2px solid rgba(255, 255, 255, 0.2) !important;
@@ -221,7 +219,6 @@
     transition: all 0.3s;
 }
 
-/* 当前选中的图标样式 - 使用更高优先级 */
 .goods-type-icon-btn[data-selected="true"] {
     background-color: rgb(33, 150, 243) !important;
     border-color: rgb(33, 150, 243) !important;
@@ -233,7 +230,6 @@
     opacity: 1;
 }
 
-/* 悬停效果 - 只对未选中的图标应用 */
 .goods-type-icon-btn:not([data-selected="true"]):hover {
     background-color: rgba(33, 150, 243, 0.2) !important;
     border-color: rgba(33, 150, 243, 0.5) !important;
@@ -280,13 +276,11 @@
     stroke-width: 2px !important;
 }
 
-/* 确保地图容器有正确的z-index */
 .goods-type-detail-map {
     z-index: 1;
     position: relative;
 }
 
-/* 确保地图交互层在正确的位置 */
 .mapboxgl-canvas-container {
     z-index: 2;
 }
@@ -340,7 +334,6 @@
     margin-right: 0.2rem;
 }
 
-/* 优化地图容器样式 */
 .goods-type-detail-map {
     position: relative;
     overflow: hidden;
@@ -405,7 +398,6 @@
     position: relative;
 }
 
-/* 新版详情区flex布局 */
 .goods-detail-main-flex {
     margin-left: 0;
     display: flex;
@@ -503,7 +495,6 @@
     height: 180px !important;
 }
 
-/* 优化控件样式 */
 .goods-type-detail-controls {
     background: #232323;
     padding: 1rem 1.2rem;
@@ -548,7 +539,6 @@
     font-weight: 500;
 }
 
-/* 年份控制样式 */
 .year-control {
     flex: 1;
     display: flex;
@@ -651,7 +641,6 @@
     font-weight: 500;
 }
 
-/* 调整主内容区域边距 */
 .goods-detail-main-flex {
     margin-left: 0;
 }
@@ -715,7 +704,6 @@
     }
 }
 
-/* 时间轴样式 */
 .timeline-slider-container {
     padding: 2rem;
     position: relative;
@@ -792,7 +780,6 @@
     font-weight: bold;
 }
 
-/* 国家趋势图样式 */
 #country-trend-container {
     position: relative;
     height: 200px;
@@ -819,7 +806,6 @@
     height: 100%;
 }
 
-/* 响应式调整 */
 @media (max-width: 900px) {
     .timeline-slider-container {
         padding: 1rem;
@@ -836,7 +822,6 @@
     }
 }
 
-/* 优化图表容器 */
 #goods-countries-chart-container {
     position: relative;
     height: 240px;
@@ -850,7 +835,6 @@
     opacity: 0.9;
 }
 
-/* 添加图表加载和错误状态样式 */
 .chart-loading,
 .chart-error {
     display: flex;
@@ -868,7 +852,6 @@
     color: #dc3545;
 }
 
-/* 底部时间轴图表 */
 .goods-timeline-chart {
     width: 100%;
     height: 200px;
@@ -895,7 +878,6 @@
     background: transparent;
 }
 
-/* 响应式调整 */
 @media (max-width: 1200px) {
     .goods-detail-top {
         flex-direction: column;
@@ -912,7 +894,6 @@
     }
 }
 
-/* 地图弹出框样式 */
 .map-popup {
     background: rgba(0, 0, 0, 0.85) !important;
     border-radius: 4px !important;
@@ -952,7 +933,6 @@
     letter-spacing: 0.1px;
 }
 
-/* 调整图表容器间距 */
 .goods-type-top-countries {
     margin-top: 0;
     background: rgba(255, 255, 255, 0.02);
@@ -981,7 +961,6 @@
     }
 }
 
-/* 图标动画 */
 .goods-type-icons-row {
     position: sticky;
     top: 180px;
@@ -1012,7 +991,6 @@
     }
 }
 
-/* 趋势图动画 */
 .trend-chart-animation {
     animation: chartGrow 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -1096,12 +1074,10 @@
     }
 }
 
-/* 添加年份切换动画 */
 .year-dot, .year-progress {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 优化图表标题样式 */
 .goods-timeline-chart h3 {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.9);

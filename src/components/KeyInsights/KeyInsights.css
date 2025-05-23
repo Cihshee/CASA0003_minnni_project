@@ -105,7 +105,6 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
-/* 发光边框效果提高透明度 */
 .insight-box::before {
   content: '';
   position: absolute;
@@ -199,7 +198,6 @@
   transition: all 0.3s ease;
 }
 
-/* 添加强调文字样式 */
 .text-highlight {
   font-weight: 600;
   color: rgba(255, 255, 255, 0.95);
@@ -225,7 +223,6 @@
   transform: translateY(-2px);
 }
 
-/* 线条动画容器样式 */
 .line-container {
   width: 100%;
   height: 260px;
@@ -255,7 +252,6 @@
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 添加浮动粒子效果 */
 .insight-box::after {
   content: '';
   position: absolute;
@@ -297,7 +293,6 @@
   text-align: center;
 }
 
-/* 瀑布流容器样式 */
 .waterfall-container {
   display: flex;
   width: 98%;
@@ -372,19 +367,16 @@
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 左右图片默认灰色 */
 .waterfall-left .waterfall-image, 
 .waterfall-right .waterfall-image {
   filter: grayscale(0.9) brightness(0.7);
 }
 
-/* 中间图片默认高亮显示 */
 .waterfall-center .waterfall-image {
   filter: grayscale(0) brightness(1);
   transform: scale(1.05);
 }
 
-/* 鼠标悬停时取消灰色效果 */
 .waterfall-item:hover .waterfall-image {
   transform: scale(1.1);
   filter: brightness(1.1) contrast(1.1);
@@ -407,7 +399,6 @@
   z-index: 3;
 }
 
-/* 中间Brexit图片的内容默认显示 */
 .waterfall-center .waterfall-content {
   transform: translateY(0);
 }
@@ -419,7 +410,6 @@
   opacity: 1;
 }
 
-/* 当其他图片hover时，隐藏中间内容 */
 .waterfall-left:hover ~ .waterfall-center .waterfall-content,
 .waterfall-right:hover ~ .waterfall-center .waterfall-content {
   transform: translateY(100%);
@@ -435,7 +425,6 @@
   opacity: 0;
 }
 
-/* 其他图片的内容hover效果 */
 .waterfall-left:hover .waterfall-content,
 .waterfall-right:hover .waterfall-content {
   transform: translateY(0);
@@ -451,7 +440,6 @@
   opacity: 1;
 }
 
-/* 优化过渡效果 */
 .waterfall-content h4 {
   font-size: 1.4rem;
   margin-bottom: 12px;
@@ -474,7 +462,6 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* 添加点击波纹效果 */
 .waterfall-item.ripple {
   position: relative;
   overflow: hidden;
@@ -499,7 +486,6 @@
   height: 300%;
 }
 
-/* 响应式布局 - 仅在非常小的屏幕上转为列布局 */
 @media (max-width: 767px) {
   .insights-row {
     flex-direction: column;
@@ -518,11 +504,10 @@
   .waterfall-right {
     width: 100%;
     margin-bottom: 20px;
-    height: 400px; /* 移动设备上调整高度 */
+    height: 400px; 
   }
 }
 
-/* 调整列表样式 */
 .waterfall-content ul {
   list-style-type: none;
   padding: 0;
@@ -545,7 +530,6 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* 添加浮动粒子效果 */
 .key-insights-section::before {
   content: '';
   position: absolute;
@@ -569,7 +553,6 @@
   }
 }
 
-/* 响应式调整 */
 @media (max-width: 768px) {
   .key-insights-section {
     padding: 15px 15px 40px;

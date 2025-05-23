@@ -165,7 +165,6 @@
     transition: opacity 0.5s ease;
 }
 
-/* 时间轴容器 */
 .timeline-container {
     position: absolute;
     left: -70px;
@@ -175,7 +174,6 @@
     height: 100%;
 }
 
-/* 时间轴垂直线 */
 .timeline-line {
     position: absolute;
     left: 25px;
@@ -186,7 +184,6 @@
     z-index: 0;
 }
 
-/* 时间轴圆点 */
 .timeline-dot {
     position: absolute;
     left: 25px;
@@ -199,7 +196,6 @@
     z-index: 3;
 }
 
-/* 时间轴水平线 */
 .timeline-connector {
     position: absolute;
     left: 25px;
@@ -209,13 +205,11 @@
     background-color: rgba(255,255,255,0.4);
     z-index: 2;
 }
-/* 步骤容器 */
 .step-container {
     position: relative;
     padding-left: 30px;
 }
 
-/* 日期标题样式 */
 .step-date {
     font-size: 20px;
     font-weight: bold;
@@ -225,7 +219,6 @@
     left: 0;
 }
 
-/* 只针对CountryScale的时间轴容器 */
 .country-chart-section .scroll-text .timeline-container {
     position: absolute;
     left: -70px;
@@ -235,7 +228,6 @@
     height: 100%;
 }
 
-/* 只针对CountryScale的时间轴垂直线 */
 .country-chart-section .scroll-text .timeline-line {
     position: absolute;
     left: 25px;
@@ -246,7 +238,6 @@
     z-index: 0;
 }
 
-/* 只针对CountryScale的时间轴标记容器 */
 .country-chart-section .scroll-text .timeline-marker {
     position: absolute;
     left: -70px;
@@ -255,7 +246,6 @@
     z-index: 2;
 }
 
-/* 只针对CountryScale的时间轴圆点 */
 .country-chart-section .scroll-text .timeline-dot {
     position: absolute;
     left: 25px;
@@ -268,7 +258,6 @@
     z-index: 3;
 }
 
-/* 只针对CountryScale的时间轴水平线 */
 .country-chart-section .scroll-text .timeline-connector {
     position: absolute;
     left: 25px;
@@ -279,13 +268,11 @@
     z-index: 2;
 }
 
-/* 只针对CountryScale的步骤容器 */
 .country-chart-section .scroll-text .step-container {
     position: relative;
     padding-left: 30px;
 }
 
-/* 只针对CountryScale的日期标题 */
 .country-chart-section .scroll-text .step-date {
     font-size: 20px;
     font-weight: bold;
@@ -295,9 +282,6 @@
     left: 0;
 }
 
-/* 创建一个全新的CSS文件，专门用于CountryScale的时间轴样式 */
-
-/* 定义CountryScale特有的时间轴样式，避免影响RegionScale */
 .country-timeline-container {
     position: absolute;
     left: -70px;
@@ -347,7 +331,6 @@
     z-index: 2;
 }
 
-/* 调整CountryScale的滚动文本区域 */
 .country-chart-section .scroll-text {
     position: relative;
     width: 30%; 
@@ -356,13 +339,11 @@
     border-left: none;
 }
 
-/* 调整CountryScale的步骤容器 */
 .country-step-container {
     position: relative;
     padding-left: 30px;
 }
 
-/* 调整CountryScale的日期标题 */
 .country-step-date {
     font-size: 20px;
     font-weight: bold;

@@ -1,3 +1,4 @@
+// Color scheme for the visualization
 const palette = {
   exports: "#65bceb",
   imports: "#ff8827",
@@ -5,6 +6,7 @@ const palette = {
   timeline: "#ffffff" 
 };
 
+// Chart dimensions and margins
 const W_box = 2900;
 const H_box = 1450;
 
@@ -12,7 +14,7 @@ const margin = { top: 120, right: 20, bottom: 60, left: 210 };
 const width  = W_box - margin.left - margin.right;
 const height = H_box - margin.top  - margin.bottom;
 
-
+// Initialize SVG and tooltip
 const svg = d3.select("#scroll-chart")
   .attr("viewBox", `0 0 ${W_box} ${H_box}`)
   .attr("preserveAspectRatio", "xMidYMid meet")
@@ -33,6 +35,7 @@ const parseTimelineDate = d3.timeParse("%Y-%m");
 const scroller = scrollama();
 
 
+// Timeline events data
 const timelineDates = [
   { date: "2016-06", label: "Brexit Referendum" },
   { date: "2017-03", label: "Article 50 Triggered" },
@@ -41,15 +44,17 @@ const timelineDates = [
   { date: "2021-01", label: "Trade Agreement" }
 ];
 
-
+// Load and process trade data
 d3.csv("public/data/eu_trade.csv").then(data => {
+  // Process data and create scales
   data.forEach(d => {
     d.month         = parseDate(d.month);
     d.exports       = +d.exports;
     d.imports       = +d.imports;
     d.trade_balance = +d.trade_balance;
   });
- 
+
+  // Create scales for x and y axes
   const x = d3.scaleTime()
     .domain(d3.extent(data, d => d.month))
     .range([0, width]);
@@ -105,6 +110,7 @@ g.append("text")
     .style("text-anchor", "start") 
     .text("£ million");
 
+  // Draw exports line and points
   g.append("path")
     .datum(data)
     .attr("fill", "none")
@@ -149,6 +155,7 @@ g.append("text")
     });
  
 
+  // Draw imports line and points
   g.append("path")
     .datum(data)
     .attr("fill", "none")
@@ -193,6 +200,7 @@ g.append("text")
     });
 
 
+  // Draw trade balance bars
   g.selectAll(".bar")
     .data(data)
     .join("rect")
@@ -260,6 +268,7 @@ g.append("text")
   });
 
 
+  // Setup scrollytelling interaction
   scroller
     .setup({
       step: '.step',
@@ -298,6 +307,7 @@ g.append("text")
       }
     });
 
+  // Handle responsive layout
   function handleResize() {
     const isMobile = window.innerWidth < 768;
     
@@ -314,48 +324,39 @@ g.append("text")
   handleResize();
 });
 
-// 在文档加载完成后执行
+// Position timeline markers on load and resize
 document.addEventListener('DOMContentLoaded', function() {
-  // 获取所有CountryScale步骤
   const countrySteps = document.querySelectorAll('.country-chart-section .step');
   
-  // 为每个步骤设置正确的时间轴标记位置
   countrySteps.forEach(step => {
     const marker = step.querySelector('.country-timeline-marker');
     const dateElement = step.querySelector('.country-step-date');
     
     if (marker && dateElement) {
-      // 获取日期元素的位置
       const dateRect = dateElement.getBoundingClientRect();
       
-      // 计算日期元素中心点相对于步骤顶部的位置
       const dateTop = dateElement.offsetTop;
       const dateHeight = dateElement.offsetHeight;
       const dateCenter = dateTop + (dateHeight / 2);
       
-      // 设置标记位置，与日期中心点对齐
       marker.style.top = dateCenter + 'px';
     }
   });
 });
 
-// 当窗口大小改变时，重新计算位置
+
 window.addEventListener('resize', function() {
-  // 获取所有CountryScale步骤
   const countrySteps = document.querySelectorAll('.country-chart-section .step');
   
-  // 为每个步骤重新设置正确的时间轴标记位置
   countrySteps.forEach(step => {
     const marker = step.querySelector('.country-timeline-marker');
     const dateElement = step.querySelector('.country-step-date');
     
     if (marker && dateElement) {
-      // 计算日期元素中心点相对于步骤顶部的位置
       const dateTop = dateElement.offsetTop;
       const dateHeight = dateElement.offsetHeight;
       const dateCenter = dateTop + (dateHeight / 2);
       
-      // 设置标记位置，与日期中心点对齐
       marker.style.top = dateCenter + 'px';
     }
   });

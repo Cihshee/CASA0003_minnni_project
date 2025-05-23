@@ -1,30 +1,30 @@
 <div class="country-chart-section">
   <div class="scroll-container">
     <div class="scroll-content-wrapper">
-      <!-- Left side: Chart -->
+      <!-- Main content split into two sections -->
       <div class="scroll-graphic">
         <h2>Goods<span class="imports"> Imports</span> &amp;<span class="exports"> Exports</span> with EU</h2>
         <div class="chart-container">
           <svg id="scroll-chart"></svg>
         </div>
-        <!-- Trade balance formula in a separate block -->
+        <!-- Trade balance calculation display -->
         <div class="trade-balance-formula" style="padding: 5px 0; margin-top: 10px; text-align: right; width: 100%; font-size: smaller;">
           <p>Trade Balance = <span class="exports" style="color: #65bceb;">Exports</span> – <span class="imports" style="color: #ff8827;">Imports</span></p>
         </div>
-        <!-- 添加文字说明，但添加一个特定的类名以便控制显示/隐藏 -->
+        <!-- Chart summary section (hidden by default) -->
         <div id="chart-summary" class="chart-summary hidden" style="padding: 5px 0; margin-top: 0px; text-align: left; width: 100%;">
           <p>UK goods trade with the EU has seen notable changes in recent years. Exports briefly dropped in 2020 due to the COVID-19 pandemic, and fell again as new Brexit trade rules took effect. While imports remained relatively stable, exports have struggled to recover, resulting in a sustained and widening trade deficit.</p>
         </div>
       </div>
       
-      <!-- Right side: Scrolling text -->
+      <!-- Scrollable timeline section -->
       <div class="scroll-text">
-        <!-- 添加时间轴容器 - 使用新的类名 -->
+        <!-- Timeline container with vertical line -->
         <div class="country-timeline-container">
           <div class="country-timeline-line"></div>
         </div>
 
-        <!-- 步骤1 - 2016年 -->
+        <!-- Step 1: Brexit Referendum -->
         <div class="step" data-step="1" data-date="2016-06" data-year="2016">
           <div class="country-timeline-marker">
             <div class="country-timeline-dot"></div>
@@ -40,7 +40,7 @@
           </div>
         </div>
         
-        <!-- 步骤2 - 2017年 -->
+        <!-- Step 2: Article 50 Triggered -->
         <div class="step" data-step="2" data-date="2017-03" data-year="2017">
           <div class="country-timeline-marker">
             <div class="country-timeline-dot"></div>
@@ -55,7 +55,7 @@
           </div>
         </div>
         
-        <!-- 步骤3 - 2019年 -->
+        <!-- Step 3: Withdrawal Agreement -->
         <div class="step" data-step="3" data-date="2019-10" data-year="2019">
           <div class="country-timeline-marker">
             <div class="country-timeline-dot"></div>
@@ -71,7 +71,7 @@
           </div>
         </div>
         
-        <!-- 步骤4 - 2020年 -->
+        <!-- Step 4: Official EU Exit -->
         <div class="step" data-step="4" data-date="2020-01" data-year="2020">
           <div class="country-timeline-marker">
             <div class="country-timeline-dot"></div>
@@ -87,7 +87,7 @@
           </div>
         </div>
 
-        <!-- 步骤5 - 2021年 -->
+        <!-- Step 5: End of Transition Period -->
         <div class="step" data-step="5" data-date="2021-01" data-year="2021" data-summary="true">
           <div class="country-timeline-marker">
             <div class="country-timeline-dot"></div>
@@ -102,7 +102,7 @@
           </div>
         </div>
         
-        <!-- 最后一个空白步骤保持不变 -->
+        <!-- Empty step for spacing -->
         <div class="step" data-step="6" data-date="2021-01" data-summary="true" style="height: 30vh; opacity: 0;">
           <div class="step-content">
             <p></p>

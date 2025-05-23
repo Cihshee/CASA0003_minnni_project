@@ -78,7 +78,6 @@
     margin-top: 10px;
 }
 
-/* 港口内容左右布局 */
 .port-content {
     display: flex;
     flex-direction: row;
@@ -91,22 +90,19 @@
     align-items: center;
     justify-content: center;
     margin-top: -30px;
-    /* 添加淡入动画效果 */
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* 激活状态的淡入效果 */
 .port-content.active {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* 视频部分 - 左侧 */
 .port-video-section {
-    width: 75%;  /* 增加宽度以显示完整图片 */
-    height: 85%;  /* 增加高度以显示完整图片 */
+    width: 75%;
+    height: 85%;
     display: flex;
     overflow: hidden;
     border-radius: 12px;
@@ -114,7 +110,6 @@
     pointer-events: none;
 }
 
-/* 港口视频样式 */
 #port-video {
     width: 100%;
     height: 100%;
@@ -124,7 +119,6 @@
     pointer-events: none;
 }
 
-/* 港口图片滚动样式 */
 .port-image-container {
     position: relative;
     width: 100%;
@@ -154,14 +148,13 @@
 .port-image-slide img {
     width: 100%;
     height: 100%;
-    object-fit: contain;  /* 默认使用 contain */
+    object-fit: contain;
     border-radius: 12px;
     background-color: #2a2a2a;
 }
 
-/* 专门为第一张图片设置样式 */
 #port-image-1 img {
-    object-fit: cover;  /* 第一张图片使用 cover */
+    object-fit: cover;
 }
 
 .image-indicator {
@@ -188,7 +181,6 @@
     transform: scale(1.2);
 }
 
-/* 左右导航按钮样式 */
 .image-nav-button {
     position: absolute;
     top: 50%;
@@ -226,7 +218,6 @@
     right: 15px;
 }
 
-/* 当视频无法加载时显示的占位符 */
 .video-placeholder {
     width: 100%;
     height: 100%;
@@ -239,21 +230,18 @@
     border-radius: 12px;
 }
 
-/* 文字部分 - 右侧 */
 .port-text-section {
-    width: 20%;  /* 相应减小文字部分宽度 */
-    height: 85%;  /* 保持与左侧一致 */
+    width: 20%;
+    height: 85%;
     display: flex;
     flex-direction: column;
     padding: 25px;
-    /* background-color: rgba(255, 255, 255, 0.05); */
     border-radius: 12px;
     overflow-y: auto;
     align-items: center;
     justify-content: center;
 }
 
-/* 文字内容切换 */
 .port-text-content {
     display: none;
     width: 100%;
@@ -269,7 +257,6 @@
     transform: translateY(0);
 }
 
-/* 文字标题样式 */
 .text-title {
     color: #ffffff;
     margin-bottom: 15px;
@@ -291,7 +278,7 @@
     line-height: 1.6;
     margin-bottom: 15px;
     font-size: 16px;
-    transition: all 0.5s ease 0.1s; /* 延迟0.1秒，让标题先出现 */
+    transition: all 0.5s ease 0.1s;
     transform: translateY(0);
     opacity: 1;
 }
@@ -301,9 +288,8 @@
     opacity: 0;
 }
 
-/* 探索地图按钮动画 */
 .explore-map-btn {
-    transition: all 0.5s ease 0.2s; /* 延迟0.2秒，让段落先出现 */
+    transition: all 0.5s ease 0.2s;
     transform: translateY(0);
     opacity: 1;
 }
@@ -313,7 +299,6 @@
     opacity: 0;
 }
 
-/* 探索地图按钮样式 */
 .explore-map-btn {
     position: relative;
     margin-top: 30px;
@@ -349,7 +334,6 @@
         height: 45px;
     }
     
-    /* 小屏幕上改为上下布局 */
     .port-content {
         flex-direction: column;
         height: auto;
@@ -383,31 +367,25 @@
     }
 }
 
-/* 机场内容样式 */
 .airport-content {
     display: flex;
     flex-direction: column;
     width: 100%;
-    /* 调整高度为auto，不限制具体高度 */
     height: auto;
     min-height: 100vh;
     padding: 5px 20px 50px 20px;
     box-sizing: border-box;
-    /* 将overflow改为auto，允许滚动 */
     overflow: auto;
-    /* 添加淡入动画效果 */
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* 激活状态的淡入效果 */
 .airport-content.active {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* 机场总结文本容器 */
 .airport-summary-section {
     width: 90%;
     text-align: center;
@@ -418,8 +396,7 @@
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
-    transition-delay: 0.3s; /* 延迟执行，让机场内容先显示 */
-    /* 添加水平居中样式 */
+    transition-delay: 0.3s;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -428,7 +405,6 @@
     justify-content: center;
 }
 
-/* 激活状态的滑入效果 */
 .airport-summary-section.active {
     opacity: 1;
     transform: translateY(0);
@@ -441,7 +417,6 @@
     max-width: 90%;
 }
 
-/* 图表容器样式 */
 .airport-chart-container {
     width: 100%;
     height: 150%;
@@ -451,19 +426,16 @@
     margin-bottom: 10px;
     box-shadow: none;
     min-height: 350px;
-    /* 修改样式，确保内容完全显示 */
     overflow: visible;
     position: relative;
 }
 
-/* 图表控制区域样式 */
 .chart-controls {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 0px;
     padding: 5px;
-    /* background-color: rgba(255, 255, 255, 0.05); */
     border-radius: 8px;
     margin-top: 10px;
 }
@@ -491,7 +463,6 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* 机场信息文本区域 */
 .airport-info {
     padding: 15px;
     background-color: rgba(255, 255, 255, 0.05);
@@ -506,7 +477,6 @@
     margin: 0;
 }
 
-/* 错误信息样式 */
 .error-message {
     display: flex;
     flex-direction: column;
@@ -522,7 +492,6 @@
     font-size: 16px;
 }
 
-/* 移动设备适配 */
 @media (max-width: 900px) {
     .airport-chart-container {
         height: 150%;
@@ -545,7 +514,6 @@
     }
 }
 
-/* 机场图片选择器样式 */
 .airport-selector {
     width: 100%;
     padding: 5px;
@@ -610,7 +578,6 @@
     max-width: 100%;
 }
 
-/* 移动设备适配 */
 @media (max-width: 1024px) {
     .airport-grid {
         grid-template-columns: repeat(5, 1fr);

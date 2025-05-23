@@ -1,15 +1,16 @@
+<!-- Main Transport Section Container -->
 <div class="transport-container">
-    <!-- 添加章节标题 -->
+    <!-- Title and Introduction -->
     <div class="transport-title-section" style="margin-top: 100px; margin-bottom: 30px;">
         <h2 style="text-align: center;"><span style="color: #58aff7;">Transportation Modes</span> for Goods Imports and Exports</h2>
     </div>
     
-    <!-- 添加衔接段落 -->
     <div class="transport-intro-section" style="margin-bottom: 40px; text-align: center;">
         <p> Brexit has not only affected UK trade structure but also challenged the logistics of moving goods across borders. </p>
         <p> Let's see how different transportation modes show the changes in trade networks and key transport hubs... </p>
     </div>
     
+    <!-- Transport Mode Selection Buttons -->
     <div class="button-container">
         <button class="transport-button" data-type="port" title="Port">
             <img src="public/img/port_1.svg" alt="Port">
@@ -22,19 +23,19 @@
         </button> -->
     </div>
     
-    <!-- 地图区域，默认隐藏 -->
+    <!-- Interactive Map Container -->
     <div id="map" style="display: none;"></div>
     
-    <!-- 点击port按钮后显示的内容，上下结构 -->
+    <!-- Port Information Section -->
     <div id="port-content" class="port-content" style="margin-top: -4.5%;">
-        <!-- 图片部分 - 左侧 -->
+        <!-- Image Slider for Ports -->
         <div class="port-video-section">
-            <!-- 替换为带导航箭头的图片区域 -->
             <div class="port-image-container">
-                <!-- 左右箭头 - 添加内联样式确保可见和可点击 -->
+                <!-- Navigation Buttons -->
                 <button class="image-nav-button prev-button" id="prev-port-image" style="cursor:pointer; z-index:999;">&lt;</button>
                 <button class="image-nav-button next-button" id="next-port-image" style="cursor:pointer; z-index:999;">&gt;</button>
                 
+                <!-- Port Images Slides -->
                 <div class="port-image-slide active" id="port-image-1" data-text-id="port-text-1">
                     <img src="public/img/port_main.png" alt="UK Port Overview">
                 </div>
@@ -45,8 +46,7 @@
                     <img src="public/img/port_dover.png" alt="Dover Port">
                 </div>
                 
-                
-                <!-- 指示点 -->
+                <!-- Slide Indicators -->
                 <div class="image-indicator">
                     <span class="indicator-dot active" data-index="1"></span>
                     <span class="indicator-dot" data-index="2"></span>
@@ -55,16 +55,16 @@
             </div>
         </div>
         
-        <!-- 文字部分 - 右侧 -->
+        <!-- Port Description Text Sections -->
         <div class="port-text-section">
-            <!-- 对应第一张图片的文本 -->
+            <!-- Overview Text -->
             <div class="port-text-content active" id="port-text-1">
                 <p>The UK's coastline is dotted with more than 120 commercial ports, which vary widely in size and specialisation. The southeastern ports primarily serve European routes, while western ports traditionally handle transatlantic trade.</p>
                 <p>Ports are essential to the UK economy, with around <span style="color: #67baff;">95%</span> of import and export tonnage being transported by sea.</p>
                 <button id="explore-map-btn" class="explore-map-btn">Try interactive map</button>
             </div>
             
-            <!-- 对应第二张图片的文本 - Felixstowe -->
+            <!-- Felixstowe Port Details -->
             <div class="port-text-content" id="port-text-2">
                 <h3 class="text-title">Felixstowe Port</h3>
                 <p>Felixstowe is the UK's largest container port, handling over 40% of all containerized trade. </p>
@@ -72,7 +72,7 @@
                 <button id="explore-map-btn-2" class="explore-map-btn">Try interactive map</button>
             </div>
             
-            <!-- 对应第三张图片的文本 - Dover -->
+            <!-- Dover Port Details -->
             <div class="port-text-content" id="port-text-3">
                 <h3 class="text-title">Dover Port</h3>
                 <p>Dover is close to the mainland Europe and handles 17% of the UK's cargo trade, mainly serving cross-channel transport. </p>

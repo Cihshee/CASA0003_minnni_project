@@ -1,38 +1,26 @@
+<!-- Main Region Chart Section -->
 <div class="region-chart-section">
-  <!-- 添加 Mapbox 容器 -->
+  <!-- Map Container with Sidebar -->
   <div id="region-map-container" class="mapbox-fullscreen">
-    <!-- 左侧侧边面板 -->
+    <!-- Sidebar with Trade Balance Charts -->
     <div class="map-sidebar">
       <h2 class="sidebar-title">UK Goods Trade Balance with EU and Non-EU Countries</h2>
       
-      <!-- 时间选择轴 -->
-      <!-- <div class="sidebar-timeline">
-        <div class="timeline-years">
-          <div class="timeline-track"></div>
-          <div class="timeline-slider" id="timeline-slider"></div>
-          
-        </div>
-      </div> -->
       
-      <!-- 折线图和说明容器 -->
       <div class="sidebar-chart-container">
-        <!-- 初始显示 EU 数据 -->
         <div id="sidebar-eu-chart" class="sidebar-chart active"></div>
         <div id="sidebar-noneu-chart" class="sidebar-chart"></div>
-        
-        <!-- 说明文字区域 -->
         <div id="sidebar-eu-text" class="sidebar-text active"></div>
         <div id="sidebar-noneu-text" class="sidebar-text"></div>
-        
-        <!-- 切换按钮 -->
         <button class="chart-switch-btn">Non-EU →</button>
       </div>
     </div>
   </div>
   
+  <!-- Scrollable Timeline Section -->
   <div class="scroll-container">
     <div class="scroll-content-wrapper">
-      <!-- 左侧：热力图 -->
+      <!-- Heatmap Visualization -->
       <div class="scroll-graphic">
         <h2>UK Regional Goods Trade Balance</h2>
         <div class="chart-container">
@@ -40,11 +28,11 @@
         </div>
       </div>
       
-      <!-- 右侧：滚动文本 -->
+      <!-- Timeline with Year-by-Year Trade Events -->
       <div class="scroll-text">
-        <!-- 添加垂直时间轴线 -->
         <div class="timeline-vertical-line"></div>
         
+        <!-- Pre-Brexit Period -->
         <div class="step" data-year="2016" style="margin-top: 400px;">
           <div class="timeline-marker">
             <div class="timeline-dot"></div>

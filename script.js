@@ -3,12 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.fixed-nav-link');
     const sections = document.querySelectorAll('section');
     
-    // 显示/隐藏导航
     let lastScrollTop = 0;
     window.addEventListener('scroll', () => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         
-        // 当滚动超过100px时显示导航
         if (scrollTop > 100) {
             nav.style.display = 'block';
         } else {
@@ -18,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
         lastScrollTop = scrollTop;
     });
 
-    // 处理滚动时激活对应的导航项
     window.addEventListener('scroll', () => {
         let current = '';
         
@@ -38,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 平滑滚动
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -57,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 添加淡入动画效果
     const observerOptions = {
         threshold: 0.1
     };
@@ -71,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, observerOptions);
     
-    // 观察所有章节
     sections.forEach(section => {
         observer.observe(section);
     });

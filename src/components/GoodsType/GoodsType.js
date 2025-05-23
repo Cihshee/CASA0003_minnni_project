@@ -24,7 +24,6 @@ console.log('GoodsType.js loaded');
     "9 Commodities/transactions not class'd elsewhere in SITC"
   ];
   
-  // 简短描述 - 用于SITC介绍页面
   const sitcConciseDescriptions = [
     'Trade in food and live animals is a vital part of the UK\'s global and EU trade, covering meat, dairy, cereals, and more. Post-Brexit, related trade policies and tariffs have changed significantly.',
     'Beverages and tobacco include alcoholic drinks, soft drinks, and tobacco products. The UK exports a large share of beverages to the EU, and Brexit has affected export procedures.',
@@ -38,7 +37,6 @@ console.log('GoodsType.js loaded');
     "Covers scrap metal recycling, second-hand markets, and other miscellaneous transactions."
   ];
   
-  // 详细描述 - 用于地图页面
   const sitcDetailedDescriptions = [
     'The impact of Brexit on trade in food and live animals has been relatively limited. Post-Brexit, despite significant changes in related trade policies and tariffs, the overall trade volume has remained relatively stable, with imports slightly higher than exports.',
     'Influenced by the pandemic and political factors, trade in beverages and tobacco between the UK and the EU (such as France, Ireland, and Italy) has shown significant characteristics: import volumes continue to rise, while export volumes have notably decreased, reflecting the structural challenges faced by domestic industries and external competitive pressures.',
@@ -71,10 +69,8 @@ console.log('GoodsType.js loaded');
     preloadedData: null
   };
 
-  // 添加数据缓存
   const dataCache = new Map();
 
-  // 添加防抖函数
   function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -87,7 +83,6 @@ console.log('GoodsType.js loaded');
     };
   }
 
-  // 健壮CSV解析
   function parseCSV(text) {
     console.log('Parsing CSV...');
     const lines = text.split('\n').filter(l=>l.trim());
@@ -107,21 +102,17 @@ console.log('GoodsType.js loaded');
     return Number(row[col]?.replace(/,/g,'') || 0);
   }
 
-  // 修改数值格式化函数，添加轴标签格式化函数
   function formatToMillions(value, forAxis = false) {
     if (forAxis) {
-      // 轴标签不显示小数点
       return `${Math.round(value / 1000000)}M`;
     }
-    // 具体数值和提示框显示一位小数
     return `${(value / 1000000).toFixed(1)}M`;
   }
 
   function drawChart(ctx, dataRows, flowtype, onAnimEnd) {
-    // 插值函数：在两个点之间生成平滑的中间点
     function interpolatePoints(data) {
       const interpolatedData = [];
-      const interpolationPoints = 30; // 每两个真实数据点之间插入的点数
+      const interpolationPoints = 30;
       
       for (let i = 0; i < data.length - 1; i++) {
         const start = data[i];
@@ -138,7 +129,6 @@ console.log('GoodsType.js loaded');
       return interpolatedData;
     }
 
-    // 生成插值后的年份标签
     const interpolatedYears = [];
     for (let i = 0; i < years.length - 1; i++) {
       interpolatedYears.push(years[i]);
@@ -159,7 +149,6 @@ console.log('GoodsType.js loaded');
         backgroundColor: 'transparent',
         tension: 0.3,
         pointRadius: (ctx) => {
-          // 只在原始数据点显示点
           const index = ctx.dataIndex;
           return index % 30 === 0 ? 3 : 0;
         },
@@ -176,7 +165,7 @@ console.log('GoodsType.js loaded');
       return;
     }
 
-    const totalDuration = 3500; // 动画持续时间改为3.5秒
+    const totalDuration = 3500;
     const delayBetweenPoints = totalDuration / interpolatedYears.length;
     
     const animation = {
@@ -221,7 +210,7 @@ console.log('GoodsType.js loaded');
           onProgress: function() { chart.draw(); }
         },
         maintainAspectRatio: false,
-        layout: { padding: { right: 100 } }, // 右侧留白更大，防止value被遮挡
+        layout: { padding: { right: 100 } },
         interaction: {
           intersect: false,
           mode: 'nearest'
@@ -283,7 +272,6 @@ console.log('GoodsType.js loaded');
         }
       },
       plugins: [
-        // 只保留yearLabelGradient插件
         {
           id: 'yearLabelGradient',
           afterDraw(chart) {
@@ -296,7 +284,6 @@ console.log('GoodsType.js loaded');
               const index = i * 30;
               const label = years[i];
               const x = xAxis.getPixelForValue(index);
-              // 画虚线，顶部超出10px，底部超出20px
               ctx.save();
               ctx.beginPath();
               ctx.setLineDash([4, 6]);
@@ -307,18 +294,15 @@ console.log('GoodsType.js loaded');
               ctx.stroke();
               ctx.setLineDash([]);
               ctx.restore();
-              // 画渐变色年份数字
               const y = xAxis.bottom + 28;
-              // 先用白色覆盖原有数字
               ctx.save();
               ctx.font = 'bold 22px Orbitron, Montserrat, Arial, sans-serif';
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               ctx.globalCompositeOperation = 'source-over';
-              ctx.fillStyle = '#181c23'; // 背景色覆盖
+              ctx.fillStyle = '#181c23';
               ctx.fillRect(x-20, y-16, 40, 32);
               ctx.restore();
-              // 渐变色
               const grad = ctx.createLinearGradient(x - 20, y, x + 20, y);
               grad.addColorStop(0, '#4fc3f7');
               grad.addColorStop(1, '#7c4dff');
@@ -333,36 +317,29 @@ console.log('GoodsType.js loaded');
             }
             ctx.restore();
 
-            // --- 动画亮点与value ---
-            // 动画进度
             const anim = chart._animations && Object.values(chart._animations)[0];
             let animProgress = 1;
             if (anim && anim._duration > 0) {
               animProgress = Math.min(1, anim._elapsed / anim._duration);
             }
-            // 计算当前动画到第几个插值点（用插值算法，不依赖meta.data）
             const metaArr = chart.getSortedVisibleDatasetMetas();
             metaArr.forEach((meta, dIdx) => {
               if (!meta || !meta._dataset || !meta._dataset.data || !meta._dataset.data.length) return;
               const dataArr = meta._dataset.data;
               const totalPoints = dataArr.length;
-              // 动画进度下的当前点（小数）
               let floatIndex = animProgress * (totalPoints - 1);
               if (floatIndex < 0) floatIndex = 0;
               if (floatIndex > totalPoints - 1) floatIndex = totalPoints - 1;
               const leftIdx = Math.floor(floatIndex);
               const rightIdx = Math.min(leftIdx + 1, totalPoints - 1);
               const frac = floatIndex - leftIdx;
-              // x坐标插值（像素级）
               const x0 = xAxis.getPixelForValue(leftIdx);
               const x1 = xAxis.getPixelForValue(rightIdx);
               const px = x0 + (x1 - x0) * frac;
-              // y插值
               const v0 = dataArr[leftIdx];
               const v1 = dataArr[rightIdx];
               const value = v0 + (v1 - v0) * frac;
               const py = yAxis.getPixelForValue(value);
-              // 画亮点
               ctx.save();
               ctx.beginPath();
               ctx.arc(px, py, 8, 0, 2 * Math.PI);
@@ -378,7 +355,6 @@ console.log('GoodsType.js loaded');
               ctx.fillStyle = '#fff';
               ctx.fill();
               ctx.restore();
-              // 画value文本
               ctx.save();
               ctx.font = 'bold 13px Arial, sans-serif';
               ctx.textAlign = 'left';
@@ -395,7 +371,6 @@ console.log('GoodsType.js loaded');
       ]
     });
 
-    // 动画结束后回调
     if (onAnimEnd) {
       setTimeout(onAnimEnd, 2000);
     }
@@ -418,38 +393,33 @@ console.log('GoodsType.js loaded');
   function renderLegend() {
     const legend = document.getElementById('goods-summary-legend');
     
-    // 创建一个整齐的网格布局容器
     legend.innerHTML = '<div class="goods-summary-legend-grid"></div>';
     const grid = legend.querySelector('.goods-summary-legend-grid');
     
-    // 添加网格样式 - 进一步减小行距和内边距，让图例更紧凑
     grid.style.cssText = `
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 6px 24px; /* 进一步减小行距，从8px改为6px */
+      gap: 6px 24px; 
       max-width: 900px;
       margin: 0 auto;
-      padding: 6px; /* 减小内边距，从8px改为6px */
-      margin-top: -30px; /* 使图例更靠近图表，从-20px改为-30px */
+      padding: 6px; 
+      margin-top: -30px; 
     `;
     
-    // 为每个图例项创建HTML
     legendItems.forEach((item, idx) => {
       const legendItem = document.createElement('div');
       legendItem.className = 'goods-summary-legend-item';
       legendItem.setAttribute('data-sitc', idx);
       
-      // 设置图例项样式 - 进一步减小内边距使其更紧凑
       legendItem.style.cssText = `
         display: flex;
         align-items: center;
-        padding: 2px 5px; /* 进一步减小内边距，从3px 6px改为2px 5px */
+        padding: 2px 5px;
         border-radius: 6px;
         transition: background-color 0.3s;
         cursor: pointer;
       `;
       
-      // 鼠标悬停效果
       legendItem.addEventListener('mouseenter', () => {
         legendItem.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
       });
@@ -457,38 +427,34 @@ console.log('GoodsType.js loaded');
         legendItem.style.backgroundColor = 'transparent';
       });
       
-      // 图标容器 - 减小尺寸
       const iconContainer = document.createElement('div');
       iconContainer.className = 'summary-sitc-icon-container';
       iconContainer.style.cssText = `
-        width: 28px; /* 进一步减小，从30px减小到28px */
-        height: 28px; /* 进一步减小，从30px减小到28px */
+        width: 28px; 
+        height: 28px; 
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 6px; /* 进一步减小，从8px减小到6px */
+        margin-right: 6px; 
         position: relative;
       `;
       
-      // 添加图标（只有前9个有图标）
       if (idx < 9 && item.icon) {
         const icon = document.createElement('img');
         icon.src = `https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/${item.icon}`;
         icon.alt = `SITC ${idx}`;
         icon.className = 'summary-sitc-icon';
         icon.style.cssText = `
-          width: 24px; /* 进一步减小，从28px减小到24px */
-          height: 24px; /* 进一步减小，从28px减小到24px */
+          width: 24px; 
+          height: 24px; 
           object-fit: contain;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         `;
         iconContainer.appendChild(icon);
       }
       
-      // 颜色指示器
       const colorIndicator = document.createElement('span');
       if (idx === 9) {
-        // 最后一个使用虚线
         colorIndicator.innerHTML = `
           <svg width="22" height="8" style="vertical-align:middle;margin-right:4px;">
             <line x1="2" y1="4" x2="20" y2="4" stroke="${item.color}" stroke-width="3" stroke-dasharray="3,4"/>
@@ -498,32 +464,29 @@ console.log('GoodsType.js loaded');
         colorIndicator.className = 'goods-summary-legend-color';
         colorIndicator.style.cssText = `
           display: inline-block;
-          width: 10px; /* 进一步减小，从12px减小到10px */
-          height: 10px; /* 进一步减小，从12px减小到10px */
+          width: 10px; 
+          height: 10px; 
           border-radius: 50%;
           background: ${item.color};
-          margin-right: 5px; /* 进一步减小，从6px减小到5px */
+          margin-right: 5px; 
         `;
       }
       
-      // 文本标签
       const label = document.createElement('span');
       label.textContent = item.label;
       label.style.cssText = `
-        font-size: 12px; /* 进一步减小，从13px减小到12px */
+        font-size: 12px; 
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       `;
       
-      // 组装图例项
       if (idx < 9) {
         legendItem.appendChild(iconContainer);
       }
       legendItem.appendChild(colorIndicator);
       legendItem.appendChild(label);
       
-      // 添加到网格
       grid.appendChild(legendItem);
     });
   }
@@ -545,13 +508,11 @@ console.log('GoodsType.js loaded');
     });
   }
 
-  // 修改summary区渲染（四张图表）
   function renderSummaryCharts(data) {
     const chartContainer = document.getElementById('goods-summary-charts');
     if (!chartContainer) return;
     chartContainer.innerHTML = '';
 
-    // 外层整体居中wrap
     const centerWrap = document.createElement('div');
     centerWrap.className = 'summary-center-wrap';
     centerWrap.style.display = 'flex';
@@ -560,14 +521,12 @@ console.log('GoodsType.js loaded');
     centerWrap.style.justifyContent = 'center';
     chartContainer.appendChild(centerWrap);
 
-    // D3主图参数
     const width = 900;
     const height = 420;
     const margin = { top: 40, right: 220, bottom: 70, left: 80 };
     const svgW = width + margin.left + margin.right;
     const svgH = height + margin.top + margin.bottom;
 
-    // 主图+右侧描述栏flex
     const flexWrap = document.createElement('div');
     flexWrap.className = 'summary-flex-wrap';
     flexWrap.style.display = 'flex';
@@ -579,7 +538,6 @@ console.log('GoodsType.js loaded');
     flexWrap.style.margin = '0 auto';
     centerWrap.appendChild(flexWrap);
 
-    // SVG主图区域
     const svgDiv = document.createElement('div');
     svgDiv.className = 'summary-chart-area';
     svgDiv.style.position = 'relative';
@@ -591,19 +549,17 @@ console.log('GoodsType.js loaded');
     svgDiv.style.margin = '0 auto';
     flexWrap.appendChild(svgDiv);
 
-    // 右侧描述栏
     const descDiv = document.createElement('div');
     descDiv.className = 'summary-desc-area';
-    descDiv.style.display = 'none'; // 不再显示右侧描述栏
+    descDiv.style.display = 'none';
     flexWrap.appendChild(descDiv);
-
-    // 按钮区域（主图下方，整体居中）
+  
     const btnsDiv = document.createElement('div');
     btnsDiv.className = 'summary-explore-btns';
     btnsDiv.style.display = 'flex';
     btnsDiv.style.flexDirection = 'column';
     btnsDiv.style.alignItems = 'center';
-    btnsDiv.style.marginTop = '15px'; // 减小与图表的距离，从32px改为15px
+    btnsDiv.style.marginTop = '15px';
     btnsDiv.style.opacity = '0';
     btnsDiv.style.transform = 'translateY(30px)';
     btnsDiv.innerHTML = `
@@ -616,7 +572,6 @@ console.log('GoodsType.js loaded');
     `;
     centerWrap.appendChild(btnsDiv);
 
-    // D3主图SVG
     const svg = d3.select(svgDiv)
       .append('svg')
       .attr('width', svgW)
@@ -624,7 +579,6 @@ console.log('GoodsType.js loaded');
       .attr('class', 'd3-summary-svg')
       .style('display', 'block');
 
-    // 鼠标高亮点元素
     let hoverDot = d3.select(svgDiv).select('.d3-hover-dot');
     if (hoverDot.empty()) {
       hoverDot = svg.append('circle')
@@ -632,7 +586,6 @@ console.log('GoodsType.js loaded');
         .attr('r', 0)
         .style('pointer-events', 'none');
     }
-    // 添加自定义tooltip元素
     let tooltipDiv = d3.select(svgDiv).select('.d3-tooltip');
     if (tooltipDiv.empty()) {
       tooltipDiv = d3.select(svgDiv)
@@ -652,7 +605,6 @@ console.log('GoodsType.js loaded');
         .style('display', 'none');
     }
 
-    // 年份、flowType、配色等参数
     const years = Array.from({length: 2024-2016+1}, (_,i)=>2016+i);
     const flowTypes = [
       'EU - Exports',
@@ -663,7 +615,6 @@ console.log('GoodsType.js loaded');
     let currentFlow = flowTypes[0];
     let animDuration = 5000;
 
-    // 颜色方案
     const lineColors = [
       '#d9534f', '#f0ad4e', '#bada55', '#5cb85c', '#5bc0de', '#428bca', '#6f42c1', '#ab47bc', '#ffd600', '#b0b0b0'
     ];
@@ -1019,9 +970,7 @@ console.log('GoodsType.js loaded');
           frame++;
           requestAnimationFrame(animate);
         } else {
-          // 动画结束后弹出提示和按钮（只fade in一次，后续切换不再隐藏）
           if (!btnsDiv.classList.contains('shown')) {
-            // 1. 先弹出提示
             let promptDiv = btnsDiv.querySelector('.summary-explore-prompt');
             if (!promptDiv) {
               promptDiv = document.createElement('div');
@@ -1035,7 +984,6 @@ console.log('GoodsType.js loaded');
               promptDiv.style.opacity = '1';
               promptDiv.style.transform = 'translateY(0)';
             }, 800);
-            // 2. 再弹出按钮
             btnsDiv.style.display = 'flex';
             btnsDiv.style.opacity = '0';
             btnsDiv.style.transform = 'translateY(30px)';
@@ -1047,7 +995,6 @@ console.log('GoodsType.js loaded');
             btnsDiv.classList.add('shown');
           }
 
-          // 3. 移除右侧描述栏内容
           if (descDiv) descDiv.innerHTML = '';
         }
       }
@@ -1065,17 +1012,14 @@ console.log('GoodsType.js loaded');
       `);
       animate();
 
-      // 鼠标悬浮交互
       svg.on('mousemove', function(event) {
         const [mx, my] = d3.pointer(event, this);
         const hoverDot = svg.select('.d3-hover-dot');
-        // 只在主图区域内响应
         if (mx < margin.left || mx > margin.left + width || my < margin.top || my > margin.top + height) {
           tooltipDiv.style('display', 'none');
           hoverDot.attr('r', 0);
           return;
         }
-        // 找到最近的年份
         const xVals = years.map(y => x(y));
         let minDist = Infinity, nearestYearIdx = 0;
         xVals.forEach((px, i) => {
@@ -1086,14 +1030,12 @@ console.log('GoodsType.js loaded');
           }
         });
         const year = years[nearestYearIdx];
-        // 找到所有线在该年份的点
         const lineDataAtYear = getLineData(flowType).map((d, idx) => ({
           name: d.name,
           color: d.color,
           value: d.values[nearestYearIdx].value,
           idx
         }));
-        // 找到距离鼠标最近的那条线
         let minYDist = Infinity, nearestLine = null;
         lineDataAtYear.forEach(d => {
           const py = y(d.value);
@@ -1108,18 +1050,15 @@ console.log('GoodsType.js loaded');
           hoverDot.attr('r', 0);
           return;
         }
-        // tooltip内容
         tooltipDiv.html(
           `<div style=\"font-size:14px;font-weight:700;color:#4fc3f7;margin-bottom:2px;\">${year}</div>`+
           `<div style=\"margin-bottom:2px;\"><span style=\"color:${nearestLine.color};font-weight:700;\">${nearestLine.name}</span></div>`+
           `<div>Value: <span style=\"color:${nearestLine.color};font-weight:700;\">£${formatToMillions(nearestLine.value)}</span></div>`
         );
-        // 位置
         const svgRect = svgDiv.getBoundingClientRect();
         tooltipDiv.style('left', (mx + 40) + 'px')
           .style('top', (my - 20) + 'px')
           .style('display', 'block');
-        // 在对应线上画一个小点
         const px = x(year);
         const py = y(nearestLine.value);
         hoverDot
@@ -1136,20 +1075,15 @@ console.log('GoodsType.js loaded');
         svg.select('.d3-hover-dot').attr('r', 0);
       });
     }
-
-    // 初始渲染
+    
     drawD3Chart(currentFlow);
 
-    // 按钮/flowType切换逻辑
     btnsDiv.querySelectorAll('.summary-explore-btn').forEach((btn, idx) => {
-      // 初始高亮第一个
       if (idx === 0) btn.classList.add('active');
       btn.onclick = () => {
         currentFlow = btn.getAttribute('data-flow');
-        // 切换按钮高亮
         btnsDiv.querySelectorAll('.summary-explore-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        // 只切换图表，不再隐藏按钮和提示
         descDiv.querySelectorAll('.summary-desc-text').forEach(el => {
           el.style.opacity = '0';
           el.style.transform = 'translateY(30px)';
@@ -1160,7 +1094,6 @@ console.log('GoodsType.js loaded');
       };
     });
 
-    // 只在用户滚动到summary区时才开始动画
     let chartAnimated = false;
     function triggerChartAnimation() {
       if (!chartAnimated) {
@@ -1168,7 +1101,6 @@ console.log('GoodsType.js loaded');
         chartAnimated = true;
       }
     }
-    // IntersectionObserver 只触发一次
     const chartObserver = new window.IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1180,19 +1112,16 @@ console.log('GoodsType.js loaded');
     chartObserver.observe(svgDiv);
   }
 
-  // 添加动画控制状态
   const animationState = {
     isPlaying: false,
     speed: 1,
     intervalId: null
   };
 
-  // 修改详情区域渲染函数
   function renderDetail() {
     const detailSection = document.getElementById('goods-type-detail-container');
     if (!detailSection) return;
     
-    // 添加初始样式
     detailSection.style.opacity = '0';
     detailSection.style.transform = 'translateY(20px)';
     detailSection.style.transition = 'all 0.8s ease';
@@ -1253,41 +1182,34 @@ console.log('GoodsType.js loaded');
         </div>
     `;
 
-    // 创建观察器
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // 显示整个详情区域
           detailSection.style.opacity = '1';
           detailSection.style.transform = 'translateY(0)';
           
-          // 初始化地图和图表
           setTimeout(() => {
             createMapboxMapWhenVisible();
             initializeCharts();
-          }, 400);  // 等待过渡动画完成后初始化
+          }, 400);
 
-          observer.disconnect();  // 动画触发后解除观察
+          observer.disconnect();
         }
       });
-    }, { threshold: 0.1 });  // 当10%的内容可见时触发
+    }, { threshold: 0.1 });
 
     observer.observe(detailSection);
 
-    // 绑定控件事件
     bindDetailEvents();
   }
 
-  // 提取事件绑定到单独的函数
   function bindDetailEvents() {
-    // 恢复 flow type 按钮事件
     document.querySelectorAll('.flow-type-btn').forEach(btn => {
       btn.onclick = e => {
         document.querySelectorAll('.flow-type-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         state.currentFlow = btn.dataset.flow;
-        
-        // 添加地图动画
+
         if (state.currentFlow.includes('Non EU')) {
           animateMapTo(state.currentMap, MAP_VIEWS.world);
         } else {
@@ -1298,7 +1220,6 @@ console.log('GoodsType.js loaded');
       };
     });
 
-    // 恢复时间轴点击事件
     document.querySelectorAll('.year-dot').forEach(dot => {
       dot.onclick = e => {
         const year = +e.currentTarget.dataset.year;
@@ -1306,7 +1227,6 @@ console.log('GoodsType.js loaded');
       };
     });
 
-    // 播放按钮事件
     const playBtn = document.querySelector('.timeline-play-btn');
     if (playBtn) {
       playBtn.onclick = () => {
@@ -1320,7 +1240,6 @@ console.log('GoodsType.js loaded');
       };
     }
 
-    // 速度选择事件
     const speedSelect = document.querySelector('.timeline-speed');
     if (speedSelect) {
       speedSelect.onchange = (e) => {
@@ -1339,7 +1258,7 @@ console.log('GoodsType.js loaded');
     }
 
     animationState.isPlaying = true;
-    const interval = 2000 / animationState.speed; // 基础间隔2秒
+    const interval = 2000 / animationState.speed; 
 
     // Update play button UI
     const playBtn = document.querySelector('.timeline-play-btn');
@@ -1376,15 +1295,12 @@ console.log('GoodsType.js loaded');
     }
   }
 
-  // 修改更新年份函数，减少闪烁
   function updateYear(value) {
     state.currentYear = +value;
     
-    // 更新UI元素
     requestAnimationFrame(() => {
         document.getElementById('goods-year-label').textContent = value;
         
-        // 更新时间轴UI
         document.querySelectorAll('.year-dot').forEach(dot => {
             dot.classList.toggle('active', +dot.dataset.year === state.currentYear);
         });
@@ -1392,13 +1308,11 @@ console.log('GoodsType.js loaded');
             `${((state.currentYear - 2016) / (2024 - 2016)) * 100}%`;
     });
 
-    // 使用Promise来处理数据更新，但不更新趋势图
     return new Promise((resolve) => {
         updateVisualizationsExceptTrend().then(resolve);
     });
   }
 
-  // 新增一个不更新趋势图的可视化更新函数
   async function updateVisualizationsExceptTrend() {
     try {
         const sitcData = await loadSitcData(state.currentType);
@@ -1406,7 +1320,6 @@ console.log('GoodsType.js loaded');
 
         lastLoadedData = sitcData;
         
-        // 只更新地图和国家排名图表
         await Promise.all([
             updateMapData(sitcData),
             new Promise(resolve => {
@@ -1446,12 +1359,11 @@ console.log('GoodsType.js loaded');
       zoom: 1.5
     },
     europe: {
-      center: [10, 50],  // 稍微向西和向北调整中心点
-      zoom: 3.0  // 减小zoom值以显示更大范围
+      center: [10, 50],
+      zoom: 3.0
     }
   };
 
-  // 更新颜色方案
   const COLOR_SCHEME = {
     'EU - Exports': {
       border: 'rgb(25, 118, 210)',
@@ -1486,17 +1398,13 @@ console.log('GoodsType.js loaded');
     });
   }
 
-  // 添加英国坐标常量
   const UK_COORDINATES = {
     lng: -2.5,
     lat: 54
   };
 
-  // 修改抛物线生成函数
   function createParabolicCurve(startX, startY, endX, endY) {
-    // 计算控制点，使曲线呈现抛物线形状
     const controlX = (startX + endX) / 2;
-    // 让控制点高度随距离变化，距离越远曲线越高
     const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
     const controlY = Math.min(startY, endY) - distance * 0.3;
     
@@ -1533,16 +1441,14 @@ console.log('GoodsType.js loaded');
         // Clear the map container
         mapDiv.innerHTML = '';
         
-        // 确保地图容器是可见的
         mapDiv.style.display = 'block';
         mapDiv.style.height = '100%';
         mapDiv.style.width = '100%';
-        mapDiv.style.minHeight = '400px'; // 添加最小高度
+        mapDiv.style.minHeight = '400px';
         mapDiv.style.position = 'relative';
         mapDiv.style.overflow = 'hidden';
-        mapDiv.style.marginLeft = '70px'; // 70px 可根据iconBar宽度微调
+        mapDiv.style.marginLeft = '70px';
         
-        // 创建SITC图标栏
         createSitcIconBar();
         
         window.currentMapInstance = new mapboxgl.Map({
@@ -1558,7 +1464,6 @@ console.log('GoodsType.js loaded');
 
         state.currentMap = window.currentMapInstance;
         
-        // 添加加载提示和动画样式
         const loadingStyles = document.createElement('style');
         loadingStyles.textContent = `
             .mapboxgl-missing-css {
@@ -1587,10 +1492,9 @@ console.log('GoodsType.js loaded');
             }
 
             .mapboxgl-map .mapboxgl-canvas-container {
-                opacity: 1; /* 确保立即可见 */
+                opacity: 1; 
             }
             
-            /* 隐藏其他mapbox控件 */
             .mapboxgl-map .mapboxgl-ctrl-group button,
             .mapboxgl-map .mapboxgl-ctrl-attrib {
                 display: none !important;
@@ -1604,13 +1508,11 @@ console.log('GoodsType.js loaded');
                 width: 100% !important;
             }
             
-            /* 确保SVG元素正确渲染 */
             #goods-map svg path, #goods-map svg circle {
                 stroke-width: 2px;
                 vector-effect: non-scaling-stroke;
             }
             
-            /* 修复负值宽高问题 */
             #goods-map svg rect {
                 width: 100% !important; 
                 height: 100% !important;
@@ -1620,9 +1522,7 @@ console.log('GoodsType.js loaded');
         `;
         document.head.appendChild(loadingStyles);
         
-        // 等待样式加载完成
         state.currentMap.on('style.load', () => {
-            // 样式加载完成后触发淡出动画
             const errorMessages = document.querySelectorAll('.mapboxgl-missing-css');
             errorMessages.forEach(msg => {
                 msg.style.animation = 'fadeOutMessage 0.5s ease-out forwards';
@@ -1636,41 +1536,34 @@ console.log('GoodsType.js loaded');
                 animateMapTo(state.currentMap, MAP_VIEWS.europe);
             }, 1000);
             
-            // 确保在样式加载完成后再更新可视化
             if (state.currentMap.loaded() && state.currentMap.isStyleLoaded()) {
                 updateVisualizationsExceptTrend();
                 
-                // 手动触发地图重绘
                 state.currentMap.resize();
                 console.log("Map style loaded and visualization updated");
             } else {
                 state.currentMap.once('load', () => {
                     updateVisualizationsExceptTrend();
                     
-                    // 手动触发地图重绘
                     state.currentMap.resize();
                     console.log("Map loaded and visualization updated");
                 });
             }
         });
 
-        // 确保地图容器可见
         state.currentMap.once('load', () => {
             console.log("Mapbox map loaded successfully");
             
-            // 手动移除display:none样式
             const mapCanvas = document.querySelector('.mapboxgl-canvas');
             if (mapCanvas) {
                 mapCanvas.style.display = 'block';
             }
             
-            // 手动触发resize事件
             setTimeout(() => {
                 state.currentMap.resize();
             }, 100);
         });
         
-        // 修复SVG元素中的负值错误
         setTimeout(() => {
             const svgRects = document.querySelectorAll('#goods-map svg rect');
             svgRects.forEach(rect => {
@@ -1689,7 +1582,6 @@ console.log('GoodsType.js loaded');
             });
         }, 500);
 
-        // 添加SVG容器
         const svgContainer = document.createElement('div');
         svgContainer.style.cssText = `
             position: absolute;
@@ -1717,14 +1609,12 @@ console.log('GoodsType.js loaded');
         `;
         mapDiv.appendChild(svgContainer);
 
-        // 修改地图事件处理
         state.currentMap.on('mousemove', 'country-fills', (e) => {
             if (!e.features.length) return;
             
             const feature = e.features[0];
             if (!feature || !feature.geometry) return;
 
-            // 更新悬停状态
             if (state.hoveredFeatureId !== null) {
                 try {
                     state.currentMap.setFeatureState(
@@ -1746,22 +1636,17 @@ console.log('GoodsType.js loaded');
                 console.warn('Error setting hover state:', err);
             }
 
-            // 获取国家中心点
             try {
                 const bounds = new mapboxgl.LngLatBounds();
                 if (feature.geometry.type === 'Polygon') {
-                    // 对于单个多边形，计算所有点的边界
                     feature.geometry.coordinates[0].forEach(coord => {
                         bounds.extend(coord);
                     });
                 } else if (feature.geometry.type === 'MultiPolygon') {
-                    // 对于多个多边形（如法国包含海外领地），只使用主要部分
-                    // 找到最大的多边形（通常是主要领土）
                     let maxArea = 0;
                     let mainPolygon = feature.geometry.coordinates[0];
                     
                     feature.geometry.coordinates.forEach(polygon => {
-                        // 计算多边形的近似面积
                         let area = 0;
                         polygon[0].forEach((coord, i) => {
                             const j = (i + 1) % polygon[0].length;
@@ -1775,7 +1660,6 @@ console.log('GoodsType.js loaded');
                         }
                     });
                     
-                    // 只使用主要多边形的坐标
                     mainPolygon[0].forEach(coord => {
                         bounds.extend(coord);
                     });
@@ -1784,19 +1668,15 @@ console.log('GoodsType.js loaded');
                 const center = bounds.getCenter();
                 if (!center || isNaN(center.lng) || isNaN(center.lat)) return;
 
-                // 确保中心点在合理范围内
                 if (center.lng < -180 || center.lng > 180 || center.lat < -90 || center.lat > 90) return;
 
-                // 将两个地理坐标点转换为屏幕坐标
                 const countryPoint = state.currentMap.project(center);
                 const ukPoint = state.currentMap.project(UK_COORDINATES);
 
-                // 验证屏幕坐标的有效性
                 if (!countryPoint || !ukPoint || 
                     isNaN(countryPoint.x) || isNaN(countryPoint.y) ||
                     isNaN(ukPoint.x) || isNaN(ukPoint.y)) return;
 
-                // 获取或创建SVG容器
                 let svgContainer = document.querySelector('.curve-animation-container');
                 if (!svgContainer) {
                     svgContainer = document.createElement('div');
@@ -1820,25 +1700,21 @@ console.log('GoodsType.js loaded');
                     document.getElementById('goods-map').appendChild(svgContainer);
                 }
 
-                // 创建抛物线路径
                 const curve = createParabolicCurve(
                     countryPoint.x, countryPoint.y,
                     ukPoint.x, ukPoint.y
                 );
 
-                // 获取SVG元素
                 const svg = svgContainer.querySelector('svg');
                 const path = svg.querySelector('#curve-path');
                 const dot = svg.querySelector('#moving-dot');
 
-                // 设置路径和动画
                 path.setAttribute('d', curve);
                 path.setAttribute('stroke', 'rgba(255, 255, 255, 0.6)');
                 path.setAttribute('stroke-width', '1.5');
                 path.setAttribute('stroke-dasharray', '4,4');
                 path.style.animation = 'dash 1s linear infinite';
 
-                // 设置移动点的样式和动画
                 dot.setAttribute('fill', 'rgba(255, 255, 255, 0.8)');
                 dot.setAttribute('r', '3');
                 dot.setAttribute('filter', 'url(#glow)');
@@ -1846,7 +1722,6 @@ console.log('GoodsType.js loaded');
                 dot.style.offsetRotate = '0deg';
                 dot.style.animation = 'moveAlongPath 2s linear infinite';
 
-                // 添加动画样式
                 const animStyle = document.createElement('style');
                 animStyle.textContent = `
                     @keyframes dash {
@@ -1878,7 +1753,6 @@ console.log('GoodsType.js loaded');
                 `;
                 document.head.appendChild(animStyle);
 
-                // 显示弹出框
                 if (!state.popup) {
                     state.popup = new mapboxgl.Popup({
                         closeButton: false,
@@ -1907,7 +1781,6 @@ console.log('GoodsType.js loaded');
         });
 
         state.currentMap.on('mouseleave', 'country-fills', () => {
-            // 清除悬停状态
             if (state.hoveredFeatureId !== null) {
                 try {
                     state.currentMap.setFeatureState(
@@ -1920,13 +1793,11 @@ console.log('GoodsType.js loaded');
             }
             state.hoveredFeatureId = null;
 
-            // 移除抛物线动画
             const path = document.querySelector('#curve-path');
             const dot = document.querySelector('#moving-dot');
             if (path) path.setAttribute('stroke', 'none');
             if (dot) dot.setAttribute('fill', 'none');
 
-            // 移除弹出框
             if (state.popup) {
                 try {
                     state.popup.remove();
@@ -1938,31 +1809,8 @@ console.log('GoodsType.js loaded');
 
         state.currentMap.on('load', () => {
             console.log('Map fully loaded, checking animation state');
-            
-            // 不再触发第二阶段动画
-            /*
-            // 检查是否需要触发第二阶段动画
-            if (window.sitcIconsMovedToSummary && !window.sitcSecondPhaseStarted) {
-                console.log('First phase already completed, trying to start second phase');
-                
-                // 查找飞行图标容器
-                const flyingContainer = document.querySelector('.flying-sitc-icons-container');
-                if (flyingContainer) {
-                    console.log('Found flying container, setting up second phase animation');
-                    setupSecondPhaseAnimation(flyingContainer);
-                } else {
-                    console.warn('No flying container found for second phase animation');
-                }
-            } else {
-                console.log('Animation state not ready for second phase:', {
-                    sitcIconsMovedToSummary: window.sitcIconsMovedToSummary,
-                    sitcSecondPhaseStarted: window.sitcSecondPhaseStarted
-                });
-            }
-            */
         });
 
-        // 添加鼠标事件处理
         state.currentMap.on('mousemove', 'country-fills', (e) => {
             if (e.features.length > 0) {
                 const feature = e.features[0];
@@ -1988,7 +1836,6 @@ console.log('GoodsType.js loaded');
                     console.warn('Error setting hover state:', err);
                 }
 
-                // 确保popup存在
                 if (!state.popup) {
                     state.popup = new mapboxgl.Popup({
                         closeButton: false,
@@ -1997,7 +1844,6 @@ console.log('GoodsType.js loaded');
                     });
                 }
 
-                // 显示弹出框
                 const value = feature.properties.value;
                 try {
                     state.popup
@@ -2028,7 +1874,6 @@ console.log('GoodsType.js loaded');
             }
             state.hoveredFeatureId = null;
             
-            // 安全地移除popup
             if (state.popup) {
                 try {
                     state.popup.remove();
@@ -2038,7 +1883,6 @@ console.log('GoodsType.js loaded');
             }
         });
 
-        // 修改点击事件处理
         state.currentMap.on('click', 'country-fills', (e) => {
             if (e.features.length > 0) {
                 const feature = e.features[0];
@@ -2075,24 +1919,19 @@ console.log('GoodsType.js loaded');
     }
   }
 
-  // 添加图表实例存储
   let countriesChart = null;
   let trendChart = null;
   let selectedCountry = null;
   
-  // 初始化图表
   function initializeCharts() {
-    // 初始化图表
     const container = document.getElementById('country-trend-container');
     if (container) {
-        // 添加提示文本和图表canvas
         container.innerHTML = `
             <div class="no-country-selected">Click a country on the map to view its trend</div>
             <canvas id="country-trend-chart" style="display: none;"></canvas>
         `;
     }
     
-    // 初始化图表实例
     countriesChart = null;
     trendChart = null;
     selectedCountry = null;
@@ -2156,13 +1995,11 @@ console.log('GoodsType.js loaded');
     const container = document.getElementById('country-trend-container');
     if (!ctx || !container) return;
     
-    // 重置容器内容
     container.innerHTML = `
         <div class="no-country-selected">Click a country on the map to view its trade trend</div>
         <canvas id="country-trend-chart" style="display: none;"></canvas>
     `;
     
-    // 获取新创建的 canvas
     const canvas = document.getElementById('country-trend-chart');
     
     if (state.trendChart) {
@@ -2243,7 +2080,6 @@ console.log('GoodsType.js loaded');
     const canvas = document.getElementById('country-trend-chart');
     const noCountryMessage = document.querySelector('.no-country-selected');
     
-    // 添加清理国家名称的函数
     const cleanCountryName = (name) => {
         if (name.includes('\u9983') || name.includes('\u657b') || name.includes('\u9e7f')) {
             return 'Confidential Country';
@@ -2254,17 +2090,14 @@ console.log('GoodsType.js loaded');
         return name;
     };
 
-    // 清理选中的国家名称
     const cleanedSelectedCountry = cleanCountryName(state.selectedCountry);
     
-    // 显示趋势图，隐藏提示信息
     if (canvas) {
         canvas.style.display = 'block';
         canvas.classList.add('trend-chart-animation');
         noCountryMessage.style.display = 'none';
     }
 
-    // 为每个流向类型获取数据
     const datasets = flowTypes.map((flowType, index) => {
         const data = years.map(year => {
             const yearData = sitcData.data.find(d => d.year === year && d.flow_type === flowType);
@@ -2280,7 +2113,6 @@ console.log('GoodsType.js loaded');
         };
     });
 
-    // 更新图表标题和数据
     state.trendChart.data.datasets = datasets;
     state.trendChart.options.plugins.title = {
         display: true,
@@ -2292,14 +2124,12 @@ console.log('GoodsType.js loaded');
         }
     };
 
-    // 恢复动画
     state.trendChart.options.animation = {
         duration: 1500,
         easing: 'easeOutQuart'
     };
     state.trendChart.update();
 
-    // 移除动画类
     setTimeout(() => {
         if (canvas) {
             canvas.classList.remove('trend-chart-animation');
@@ -2307,13 +2137,11 @@ console.log('GoodsType.js loaded');
     }, 1200);
   }
 
-  // 添加数据缓存
   let lastLoadedData = null;
 
-  // 修改地图更新函数
   async function updateMapData(sitcData) {
     if (!state.currentMap) return;
-    state.currentSitcData = sitcData;  // 保存当前数据以供趋势图使用
+    state.currentSitcData = sitcData; 
     
     const mapDiv = document.querySelector('.goods-type-detail-map');
     if (!mapDiv) return;
@@ -2322,7 +2150,6 @@ console.log('GoodsType.js loaded');
     let isUpdating = true;
 
     try {
-        // 添加清理国家名称的函数
         const cleanCountryName = (name) => {
             if (name.includes('\u9983') || name.includes('\u657b') || name.includes('\u9e7f')) {
                 return 'Confidential Country';
@@ -2333,7 +2160,6 @@ console.log('GoodsType.js loaded');
             return name;
         };
 
-        // 找到当前年份和流向的数据
         const currentData = sitcData.data.find(d => 
             d.year === state.currentYear && 
             d.flow_type === state.currentFlow
@@ -2341,7 +2167,6 @@ console.log('GoodsType.js loaded');
         
         if (!currentData || !currentData.countries || currentData.countries.length === 0) {
             console.warn(`No data available for year ${state.currentYear} and flow type ${state.currentFlow}`);
-            // 清除地图上的数据而不是显示错误
             if (state.currentMap.getSource('countries')) {
                 state.currentMap.getSource('countries').setData({
                     type: 'FeatureCollection',
@@ -2358,14 +2183,12 @@ console.log('GoodsType.js loaded');
             return;
         }
         
-        // 创建国家值的查找表，同时清理国家名称
         const countryValues = {};
         currentData.countries.forEach(item => {
             const cleanedName = cleanCountryName(item.Country);
             countryValues[cleanedName] = Number(item['Value (￡)']);
         });
         
-        // 计算有效值的范围
         const values = Object.values(countryValues).filter(v => v > 0);
         if (values.length === 0) {
             console.warn('No valid trade values found for the current selection');
@@ -2375,25 +2198,21 @@ console.log('GoodsType.js loaded');
         const maxValue = Math.max(...values);
         const minValue = Math.min(...values);
         
-        // 更新计算颜色的逻辑
         const getMapColor = (value, maxValue, minValue) => {
             if (value <= 0) return 'rgba(0, 0, 0, 0.1)';
             
-            // 使用指数函数来增强对比度
             const normalizedValue = Math.pow(
                 (Math.log(value + 1) - Math.log(minValue + 1)) / 
                 (Math.log(maxValue + 1) - Math.log(minValue + 1)),
-                0.5  // 指数小于1会增强低值区域的差异
+                0.5
             );
             
             const baseColor = state.currentFlow.includes('Non EU') ? 
                 COLOR_SCHEME['Non EU - Exports'].map :
                 COLOR_SCHEME['EU - Exports'].map;
             
-            // 扩大透明度范围，增加最小透明度
-            const alpha = 0.3 + normalizedValue * 0.7;  // 透明度范围从0.3到1.0
+            const alpha = 0.3 + normalizedValue * 0.7;
             
-            // 同时调整颜色饱和度
             const hslColor = state.currentFlow.includes('Non EU') ?
                 `hsla(0, ${60 + normalizedValue * 40}%, ${40 + normalizedValue * 30}%, ${alpha})` :
                 `hsla(210, ${60 + normalizedValue * 40}%, ${40 + normalizedValue * 30}%, ${alpha})`;
@@ -2401,10 +2220,9 @@ console.log('GoodsType.js loaded');
             return hslColor;
         };
 
-        // 更新地图特征
         const updatedFeatures = geoData.features.map((feature, index) => ({
             ...feature,
-            id: index,  // 使用索引作为ID
+            id: index,
             properties: {
                 ...feature.properties,
                 value: countryValues[feature.properties.name] || 0,
@@ -2416,14 +2234,12 @@ console.log('GoodsType.js loaded');
             }
         }));
         
-        // 修改地图图层样式
         if (state.currentMap.getSource('countries')) {
             state.currentMap.getSource('countries').setData({
                 type: 'FeatureCollection',
                 features: updatedFeatures
             });
         } else {
-            // 初始化地图图层
             state.currentMap.addSource('countries', {
                 type: 'geojson',
                 generateId: true,
@@ -2433,14 +2249,12 @@ console.log('GoodsType.js loaded');
                 }
             });
 
-            // 创建弹出框
             state.popup = new mapboxgl.Popup({
                 closeButton: false,
                 closeOnClick: false,
                 className: 'map-popup'
             });
 
-            // 修改填充图层
             state.currentMap.addLayer({
                 id: 'country-fills',
                 type: 'fill',
@@ -2458,7 +2272,6 @@ console.log('GoodsType.js loaded');
                 }
             });
 
-            // 修改边界线图层
             state.currentMap.addLayer({
                 id: 'country-borders',
                 type: 'line',
@@ -2477,7 +2290,6 @@ console.log('GoodsType.js loaded');
                 }
             });
 
-            // 添加鼠标事件处理
             state.currentMap.on('mousemove', 'country-fills', (e) => {
                 if (e.features.length > 0) {
                     const feature = e.features[0];
@@ -2503,7 +2315,6 @@ console.log('GoodsType.js loaded');
                         console.warn('Error setting hover state:', err);
                     }
 
-                    // 确保popup存在
                     if (!state.popup) {
                         state.popup = new mapboxgl.Popup({
                             closeButton: false,
@@ -2512,7 +2323,6 @@ console.log('GoodsType.js loaded');
                         });
                     }
 
-                    // 显示弹出框
                     const value = feature.properties.value;
                     try {
                         state.popup
@@ -2543,7 +2353,6 @@ console.log('GoodsType.js loaded');
                 }
                 state.hoveredFeatureId = null;
                 
-                // 安全地移除popup
                 if (state.popup) {
                     try {
                         state.popup.remove();
@@ -2553,7 +2362,6 @@ console.log('GoodsType.js loaded');
                 }
             });
 
-            // 修改点击事件处理
             state.currentMap.on('click', 'country-fills', (e) => {
                 if (e.features.length > 0) {
                     const feature = e.features[0];
@@ -2611,7 +2419,6 @@ console.log('GoodsType.js loaded');
 
     if (!currentYearData) return;
 
-    // 添加清理国家名称的函数
     const cleanCountryName = (name) => {
         if (name.includes('\u9983') || name.includes('\u657b') || name.includes('\u9e7f')) {
             return 'Confidential Country';
@@ -2639,7 +2446,6 @@ console.log('GoodsType.js loaded');
     countriesChart.data.datasets[0].backgroundColor = baseColor.background;
     countriesChart.data.datasets[0].borderColor = baseColor.border;
 
-    // 更新图表配置
     countriesChart.options.plugins.tooltip = {
         callbacks: {
             label: function(context) {
@@ -2657,7 +2463,6 @@ console.log('GoodsType.js loaded');
     countriesChart.update('none');
   }
 
-  // 修改数据加载函数，使用直接文件名而不是索引
   async function loadSitcData(sitcIndex) {
     const sitcFiles = [
       'sitc_0.json', // 0 Food & live animals
@@ -2679,23 +2484,19 @@ console.log('GoodsType.js loaded');
     
     const cacheKey = fileName;
     
-    // 检查缓存
     if (window.sitcDataCache?.[cacheKey]) {
         return window.sitcDataCache[cacheKey];
     }
     
     try {
-        // 从GitHub仓库原始文件URL直接读取
         const response = await fetch(`https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/split/${fileName}`);
         if (!response.ok) throw new Error(`Failed to load ${fileName}`);
         
         const data = await response.json();
         
-        // 验证数据是否为空
         const hasData = data.data.some(d => d.countries && d.countries.length > 0);
         if (!hasData) {
             console.error(`SITC ${sitcIndex} (${data.sitc_type}) data is empty. Please check the data file.`);
-            // 显示错误信息在页面上
             const descElement = document.getElementById('goods-type-detail-desc');
             if (descElement) {
                 descElement.innerHTML = `
@@ -2708,11 +2509,9 @@ console.log('GoodsType.js loaded');
             return null;
         }
         
-        // 初始化缓存
         if (!window.sitcDataCache) window.sitcDataCache = {};
         window.sitcDataCache[cacheKey] = data;
         
-        // 限制缓存大小
         const maxCacheSize = 3;
         const cacheKeys = Object.keys(window.sitcDataCache);
         if (cacheKeys.length > maxCacheSize) {
@@ -2726,21 +2525,17 @@ console.log('GoodsType.js loaded');
     }
   }
 
-  // 修改预加载函数
   function preloadNextSitcData() {
     const nextType = (state.currentType + 1) % sitcLabels.length;
-    loadSitcData(nextType).catch(() => {}); // 忽略预加载错误
+    loadSitcData(nextType).catch(() => {});
   }
 
-  // 修改图标点击事件处理
   function bindIconBarEvents() {
-    // 获取所有图标
     const allIcons = document.querySelectorAll('.goods-type-icon-btn');
 
-    // 为每个图标添加title属性
     allIcons.forEach(btn => {
       const typeIndex = parseInt(btn.getAttribute('data-type'));
-      btn.setAttribute('title', sitcLabels[typeIndex]); // 添加悬停提示文本
+      btn.setAttribute('title', sitcLabels[typeIndex]);
       
       btn.onclick = async () => {
         if (state.currentType === typeIndex) return;
@@ -2748,7 +2543,6 @@ console.log('GoodsType.js loaded');
         const oldType = state.currentType;
         state.currentType = typeIndex;
         
-        // 更新所有图标的状态
         allIcons.forEach(icon => {
           const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
           const isSelected = iconTypeIndex === typeIndex;
@@ -2766,26 +2560,21 @@ console.log('GoodsType.js loaded');
             stopTimelineAnimation();
           }
           
-          // 更新描述文本
           const descElement = document.getElementById('goods-type-detail-desc');
           if (descElement) {
             descElement.textContent = sitcDetailedDescriptions[typeIndex];
           }
 
-          // 加载新的SITC数据
           const sitcData = await loadSitcData(typeIndex);
           if (!sitcData) throw new Error(`Failed to load SITC ${typeIndex} data`);
           
-          // 保存当前数据到state中
           state.currentSitcData = sitcData;
           
-          // 同时更新地图和图表
           await Promise.all([
             updateMapData(sitcData),
             updateCountriesChart(sitcData)
           ]);
           
-          // 如果已经选择了国家，更新趋势图
           if (state.selectedCountry) {
             const canvas = document.getElementById('country-trend-chart');
             if (canvas) {
@@ -2803,14 +2592,11 @@ console.log('GoodsType.js loaded');
             }, 500);
           }
           
-          // 预加载下一个类型的数据
           preloadNextSitcData();
           
         } catch (error) {
           console.error('Failed to update visualizations:', error);
-          // 恢复之前的状态
           state.currentType = oldType;
-          // 恢复图标状态
           allIcons.forEach(icon => {
             const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
             const isSelected = iconTypeIndex === oldType;
@@ -2821,7 +2607,6 @@ console.log('GoodsType.js loaded');
       };
     });
 
-    // 初始化时设置当前选中状态
     allIcons.forEach(icon => {
       const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
       const isSelected = iconTypeIndex === state.currentType;
@@ -2830,46 +2615,35 @@ console.log('GoodsType.js loaded');
     });
   }
 
-  // 修改初始化加载
   async function initialize() {
     try {
-        // 首先加载CSV数据用于summary图表
         const response = await fetch(csvPath);
         const csvText = await response.text();
         const {data} = parseCSV(csvText);
         state.allData = data;
-        // 渲染intro页
         renderGoodsTypeIntro();
-        // 渲染summary部分
         renderLegend();
         renderSummaryCharts(data);
-
-        // 设置初始状态
         state.currentType = 0;
         state.currentFlow = flowTypes[0];
         state.currentYear = years[0];
 
-        // 渲染详细视图结构，但不立即加载数据
         renderDetail();
         bindIconBarEvents();
         
-        // 添加滚动监听，当用户滚动到商品类型部分时自动加载第一个物品数据
         setupScrollObserver();
         
-        // 预加载数据但不立即显示
         preloadSitcData();
     } catch (error) {
         console.error('Initialization failed:', error);
     }
   }
   
-  // 新增：预加载SITC数据但不显示
+
   async function preloadSitcData() {
     try {
-        // 预加载SITC 0数据
         const initialData = await loadSitcData(0);
         if (initialData) {
-            // 仅缓存数据，但不更新UI
             state.preloadedData = initialData;
         }
     } catch (error) {
@@ -2877,104 +2651,82 @@ console.log('GoodsType.js loaded');
     }
   }
   
-  // 修改：设置滚动观察器，进一步延迟动画触发时机
   function setupScrollObserver() {
-    // 确保全局动画标志被正确初始化
     window.sitcAnimationTriggered = window.sitcAnimationTriggered || false;
     window.sitcIconsMovedToSummary = window.sitcIconsMovedToSummary || false;
     
-    // 创建观察器来检测SITC介绍图片的可见性，调整阈值使其滚动更多才触发
     const introObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // 当SITC介绍图片完全滚过视窗，设置更高阈值
             if (entry.isIntersecting && !window.sitcAnimationTriggered) {
-                // 获取元素到视口顶部的距离
                 const rect = entry.target.getBoundingClientRect();
-                // 扩大触发区域，提高灵敏度（100px → 150px）
                 if (rect.top < 150 && rect.top > -20) {
-                // 进一步延迟触发动画，让用户看到更完整的滚动过程
                 setTimeout(() => {
                     console.log('Triggering first phase animation: intro to summary');
-                    window.sitcAnimationTriggered = true;  // 标记动画已触发，防止重复触发
+                    window.sitcAnimationTriggered = true;
                     triggerSITCIconsAnimation();
-                                  }, 100); // 适当延迟
+                }, 100);
                 }
               }
         });
-    }, { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9], rootMargin: "-10px 0px 0px 0px" });  // 增加更多阈值和微调rootMargin，提高观察灵敏度
+    }, { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9], rootMargin: "-10px 0px 0px 0px" });
     
-    // 开始观察SITC图标行
     const sitcIconsRow = document.querySelector('#goods-type-intro .sitc-icons-row');
     if (sitcIconsRow) {
         introObserver.observe(sitcIconsRow);
     }
     
-    // 创建观察器来检测商品类型部分的可见性
     const detailObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // 当商品类型部分进入视窗
             if (entry.isIntersecting && !state.dataLoaded) {
-                state.dataLoaded = true;  // 标记数据已加载，防止重复加载
+                state.dataLoaded = true;
                 
-                // 加载并显示第一个物品数据
                 loadInitialData();
                 
-                // 增强备用方案灵敏度，确保动画能被触发
                 if (!window.sitcAnimationTriggered) {
                     setTimeout(() => {
                         console.log('Triggering first phase animation (backup): intro to summary');
                         window.sitcAnimationTriggered = true;
                         triggerSITCIconsAnimation();
-                    }, 800); // 减少延迟，提高响应速度
+                    }, 800);
                 }
                 
-                // 完成后取消观察
                 detailObserver.disconnect();
             }
         });
-    }, { threshold: 0.4 });  // 增加阈值，从0.3改为0.4
+    }, { threshold: 0.4 });
     
-    // 开始观察商品类型详情容器
     const detailContainer = document.getElementById('goods-type-detail-container');
     if (detailContainer) {
         detailObserver.observe(detailContainer);
     }
   }
   
-  // 新增：加载初始数据
   async function loadInitialData() {
     try {
         let sitcData;
         
-        // 如果有预加载的数据，直接使用
         if (state.preloadedData) {
             sitcData = state.preloadedData;
             console.log('Using preloaded data for initial display');
         } else {
-            // 否则加载第一个SITC类型的数据
             sitcData = await loadSitcData(0);
             if (!sitcData) throw new Error('Failed to load initial data');
         }
         
-        // 保存当前数据到state中
         state.currentSitcData = sitcData;
         
-        // 更新图标状态
         updateCurrentIcon(0);
         
-        // 更新描述文本
         const descElement = document.getElementById('goods-type-detail-desc');
         if (descElement) {
             descElement.textContent = sitcDescriptions[0];
         }
         
-        // 更新地图和国家排名图表
         await Promise.all([
             updateMapData(sitcData),
             updateCountriesChart(sitcData)
         ]);
         
-        // 预加载下一个类型的数据
         preloadNextSitcData();
 
         // Auto-start the timeline animation after data is loaded
@@ -2987,16 +2739,13 @@ console.log('GoodsType.js loaded');
     }
   }
 
-  // 启动初始化
   initialize();
 
   const MAPBOX_TOKEN = 'pk.eyJ1IjoieWl4aW5nLWxpIiwiYSI6ImNtN3FtNWh6YjA0ancybnM4aGxjZnlheTEifQ.sKwaoIMQR65VQmYDbnu2MQ';
   const MAPBOX_STYLE = 'mapbox://styles/yixing-li/cmaa8uo1j00j001sgc3051vxu';
 
-  // 添加样式
   const style = document.createElement('style');
   style.textContent = `
-      /* 图标基础样式 */
       .goods-type-icon-btn {
           background-color: #1e2832 !important;
           border: 2px solid rgba(255, 255, 255, 0.2) !important;
@@ -3010,23 +2759,20 @@ console.log('GoodsType.js loaded');
           cursor: pointer;
           padding: 0;
           outline: none;
-          margin-left: -10px !important;  /* 添加负的左边距使图标更靠左 */
+          margin-left: -10px !important;
       }
 
-      /* 图标容器样式 */
       .goods-type-icons-row {
           padding-left: 0 !important;
-          margin-left: -100px !important;  /* 从-80px改为-100px，使图标更靠左 */
+          margin-left: -100px !important;
           z-index: 100;
       }
 
-      /* 详情区域布局调整 */
       #goods-type-detail-container {
           padding-left: 0 !important;
-          margin-left: -100px !important;  /* 相应调整详情区域 */
+          margin-left: -100px !important;
       }
 
-      /* 图标tooltip样式 */
       .goods-type-icon-btn::before {
           content: attr(title);
           position: absolute;
@@ -3050,7 +2796,6 @@ console.log('GoodsType.js loaded');
           opacity: 1;
       }
 
-      /* 当前选中的图标样式 - 使用更高优先级 */
       .goods-type-icon-btn[data-selected="true"] {
           background-color: rgb(33, 150, 243) !important;
           border-color: rgb(33, 150, 243) !important;
@@ -3058,19 +2803,17 @@ console.log('GoodsType.js loaded');
           transform: translateX(5px) !important;
       }
 
-      /* 悬停效果 */
       .goods-type-icon-btn:hover {
           background-color: rgba(33, 150, 243, 0.2) !important;
           border-color: rgba(33, 150, 243, 0.5) !important;
       }
 
-      /* 地图容器调整 */
       .goods-type-detail-map {
           position: relative;
           z-index: 1;
-          margin-left: -20px !important;  /* 增加负边距，使地图左侧缩进更多 */
-          padding-left: 0 !important;     /* 确保没有额外的内边距 */
-          width: 78% !important;          /* 稍微减小宽度比例 */
+          margin-left: -20px !important;
+          padding-left: 0 !important;
+          width: 78% !important;
       }
 
       .mapboxgl-canvas {
@@ -3081,7 +2824,6 @@ console.log('GoodsType.js loaded');
           z-index: 2;
       }
 
-      /* 趋势图动画 */
       .trend-chart-animation {
           animation: fadeInSlideUp 1.2s ease-out;
       }
@@ -3097,10 +2839,9 @@ console.log('GoodsType.js loaded');
           }
       }
 
-      /* Summary 图表样式 */
       .goods-type-section {
-          margin-bottom: 120px !important;  /* 增加第一页和第二页之间的间距 */
-          padding-bottom: 50px !important;  /* 添加内边距 */
+          margin-bottom: 120px !important;
+          padding-bottom: 50px !important;
       }
 
       .goods-summary-chart-block {
@@ -3245,36 +2986,31 @@ console.log('GoodsType.js loaded');
         letter-spacing: 2px !important;
       }
 
-      /* 如果你想要一个更大的地图 */
       .goods-type-detail-map {
-          min-width: 1000px !important;  /* 增加最小宽度 */
-          min-height: 600px !important;  /* 增加最小高度 */
-          width: 80% !important;         /* 增加宽度百分比 */
-          height: 600px !important;      /* 增加高度 */
+          min-width: 1000px !important;
+          min-height: 600px !important;
+          width: 80% !important;
+          height: 600px !important;
       }
 
-      /* 移动设备上的响应式调整 */
       @media (max-width: 900px) {
           .goods-type-detail-map {
               width: 100vw !important;
               min-width: 0 !important;
-              height: 420px !important;     /* 从450px减小到420px */
-              min-height: 320px !important; /* 从350px减小到320px */
-              max-height: 470px !important; /* 从500px减小到470px */
+              height: 420px !important;
+              min-height: 320px !important;
+              max-height: 470px !important;
           }
       }
   `;
   document.head.appendChild(style);
 
-  // 在goodstype最前面插入intro页
   function renderGoodsTypeIntro() {
     if (document.getElementById('goods-type-intro')) return;
     const mainWrap = document.querySelector('.goods-type-section') || document.body;
-    // 创建intro外层
     const introDiv = document.createElement('div');
     introDiv.id = 'goods-type-intro';
     introDiv.style.cssText = 'max-width:1200px;min-height:480px;margin:0 auto 96px auto;padding:0 0 18px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;';
-    // SITC1简介
     const introText = document.createElement('div');
     introText.className = 'goods-type-intro-text';
     introText.innerHTML = `
@@ -3291,7 +3027,6 @@ console.log('GoodsType.js loaded');
         </div>
       </div>
       
-      <!-- SITC图标行 -->
       <div class=\"sitc-icons-row fadein-block\" style=\"margin:50px auto 40px auto;\">
         <button class=\"sitc-icon-btn\" data-sitc=\"0\" title=\"Food & live animals\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/0-Food-and-live-animals.png\" alt=\"Food & live animals\"></button>
         <button class=\"sitc-icon-btn\" data-sitc=\"1\" title=\"Beverages & tobacco\"><img src=\"https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/1-Beverages-and-tobacco.png\" alt=\"Beverages & tobacco\"></button>
@@ -3305,15 +3040,12 @@ console.log('GoodsType.js loaded');
       </div>
     `;
     introDiv.appendChild(introText);
-    // 图片卡片区
     const carousel = document.createElement('div');
     carousel.className = 'goods-type-carousel fadein-block';
     carousel.style.cssText = 'display:flex;gap:0;justify-content:center;align-items:flex-end;margin-bottom:38px;overflow-x:auto;max-width:100%;';
-    // 介绍区
     const descDiv = document.createElement('div');
     descDiv.className = 'goods-type-desc fadein-block';
     descDiv.style.cssText = 'min-height:90px;text-align:center;max-width:700px;margin:0 auto 0 auto;font-size:1.05em;color:#fff;line-height:1.7;transition:all 0.5s;';
-    // 当前选中
     let selected = 0;
     function updateDesc(idx) {
       descDiv.innerHTML = `<h4 style=\"font-size:1.05em;font-weight:700;margin-bottom:8px;letter-spacing:1px;color:#4fc3f7;\">${sitcLabels[idx]}</h4><div style=\"font-size:1.05em;font-weight:400;color:#fff;\">${sitcDescriptions[idx]}</div>`;
@@ -3335,7 +3067,6 @@ console.log('GoodsType.js loaded');
         }
       });
     }
-    // 生成10个卡片
     for (let i = 0; i < 10; i++) {
       const card = document.createElement('div');
       card.className = 'goods-type-card';
@@ -3347,9 +3078,7 @@ console.log('GoodsType.js loaded');
     }
     introDiv.appendChild(carousel);
     introDiv.appendChild(descDiv);
-    // 插入到goodstype最前面
     mainWrap.parentNode.insertBefore(introDiv, mainWrap);
-    // 初始高亮和描述
     function updateDesc(index) {
       const descDiv = document.querySelector('.goods-type-desc');
       if (descDiv) {
@@ -3357,7 +3086,6 @@ console.log('GoodsType.js loaded');
       }
     }
     updateDesc(0);
-    // intro样式
     const style = document.createElement('style');
     style.textContent = `
       #goods-type-intro {box-sizing:border-box;}
@@ -3496,12 +3224,10 @@ console.log('GoodsType.js loaded');
         .goods-type-desc {font-size:16px;}
       }
       
-      /* 动画样式 */
       .fadein-block {opacity:0;transform:translateY(40px);transition:opacity 0.6s cubic-bezier(.4,0,.2,1),transform 0.6s cubic-bezier(.4,0,.2,1);}
       .fadein-block.visible {opacity:1;transform:translateY(0);}
     `;
     document.head.appendChild(style);
-    // 数字标签样式
     const numStyle = document.createElement('style');
     numStyle.textContent = `
       .goods-type-card-num {
@@ -3520,11 +3246,8 @@ console.log('GoodsType.js loaded');
       }
     `;
     document.head.appendChild(numStyle);
-    // 动画：滚动出现
     setTimeout(()=>{
       const fadeBlocks = introDiv.querySelectorAll('.fadein-block');
-      // fadeBlocks: [0]=过渡文字, [1]=SITC介绍段落, [2]=图标行, [3]=carousel, [4]=descDiv
-      // 让carousel和descDiv同时出现
       const stagger = 0.28;
       const fastStagger = 0.18;
       fadeBlocks.forEach((el, i) => {
@@ -3545,34 +3268,27 @@ console.log('GoodsType.js loaded');
       }, {threshold: 0.12});
       fadeBlocks.forEach(el => observer.observe(el));
       
-      // 添加SITC图标点击事件
       const sitcIcons = introDiv.querySelectorAll('.sitc-icon-btn');
       sitcIcons.forEach(icon => {
         icon.addEventListener('click', function() {
-          // 获取SITC索引
           const sitcIndex = parseInt(this.getAttribute('data-sitc'));
-          // 更新卡片选择和描述
           updateDesc(sitcIndex);
-          // 滚动到相应的卡片
           scrollToCard(sitcIndex);
         });
       });
     }, 100);
   }
 
-  // 自动轮播功能
   let autoScrollTimer = null;
   let autoScrollPaused = false;
   let autoScrollResumeTimer = null;
   
   function scrollToCard(idx) {
-    // 找到当前页面上的carousel
     const carousel = document.querySelector('.goods-type-carousel');
     if (!carousel) return;
     
     const card = carousel.children[idx];
     if (card && card.scrollIntoView) {
-      // 兼容性处理
       try {
         card.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
       } catch(e) {
@@ -3582,23 +3298,20 @@ console.log('GoodsType.js loaded');
   }
 
   function startAutoScroll() {
-    // 确保页面上已有carousel
     const carousel = document.querySelector('.goods-type-carousel');
     if (!carousel) return;
     
-    let selected = 0; // 默认值
+    let selected = 0;
     if (autoScrollTimer) clearInterval(autoScrollTimer);
     autoScrollTimer = setInterval(() => {
       if (!autoScrollPaused) {
         selected = (selected + 1) % 10;
-        // 使用函数内定义的selected变量
         updateDescFromOutside(selected);
         scrollToCard(selected);
       }
     }, 2800);
   }
   
-  // 外部使用的更新描述函数
   function updateDescFromOutside(idx) {
     const carousel = document.querySelector('.goods-type-carousel');
     const descDiv = document.querySelector('.goods-type-desc');
@@ -3630,7 +3343,7 @@ console.log('GoodsType.js loaded');
     if (tempPause) {
       autoScrollResumeTimer = setTimeout(() => {
         autoScrollPaused = false;
-      }, 10000); // 10秒后恢复
+      }, 10000);
     }
   }
 
@@ -3640,13 +3353,10 @@ console.log('GoodsType.js loaded');
     autoScrollPaused = true;
   }
 
-  // 添加一个DOMContentLoaded事件监听器，确保在DOM完全加载后再附加事件监听器
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
-      // 查找carousel和cards
       const carousel = document.querySelector('.goods-type-carousel');
       if (carousel) {
-        // 用户交互时暂停自动轮播
         carousel.addEventListener('mouseenter', () => pauseAutoScroll());
         carousel.addEventListener('mouseleave', () => pauseAutoScroll(false));
         Array.from(carousel.children).forEach((card, idx) => {
@@ -3657,21 +3367,16 @@ console.log('GoodsType.js loaded');
           });
         });
         
-        // 启动自动轮播
         startAutoScroll();
       }
-    }, 1000); // 给DOM一点时间加载
+    }, 1000);
   });
 
-  // 新增：SITC图标飞行动画函数
   function triggerSITCIconsAnimation() {
-    // 获取intro页面的SITC图标
     const introIcons = document.querySelectorAll('#goods-type-intro .sitc-icon-btn');
     if (!introIcons || introIcons.length === 0) return;
     
-    // 删除提示框代码，不再显示"Moving icons to summary"提示
     /*
-    // 在屏幕中央显示阶段提示
     const phaseIndicator = document.createElement('div');
     phaseIndicator.className = 'animation-phase-indicator';
     phaseIndicator.textContent = 'Moving icons to summary';
@@ -3693,11 +3398,11 @@ console.log('GoodsType.js loaded');
     `;
     document.body.appendChild(phaseIndicator);
     
-    // 显示提示
+    
     setTimeout(() => {
       phaseIndicator.style.opacity = '1';
       
-      // 隐藏提示
+      
       setTimeout(() => {
         phaseIndicator.style.opacity = '0';
         setTimeout(() => phaseIndicator.remove(), 500);
@@ -3705,7 +3410,6 @@ console.log('GoodsType.js loaded');
     }, 10);
     */
     
-    // 创建固定在视窗中的图标容器 - 修改为fixed定位，跟随视口
     const flyingIconsContainer = document.createElement('div');
     flyingIconsContainer.className = 'flying-sitc-icons-container';
     flyingIconsContainer.style.cssText = `
@@ -3719,42 +3423,31 @@ console.log('GoodsType.js loaded');
     `;
     document.body.appendChild(flyingIconsContainer);
     
-    // 创建一个标志来记录图标是否已经移动到summary页
     window.sitcIconsMovedToSummary = false;
     
-    // 创建向下流动的路径点
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     
-    // 获取summary页面的图例位置
     const summaryLegendIcons = document.querySelectorAll('.goods-summary-legend-item');
     
-    // 检查summary图例是否存在
     if (!summaryLegendIcons || summaryLegendIcons.length === 0) {
       console.warn('Summary legend items not found, using default animation');
-      // 使用默认的动画路径
       performDefaultAnimation();
       return;
     }
     
-    // 存储各个图标的引用以便后续更新位置
     const flyingIcons = [];
     const iconTargets = [];
     
-    // 添加滚动事件监听器来更新图标位置
     const updateIconPositions = () => {
-      // 对每个飞行中的图标进行位置更新
       flyingIcons.forEach((icon, idx) => {
-        // 如果该图标还没有完成动画（透明度不为0）
         if (icon.style.opacity !== '0') {
           const target = iconTargets[idx];
           if (target && target.summaryTarget) {
-            // 获取最新的目标位置
             const summaryTarget = target.summaryTarget;
             const summaryIconContainer = summaryTarget.querySelector('.summary-sitc-icon-container');
             const summaryIcon = summaryTarget.querySelector('.summary-sitc-icon');
             
-            // 获取更新后的rect
             let updatedRect;
             if (summaryIcon) {
               updatedRect = summaryIcon.getBoundingClientRect();
@@ -3764,11 +3457,8 @@ console.log('GoodsType.js loaded');
               updatedRect = summaryTarget.getBoundingClientRect();
             }
             
-            // 如果图标已经很接近目标或者处于动画最后阶段
             if (icon.classList.contains('near-target')) {
-              // 设置图标大小为目标图标大小
               const iconSize = Math.min(updatedRect.width, updatedRect.height);
-              // 精确定位到图标中心
               icon.style.top = `${updatedRect.top + (updatedRect.height - iconSize) / 2}px`;
               icon.style.left = `${updatedRect.left + (updatedRect.width - iconSize) / 2}px`;
             }
@@ -3777,19 +3467,15 @@ console.log('GoodsType.js loaded');
       });
     };
     
-    // 添加滚动监听器
     window.addEventListener('scroll', debounce(updateIconPositions, 10), { passive: true });
     
-    // 执行第一阶段动画：移动到summary页图例
     introIcons.forEach((icon, index) => {
-      if (index >= 9) return; // 只处理前9个图标
+      if (index >= 9) return;
       
-      // 获取原始图标的位置
       const iconRect = icon.getBoundingClientRect();
       const img = icon.querySelector('img');
       if (!img) return;
       
-      // 创建飞行图标
       const flyingIcon = document.createElement('div');
       flyingIcon.className = 'flying-sitc-icon';
       flyingIcon.setAttribute('data-sitc-index', index);
@@ -3809,26 +3495,21 @@ console.log('GoodsType.js loaded');
       flyingIconsContainer.appendChild(flyingIcon);
       flyingIcons.push(flyingIcon);
       
-      // 找到对应的summary图例项
       const summaryTarget = summaryLegendIcons[index];
       iconTargets.push({ 
         summaryTarget,
         originalIconRect: iconRect 
       });
       
-      // 每个图标的延迟时间 - 更加有序的顺序延迟，增加间隔时间
-      const startDelay = index * 100; // 降低延迟从400ms到300ms
+      const startDelay = index * 100;
       
-      // 第一阶段：移动到summary页的图例
       setTimeout(() => {
-        // 显示图标
         flyingIcon.style.opacity = '1';
         
         if (!summaryTarget) return;
         
         const summaryIconContainer = summaryTarget.querySelector('.summary-sitc-icon-container');
         const summaryIcon = summaryTarget.querySelector('.summary-sitc-icon');
-        // 获取更精确的目标位置 - 优先使用icon图片的位置
         let targetRect;
         if (summaryIcon) {
           targetRect = summaryIcon.getBoundingClientRect();
@@ -3838,148 +3519,113 @@ console.log('GoodsType.js loaded');
           targetRect = summaryTarget.getBoundingClientRect();
         }
         
-        // 创建中间点 - 直接下落到图例（去除可能导致超过的随机偏移）
         const midPoint1X = iconRect.left + (targetRect.left - iconRect.left) * 0.4;
-        // 确保中间点Y坐标直接朝向目标，不会超过
         const midPoint1Y = iconRect.top + (targetRect.top - iconRect.top) * 0.4;
         
         const midPoint2X = iconRect.left + (targetRect.left - iconRect.left) * 0.7;
-        // 确保第二个中间点也直接朝向目标
         const midPoint2Y = iconRect.top + (targetRect.top - iconRect.top) * 0.7;
         
-        // 减小图标大小到原来的80%-95%，减少缩放幅度让运动更平滑
         const scale = 0.8 + Math.random() * 0.15;
         
-        // 第一段动画
         setTimeout(() => {
-          flyingIcon.style.transition = `all 0.7s cubic-bezier(0.2, 0.1, 0.2, 0.3)`; // 进一步降低到0.7s，加快动画速度
+          flyingIcon.style.transition = `all 0.7s cubic-bezier(0.2, 0.1, 0.2, 0.3)`;
           flyingIcon.style.top = `${midPoint1Y}px`;
           flyingIcon.style.left = `${midPoint1X}px`;
-          flyingIcon.style.transform = `scale(${scale}) rotate(${Math.random() * 4 - 2}deg)`; // 减小旋转角度
+          flyingIcon.style.transform = `scale(${scale}) rotate(${Math.random() * 4 - 2}deg)`;
           
-          // 第二段动画
           setTimeout(() => {
-            flyingIcon.style.transition = `all 0.7s cubic-bezier(0.4, 0.1, 0.4, 0.5)`; // 进一步降低到0.7s，加快动画速度
+            flyingIcon.style.transition = `all 0.7s cubic-bezier(0.4, 0.1, 0.4, 0.5)`;
             flyingIcon.style.top = `${midPoint2Y}px`;
             flyingIcon.style.left = `${midPoint2X}px`;
-            flyingIcon.style.transform = `scale(${scale}) rotate(${Math.random() * 2 - 1}deg)`; // 进一步减小旋转角度
+            flyingIcon.style.transform = `scale(${scale}) rotate(${Math.random() * 2 - 1}deg)`;
             
-            // 延长每段动画之间的间隔
             setTimeout(() => {
-              // 添加标记，表示图标已接近目标
               flyingIcon.classList.add('near-target');
               
-              flyingIcon.style.transition = `all 0.7s cubic-bezier(0.2, 0.8, 0.2, 0.5)`; // 进一步降低到0.7s，加快动画速度
-              // 获取最新的位置（防止因滚动导致位置变化）
+              flyingIcon.style.transition = `all 0.7s cubic-bezier(0.2, 0.8, 0.2, 0.5)`;
               const updatedRect = summaryIcon ? 
                 summaryIcon.getBoundingClientRect() : 
                 (summaryIconContainer ? 
                   summaryIconContainer.getBoundingClientRect() : 
                   summaryTarget.getBoundingClientRect());
               
-              // 设置图标大小为目标图标大小
               const iconSize = Math.min(updatedRect.width, updatedRect.height);
               flyingIcon.style.width = `${iconSize}px`;
               flyingIcon.style.height = `${iconSize}px`;
               
-              // 精确定位到图标中心
               flyingIcon.style.top = `${updatedRect.top + (updatedRect.height - iconSize) / 2}px`;
               flyingIcon.style.left = `${updatedRect.left + (updatedRect.width - iconSize) / 2}px`;
               flyingIcon.style.transform = 'scale(1) rotate(0deg)';
               
-              // 延长到达后的延迟
               setTimeout(() => {
-                // 高亮summary图例图标，创建一个更柔和的效果
                 const summaryIcon = summaryTarget.querySelector('.summary-sitc-icon');
                 if (summaryIcon) {
                   summaryIcon.style.filter = 'drop-shadow(0 0 8px rgba(33, 150, 243, 0.7))';
                   summaryIcon.style.transform = 'scale(1.08)';
                   summaryIcon.style.transition = 'all 0.4s ease-out';
                   
-                  // 恢复正常
                   setTimeout(() => {
                     summaryIcon.style.filter = '';
                     summaryIcon.style.transform = '';
-                  }, 800); // 从500增加到800
+                  }, 800);
                 }
                 
-                // 隐藏飞行图标
                 flyingIcon.style.opacity = '0';
                 
-                // 如果是最后一个图标，设置标志但不启动第二阶段动画
                 if (index === 8) {
-                  // 确保所有图标完成移动到summary后再设置标志，并延迟一点时间
                   setTimeout(() => {
                     console.log('First phase animation completed, icons moved to summary');
                     window.sitcIconsMovedToSummary = true;
                     
-                    // 动画完成后移除滚动监听器
                     window.removeEventListener('scroll', updateIconPositions);
                     
-                    // 清空引用数组
                     flyingIcons.length = 0;
                     iconTargets.length = 0;
                     
-                    // 延迟移除容器
                     setTimeout(() => {
                       if (flyingIconsContainer && flyingIconsContainer.parentNode) {
                         flyingIconsContainer.parentNode.removeChild(flyingIconsContainer);
                       }
                     }, 1000);
-                  }, 500); // 从300增加到500
+                  }, 500);
                 }
-              }, 1000); // 从1400降低到1000，加快动画速度
-            }, 700); // 从1000降低到700，加快动画速度
-          }, 700); // 从1000降低到700，加快动画速度
-        }, 200); // 保持不变
+              }, 1000);
+            }, 700);
+          }, 700);
+        }, 200);
       }, startDelay);
     });
     
-    // 设置第二阶段动画
-    // function setupSecondPhaseAnimation(container) { ... }
     
-    // 删除第二阶段动画执行函数
-    // function performSecondPhaseAnimation(container) { ... }
-    
-    // 备用：默认动画，直接移动到地图页图标
     function performDefaultAnimation() {
-      // 获取目标区域（地图区域）的大致位置
       const mapArea = document.getElementById('goods-type-detail-container');
       const mapAreaRect = mapArea ? mapArea.getBoundingClientRect() : { top: windowHeight * 0.7, left: 0, right: windowWidth };
       
-      // 创建向下流动的路径点
       const pathPoints = [];
       
-      // 第一行：靠近顶部
       pathPoints.push({ x: windowWidth * 0.2, y: windowHeight * 0.1 + Math.random() * 50 });
       pathPoints.push({ x: windowWidth * 0.5, y: windowHeight * 0.13 + Math.random() * 50 });
       pathPoints.push({ x: windowWidth * 0.8, y: windowHeight * 0.15 + Math.random() * 50 });
       
-      // 第二行：中间区域
       pathPoints.push({ x: windowWidth * 0.3, y: windowHeight * 0.3 + Math.random() * 50 });
       pathPoints.push({ x: windowWidth * 0.6, y: windowHeight * 0.33 + Math.random() * 50 });
       pathPoints.push({ x: windowWidth * 0.9, y: windowHeight * 0.35 + Math.random() * 50 });
       
-      // 第三行：地图上方
       pathPoints.push({ x: windowWidth * 0.2, y: mapAreaRect.top - 100 + Math.random() * 50 });
       pathPoints.push({ x: windowWidth * 0.5, y: mapAreaRect.top - 80 + Math.random() * 50 });
       pathPoints.push({ x: windowWidth * 0.8, y: mapAreaRect.top - 60 + Math.random() * 50 });
       
-      // 第四行：地图区域
       pathPoints.push({ x: windowWidth * 0.3, y: mapAreaRect.top + 50 + Math.random() * 50 });
       pathPoints.push({ x: windowWidth * 0.6, y: mapAreaRect.top + 70 + Math.random() * 50 });
       pathPoints.push({ x: windowWidth * 0.2, y: mapAreaRect.top + 100 + Math.random() * 50 });
       
-      // 为每个图标创建一个克隆，用于动画
       introIcons.forEach((icon, index) => {
-        if (index >= 9) return; // 只处理前9个图标
+        if (index >= 9) return;
         
-        // 获取原始图标的位置
         const iconRect = icon.getBoundingClientRect();
         const img = icon.querySelector('img');
         if (!img) return;
         
-        // 创建飞行图标
         const flyingIcon = document.createElement('div');
         flyingIcon.className = 'flying-sitc-icon';
         flyingIcon.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
@@ -3997,33 +3643,27 @@ console.log('GoodsType.js loaded');
         `;
         flyingIconsContainer.appendChild(flyingIcon);
         
-        // 延迟启动动画
         const baseDelay = index * 180;
         const randomDelay = Math.random() * 200;
         const startDelay = baseDelay + randomDelay;
         
         setTimeout(() => {
-          // 先显示出来
           flyingIcon.style.opacity = '1';
           
-          // 每个图标选择3个路径点，确保是从上到下的顺序
           const firstSegmentIdx = Math.floor(Math.random() * 3); // 0-2
           const secondSegmentIdx = 3 + Math.floor(Math.random() * 3); // 3-5
           const thirdSegmentIdx = 6 + Math.floor(Math.random() * 6); // 6-11
           
           const pathIndexes = [firstSegmentIdx, secondSegmentIdx, thirdSegmentIdx];
           
-          // 动画总时长
           const totalAnimationTime = 2500 + Math.random() * 800;
           const segmentTime = totalAnimationTime / 3;
           
-          // 第一段动画
           setTimeout(() => {
             const pathPoint = pathPoints[pathIndexes[0]];
             const offsetX = (Math.random() - 0.5) * 100;
             const offsetY = (Math.random() - 0.5) * 40;
             
-            // 减小图标大小
             const scale = 0.6 + Math.random() * 0.2;
             
             flyingIcon.style.transition = `all ${segmentTime/1000}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
@@ -4031,7 +3671,6 @@ console.log('GoodsType.js loaded');
             flyingIcon.style.left = `${pathPoint.x + offsetX}px`;
             flyingIcon.style.transform = `scale(${scale}) rotate(${Math.random() * 20 - 10}deg)`;
             
-            // 第二段动画
             setTimeout(() => {
               const nextPoint = pathPoints[pathIndexes[1]];
               const nextOffsetX = (Math.random() - 0.5) * 80;
@@ -4041,7 +3680,6 @@ console.log('GoodsType.js loaded');
               flyingIcon.style.top = `${nextPoint.y + nextOffsetY}px`;
               flyingIcon.style.left = `${nextPoint.x + nextOffsetX}px`;
               
-              // 第三段动画
               setTimeout(() => {
                 const lastPoint = pathPoints[pathIndexes[2]];
                 const lastOffsetX = (Math.random() - 0.5) * 50;
@@ -4051,7 +3689,6 @@ console.log('GoodsType.js loaded');
                 flyingIcon.style.top = `${lastPoint.y + lastOffsetY}px`;
                 flyingIcon.style.left = `${lastPoint.x + lastOffsetX}px`;
                 
-                // 飞向目标图标
                 setTimeout(() => {
                   const targetIconSelector = `.goods-type-icon-btn[data-type="${index}"]`;
                   const targetIcons = document.querySelectorAll(targetIconSelector);
@@ -4076,7 +3713,6 @@ console.log('GoodsType.js loaded');
                     flyingIcon.style.transform = 'scale(1) rotate(0deg)';
                     
                     setTimeout(() => {
-                      // 创建闪光效果
                       const glowEffect = document.createElement('div');
                       glowEffect.className = 'sitc-icon-glow-effect';
                       glowEffect.style.cssText = `
@@ -4129,7 +3765,6 @@ console.log('GoodsType.js loaded');
       });
     }
     
-    // 添加CSS动画样式
     const style = document.createElement('style');
     style.textContent = `
       .flying-sitc-icon img {
@@ -4148,17 +3783,14 @@ console.log('GoodsType.js loaded');
     document.head.appendChild(style);
   }
   
-  // 新增：创建地图左侧的SITC图标栏
   function createSitcIconBar() {
-    // 检查是否已经存在
     if (document.querySelector('.goods-type-icons-row')) return;
     
-    // 创建图标容器
     const iconBar = document.createElement('div');
     iconBar.className = 'goods-type-icons-row';
     iconBar.style.cssText = `
       position: absolute;
-      left: -88px; /* 你可以试试 -40px, -48px, -60px, 直到你满意为止 */
+      left: -88px; 
       top: 50%;
       transform: translateY(-50%);
       display: flex;
@@ -4169,7 +3801,6 @@ console.log('GoodsType.js loaded');
       pointer-events: auto;
     `;
     
-    // SITC图标文件名
     const iconFiles = [
       '0-Food-and-live-animals.png',
       '1-Beverages-and-tobacco.png',
@@ -4182,7 +3813,6 @@ console.log('GoodsType.js loaded');
       '8-Miscellaneous-manufactured-articles.png'
     ];
     
-    // 创建9个SITC图标
     for (let i = 0; i < 9; i++) {
       const iconBtn = document.createElement('button');
       iconBtn.className = 'goods-type-icon-btn';
@@ -4191,7 +3821,6 @@ console.log('GoodsType.js loaded');
       iconBtn.setAttribute('title', sitcLabels[i]);
       iconBtn.innerHTML = `<img src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/goods-icons/${iconFiles[i]}" alt="${sitcLabels[i]}">`;
       
-      // 样式
       iconBtn.style.cssText = `
         width: 42px;
         height: 42px;
@@ -4208,15 +3837,13 @@ console.log('GoodsType.js loaded');
         transform: translateX(-20px);
       `;
       
-      // 添加点击事件处理
-      const typeIndex = i; // 捕获当前循环的索引
+      const typeIndex = i;
       iconBtn.addEventListener('click', async () => {
         if (state.currentType === typeIndex) return;
         
         const oldType = state.currentType;
         state.currentType = typeIndex;
         
-        // 更新所有图标状态
         document.querySelectorAll('.goods-type-icon-btn').forEach(icon => {
           const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
           const isSelected = iconTypeIndex === typeIndex;
@@ -4224,10 +3851,8 @@ console.log('GoodsType.js loaded');
           icon.style.backgroundColor = isSelected ? 'rgb(33, 150, 243)' : '#1e2832';
           icon.style.borderColor = isSelected ? 'rgb(33, 150, 243)' : 'rgba(255, 255, 255, 0.2)';
           
-          // 添加选中图标的缩放动画
           if (isSelected) {
             icon.style.animation = 'sitcIconSelect 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28)';
-            // 动画结束后清除
             setTimeout(() => {
               icon.style.animation = '';
             }, 500);
@@ -4235,37 +3860,30 @@ console.log('GoodsType.js loaded');
         });
         
         try {
-          // 更新SITC描述文本
           const descElement = document.getElementById('goods-type-detail-desc');
           if (descElement) {
             descElement.textContent = sitcDescriptions[typeIndex];
-            // 为描述文本添加淡入效果
             descElement.style.animation = 'fadeInDescription 0.5s ease-out';
             setTimeout(() => {
               descElement.style.animation = '';
             }, 500);
           }
           
-          // 暂存当前动画状态
           const wasPlaying = animationState.isPlaying;
           if (wasPlaying) {
             stopTimelineAnimation();
           }
           
-          // 加载新的SITC数据
           const sitcData = await loadSitcData(typeIndex);
           if (!sitcData) throw new Error(`Failed to load SITC ${typeIndex} data`);
           
-          // 更新state
           state.currentSitcData = sitcData;
           
-          // 同时更新地图和图表
           await Promise.all([
             updateMapData(sitcData),
             updateCountriesChart(sitcData)
           ]);
           
-          // 如果已选择国家，更新趋势图
           if (state.selectedCountry) {
             const canvas = document.getElementById('country-trend-chart');
             if (canvas) {
@@ -4274,19 +3892,16 @@ console.log('GoodsType.js loaded');
             }
           }
           
-          // 恢复动画状态
           if (wasPlaying) {
             setTimeout(() => {
               startTimelineAnimation();
             }, 500);
           }
           
-          // 预加载下一个类型的数据
           preloadNextSitcData();
           
         } catch (error) {
           console.error('Failed to update visualizations:', error);
-          // 恢复到之前的状态
           state.currentType = oldType;
           document.querySelectorAll('.goods-type-icon-btn').forEach(icon => {
             const iconTypeIndex = parseInt(icon.getAttribute('data-type'));
@@ -4298,23 +3913,19 @@ console.log('GoodsType.js loaded');
         }
       });
       
-      // 添加到容器
       iconBar.appendChild(iconBtn);
       
-      // 动画延迟显示
       setTimeout(() => {
         iconBtn.style.opacity = '1';
         iconBtn.style.transform = 'translateX(0)';
       }, i * 100);
     }
     
-    // 关键：加到地图容器的父节点上
     const mapContainer = document.getElementById('goods-map');
     if (mapContainer && mapContainer.parentNode) {
       mapContainer.parentNode.appendChild(iconBar);
     }
     
-    // 添加CSS动画
     const animStyle = document.createElement('style');
     animStyle.textContent = `
       @keyframes sitcIconSelect {
@@ -4331,7 +3942,6 @@ console.log('GoodsType.js loaded');
     document.head.appendChild(animStyle);
   }
 
-  // 添加地球自转控制按钮（左上角）
   function addRotationControl(map) {
     if (document.getElementById('rotation-control-btn')) return;
     const btn = document.createElement('button');
@@ -4356,7 +3966,7 @@ console.log('GoodsType.js loaded');
           const now = performance.now();
           const delta = (now - last) / 1000;
           last = now;
-          const bearing = (map.getBearing() + delta * 8) % 360; // 每秒8度
+          const bearing = (map.getBearing() + delta * 8) % 360;
           map.setBearing(bearing);
           rotationId = requestAnimationFrame(rotate);
         }
@@ -4366,7 +3976,6 @@ console.log('GoodsType.js loaded');
         if (rotationId) cancelAnimationFrame(rotationId);
       }
     };
-    // hover效果
     btn.onmouseenter = () => { if (!rotating) btn.style.background = 'rgba(33,150,243,0.5)'; };
     btn.onmouseleave = () => { if (!rotating) btn.style.background = 'rgba(30,30,30,0.85)'; };
     map.getContainer().appendChild(btn);

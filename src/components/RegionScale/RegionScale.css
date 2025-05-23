@@ -70,7 +70,6 @@
   margin-bottom: 2rem;
 }
 
-/* Mapbox 全屏容器样式 */
 .mapbox-fullscreen {
   width: 100vw;
   height: 95vh;
@@ -81,7 +80,6 @@
   display: block;
 }
 
-/* 侧边面板样式 */
 .map-sidebar {
   position: absolute;
   right: 0;
@@ -100,7 +98,6 @@
   z-index: 10;
 }
 
-/* 侧边栏标题 */
 .sidebar-title {
   font-size: 1.6rem;
   margin-bottom: 20px;
@@ -111,7 +108,6 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 滑动时间轴样式 */
 .sidebar-timeline {
   margin-bottom: 40px;
   padding: 15px 0px 20px 0px;
@@ -125,7 +121,6 @@
   padding: 0 10px;
 }
 
-/* 时间轴基础线 */
 .timeline-track {
   position: absolute;
   left: 10px;
@@ -137,7 +132,6 @@
   z-index: 1;
 }
 
-/* 年份标记 */
 .timeline-tick {
   position: absolute;
   width: 1px;
@@ -148,7 +142,6 @@
   z-index: 2;
 }
 
-/* 年份文本 */
 .timeline-year {
   position: absolute;
   font-size: 12px;
@@ -158,7 +151,6 @@
   z-index: 2;
 }
 
-/* 当前年份滑块 */
 .timeline-slider {
   position: absolute;
   width: 16px;
@@ -173,7 +165,6 @@
   transition: left 0.3s ease;
 }
 
-/* 图表容器 */
 .sidebar-chart-container {
   flex: 1;
   position: relative;
@@ -223,7 +214,6 @@
   display: block;
 }
 
-/* 侧边栏图例样式 - 改为网格布局 */
 .sidebar-legend {
   position: relative;
   width: 100%;
@@ -232,7 +222,6 @@
   border-radius: 4px;
   padding: 5px 5px 5px 5px;
   margin: 0 auto;
-  /* 使用网格布局替代flex布局 */
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 4px;
@@ -264,7 +253,6 @@
   max-width: 60px;
 }
 
-/* 切换按钮 */
 .chart-switch-btn {
   position: absolute;
   bottom: 40px;
@@ -329,18 +317,17 @@
 
 .scroll-graphic {
   position: sticky;
-  top: 55vh;           /* 从视窗顶部50%开始 */
-  transform: translateY(-50%);  /* 向上移动自身50%以实现垂直居中 */
+  top: 55vh;
+  transform: translateY(-50%);
   width: 70%;
   display: flex;
   flex-direction: column;
   z-index: 0;
 }
 
-/* 调整垂直线样式，确保与CountryScale完全一致 */
 .region-chart-section .timeline-vertical-line {
   position: absolute;
-  left: -45px; /* 调整位置，向左移动 */
+  left: -45px;
   top: 0;
   bottom: 0;
   width: 1px;
@@ -350,13 +337,12 @@
 
 .scroll-container {
   position: relative;
-  margin-top: 50vh; /* 与mapbox容器高度匹配 */
+  margin-top: 50vh;
   width: 100%;
-  z-index: 10; /* 确保在地图上方显示 */
+  z-index: 10;
 }
 
 
-/* 时间轴标记容器 */
 .timeline-marker {
   position: absolute;
   left: -45px;
@@ -365,7 +351,6 @@
   z-index: 2;
 }
 
-/* 时间轴圆点 - 精确对齐在垂直线上 */
 .timeline-dot {
   position: absolute;
   left: 0;
@@ -378,7 +363,6 @@
   z-index: 3;
 }
 
-/* 时间轴水平连接线 */
 .timeline-connector {
   position: absolute;
   left: 0;
@@ -389,14 +373,12 @@
   z-index: 2;
 }
 
-/* 步骤容器调整 */
 .step {
   position: relative;
   margin-bottom: 150px;
   padding-left: 30px;
 }
 
-/* 年份标题样式 */
 .step-year {
   font-size: 20px;
   font-weight: bold;
@@ -404,15 +386,12 @@
   margin-bottom: 15px;
 }
 
-/* 步骤内容样式调整 */
 .step-content {
   padding-left: 10px;
 }
 
-/* 高亮当前步骤样式 - 移除任何发光效果 */
 .step.is-active .timeline-dot {
   background-color: #ffffff;
-  /* 移除box-shadow效果 */
 }
 
 .step.is-active .timeline-connector {

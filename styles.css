@@ -1,4 +1,3 @@
-/* 全局样式 */
 * {
     margin: 0;
     padding: 0;
@@ -51,7 +50,6 @@ body {
     bottom: 0;
 }
 
-/* 导航栏样式 */
 .navbar {
     position: fixed;
     top: 0;
@@ -65,7 +63,6 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 固定侧边导航样式 */
 .fixed-side-nav {
     position: fixed;
     top: 50%;
@@ -155,13 +152,11 @@ body {
     background-color: #2196f3 !important;
 }
 
-/* 删除不需要的折叠按钮相关样式 */
 .toggle-nav-btn,
 .fixed-side-nav.collapsed {
     display: none;
 }
 
-/* 媒体查询 - 在移动设备上隐藏导航 */
 @media (max-width: 768px) {
     .fixed-side-nav {
         display: none !important;
@@ -199,7 +194,6 @@ body {
     color: #ffffff;
 }
 
-/* 主要内容区域样式 */
 main {
     margin-top: 4rem;
 }
@@ -274,7 +268,6 @@ p {
     margin-bottom: 1rem;
 }
 
-/* Brexit Background 特定样式 */
 .timeline {
     position: relative;
     max-width: 800px;
@@ -351,7 +344,6 @@ p {
     left: 0;
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
     .navbar ul {
         flex-direction: column;
@@ -383,7 +375,6 @@ p {
     }
 }
 
-/* 自定义向下箭头动画 */
 .chevron-container {
     position: absolute;
     width: 100%;
@@ -430,7 +421,6 @@ p {
     }
 }
 
-/* SITC Icons Row */
 .sitc-icons-row {
     display: flex;
     justify-content: center;
@@ -525,9 +515,7 @@ p {
     }
 }
 
-/* 添加团队成员展示部分的样式 */
 
-/* 团队展示部分样式 */
 .section-title {
   text-align: center;
   font-size: 2.5rem;
