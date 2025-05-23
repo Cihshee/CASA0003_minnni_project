@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,14 +18,14 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
-    <!-- 添加网站favicon -->
+    <!-- Add website favicon -->
     <link rel="icon" href="public/img/CASAlogo.svg" type="image/svg+xml">
     <link rel="shortcut icon" href="public/img/CASAlogo.svg" type="image/svg+xml">
     <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     
     <style>
-      /* 视频背景增强效果 */
+      /* Video background enhancement effect */
       .video-background {
         position: fixed;
         top: 0;
@@ -72,7 +72,6 @@
         backface-visibility: hidden;
       }
       
-      /* 为各部分增加专属背景 */
       .section-background {
         position: fixed;
         top: 0;
@@ -98,7 +97,6 @@
         object-fit: cover;
       }
       
-      /* 确保所有内容有一个正的z-index */
       .navbar, .side-nav, .hero-content, .content, .content-transport {
         position: relative;
         z-index: 1;
@@ -138,26 +136,26 @@
 
       .brexit-text h2 {
         color: #fff;
-        font-size: 2.8rem; /* 增大标题字号 */
-        margin-bottom: 2rem; /* 增加标题下方间距 */
+        font-size: 2.8rem; 
+        margin-bottom: 2rem; 
       }
 
       .brexit-text p {
         color: #fff;
-        font-size: 1.05rem; /* 增大正文字号 */
+        font-size: 1.05rem; 
         line-height: 1.5;
         margin-bottom: 1rem;
       }
 
       .brexit-text ul {
         color: #fff;
-        margin: 1rem 0 5rem; /* 增加列表上下间距 */
+        margin: 1rem 0 5rem; 
         padding-left: 1.2rem;
       }
 
       .brexit-text li {
-        margin: 0.5rem 0; /* 增加列表项间距 */
-        font-size: 1.05rem; /* 增大列表字号 */
+        margin: 0.5rem 0; 
+        font-size: 1.05rem; 
         line-height: 1.5;
       }
 
@@ -168,7 +166,7 @@
         border-radius: 15px;
         position: relative;
         z-index: 10;
-        overflow: visible; /* 修改为visible允许通知框显示 */
+        overflow: visible; 
       }
 
       .uk-outline {
@@ -542,7 +540,7 @@
     </style>
   </head>
   <body>
-    <!-- 主视频背景（第一个视频）- 首页 -->
+    <!-- Main Video Background (the first video) - Homepage -->
     <div class="video-background" id="main-background">
       <div class="video-overlay"></div>
       <video autoplay muted loop playsinline id="homepage-background-video">
@@ -551,7 +549,7 @@
       </video>
     </div>
     
-    <!-- 第二个视频背景 - 其他部分 -->
+    <!-- Second Video Background - Other Sections -->
     <div class="section-background" id="sections-background">
       <video autoplay muted loop playsinline id="sections-background-video">
         <source src="https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/2.mp4" type="video/mp4">
@@ -590,7 +588,7 @@
           }
         });
         
-        // 在动画加载完成后设置速度
+        // Set speed after animation loads
         anim.addEventListener('DOMLoaded', function() {
           requestAnimationFrame(() => {
             anim.setSpeed(0.4);
@@ -598,7 +596,7 @@
           });
         });
         
-        // 优化动画容器大小调整
+        // Optimize animation container size adjustment
         const resizeAnimation = debounce(() => {
           const container = document.getElementById('background-animation');
           if (container) {
@@ -611,7 +609,7 @@
           }
         }, 150);
         
-        // 调用resize并添加事件监听
+        // Call resize and add event listener
         resizeAnimation();
         window.addEventListener('resize', resizeAnimation, { passive: true });
       });
@@ -624,7 +622,7 @@
         'section1','section1b','section4','section5','section6','section7','section8','section9'
       ].map(id => document.getElementById(id));
       
-      // 使用 requestAnimationFrame 优化滚动性能
+      // Use requestAnimationFrame to optimize scrolling performance
       let ticking = false;
       function updateActiveDot() {
         if (!ticking) {
@@ -639,14 +637,14 @@
             }
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
             
-            // 根据当前部分切换背景视频
+            // Switch background video based on current section
             const mainBackground = document.getElementById('main-background');
             const sectionsBackground = document.getElementById('sections-background');
             
-            if (idx <= 1) { // 首页部分显示第一个视频
+            if (idx <= 1) { // Homepage section shows first video
               mainBackground.style.opacity = 1;
               sectionsBackground.style.opacity = 0;
-            } else { // 其他部分显示第二个视频
+            } else { // Other sections show second video
               mainBackground.style.opacity = 0;
               sectionsBackground.style.opacity = 1;
             }
@@ -656,7 +654,7 @@
         }
       }
 
-      // 防抖函数
+      // Debounce function
       function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -669,19 +667,19 @@
         };
       }
       
-      // 优化滚动和调整大小的事件监听
+      // Optimize scrolling and size adjustment event listeners
       window.addEventListener('scroll', updateActiveDot, { passive: true });
       window.addEventListener('resize', debounce(updateActiveDot, 150), { passive: true });
 
-      // 初始化时立即调用一次
+      // Call once on initialization
       document.addEventListener('DOMContentLoaded', updateActiveDot);
       
-      // 优化点击事件
+      // Optimize click events
       dots.forEach((dot, i) => {
         dot.addEventListener('click', e => {
           e.preventDefault();
           if (sections[i]) {
-            // 使用 requestAnimationFrame 优化滚动
+            // Use requestAnimationFrame to optimize scrolling
             requestAnimationFrame(() => {
               sections[i].scrollIntoView({behavior:'smooth'});
             });
@@ -690,7 +688,7 @@
       });
     </script>
 
-    <!-- 右侧固定导航栏的脚本 -->
+    <!-- Script for the right fixed navigation bar -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const fixedSideNav = document.getElementById('fixed-side-nav');
@@ -712,34 +710,34 @@
           });
         }
         
-        // 折叠/展开导航栏功能
+        // Collapse/expand navigation bar functionality  
         const toggleNavBtn = document.getElementById('toggle-nav-btn');
         if (toggleNavBtn) {
           toggleNavBtn.addEventListener('click', function() {
             fixedSideNav.classList.toggle('collapsed');
-            // 保存用户折叠状态的偏好
+            // Save user's collapsed state preference
             localStorage.setItem('navCollapsed', fixedSideNav.classList.contains('collapsed'));
           });
           
-          // 加载用户之前的折叠状态偏好
+          // Load user's previous collapsed state preference
           const savedCollapsedState = localStorage.getItem('navCollapsed');
           if (savedCollapsedState === 'true') {
             fixedSideNav.classList.add('collapsed');
           }
         }
         
-        // 在滚动时显示/隐藏右侧导航栏并更新活动链接
+        // Show/hide right navigation bar and update active links on scroll
         function updateFixedSideNav() {
-          // 在滚动超过300px后显示右侧导航栏
+          // Show right navigation bar after scrolling more than 300px
           if (window.scrollY > 300) {
             fixedSideNav.style.display = 'block';
-            // 使用淡入动画
+            // Use fade-in animation
             setTimeout(() => {
               fixedSideNav.style.opacity = '1';
             }, 50);
           } else {
             fixedSideNav.style.opacity = '0';
-            // 淡出后隐藏
+            // Fade out and hide after 300ms
             setTimeout(() => {
               if (window.scrollY <= 300) {
                 fixedSideNav.style.display = 'none';
@@ -747,7 +745,7 @@
             }, 300);
           }
           
-          // 更新活动链接
+          // Update active links
           let currentSection = '';
           for (const section of sectionsForNav) {
             const el = document.getElementById(section.id);
@@ -764,12 +762,12 @@
         
         window.addEventListener('scroll', updateFixedSideNav);
         window.addEventListener('resize', updateFixedSideNav);
-        // 初始化调用
+        // Initialize call
         updateFixedSideNav();
       });
     </script>
 
-    <!-- 导航栏 -->
+    <!-- Navigation Bar -->
     <nav class="navbar">
       <ul>
         <li><a href="#section1" class="nav-link">Homepage</a></li>
@@ -782,7 +780,7 @@
       </ul>
     </nav>
 
-    <!-- 右侧固定悬浮导航栏 -->
+    <!-- Fixed Floating Navigation Bar -->
     <nav class="fixed-side-nav" id="fixed-side-nav">
       <ul class="fixed-side-menu">
         <li><a href="#section1" class="fixed-nav-link" data-title="Homepage"></a></li>
@@ -796,11 +794,11 @@
       </ul>
     </nav>
 
-    <!-- 主要内容区域 -->
+    <!-- Main Content Area -->
     <main>
       <section id="section1" class="full-page hero-section" style="position:relative;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;min-height:100vh;background:transparent;">
         <div id="threejs-bg" style="position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;pointer-events:none;"></div>
-        <!-- 添加倒影容器 -->
+        <!-- Add reflection container -->
         <div id="threejs-reflection" style="position:absolute;left:0;top:100%;width:100%;height:100%;z-index:0;pointer-events:none;transform:scaleY(-1);opacity:0.3;background:linear-gradient(to bottom, rgba(0,0,0,0.1), transparent);"></div>
         <div class="hero-content" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;max-width:1200px;margin:0 auto;padding-top:2vh;padding-left:0;">
           <div id="lottie-title" style="width:1900px;max-width:99vw;height:450px;min-height:250px;display:flex;align-items:center;justify-content:flex-start;pointer-events:none;margin-bottom:-20px;margin-left:-400px;">
@@ -809,7 +807,7 @@
           <p class="hero-desc highlight-desc" style="margin-top:-70px;margin-bottom:0;font-size:1.1rem;text-shadow:0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.7);color:#fff;font-weight:500;text-align:center;width:100%;">
             An Exploration Of The Impact Of Brexit On The Global Commodity Import And Export Trade Network.
           </p>
-          <!-- 添加Start Explore按钮 -->
+          <!-- Add Start Explore button -->
           <button id="start-explore-btn" style="margin-top:2.5rem;padding:1rem 2.5rem;font-size:1.2rem;background:rgba(94, 179, 249, 0.2);color:#fff;border:2px solid #5eb3f9;border-radius:30px;cursor:pointer;transition:all 0.3s ease;text-shadow:0 2px 4px rgba(0,0,0,0.5);backdrop-filter:blur(5px);font-weight:700;display:block;margin-left:auto;margin-right:auto;">
             Start Explore
             <svg style="width:20px;height:20px;margin-left:10px;transform:translateY(4px)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -829,7 +827,7 @@
       </section>
 
       <script>
-        // 添加按钮点击事件处理
+        // Add button click event handling
         document.getElementById('start-explore-btn').addEventListener('click', function() {
           document.getElementById('section1b').scrollIntoView({ 
             behavior: 'smooth',
@@ -837,7 +835,7 @@
           });
         });
 
-        // 添加按钮悬停效果
+        // Add button hover effect
         const exploreBtn = document.getElementById('start-explore-btn');
         exploreBtn.addEventListener('mouseenter', function() {
           this.style.background = 'rgba(94, 179, 249, 0.4)';
@@ -910,7 +908,7 @@
           const MAPBOX_TOKEN = 'pk.eyJ1IjoieWl4aW5nLWxpIiwiYSI6ImNtN3FtNWh6YjA0ancybnM4aGxjZnlheTEifQ.sKwaoIMQR65VQmYDbnu2MQ';
           const MAPBOX_STYLE = 'mapbox://styles/yixing-li/cmaa8uo1j00j001sgc3051vxu';
 
-          // 创建Map
+          // Create Map
           mapboxgl.accessToken = MAPBOX_TOKEN;
           const map = new mapboxgl.Map({
             container: 'brexit-map',
@@ -924,15 +922,15 @@
             touchZoomRotate: false
           });
 
-          // 等待地图样式加载完成
+          // Wait for map style to load
           map.on('style.load', function() {
-            // 加载EU和UK边界数据
+            // Load EU and UK boundary data
             fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/countries.geojson')
               .then(response => response.json())
               .then(data => {
                 console.log('Loaded GeoJSON data:', data);
 
-                // 添加数据源
+                // Add data source
                 if (!map.getSource('countries')) {
                   map.addSource('countries', {
                     type: 'geojson',
@@ -940,7 +938,7 @@
                   });
                 }
 
-                // 添加EU边界图层
+                // Add EU boundary layer
                 if (!map.getLayer('eu-borders')) {
                   map.addLayer({
                     'id': 'eu-borders',
@@ -984,7 +982,7 @@
                   });
                 }
 
-                // 添加UK边界图层
+                // Add UK boundary layer
                 if (!map.getLayer('uk-border')) {
                   map.addLayer({
                     'id': 'uk-border',
@@ -1000,7 +998,7 @@
                   });
                 }
 
-                // 添加EU填充图层
+                // Add EU fill layer
                 if (!map.getLayer('eu-fill')) {
                   map.addLayer({
                     'id': 'eu-fill',
@@ -1043,7 +1041,7 @@
                   });
                 }
 
-                // 添加UK填充图层
+                // Add UK fill layer
                 if (!map.getLayer('uk-fill')) {
                   map.addLayer({
                     'id': 'uk-fill',
@@ -1064,25 +1062,25 @@
                   });
                 }
 
-                // 创建通知元素
+                // Create notification element
                 const notification = document.createElement('div');
                 notification.className = 'brexit-notification';
                 notification.textContent = 'Brexit Bill Takes Effect';
                 notification.style.display = 'none';
 
-                // 创建Mapbox marker来放置通知框
+                // Create Mapbox marker to place notification box
                 const notificationMarker = new mapboxgl.Marker({
                   element: notification,
                   anchor: 'left'
                 })
-                .setLngLat([-2, 54]) // 英国附近的经纬度位置
+                .setLngLat([-2, 54]) // UK's location
                 .addTo(map);
 
-                // 修改switchView函数中的相关部分
+                // Modify the relevant parts in the switchView function
                 function switchView(targetView, skipAnimation = false, startHighlight = false) {
                   if (currentView === targetView) return;
                   
-                  // 停止自动高亮
+                  // Stop automatic highlighting
                   if (window.highlightInterval) {
                     clearInterval(window.highlightInterval);
                     window.highlightInterval = null;
@@ -1098,7 +1096,7 @@
                   const brexitContent = document.querySelector('.brexit-content');
 
                   if (targetView === 'brexit') {
-                    // 淡出标记和连接线
+                    // Fade out markers and connection lines
                     markers.forEach(data => {
                       if (data.element) {
                         data.element.classList.add('fade-out');
@@ -1109,7 +1107,7 @@
 
                     setTimeout(() => {
                       brexitContent.classList.add('visible');
-                      // 延迟3秒显示后续内容
+                      // Delay 3 seconds to show subsequent content
                       setTimeout(() => {
                         const delayedContent = document.querySelector('.delayed-content');
                         delayedContent.style.opacity = '1';
@@ -1124,7 +1122,7 @@
                         duration: 1500
                       });
 
-                      // 隐藏所有视觉元素
+                      // Hide all visual elements
                       markers.forEach(data => {
                         if (data.element) {
                           data.element.style.display = 'none';
@@ -1137,7 +1135,7 @@
                         el.style.display = 'none';
                       });
 
-                      // 显示边界和填充
+                      // Show borders and fills
                       try {
                         map.setPaintProperty('eu-borders', 'line-opacity', 1);
                         map.setPaintProperty('uk-border', 'line-opacity', 1);
@@ -1160,7 +1158,7 @@
                       essential: true
                     });
 
-                    // 隐藏边界
+                    // Hide borders
                     try {
                       map.setPaintProperty('eu-borders', 'line-opacity', 0);
                       map.setPaintProperty('uk-border', 'line-opacity', 0);
@@ -1198,7 +1196,7 @@
                   currentView = targetView;
                 }
 
-                // 更新原有的switchView引用
+                // Update the existing switchView reference
                 window.switchView = switchView;
               })
               .catch(error => {
@@ -1206,34 +1204,33 @@
               });
           });
 
-          // ... rest of the existing code ...
 
-          // 并行加载四个文件，合成区域数据
+          // Load four files in parallel and combine the area data`
           Promise.all([
             fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/countries.geojson').then(r => r.json()),
             fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/England_boundaries.json').then(r => r.json()),
             fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/Scotland_boundaries.json').then(r => r.json()),
             fetch('https://raw.githubusercontent.com/Cihshee/CASA0003_minnni_project/main/public/data/Wales_boundaries.json').then(r => r.json())
           ]).then(([countries, englandTopo, scotlandTopo, walesTopo]) => {
-            // 确保所有数据使用相同的坐标系统 (WGS84)
+            // Ensure all data uses the same coordinate system (WGS84)
             const ireland = countries.features.find(f => f.properties.name === "Ireland");
             
-            // 转换TopoJSON到GeoJSON并确保坐标系统一致
+            // Convert TopoJSON to GeoJSON and ensure coordinate system consistency
             const england = topojson.feature(englandTopo, englandTopo.objects[Object.keys(englandTopo.objects)[0]]);
             const scotland = topojson.feature(scotlandTopo, scotlandTopo.objects[Object.keys(scotlandTopo.objects)[0]]);
             const wales = topojson.feature(walesTopo, walesTopo.objects[Object.keys(walesTopo.objects)[0]]);
 
-            // 合并所有feature
+            // Merge all features
             const features = [];
             if (ireland) features.push(ireland);
             features.push(...england.features);
             features.push(...scotland.features);
             features.push(...wales.features);
 
-            // 为每个feature添加唯一ID
+            // Add unique ID to each feature
             features.forEach((f, i) => {
               f.id = i;
-              // 确保properties存在
+              // Ensure properties exist
               f.properties = f.properties || {};
             });
 
@@ -1248,7 +1245,7 @@
               }
             };
 
-            // 地图加载后添加数据源
+            // Map loaded after adding data source
             map.on('load', function() {
               map.addSource('uk-regions', {
                 type: 'geojson',
@@ -1256,13 +1253,13 @@
                 generateId: true
               });
 
-              // 清除所有高亮状态
+              // Clear all highlight states
               function clearAllHighlights() {
                 map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], '']);
                 markers.forEach(data => {
                   if (data.element) {
                     data.element.classList.remove('highlight');
-                    data.element.classList.remove('visible'); // 修正：移除visible
+                    data.element.classList.remove('visible'); // Correct: Remove visible
                     if (data.group) {
                       data.group.classList.remove('highlight');
                     }
@@ -1270,23 +1267,23 @@
                 });
               }
 
-              // 高亮特定区域
+              // Highlight specific regions
               function highlightRegion(regionName) {
                 clearAllHighlights();
                 
-                // 高亮地图区域
+                // Highlight map area
                 map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], regionName]);
                 
-                // 高亮对应的标签和连接线
+                // Highlight corresponding labels and connection lines
                 const marker = markers.get(regionName);
                 if (marker) {
                   marker.element.classList.add('highlight');
-                  marker.element.classList.add('visible'); // 修正：加visible
+                  marker.element.classList.add('visible'); // Correct: Add visible
                   marker.group.classList.add('highlight');
                 }
               }
 
-              // 启动自动高亮动画
+              // Start automatic highlight animation
               function startAutoHighlight() {
                 if (window.highlightInterval) {
                   clearInterval(window.highlightInterval);
@@ -1304,10 +1301,10 @@
                   return region;
                 }
 
-                // 立即高亮第一个区域
+                // Immediately highlight the first region
                 highlightRegion(getRandomRegion());
 
-                // 每1200ms切换一次高亮区域
+                // Highlight the first region every 1200ms
                 window.highlightInterval = setInterval(() => {
                   if (currentView === 'vote') {
                     highlightRegion(getRandomRegion());
@@ -1315,15 +1312,15 @@
                     clearInterval(window.highlightInterval);
                     window.highlightInterval = null;
                   }
-                }, 900); // 速度从1200ms改为900ms
+                }, 900); // Change speed from 1200ms to 900ms
               }
 
-              // 添加视图切换逻辑
+              // Add view switching logic
               const viewButtons = document.querySelectorAll('.view-button');
               const partyLegend = document.querySelector('.party-legend');
               let currentView = 'vote';
 
-              // 定义两个视图的相机位置
+              // Define camera positions for two views
               const viewPositions = {
                 initial: {
                   center: [0, 50],
@@ -1342,20 +1339,20 @@
                 }
               };
 
-              // 处理视图切换
+              // Handle view switching
               function switchView(targetView, skipAnimation = false, startHighlight = false) {
                 if (currentView === targetView) return;
                 
-                // 停止自动高亮
+                // Stop automatic highlighting
                 if (window.highlightInterval) {
                   clearInterval(window.highlightInterval);
                   window.highlightInterval = null;
                 }
 
-                // 清除所有高亮状态
+                // Clear all highlight states
                 clearAllHighlights();
                 
-                // 更新按钮状态
+                // Update button status
                 viewButtons.forEach(btn => {
                   btn.classList.toggle('active', btn.dataset.view === targetView);
                 });
@@ -1363,9 +1360,9 @@
                 const voteContent = document.querySelector('.vote-content');
                 const brexitContent = document.querySelector('.brexit-content');
 
-                // 开始转场动画
+                // Start transition animation
                 if (targetView === 'brexit') {
-                  // 淡出标记和连接线
+                  // Fade out markers and connection lines
                   markers.forEach(data => {
                     if (data.element) {
                       data.element.classList.add('fade-out');
@@ -1374,10 +1371,10 @@
                   });
                   partyLegend.classList.add('fade-out');
 
-                  // 显示Brexit内容但保持vote内容可见
+                  // Show Brexit content but keep vote content visible
                   setTimeout(() => {
                     brexitContent.classList.add('visible');
-                    // 延迟3秒显示后续内容
+                    // Delay 3 seconds to show subsequent content
                     setTimeout(() => {
                       const delayedContent = document.querySelector('.delayed-content');
                       delayedContent.style.opacity = '1';
@@ -1385,7 +1382,7 @@
                     }, 1000);
                   }, 400);
 
-                  // 等待淡出完成后移动地图
+                  // Wait for fade out to complete before moving map
                   setTimeout(() => {
                     map.flyTo({
                       ...viewPositions[targetView],
@@ -1393,7 +1390,7 @@
                       duration: 1500
                     });
 
-                    // 隐藏所有视觉元素
+                    // Hide all visual elements
                     markers.forEach(data => {
                       if (data.element) {
                         data.element.style.display = 'none';
@@ -1402,40 +1399,40 @@
                     });
                     partyLegend.style.display = 'none';
                     
-                    // 隐藏所有连接线和标记
+                    // Hide all connection lines and markers
                     document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
                       el.style.display = 'none';
                     });
 
-                    // 显示边界和填充
+                    // Show borders and fills
                     map.setPaintProperty('eu-borders', 'line-opacity', 1);
                     map.setPaintProperty('uk-border', 'line-opacity', 1);
                     
-                    // 显示填充
+                    // Show fills
                     map.setPaintProperty('eu-fill', 'fill-opacity', 0.2);
                     map.setPaintProperty('uk-fill', 'fill-opacity', 0.2);
 
-                    // 延迟后改变UK的颜色
+                    // Delay changing UK's color
                     setTimeout(() => {
-                      console.log('Highlighting UK border'); // 添加调试日志
+                      console.log('Highlighting UK border'); // Add debug log
                       map.setPaintProperty('uk-border', 'line-color', '#F44336');
                       map.setPaintProperty('uk-border', 'line-width', 3);
                       map.setPaintProperty('uk-fill', 'fill-color', '#F44336');
                     }, 1000);
                   }, 500);
                 } else {
-                  // 从Brexit视图返回Vote视图
+                  // Return from Brexit view to Vote view
                   map.flyTo({
                     ...viewPositions[targetView],
                     essential: true
                   });
 
-                  // 隐藏Brexit内容但保持vote内容可见
+                  // Hide Brexit content but keep vote content visible
                   brexitContent.classList.remove('visible');
 
-                  // 等待地图移动完成后显示元素
+                  // Wait for map movement to complete before showing elements
                   setTimeout(() => {
-                    // 显示所有连接线和标记
+                    // Show all connection lines and markers
                     document.querySelectorAll('.connector-line, .connector-dot').forEach(el => {
                       el.style.display = '';
                     });
@@ -1459,10 +1456,10 @@
                 currentView = targetView;
               }
 
-              // 添加按钮点击事件
+              // Add button click event
               viewButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                  // 手动切换时不启动高亮动画，并且清除任何现有的高亮
+                  // Do not start highlight animation when manually switching, and clear any existing highlights
                   if (window.highlightInterval) {
                     clearInterval(window.highlightInterval);
                     window.highlightInterval = null;
@@ -1472,7 +1469,7 @@
                 });
               });
 
-              // 添加区域填充图层
+              // Add region fill layer
               map.addLayer({
                 'id': 'region-fills',
                 'type': 'fill',
@@ -1484,7 +1481,7 @@
                 }
               });
 
-              // 添加高亮图层
+              // Add highlight layer
               map.addLayer({
                 'id': 'region-fills-hover',
                 'type': 'fill',
@@ -1502,7 +1499,7 @@
                 'filter': ['==', ['get', 'EER13NM'], '']
               });
 
-              // 投票数据，包含党派缩写和颜色
+              // Voting data, including party abbreviations and colors
               const votingData = {
                 "Scotland": { 
                   seats: 6, 
@@ -1604,7 +1601,7 @@
                 }
               };
 
-              // 地区名称映射（GeoJSON中的名称到我们的数据中的名称）
+              // Region name mapping (name in GeoJSON to name in our data)
               const regionNameMapping = {
                 "Scotland": "Scotland",
                 "Northern Ireland": "Northern Ireland",
@@ -1620,7 +1617,7 @@
                 "London": "London"
               };
 
-              // 创建SVG容器
+              // Create SVG container
               const svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
               svgContainer.style.position = 'absolute';
               svgContainer.style.top = '0';
@@ -1631,10 +1628,8 @@
               svgContainer.style.zIndex = '99';
               document.getElementById('brexit-map').appendChild(svgContainer);
 
-              // 存储所有标记和连接线
+              // Store all markers and connection lines
               const markers = new Map();
-
-              // 遍历每个地区创建标记
               merged.features.forEach(feature => {
                 const regionName = feature.properties.EER13NM;
                 if (!regionName) return;
@@ -1643,21 +1638,21 @@
                 const data = votingData[mappedName];
                 if (!data) return;
 
-                // 计算地区中心点
+                // Calculate region center point
                 const center = turf.center(feature).geometry.coordinates;
 
-                // 创建标记容器
+                // Create marker container
                 const markerEl = document.createElement('div');
                 markerEl.className = 'region-marker';
                 markerEl.setAttribute('data-region', regionName);
 
-                // 添加地区名称和座位数
+                // Add region name and seat count
                 const label = document.createElement('div');
                 label.className = 'region-label';
                 label.textContent = `${regionName} - ${data.seats}`;
                 markerEl.appendChild(label);
 
-                // 添加投票分布
+                // Add vote distribution
                 if (data.distribution) {
                   const distributionEl = document.createElement('div');
                   distributionEl.className = 'vote-distribution';
@@ -1669,7 +1664,7 @@
                   markerEl.appendChild(distributionEl);
                 }
 
-                // 创建标记并添加到地图
+                // Create marker and add to map
                 const marker = new mapboxgl.Marker({
                   element: markerEl,
                   offset: data.labelOffset
@@ -1677,16 +1672,16 @@
                 .setLngLat(center)
                 .addTo(map);
 
-                // 创建连接线组
+                // Create connector group
                 const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 group.setAttribute('class', 'connector-group');
                 
-                // 创建连接线
+                // Create connector line
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
                 path.setAttribute('class', 'connector-line');
                 group.appendChild(path);
 
-                // 创建端点圆点
+                // Create endpoint circle
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 circle.setAttribute('class', 'connector-dot');
                 circle.setAttribute('r', '3');
@@ -1694,7 +1689,7 @@
 
                 svgContainer.appendChild(group);
 
-                // 存储标记信息
+                // Store marker information
                 markers.set(regionName, {
                   marker,
                   center,
@@ -1705,7 +1700,7 @@
                 });
               });
 
-              // 更新连接线函数
+              // Update connector function
               function updateConnectors() {
                 const mapCanvas = map.getCanvas();
                 const mapRect = mapCanvas.getBoundingClientRect();
@@ -1714,40 +1709,40 @@
                   const { marker, center, line, dot, group, element } = data;
                   if (!marker || !center) return;
 
-                  // 获取标签元素和它在地图上的位置
+                  // Get label element and its position on the map
                   const markerEl = marker.getElement();
 
-                  // 确保标签位置计算正确
+                  // Ensure label position calculation is correct
                   try {
                     const markerRect = markerEl.getBoundingClientRect();
                     
-                    // 计算地理中心点在屏幕上的位置
+                    // Calculate the position of the geographic center point on the screen
                     const centerPoint = map.project(center);
                     const start = {
                       x: centerPoint.x,
                       y: centerPoint.y
                     };
 
-                    // 计算标签底部中心位置
+                    // Calculate the bottom center position of the label
                     const end = {
                       x: markerRect.left + markerRect.width / 2 - mapRect.left,
                       y: markerRect.top + markerRect.height - mapRect.top
                     };
 
-                    // 计算连接线路径
-                    // 使用直角连接线
+                    // Calculate the connector line path
+                    // Use a straight line connection
                     const path = `
                       M ${start.x} ${start.y}
                       L ${start.x} ${end.y}
                       L ${end.x} ${end.y}
                     `;
 
-                    // 更新路径和圆点
+                    // Update path and dot
                     line.setAttribute('d', path);
                     dot.setAttribute('cx', start.x);
                     dot.setAttribute('cy', start.y);
                     
-                    // 确保连接线组可见
+                    // Ensure the connector group is visible
                     group.style.display = 'block';
                     group.style.opacity = '1';
                   } catch (e) {
@@ -1756,13 +1751,13 @@
                 });
               }
 
-              // 监听地图事件
+              // Listen to map events
               map.on('move', updateConnectors);
               map.on('zoom', updateConnectors);
               map.on('style.load', updateConnectors);
               window.addEventListener('resize', updateConnectors);
 
-              // 更新滚动动画，确保所有元素同时出现
+              // Update scroll animation, ensuring all elements appear at the same time
               function addScrollAnimation() {
                 const brexitSection = document.getElementById('section2');
                 const brexitText = document.querySelector('.brexit-text');
@@ -1788,13 +1783,13 @@
                 observer.observe(brexitSection);
               }
 
-              // 初始化连接线并添加滚动动画
+              // Initialize connectors and add scroll animation
               map.once('load', () => {
                 updateConnectors();
                 addScrollAnimation();
               });
 
-              // 鼠标悬停交互
+              // Mouse hover interaction
               let hoveredRegionId = null;
 
               map.on('mousemove', 'region-fills', (e) => {
@@ -1805,7 +1800,7 @@
                     if (prevMarker) {
                       prevMarker.element.style.transform = '';
                       prevMarker.element.style.boxShadow = '';
-                      prevMarker.element.classList.remove('highlight'); // 新增：移除高亮
+                      prevMarker.element.classList.remove('highlight'); // Add: Remove highlight
                       prevMarker.element.classList.remove('visible');
                       prevMarker.group.querySelector('.connector-line').style.stroke = '';
                       prevMarker.group.querySelector('.connector-line').style.strokeWidth = '';
@@ -1822,7 +1817,7 @@
                     if (marker) {
                       marker.element.style.transform = 'scale(1.05)';
                       marker.element.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
-                      marker.element.classList.add('highlight'); // 新增：加高亮
+                      marker.element.classList.add('highlight'); // Add: Add highlight
                       marker.element.classList.add('visible');
                       marker.group.querySelector('.connector-line').style.stroke = 'rgba(255, 255, 255, 1)';
                       marker.group.querySelector('.connector-line').style.strokeWidth = '2';
@@ -1841,7 +1836,7 @@
                   if (prevMarker) {
                     prevMarker.element.style.transform = '';
                     prevMarker.element.style.boxShadow = '';
-                    prevMarker.element.classList.remove('highlight'); // 新增：移除高亮
+                    prevMarker.element.classList.remove('highlight');   // Add: Remove highlight
                     prevMarker.element.classList.remove('visible');
                     prevMarker.group.querySelector('.connector-line').style.stroke = '';
                     prevMarker.group.querySelector('.connector-line').style.strokeWidth = '';
@@ -1853,19 +1848,19 @@
                 hoveredRegionId = null;
               });
 
-              // 初始化地图位置和自动播放序列
+              // Initialize map position and automatic playback sequence
               let hasPlayedSequence = false;
 
-              // 创建Intersection Observer来检测地图区域的可见性
+              // Create Intersection Observer to detect the visibility of the map area
               const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                   if (entry.isIntersecting && !hasPlayedSequence) {
                     hasPlayedSequence = true;
                     
-                    // 设置初始远景位置
+                    // Set initial far view position
                     map.jumpTo(viewPositions.initial);
                     
-                    // 隐藏所有元素
+                    // Hide all elements
                     markers.forEach(data => {
                       if (data.element) {
                         data.element.style.display = 'none';
@@ -1877,13 +1872,13 @@
                       el.style.display = 'none';
                     });
 
-                    // 显示2016投票内容
+                    // Show 2016 vote content
                     const voteContent = document.querySelector('.vote-content');
                     const brexitContent = document.querySelector('.brexit-content');
                     voteContent.classList.add('visible');
                     brexitContent.classList.remove('visible');
 
-                    // 开始动画序列
+                    // Start animation sequence
                     setTimeout(() => {
                       map.flyTo({
                         ...viewPositions.vote,
@@ -1917,7 +1912,7 @@
                           
                           setTimeout(() => {
                             switchView('brexit', false, false);
-                          }, 5000); // 增加等待时间从2000ms到5000ms
+                          }, 5000); // Increase waiting time from 2000ms to 5000ms
                         }, 400);
                       }, 1500);
                     }, 500);
@@ -1925,13 +1920,13 @@
                 });
               }, { threshold: 0.5 });
 
-              // 开始观察地图容器
+              // Start observing the map container
               observer.observe(document.getElementById('brexit-map'));
 
-              // 添加鼠标悬停暂停自动高亮的功能
+              // Add mouse hover pause automatic highlight function
               map.on('mousemove', 'region-fills', (e) => {
                 if (e.features.length > 0) {
-                  // 暂停自动高亮
+                  // Pause automatic highlight
                   if (window.highlightInterval) {
                     clearInterval(window.highlightInterval);
                     window.highlightInterval = null;
@@ -1945,7 +1940,7 @@
               });
 
               map.on('mouseleave', 'region-fills', () => {
-                // 只有在初始动画序列中才恢复自动高亮
+                // Only resume automatic highlight in the initial animation sequence
                 if (currentView === 'vote' && !window.highlightInterval && !hasPlayedSequence) {
                   startAutoHighlight();
                 }
@@ -1957,14 +1952,14 @@
 
       <section id="section4" class="full-page" style="margin-top:-2rem;">
         <div class="content">
-          <!-- 使用 Country Scale 组件 -->
+          <!-- Use Country Scale component -->
           <div id="country-scale-container"></div>
         </div>
       </section>
 
       <section id="section5" class="full-page"> 
         <div class="content">
-          <!-- 使用 Region Scale 组件 -->
+          <!-- Use Region Scale component -->
           <div id="region-scale-container"></div>
         </div>
       </section>
@@ -1978,20 +1973,20 @@
 
       <section id="section7" class="full-page" style="min-height: 100vh;">
         <div class="content-transport">
-          <!-- 使用 Transportation 组件 -->
+          <!-- Use Transportation component -->
           <div id="transport-container"></div>
         </div>
       </section>
 
       <section id="section8" class="full-page">
         <div class="content">
-          <!-- 使用 Key Insights 组件 -->
+          <!-- Use Key Insights component -->
           <div id="key-insights-container"></div>
         </div>
       </section>
 
     <script>
-        // 加载 Country Scale 组件
+        // Load Country Scale component
         fetch('src/components/CountryScale/CountryScale.html')
         .then(response => response.text())
         .then(html => {
@@ -2001,7 +1996,7 @@
           document.body.appendChild(script);
         });
 
-      // 加载 Region Scale 组件
+      // Load Region Scale component
         fetch('src/components/RegionScale/RegionScale.html')
           .then(response => response.text())
           .then(html => {
@@ -2011,7 +2006,7 @@
             document.body.appendChild(script);
           });
 
-      // 加载 Goods Types 组件
+      // Load Goods Types component
         fetch('src/components/GoodsType/GoodsType.html')
           .then(response => response.text())
           .then(html => {
@@ -2021,7 +2016,7 @@
             document.body.appendChild(script);
           });
 
-      // 加载 Transportation 组件
+      // Load Transportation component
       fetch('src/components/Transport/Transport.html')
         .then(response => response.text())
         .then(html => {
@@ -2031,13 +2026,13 @@
             document.body.appendChild(script);
           });
 
-      // 加载 Key Insights 组件并确保样式表被加载
+      // Load Key Insights component and ensure style sheet is loaded
         fetch('src/components/KeyInsights/KeyInsights.html')
         .then(response => response.text())
         .then(html => {
           document.getElementById('key-insights-container').innerHTML = html;
           
-          // 确保CSS已加载
+          // Ensure the CSS is loaded
           if (!document.querySelector('link[href="src/components/KeyInsights/KeyInsights.css"]')) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -2045,20 +2040,20 @@
             document.head.appendChild(link);
           }
           
-          // 添加内联脚本确保全局D3可用
+          // Add inline script to ensure global D3 is available
           const checkD3Script = document.createElement('script');
           checkD3Script.textContent = `
             if (typeof d3 === 'undefined') {
-              console.log('全局D3未找到，正在加载...');
+              console.log('Global D3 not found, loading...');
               const d3Script = document.createElement('script');
               d3Script.src = 'https://d3js.org/d3.v7.min.js';
               d3Script.onload = function() {
-                console.log('D3加载完成，现在加载KeyInsights.js');
+                console.log('D3 loaded, now loading KeyInsights.js');
                 loadKeyInsightsScript();
               };
               document.head.appendChild(d3Script);
             } else {
-              console.log('D3已加载，直接加载KeyInsights.js');
+              console.log('D3 loaded, directly loading KeyInsights.js');
               loadKeyInsightsScript();
             }
             
@@ -2144,8 +2139,8 @@
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-      // 删除原有的自动吸附和自动滑动功能代码
-      // 仅保留基本的部分用于侧边导航点的正常工作
+      // Delete the original code for automatic adsorption and automatic sliding functions
+      // Only keep the basic part for normal operation of the side navigation points
       (function() {
         const sections = Array.from(document.querySelectorAll('.full-page'));
         
@@ -2158,14 +2153,14 @@
           return idx;
         }
         
-        // 保留滚动位置监听以更新侧边导航点状态
+        // Keep the scroll position listener to update the side navigation point status
         window.addEventListener('scroll', function() {
           const currentIdx = findCurrentSection();
           const dots = Array.from(document.querySelectorAll('.side-nav-dot'));
           dots.forEach((d, i) => d.classList.toggle('active', i === currentIdx));
         });
         
-        // 保留点击侧边导航点的功能，但使用普通滚动
+        // Keep the function of clicking the side navigation point, but use normal scrolling
         const dots = Array.from(document.querySelectorAll('.side-nav-dot'));
         dots.forEach((dot, i) => {
           dot.addEventListener('click', e => {
@@ -2183,28 +2178,28 @@
       })();
     </script>
 
-    <!-- 添加用于处理从uk-port.html返回时自动点击Transport Modes导航按钮的脚本 -->
+    <!-- Add a script to handle the automatic click of the Transport Modes navigation button when returning from uk-port.html -->
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // 检查localStorage中是否有需要点击Transport按钮的标记
+        // Check if there is a mark in localStorage that needs to click the Transport button
         if (localStorage.getItem('autoClickTransport') === 'true') {
-          // 清除标记，防止刷新页面时再次触发
+          // Clear the mark to prevent it from being triggered again when the page is refreshed
           localStorage.removeItem('autoClickTransport');
           
-          // 延迟1000毫秒以确保页面完全加载
+          // Delay 1000 milliseconds to ensure the page is fully loaded
           setTimeout(() => {
-            // 查找并点击Transport Modes导航按钮
+            // Find and click the Transport Modes navigation button
             const transportLink = document.querySelector('a[href="#section7"]');
             if (transportLink) {
               transportLink.click();
-              console.log('自动点击了Transport Modes导航按钮，延迟2000ms');
+              console.log('Automatically clicked the Transport Modes navigation button, delayed by 2000ms');
             }
           }, 2000);
         }
       });
     </script>
 
-    <!-- three.js 雾气城市背景脚本，只渲染到首页section1 -->
+    <!-- three.js foggy city background script, only rendered to the homepage section1 -->
     <script type="module">
       import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.153.0/+esm';
       
@@ -2212,7 +2207,7 @@
         const bgDiv = document.getElementById('threejs-bg');
         if (!bgDiv) return;
         let width = bgDiv.offsetWidth, height = bgDiv.offsetHeight;
-        // three.js 场景
+        // three.js scene
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0xcad6e6, 0.018);
         const camera = new THREE.PerspectiveCamera(60, width/height, 1, 1000);
@@ -2221,7 +2216,7 @@
         renderer.setClearColor(0xcad6e6, 0);
         renderer.setSize(width, height);
         bgDiv.appendChild(renderer.domElement);
-        // 创建城市
+        // Create city
         const city = new THREE.Group();
         for (let i = 0; i < 400; i++) {
           const geometry = new THREE.BoxGeometry(4, Math.random()*30+10, 4);
@@ -2233,12 +2228,12 @@
           city.add(mesh);
         }
         scene.add(city);
-        // 灯光
+        // Lights
         const light = new THREE.DirectionalLight(0xffffff, 0.7);
         light.position.set(100, 200, 100);
         scene.add(light);
         scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-        // 雾气平面 - 使用程序生成的纹理而不是外部图像
+        // Fog plane - use program-generated texture instead of external image
         const fogMaterial = new THREE.MeshLambertMaterial({
           color: 0xffffff,
           transparent: true,
@@ -2246,12 +2241,12 @@
           depthWrite: false
         });
         
-        // 创建程序化雾气纹理 - 代替外部图像
+        // Create programmatic fog texture - replace external image
         const canvas = document.createElement('canvas');
         canvas.width = 512;
         canvas.height = 512;
         const ctx = canvas.getContext('2d');
-        // 创建放射渐变
+        // Create radial gradient
         const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
         gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
         gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.3)');
@@ -2259,7 +2254,7 @@
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, 512, 512);
         
-        // 添加一些噪点
+        // Add some noise
         for (let i = 0; i < 5000; i++) {
           const x = Math.random() * 512;
           const y = Math.random() * 512;
@@ -2270,7 +2265,7 @@
           ctx.fill();
         }
         
-        // 使用画布作为纹理
+        // Use canvas as texture
         const fogTexture = new THREE.CanvasTexture(canvas);
         fogMaterial.map = fogTexture;
         
@@ -2281,14 +2276,14 @@
         fogPlane.position.y = 5;
         fogPlane.rotation.x = -Math.PI/2;
         scene.add(fogPlane);
-        // 动画
+        // Animation
         function animate() {
           city.rotation.y += 0.0008;
           renderer.render(scene, camera);
           requestAnimationFrame(animate);
         }
         animate();
-        // 响应窗口大小
+        // Respond to window size
         window.addEventListener('resize', function() {
           width = bgDiv.offsetWidth;
           height = bgDiv.offsetHeight;
@@ -2300,16 +2295,16 @@
     </script>
 
     <script>
-      // 在three.js初始化后添加
+      // Add after three.js initialization
       (function() {
         const bgDiv = document.getElementById('threejs-bg');
         const reflectionDiv = document.getElementById('threejs-reflection');
         
-        // 监听three.js渲染
+        // Listen to three.js rendering
         const observer = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-              // 当three.js canvas被添加时，克隆它到倒影容器
+              // When the three.js canvas is added, clone it to the reflection container
               const canvas = bgDiv.querySelector('canvas');
               if (canvas && !reflectionDiv.querySelector('canvas')) {
                 const reflectionCanvas = canvas.cloneNode(true);
@@ -2325,7 +2320,7 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        // 添加交互效果
+        // Add interactive effects
         const regions = document.querySelectorAll('g[id]');
         regions.forEach(region => {
           region.addEventListener('mouseover', function() {
@@ -2336,7 +2331,7 @@
           });
         });
 
-        // 添加连接线动画
+        // Add connection line animation
         const lines = document.querySelectorAll('.connection-line');
         lines.forEach(line => {
           line.style.strokeDashoffset = '4';
@@ -2346,13 +2341,13 @@
     </script>
 
     <script>
-      // 清除所有高亮状态
+      // Clear all highlight states
       function clearAllHighlights() {
         map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], '']);
         markers.forEach(data => {
           if (data.element) {
             data.element.classList.remove('highlight');
-            data.element.classList.remove('visible'); // 修正：移除visible
+            data.element.classList.remove('visible'); // Correct: Remove visible
             if (data.group) {
               data.group.classList.remove('highlight');
             }
@@ -2360,23 +2355,23 @@
         });
       }
 
-      // 高亮特定区域
+      // Highlight specific region
       function highlightRegion(regionName) {
         clearAllHighlights();
         
-        // 高亮地图区域
+        // Highlight map area
         map.setFilter('region-fills-hover', ['==', ['get', 'EER13NM'], regionName]);
         
-        // 高亮对应的标签和连接线
+        // Highlight the corresponding label and connection line
         const marker = markers.get(regionName);
         if (marker) {
           marker.element.classList.add('highlight');
-          marker.element.classList.add('visible'); // 修正：加visible
+          marker.element.classList.add('visible'); // Correct: Add visible
           marker.group.classList.add('highlight');
         }
       }
 
-      // 启动自动高亮动画
+      // Start automatic highlight animation
       function startAutoHighlight() {
         if (window.highlightInterval) {
           clearInterval(window.highlightInterval);
@@ -2394,10 +2389,10 @@
           return region;
         }
 
-        // 立即高亮第一个区域
+        // Immediately highlight the first region
         highlightRegion(getRandomRegion());
 
-        // 每1200ms切换一次高亮区域
+        // Highlight a new region every 1200ms
         window.highlightInterval = setInterval(() => {
           if (currentView === 'vote') {
             highlightRegion(getRandomRegion());
@@ -2405,10 +2400,10 @@
             clearInterval(window.highlightInterval);
             window.highlightInterval = null;
           }
-        }, 900); // 速度从1200ms改为900ms
+        }, 900); // Speed changed from 1200ms to 900ms
       }
 
-      // 在初始动画序列中添加自动高亮启动
+      // Add automatic highlight startup in the initial animation sequence
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !hasPlayedSequence) {
@@ -2425,7 +2420,7 @@
               setTimeout(() => {
                 // ... existing element show code ...
                 
-                // 启动自动高亮
+                // Start automatic highlight
                 setTimeout(() => {
                   startAutoHighlight();
                 }, 500);
@@ -2439,10 +2434,10 @@
         });
       }, { threshold: 0.5 });
 
-      // 添加鼠标悬停暂停自动高亮的功能
+      // Add mouse hover pause automatic highlight function
       map.on('mousemove', 'region-fills', (e) => {
         if (e.features.length > 0) {
-          // 暂停自动高亮
+          // Pause automatic highlight
           if (window.highlightInterval) {
             clearInterval(window.highlightInterval);
             window.highlightInterval = null;
@@ -2456,7 +2451,7 @@
       });
 
       map.on('mouseleave', 'region-fills', () => {
-        // 只有在初始动画序列中才恢复自动高亮
+        // Only resume automatic highlight in the initial animation sequence
         if (currentView === 'vote' && !window.highlightInterval && !hasPlayedSequence) {
           startAutoHighlight();
         }
