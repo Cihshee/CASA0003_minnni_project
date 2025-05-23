@@ -34,7 +34,7 @@ This project leverages data visualisation to present the multidimensional impact
 > **This project is built with [Vite](https://vitejs.dev/), using the Vanilla framework for the web frontend.**  
 
 - The main entry point is `index.html` in the root directory.  
-- All major UI components are stored in the `components` folder.  
+- All major UI components are stored in the `src/components` folder.  
   Each subfolder (e.g., `Transport`, `RegionScale`, `KeyInsights`, `HomePage`, `GoodsType`, `CountryScale`) contains the related HTML, CSS, and JavaScript files for each component.  
 - Static resources and data files are placed in the `public` folder for easy access by the application.  
 
